@@ -1,0 +1,71 @@
+.page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+}
+
+.gradient {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.status {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.status:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--primary) 50%, var(--border));
+}
+
+.status h2 {
+  font-size: 1rem;
+  margin: 0 0 0.15rem;
+}
+
+.status p {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+}
+
+.status a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.iconOk {
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 15%, transparent);
+}
+
+.iconWarn {
+  color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 15%, transparent);
+}
