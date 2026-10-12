@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ALL_WORD_PACKS, type WordPack } from '../data/wordPacks'
-import { bulkCreateWords } from '../services/words'
+import { bulkCreateWords, type CreateWordInput } from '../services/words'
 import styles from '../pages/Words.module.css'
 
 interface WordPacksModalProps {
@@ -10,27 +10,89 @@ interface WordPacksModalProps {
   onSuccess: () => void
 }
 
+interface ImportProgress {
+  current: number
+  total: number
+  label: string
+}
+
 export function WordPacksModal({
   activeUserId,
   activeUserName,
   onClose,
   onSuccess,
 }: WordPacksModalProps) {
-  const [loadingPackId, setLoadingPackId] = useState<string | null>(null)
-  const [isBulkLoading, setIsBulkLoading] = useState(false)
+  const [loadingAction, setLoadingAction] = useState<string | null>(null)
+  const [importProgress, setImportProgress] = useState<ImportProgress | null>(null)
   const [resultMsg, setResultMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [showArchGuide, setShowArchGuide] = useState(false)
 
-  const totalWordsInAllPacks = ALL_WORD_PACKS.reduce((acc, p) => acc + p.words.length, 0)
+  // 1. Oxford 3000 JSON verisini çekip parçalı yükleme fonksiyonu
+  async function handleLoadBigDataset(levelFilter?: 'all' | 'a1_a2' | 'b1_b2' | 'c1_c2', actionId = 'full_oxford') {
+    setLoadingAction(actionId)
+    setResultMsg(null)
+    setImportProgress({ current: 0, total: 3354, label: 'Veri tabanı indiriliyor…' })
 
+    try {
+      const res = await fetch('/data/oxford3000_tr.json')
+      if (!res.ok) throw new Error('Veri tabanı dosyası yüklenemedi: ' + res.status)
+
+      let rawWords: CreateWordInput[] = await res.json()
+
+      if (levelFilter === 'a1_a2') {
+        rawWords = rawWords.filter((w) => w.tags?.includes('A1') || w.tags?.includes('A2'))
+      } else if (levelFilter === 'b1_b2') {
+        rawWords = rawWords.filter((w) => w.tags?.includes('B1') || w.tags?.includes('B2'))
+      } else if (levelFilter === 'c1_c2') {
+        rawWords = rawWords.filter((w) => w.tags?.includes('C1') || w.tags?.includes('C2') || w.tags?.includes('İleri'))
+      }
+
+      const total = rawWords.length
+      let totalAdded = 0
+      let totalSkipped = 0
+      const batchSize = 350
+
+      for (let i = 0; i < total; i += batchSize) {
+        const chunk = rawWords.slice(i, i + batchSize)
+        setImportProgress({
+          current: Math.min(i + batchSize, total),
+          total,
+          label: `${Math.min(i + batchSize, total)} / ${total} kelime veritabanına işleniyor…`,
+        })
+
+        const chunkRes = await bulkCreateWords(activeUserId, chunk)
+        totalAdded += chunkRes.addedCount
+        totalSkipped += chunkRes.skippedCount
+
+        // UI nefes alsın
+        await new Promise((r) => setTimeout(r, 40))
+      }
+
+      setResultMsg({
+        type: 'success',
+        text: `✓ Tebrikler! ${totalAdded} yeni kelime ${activeUserName} profiline başarıyla aktarıldı. (${totalSkipped} mükerrer kelime atlandı)`,
+      })
+      onSuccess()
+    } catch (err) {
+      setResultMsg({
+        type: 'error',
+        text: `Hata: ${err instanceof Error ? err.message : String(err)}`,
+      })
+    } finally {
+      setLoadingAction(null)
+      setImportProgress(null)
+    }
+  }
+
+  // 2. Yerleşik özel YDS paketlerini yükleme
   async function handleLoadPack(pack: WordPack) {
-    setLoadingPackId(pack.id)
+    setLoadingAction(pack.id)
     setResultMsg(null)
     try {
       const res = await bulkCreateWords(activeUserId, pack.words)
       setResultMsg({
         type: 'success',
-        text: `✓ "${pack.title}" paketinden ${res.addedCount} yeni kelime ${activeUserName} havuzuna yüklendi! (${res.skippedCount} mükerrer kelime atlandı)`,
+        text: `✓ "${pack.title}" paketinden ${res.addedCount} yeni kelime ${activeUserName} havuzuna eklendi! (${res.skippedCount} mükerrer atlandı)`,
       })
       onSuccess()
     } catch (err) {
@@ -39,32 +101,7 @@ export function WordPacksModal({
         text: `Hata: ${err instanceof Error ? err.message : String(err)}`,
       })
     } finally {
-      setLoadingPackId(null)
-    }
-  }
-
-  async function handleLoadAllPacks() {
-    if (!window.confirm(`Tüm paketlerdeki (${totalWordsInAllPacks} kelime) ${activeUserName} profiline yüklemek istiyor musunuz?`)) {
-      return
-    }
-
-    setIsBulkLoading(true)
-    setResultMsg(null)
-    try {
-      const allWords = ALL_WORD_PACKS.flatMap((p) => p.words)
-      const res = await bulkCreateWords(activeUserId, allWords)
-      setResultMsg({
-        type: 'success',
-        text: `✓ Tüm paketler başarıyla aktarıldı! ${res.addedCount} yeni kelime eklendi. (${res.skippedCount} mükerrer atlandı)`,
-      })
-      onSuccess()
-    } catch (err) {
-      setResultMsg({
-        type: 'error',
-        text: `Hata: ${err instanceof Error ? err.message : String(err)}`,
-      })
-    } finally {
-      setIsBulkLoading(false)
+      setLoadingAction(null)
     }
   }
 
@@ -73,14 +110,14 @@ export function WordPacksModal({
       <div
         className={styles.modalContent}
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '820px', maxHeight: '90vh', overflowY: 'auto' }}
+        style={{ maxWidth: '860px', maxHeight: '92vh', overflowY: 'auto' }}
       >
         {/* Modal Başlığı */}
         <div className={styles.modalHead}>
           <div>
-            <h2>📦 Hazır Kelime Paketleri</h2>
+            <h2>📦 Büyük Kelime Veri Tabanı & Seviye Paketleri</h2>
             <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.85rem' }}>
-              <strong>{activeUserName}</strong> profiline doğrudan yüklenebilecek doğrulanmış seviye ve sınav setleri
+              <strong>{activeUserName}</strong> profili için 3.300+ kelimelik tam Oxford 3000 & YDS havuzu
             </p>
           </div>
           <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Kapat">
@@ -92,9 +129,9 @@ export function WordPacksModal({
         {resultMsg && (
           <div
             style={{
-              padding: '0.75rem 1rem',
+              padding: '0.85rem 1rem',
               borderRadius: 'var(--radius-sm)',
-              fontSize: '0.88rem',
+              fontSize: '0.9rem',
               fontWeight: 600,
               background:
                 resultMsg.type === 'success'
@@ -108,43 +145,103 @@ export function WordPacksModal({
           </div>
         )}
 
-        {/* Hızlı Eylem Barı */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: '0.75rem',
-            padding: '0.85rem 1rem',
-            background: 'var(--surface-strong)',
-            borderRadius: 'var(--radius-sm)',
-            border: '1px solid var(--border)',
-          }}
-        >
-          <div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 700 }}>
-              🚀 Eksiksiz Başlangıç Havuzu
+        {/* İlerleme Çubuğu */}
+        {importProgress && (
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              background: 'var(--surface-strong)',
+              border: '1px solid var(--primary)',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.86rem', fontWeight: 700 }}>
+              <span>⏳ {importProgress.label}</span>
+              <span style={{ color: 'var(--primary)' }}>
+                {Math.round((importProgress.current / importProgress.total) * 100)}%
+              </span>
             </div>
-            <div className="muted" style={{ fontSize: '0.8rem' }}>
-              5 farklı seviye ve sınav paketinin tamamı ({totalWordsInAllPacks} kelime, eş anlamlılar ve çift dilli örnek cümleler)
+            <div
+              style={{
+                width: '100%',
+                height: '8px',
+                background: 'var(--input-bg)',
+                borderRadius: '4px',
+                overflow: 'hidden',
+                marginTop: '0.5rem',
+              }}
+            >
+              <div
+                style={{
+                  width: `${(importProgress.current / importProgress.total) * 100}%`,
+                  height: '100%',
+                  background: 'var(--primary)',
+                  transition: 'width 0.2s ease',
+                }}
+              />
             </div>
           </div>
+        )}
 
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        {/* ANA HERO BANNER: 3.354 KELİMELİK TAM HAVUZ */}
+        <div
+          style={{
+            padding: '1.25rem',
+            background: 'linear-gradient(135deg, color-mix(in srgb, var(--primary) 18%, transparent), var(--surface-strong))',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--primary)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.8rem',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontSize: '1.3rem' }}>🏆</span>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--text)' }}>
+                  Oxford 3000 & YDS Tam Kelime Havuzu (3.354 Kelime)
+                </h3>
+              </div>
+              <p className="muted" style={{ margin: '0.35rem 0 0', fontSize: '0.85rem', maxWidth: '580px' }}>
+                İngilizcenin %90'ını oluşturan tüm A1, A2, B1, B2 ve C1 düzeyindeki 3.354 kelime. Türkçe anlamları, türleri, eş/zıt anlamlıları, kalıpları ve örnek cümleleriyle eksiksiz dev havuz.
+              </p>
+            </div>
+
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() => void handleLoadAllPacks()}
-              disabled={isBulkLoading || loadingPackId !== null}
+              onClick={() => void handleLoadBigDataset('all', 'full_oxford')}
+              disabled={loadingAction !== null}
+              style={{
+                fontSize: '0.95rem',
+                padding: '0.65rem 1.2rem',
+                fontWeight: 700,
+                boxShadow: '0 4px 14px color-mix(in srgb, var(--primary) 40%, transparent)',
+              }}
             >
-              {isBulkLoading ? '⏳ Yükleniyor…' : '⚡ Tüm Paketleri Tek Tıkla Yükle'}
+              {loadingAction === 'full_oxford' ? '⏳ Aktarılıyor…' : '⚡ 3.354 Kelimelik Tam Havuzu Yükle'}
             </button>
+          </div>
+
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+              Kapsam:
+            </span>
+            <span style={{ fontSize: '0.75rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'var(--input-bg)', border: '1px solid var(--border)' }}>
+              A1-A2: 1.417 Kelime
+            </span>
+            <span style={{ fontSize: '0.75rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'var(--input-bg)', border: '1px solid var(--border)' }}>
+              B1-B2: 1.822 Kelime
+            </span>
+            <span style={{ fontSize: '0.75rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'var(--input-bg)', border: '1px solid var(--border)' }}>
+              C1-C2: 115+ Akademik Kelime
+            </span>
             <button
               type="button"
               className="btn btn-ghost"
               onClick={() => setShowArchGuide(!showArchGuide)}
-              style={{ fontSize: '0.82rem' }}
+              style={{ fontSize: '0.78rem', marginLeft: 'auto', padding: '0.2rem 0.5rem' }}
             >
               {showArchGuide ? '▲ Rehberi Kapat' : '💡 Seviye & Aşama Rehberi'}
             </button>
@@ -186,101 +283,154 @@ export function WordPacksModal({
           </div>
         )}
 
-        {/* Paketler Listesi */}
-        <div style={{ display: 'grid', gap: '1rem' }}>
-          {ALL_WORD_PACKS.map((pack) => {
-            const isLoading = loadingPackId === pack.id
+        {/* BÖLÜMLENDİRİLMİŞ SEVİYE PAKETLERİ */}
+        <h3 style={{ margin: '0.5rem 0 0', fontSize: '1.05rem', color: 'var(--text)' }}>
+          Aşamalara Göre Parçalı Yükleme Paketleri
+        </h3>
 
-            return (
-              <div
-                key={pack.id}
-                style={{
-                  padding: '1.1rem',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--border)',
-                  background: 'var(--surface)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.6rem',
-                  transition: 'border-color 0.2s ease',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      <h3 style={{ margin: 0, fontSize: '1.05rem' }}>{pack.title}</h3>
-                      <span
-                        style={{
-                          fontSize: '0.72rem',
-                          fontWeight: 700,
-                          padding: '0.15rem 0.5rem',
-                          borderRadius: '6px',
-                          background: 'color-mix(in srgb, var(--primary) 15%, transparent)',
-                          color: 'var(--primary)',
-                          border: '1px solid color-mix(in srgb, var(--primary) 30%, transparent)',
-                        }}
-                      >
-                        {pack.badge}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: '0.72rem',
-                          fontWeight: 600,
-                          padding: '0.15rem 0.45rem',
-                          borderRadius: '6px',
-                          background: 'var(--input-bg)',
-                          color: 'var(--text-muted)',
-                        }}
-                      >
-                        {pack.level}
-                      </span>
-                    </div>
-
-                    <p className="muted" style={{ margin: '0.35rem 0 0', fontSize: '0.84rem' }}>
-                      {pack.description}
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => void handleLoadPack(pack)}
-                    disabled={isLoading || isBulkLoading}
-                    style={{ whiteSpace: 'nowrap', alignSelf: 'flex-start' }}
-                  >
-                    {isLoading ? '⏳ Yükleniyor…' : `📥 Paketi Yükle (${pack.words.length})`}
-                  </button>
-                </div>
-
-                {/* Örnek Kelimeler Önizleme Çipleri */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                    Örnekler:
-                  </span>
-                  {pack.words.slice(0, 6).map((w, idx) => (
-                    <span
-                      key={idx}
-                      style={{
-                        fontSize: '0.74rem',
-                        padding: '0.15rem 0.45rem',
-                        background: 'var(--input-bg)',
-                        borderRadius: '4px',
-                        border: '1px solid var(--border)',
-                        color: 'var(--text)',
-                      }}
-                    >
-                      {w.term}
-                    </span>
-                  ))}
-                  {pack.words.length > 6 && (
-                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                      +{pack.words.length - 6} daha
-                    </span>
-                  )}
-                </div>
+        <div style={{ display: 'grid', gap: '0.85rem' }}>
+          {/* Seviye 1: A1 - A2 Başlangıç */}
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🌱 A1 - A2 Başlangıç & Temel İngilizce</span>
+                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                  1.417 Kelime
+                </span>
               </div>
-            )
-          })}
+              <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                Günlük konuşmada, seyahatte ve temel diyaloglarda en sık geçen 1.417 kelime.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => void handleLoadBigDataset('a1_a2', 'a1_a2_pack')}
+              disabled={loadingAction !== null}
+            >
+              {loadingAction === 'a1_a2_pack' ? '⏳ Yükleniyor…' : '📥 A1-A2 Paketini Yükle (1.417)'}
+            </button>
+          </div>
+
+          {/* Seviye 2: B1 - B2 Orta Düzey Akıcılık */}
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🚀 B1 - B2 Orta Düzey Akıcılık & Genel İngilizce</span>
+                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                  1.822 Kelime
+                </span>
+              </div>
+              <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                Dizi, film, haber takibi ve iş dünyasında akıcı iletişim omurgasını oluşturan 1.822 kelime.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => void handleLoadBigDataset('b1_b2', 'b1_b2_pack')}
+              disabled={loadingAction !== null}
+            >
+              {loadingAction === 'b1_b2_pack' ? '⏳ Yükleniyor…' : '📥 B1-B2 Paketini Yükle (1.822)'}
+            </button>
+          </div>
+
+          {/* Seviye 3: C1 - C2 & YDS Akademik Çekirdek */}
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border)',
+              background: 'var(--surface)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🎯 C1 - C2 İleri Seviye & YDS Çıkmış Akademik Kelimeler</span>
+                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                  145+ Kelime
+                </span>
+              </div>
+              <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                ÖSYM YDS, YÖKDİL, YDT sınavlarının en çok sorulan çeldirici ve akademik kelimeleri.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => void handleLoadBigDataset('c1_c2', 'c1_c2_pack')}
+              disabled={loadingAction !== null}
+            >
+              {loadingAction === 'c1_c2_pack' ? '⏳ Yükleniyor…' : '📥 C1-YDS Paketini Yükle'}
+            </button>
+          </div>
+
+          {/* Özel YDS Phrasal Verbs & Bağlaçlar */}
+          {ALL_WORD_PACKS.slice(1, 3).map((pack) => (
+            <div
+              key={pack.id}
+              style={{
+                padding: '1rem',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border)',
+                background: 'var(--surface)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '0.75rem',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>{pack.title}</span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                    {pack.badge} • {pack.words.length} Kelime
+                  </span>
+                </div>
+                <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                  {pack.description}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => void handleLoadPack(pack)}
+                disabled={loadingAction !== null}
+              >
+                {loadingAction === pack.id ? '⏳ Yükleniyor…' : `📥 ${pack.title} Yükle`}
+              </button>
+            </div>
+          ))}
         </div>
 
         {/* Alt Kapat Butonu */}

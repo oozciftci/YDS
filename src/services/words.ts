@@ -1,7 +1,7 @@
 import { db } from '../db'
 import type { CardState, PartOfSpeech, SampleSentence, WordItem } from '../types/database'
 import { logger } from './logger'
-import { queueChange } from './sync'
+import { queueChange, queueBulkChanges } from './sync'
 
 export interface CreateWordInput {
   term: string
@@ -205,13 +205,24 @@ export async function bulkCreateWords(
       await db.cardStates.bulkAdd(cardStatesToAdd)
     })
 
-    // Senkronizasyon kuyruğuna toplu ekle
-    for (const w of wordsToAdd) {
-      void queueChange('words', 'insert', w.id, w as unknown as Record<string, unknown>)
-    }
-    for (const c of cardStatesToAdd) {
-      void queueChange('card_states', 'insert', c.id, c as unknown as Record<string, unknown>)
-    }
+    // Senkronizasyon kuyruğuna yüksek performanslı tek toplu işlemle yaz
+    const syncItems = [
+      ...wordsToAdd.map((w) => ({
+        table: 'words' as const,
+        action: 'insert' as const,
+        recordId: w.id,
+        payload: w as unknown as Record<string, unknown>,
+        userId,
+      })),
+      ...cardStatesToAdd.map((c) => ({
+        table: 'card_states' as const,
+        action: 'insert' as const,
+        recordId: c.id,
+        payload: c as unknown as Record<string, unknown>,
+        userId,
+      })),
+    ]
+    void queueBulkChanges(syncItems)
 
     logger.interaction('study', `Toplu ${wordsToAdd.length} kelime içe aktarıldı.`, {
       addedCount: wordsToAdd.length,

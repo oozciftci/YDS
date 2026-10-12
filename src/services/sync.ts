@@ -170,6 +170,33 @@ export async function queueChange(
   }
 }
 
+export async function queueBulkChanges(
+  items: Array<{
+    table: SyncQueueItem['table']
+    action: SyncQueueItem['action']
+    recordId: string
+    payload: Record<string, unknown>
+    userId?: string
+  }>,
+) {
+  if (items.length === 0) return
+  const activeUserId = useUserStore.getState().activeUserId
+  const now = new Date().toISOString()
+  const syncItems: SyncQueueItem[] = items.map((i) => ({
+    id: crypto.randomUUID(),
+    userId: i.userId || activeUserId,
+    table: i.table,
+    action: i.action,
+    recordId: i.recordId,
+    payload: i.payload,
+    timestamp: now,
+    retryCount: 0,
+  }))
+
+  await db.syncQueue.bulkAdd(syncItems)
+  void useSyncStatus.getState().refreshPendingCounts()
+}
+
 /**
  * Tam Senkronizasyon Döngüsü:
  * 1. Outbox (Bekleyen değişiklikler) -> Supabase'e gönder
