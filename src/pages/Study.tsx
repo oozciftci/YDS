@@ -178,6 +178,28 @@ export function StudyPage() {
     [currentQ, currentIndex, questions.length, questionStartTime],
   )
 
+  // Önceki Karta Dönme
+  const handlePrevCard = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex((i) => i - 1)
+      setIsFlipped(false)
+      setSelectedOption(null)
+      setQuestionStartTime(Date.now())
+    }
+  }, [currentIndex])
+
+  // Sonraki Karta Geçme
+  const handleNextCard = useCallback(() => {
+    if (currentIndex + 1 < questions.length) {
+      setCurrentIndex((i) => i + 1)
+      setIsFlipped(false)
+      setSelectedOption(null)
+      setQuestionStartTime(Date.now())
+    } else {
+      setPhase('summary')
+    }
+  }, [currentIndex, questions.length])
+
   // Çoktan Seçmeli Seçenek Tıklaması
   function handleSelectOption(optIdx: number) {
     if (selectedOption !== null || !currentQ) return
@@ -208,6 +230,18 @@ export function StudyPage() {
         }
       }
 
+      // Sol Ok: Önceki Soru
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        handlePrevCard()
+      }
+
+      // Sağ Ok: Sonraki Soru
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        handleNextCard()
+      }
+
       // 1-5 tuşları ile doğrudan puan ver
       if (['1', '2', '3', '4', '5'].includes(e.key)) {
         const score = Number(e.key) as MasteryLevel
@@ -217,7 +251,7 @@ export function StudyPage() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [phase, currentQ, handleScoreCard])
+  }, [phase, currentQ, handleScoreCard, handlePrevCard, handleNextCard])
 
   return (
     <section className={styles.container}>
@@ -413,10 +447,33 @@ export function StudyPage() {
       {phase === 'studying' && currentQ && (
         <div className={styles.activeArea}>
           {/* İlerleme Çubuğu */}
+          {/* İlerleme Çubuğu */}
           <div className={styles.statusBar}>
-            <span>
-              Soru {currentIndex + 1} / {questions.length}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                style={{ padding: '0.2rem 0.55rem', fontSize: '0.8rem' }}
+                disabled={currentIndex === 0}
+                onClick={handlePrevCard}
+                title="Önceki Soru (Sol Ok Tuşu)"
+              >
+                ← Geri
+              </button>
+              <span style={{ fontWeight: 600, fontSize: '0.88rem' }}>
+                Soru {currentIndex + 1} / {questions.length}
+              </span>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                style={{ padding: '0.2rem 0.55rem', fontSize: '0.8rem' }}
+                onClick={handleNextCard}
+                title="Sonraki Soru (Sağ Ok Tuşu)"
+              >
+                {currentIndex + 1 < questions.length ? 'İleri →' : 'Bitir 🏁'}
+              </button>
+            </div>
+
             <button
               type="button"
               className="btn btn-ghost"
@@ -458,16 +515,71 @@ export function StudyPage() {
                       <button
                         type="button"
                         className="btn btn-primary"
-                        style={{ marginTop: '1.25rem' }}
+                        style={{ marginTop: '1.25rem', fontSize: '1rem', padding: '0.75rem 1.6rem' }}
                         onClick={() => setIsFlipped(true)}
                       >
-                        Kartı Çevir (Boşluk Tuşu)
+                        🔄 Kartı Çevir (Boşluk Tuşu)
                       </button>
-                      <div className={styles.flipHint}>veya doğrudan 1-5 tuşlarına basın</div>
+                      <div className={styles.flipHint}>veya doğrudan 1-5 tuşlarına basarak puanlayın</div>
                     </div>
                   ) : (
                     <div className={styles.backFace}>
-                      <h2 className={styles.backDef}>{currentQ.word.definition}</h2>
+                      {/* ÜST BAŞLIK: İNGİLİZCE KELİME + TELAFFUZ + KARTI TEKRAR ÇEVİR BUTONU */}
+                      <div className={styles.backHeadRow}>
+                        <div className={styles.backTermWrap}>
+                          <h2 className={styles.backTerm}>{currentQ.word.term}</h2>
+                          <button
+                            type="button"
+                            className="btn btn-ghost"
+                            style={{ padding: '0.2rem 0.45rem', fontSize: '0.9rem' }}
+                            onClick={() => speakWord(currentQ.word.term)}
+                            title="Telaffuz Dinle"
+                            aria-label="Telaffuz Dinle"
+                          >
+                            🔊
+                          </button>
+                          <span
+                            style={{
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              textTransform: 'uppercase',
+                              padding: '0.15rem 0.5rem',
+                              borderRadius: '6px',
+                              background: 'color-mix(in srgb, var(--primary) 15%, transparent)',
+                              color: 'var(--primary)',
+                            }}
+                          >
+                            {currentQ.word.partOfSpeech}
+                          </span>
+                        </div>
+
+                        {/* KARTI TEKRAR ÇEVİR BUTONU (KULLANICININ İSTEĞİ) */}
+                        <button
+                          type="button"
+                          className={styles.flipBackBtn}
+                          onClick={() => setIsFlipped(false)}
+                          title="Ön yüze geri dön (Boşluk Tuşu)"
+                        >
+                          🔄 Kartı Tekrar Çevir
+                        </button>
+                      </div>
+
+                      {/* TÜRKÇE KARŞILIĞI */}
+                      <div>
+                        <div
+                          className="muted"
+                          style={{
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.04em',
+                            marginBottom: '0.2rem',
+                          }}
+                        >
+                          Türkçe Anlamı
+                        </div>
+                        <h3 className={styles.backDef}>{currentQ.word.definition}</h3>
+                      </div>
 
                       {/* Eş anlamlılar */}
                       {currentQ.word.synonyms && currentQ.word.synonyms.length > 0 && (
@@ -580,6 +692,32 @@ export function StudyPage() {
                   )}
                 </div>
               )}
+            </div>
+
+            {/* ALT İLERİ - GERİ NAVİGASYON ÇUBUĞU */}
+            <div className={styles.navRow}>
+              <button
+                type="button"
+                className={styles.navBtn}
+                disabled={currentIndex === 0}
+                onClick={handlePrevCard}
+                title="Önceki Soru (Sol Ok Tuşu)"
+              >
+                ← Önceki Soru
+              </button>
+
+              <span className="muted" style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                {currentIndex + 1} / {questions.length}
+              </span>
+
+              <button
+                type="button"
+                className={styles.navBtn}
+                onClick={handleNextCard}
+                title="Sonraki Soru (Sağ Ok Tuşu)"
+              >
+                {currentIndex + 1 < questions.length ? 'Sonraki Soru →' : 'Sonuçları Gör 🏁'}
+              </button>
             </div>
           </div>
         </div>
