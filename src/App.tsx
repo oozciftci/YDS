@@ -4,6 +4,7 @@ import { HomePage } from './pages/Home'
 import { Placeholder } from './pages/Placeholder'
 import { SettingsPage } from './pages/Settings'
 
+import { StudyPage } from './pages/Study'
 import { WordsPage } from './pages/Words'
 
 export default function App() {
@@ -12,10 +13,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route
-            path="study"
-            element={<Placeholder step="Adım 4" title="Çalış" description="Aralıklı tekrar oturumu ve soru türleri burada olacak." />}
-          />
+          <Route path="study" element={<StudyPage />} />
           <Route path="words" element={<WordsPage />} />
           <Route
             path="stats"

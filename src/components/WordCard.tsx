@@ -1,9 +1,10 @@
-import type { PartOfSpeech, WordItem } from '../types/database'
+import { MASTERY_CONFIG, type CardState, type MasteryLevel, type PartOfSpeech, type WordItem } from '../types/database'
 import { speakWord } from '../services/tts'
 import styles from '../pages/Words.module.css'
 
 interface WordCardProps {
   word: WordItem
+  cardState?: CardState
   onEdit: (word: WordItem) => void
   onDelete: (wordId: string) => void
 }
@@ -39,7 +40,7 @@ const POS_LABELS: Record<PartOfSpeech, string> = {
   other: 'Diğer',
 }
 
-export function WordCard({ word, onEdit, onDelete }: WordCardProps) {
+export function WordCard({ word, cardState, onEdit, onDelete }: WordCardProps) {
   return (
     <article className={styles.wordCard}>
       <div className={styles.cardHead}>
@@ -60,6 +61,21 @@ export function WordCard({ word, onEdit, onDelete }: WordCardProps) {
           <span className={`${styles.posBadge} ${getPosClass(word.partOfSpeech)}`}>
             {POS_LABELS[word.partOfSpeech] || word.partOfSpeech}
           </span>
+          {cardState && (
+            <span
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                padding: '0.15rem 0.45rem',
+                borderRadius: '6px',
+                background: 'color-mix(in srgb, var(--input-bg) 80%, transparent)',
+                border: '1px solid var(--border)',
+              }}
+              title={`Öğrenme Puanı: ${cardState.masteryScore || 1}/5`}
+            >
+              {MASTERY_CONFIG[(cardState.masteryScore as MasteryLevel) || 1].badge}
+            </span>
+          )}
         </div>
 
         <div className={styles.cardActions}>

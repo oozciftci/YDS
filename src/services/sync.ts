@@ -102,6 +102,7 @@ function cardStateToDb(c: CardState) {
     scheduled_days: c.scheduledDays,
     reps: c.reps,
     lapses: c.lapses,
+    mastery_score: c.masteryScore ?? 1,
     last_review: c.lastReview || null,
     updated_at: c.updatedAt,
   }
@@ -120,6 +121,7 @@ function cardStateFromDb(r: Record<string, unknown>): CardState {
     scheduledDays: Number(r.scheduled_days),
     reps: Number(r.reps),
     lapses: Number(r.lapses),
+    masteryScore: Number(r.mastery_score ?? 1),
     lastReview: r.last_review ? String(r.last_review) : undefined,
     updatedAt: String(r.updated_at),
   }

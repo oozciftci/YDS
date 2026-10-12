@@ -1,9 +1,10 @@
-import type { PartOfSpeech, WordItem } from '../types/database'
+import { MASTERY_CONFIG, type CardState, type MasteryLevel, type PartOfSpeech, type WordItem } from '../types/database'
 import { speakWord } from '../services/tts'
 import styles from '../pages/Words.module.css'
 
 interface WordTableProps {
   words: WordItem[]
+  cardMap?: Map<string, CardState>
   onEdit: (word: WordItem) => void
   onDelete: (wordId: string) => void
 }
@@ -27,13 +28,14 @@ function getPosClass(pos: PartOfSpeech): string {
   }
 }
 
-export function WordTable({ words, onEdit, onDelete }: WordTableProps) {
+export function WordTable({ words, cardMap, onEdit, onDelete }: WordTableProps) {
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Kelime</th>
+            <th>Puan</th>
             <th>Tür</th>
             <th>Türkçe Anlamı</th>
             <th>Eş Anlamlılar (YDS)</th>
@@ -56,6 +58,26 @@ export function WordTable({ words, onEdit, onDelete }: WordTableProps) {
                     🔊
                   </button>
                 </div>
+              </td>
+              <td>
+                {cardMap?.get(w.id) ? (
+                  <span
+                    style={{
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      padding: '0.15rem 0.45rem',
+                      borderRadius: '4px',
+                      background: 'color-mix(in srgb, var(--input-bg) 80%, transparent)',
+                      border: '1px solid var(--border)',
+                    }}
+                  >
+                    {MASTERY_CONFIG[(cardMap.get(w.id)?.masteryScore as MasteryLevel) || 1].badge}
+                  </span>
+                ) : (
+                  <span className="muted" style={{ fontSize: '0.78rem' }}>
+                    Yeni
+                  </span>
+                )}
               </td>
               <td>
                 <span className={`${styles.posBadge} ${getPosClass(w.partOfSpeech)}`}>

@@ -52,8 +52,20 @@ export interface CardState {
   scheduledDays: number // Planlanan aralık (gün)
   reps: number // Toplam tekrar sayısı
   lapses: number // Unutulma / hata sayısı
+  /** 1: Hiç bilmiyorum, 2: Biraz öğrendim, 3: Geliştirmeye muhtaç, 4: Baya öğrendim, 5: Tamamen öğrendim */
+  masteryScore?: number
   lastReview?: string // Son tekrar zamanı (ISO string)
   updatedAt: string
+}
+
+export type MasteryLevel = 1 | 2 | 3 | 4 | 5
+
+export const MASTERY_CONFIG: Record<MasteryLevel, { label: string; desc: string; color: string; badge: string }> = {
+  1: { label: 'Hiç Bilmiyorum', desc: 'Henüz öğrenilmedi', color: '#ef4444', badge: '🔴 1' },
+  2: { label: 'Biraz Öğrendim', desc: 'Hatırlamakta zorlanıyorum', color: '#f97316', badge: '🟠 2' },
+  3: { label: 'Geliştirmeye Muhtaç', desc: 'Ara sıra karşıma çıksın', color: '#eab308', badge: '🟡 3' },
+  4: { label: 'Baya Öğrendim', desc: 'İyi biliyorum, pekiştirmeli', color: '#3b82f6', badge: '🔵 4' },
+  5: { label: 'Tamamen Öğrendim', desc: 'Kusursuz ezberlendi', color: '#10b981', badge: '🟢 5' },
 }
 
 /**

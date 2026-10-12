@@ -85,6 +85,16 @@ export function WordsPage() {
     [],
   )
 
+  const allCardStates = useLiveQuery(
+    () => db.cardStates.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  const cardMap = useMemo(() => {
+    return new Map(allCardStates.map((c) => [c.wordId, c]))
+  }, [allCardStates])
+
   // Filtre State'leri
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedPos, setSelectedPos] = useState<string>('all')
@@ -338,6 +348,7 @@ export function WordsPage() {
             <WordCard
               key={word.id}
               word={word}
+              cardState={cardMap.get(word.id)}
               onEdit={(w) => setEditingWord(w)}
               onDelete={(id) => void handleDeleteWord(id)}
             />
@@ -346,6 +357,7 @@ export function WordsPage() {
       ) : (
         <WordTable
           words={filteredWords}
+          cardMap={cardMap}
           onEdit={(w) => setEditingWord(w)}
           onDelete={(id) => void handleDeleteWord(id)}
         />

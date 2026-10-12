@@ -1,0 +1,450 @@
+.container {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ========================================================
+   1. OTURUM AYARLAMA / FİLTRELEME EKRANI
+   ======================================================== */
+.setupCard {
+  display: grid;
+  gap: 1.3rem;
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.setupTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.presetsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.presetBtn {
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.presetBtn:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.presetBtnActive {
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 1-5 Puan Filtresi Seçicisi */
+.scoreToggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.scoreBtn {
+  flex: 1;
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.65rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  text-align: center;
+}
+
+.scoreNum {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.scoreDesc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.scoreSelected_1 {
+  border-color: #ef4444;
+  background: color-mix(in srgb, #ef4444 18%, transparent);
+  color: #f87171;
+}
+
+.scoreSelected_2 {
+  border-color: #f97316;
+  background: color-mix(in srgb, #f97316 18%, transparent);
+  color: #fb923c;
+}
+
+.scoreSelected_3 {
+  border-color: #eab308;
+  background: color-mix(in srgb, #eab308 18%, transparent);
+  color: #fde047;
+}
+
+.scoreSelected_4 {
+  border-color: #3b82f6;
+  background: color-mix(in srgb, #3b82f6 18%, transparent);
+  color: #60a5fa;
+}
+
+.scoreSelected_5 {
+  border-color: #10b981;
+  background: color-mix(in srgb, #10b981 18%, transparent);
+  color: #34d399;
+}
+
+/* Etiket ve Tür Çipleri */
+.chipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.chip {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.chip:hover {
+  color: var(--text);
+  border-color: var(--primary);
+}
+
+.chipActive {
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+.matchCount {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* ========================================================
+   2. AKTİF ÇALIŞMA EKRANI
+   ======================================================== */
+.activeArea {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.progressBar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--input-bg);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--gradient-brand);
+  transition: width 0.35s var(--ease);
+}
+
+/* Flaşkart Çevirme Alanı */
+.cardStage {
+  min-height: 380px;
+  perspective: 1000px;
+}
+
+.cardFlip {
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  position: relative;
+  transition: transform 0.25s var(--ease), border-color 0.2s var(--ease);
+}
+
+.cardPrompt {
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0;
+  color: var(--text);
+}
+
+.cardSubPrompt {
+  font-size: 0.95rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.flipHint {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin-top: 1rem;
+}
+
+/* Flaşkart Arka Yüzü */
+.backFace {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  text-align: left;
+  animation: page-in 0.25s var(--ease);
+}
+
+.backDef {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 0;
+}
+
+/* 1-5 Puan Verme Çubuğu */
+.scoreActionBox {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.scoreActionTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.scoreButtonsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.rateBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.65rem 0.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.15s var(--ease);
+}
+
+.rateBtn:hover {
+  transform: translateY(-2px);
+}
+
+.rateBtn_1:hover {
+  border-color: #ef4444;
+  background: #ef4444;
+  color: #fff;
+}
+
+.rateBtn_2:hover {
+  border-color: #f97316;
+  background: #f97316;
+  color: #fff;
+}
+
+.rateBtn_3:hover {
+  border-color: #eab308;
+  background: #eab308;
+  color: #000;
+}
+
+.rateBtn_4:hover {
+  border-color: #3b82f6;
+  background: #3b82f6;
+  color: #fff;
+}
+
+.rateBtn_5:hover {
+  border-color: #10b981;
+  background: #10b981;
+  color: #fff;
+}
+
+.rateKbd {
+  font-size: 0.68rem;
+  opacity: 0.7;
+}
+
+/* Çoktan Seçmeli Seçenekler */
+.optionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.optionBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s var(--ease);
+}
+
+.optionBtn:hover:not(:disabled) {
+  border-color: var(--primary);
+  transform: translateX(4px);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.optionLetter {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+}
+
+.optionCorrect {
+  border-color: var(--success) !important;
+  background: color-mix(in srgb, var(--success) 20%, transparent) !important;
+  color: #fff !important;
+}
+
+.optionWrong {
+  border-color: var(--danger) !important;
+  background: color-mix(in srgb, var(--danger) 20%, transparent) !important;
+  color: #fff !important;
+}
+
+/* ========================================================
+   3. SONUÇ / RAPOR EKRANI
+   ======================================================== */
+.resultCard {
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  display: grid;
+  gap: 1.3rem;
+}
+
+.resultTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.resultScoreRow {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.scoreStat {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.scoreStatNum {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.scoreStatLbl {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.wordReviewList {
+  display: grid;
+  gap: 0.6rem;
+  text-align: left;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.reviewItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}

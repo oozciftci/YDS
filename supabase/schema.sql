@@ -41,6 +41,7 @@ create table if not exists public.card_states (
   scheduled_days integer not null default 0,
   reps integer not null default 0,
   lapses integer not null default 0,
+  mastery_score integer not null default 1,
   last_review timestamptz,
   updated_at timestamptz not null default now()
 );
