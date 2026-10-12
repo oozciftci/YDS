@@ -18,6 +18,7 @@ import {
   type PartOfSpeech,
   type WordItem,
 } from '../types/database'
+import { InteractiveSentence } from '../components/InteractiveSentence'
 import styles from './Study.module.css'
 
 const POS_FILTERS: Array<{ id: PartOfSpeech; label: string }> = [
@@ -483,22 +484,15 @@ export function StudyPage() {
                         </div>
                       )}
 
-                      {/* Örnek cümle */}
+                      {/* Örnek cümle (Kelimeye tıklayarak anlamını görme) */}
                       {currentQ.word.sentences && currentQ.word.sentences[0]?.en && (
-                        <div
-                          style={{
-                            background: 'color-mix(in srgb, var(--input-bg) 70%, transparent)',
-                            padding: '0.6rem 0.8rem',
-                            borderRadius: '8px',
-                            border: '1px solid var(--border)',
-                          }}
-                        >
-                          <div style={{ fontWeight: 600 }}>“{currentQ.word.sentences[0].en}”</div>
-                          {currentQ.word.sentences[0].tr && (
-                            <div className="muted" style={{ fontSize: '0.8rem', marginTop: '0.2rem' }}>
-                              {currentQ.word.sentences[0].tr}
-                            </div>
-                          )}
+                        <div style={{ marginTop: '0.4rem', width: '100%' }}>
+                          <InteractiveSentence
+                            sentence={currentQ.word.sentences[0]}
+                            activeUserId={currentQ.word.userId}
+                            highlightTerm={currentQ.word.term}
+                            showTranslationByDefault={true}
+                          />
                         </div>
                       )}
                     </div>

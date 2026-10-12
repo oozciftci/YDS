@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import type { PartOfSpeech, WordItem } from '../types/database'
 import type { CreateWordInput } from '../services/words'
+import { extractSentenceWordGlosses } from '../services/dictionary'
 import styles from '../pages/Words.module.css'
 
 interface WordModalProps {
@@ -30,10 +31,33 @@ export function WordModal({ initialWord, onClose, onSave }: WordModalProps) {
   const [collocations, setCollocations] = useState(initialWord?.collocations?.join(', ') || '')
   const [sentenceEn, setSentenceEn] = useState(initialWord?.sentences?.[0]?.en || '')
   const [sentenceTr, setSentenceTr] = useState(initialWord?.sentences?.[0]?.tr || '')
+  const [wordGlosses, setWordGlosses] = useState<Record<string, string>>(
+    initialWord?.sentences?.[0]?.wordGlosses || {},
+  )
+  const [extractingGlosses, setExtractingGlosses] = useState(false)
   const [tags, setTags] = useState(initialWord?.tags?.join(', ') || '')
   const [difficulty, setDifficulty] = useState<number>(initialWord?.difficulty ?? 2)
   const [notes, setNotes] = useState(initialWord?.notes || '')
   const [submitting, setSubmitting] = useState(false)
+
+  async function handleAutoExtractGlosses() {
+    if (!sentenceEn.trim()) return
+    setExtractingGlosses(true)
+    try {
+      const extracted = await extractSentenceWordGlosses(sentenceEn, sentenceTr)
+      setWordGlosses((prev) => ({ ...prev, ...extracted }))
+    } finally {
+      setExtractingGlosses(false)
+    }
+  }
+
+  function handleRemoveGloss(word: string) {
+    setWordGlosses((prev) => {
+      const next = { ...prev }
+      delete next[word]
+      return next
+    })
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -48,7 +72,15 @@ export function WordModal({ initialWord, onClose, onSave }: WordModalProps) {
         synonyms: synonyms.split(/[,;]/).map((s) => s.trim()).filter(Boolean),
         antonyms: antonyms.split(/[,;]/).map((s) => s.trim()).filter(Boolean),
         collocations: collocations.split(/[,;]/).map((c) => c.trim()).filter(Boolean),
-        sentences: sentenceEn.trim() ? [{ en: sentenceEn.trim(), tr: sentenceTr.trim() || undefined }] : [],
+        sentences: sentenceEn.trim()
+          ? [
+              {
+                en: sentenceEn.trim(),
+                tr: sentenceTr.trim() || undefined,
+                wordGlosses: Object.keys(wordGlosses).length > 0 ? wordGlosses : undefined,
+              },
+            ]
+          : [],
         tags: tags.split(/[,;]/).map((t) => t.trim()).filter(Boolean),
         difficulty,
         notes: notes.trim() || undefined,
@@ -192,6 +224,86 @@ export function WordModal({ initialWord, onClose, onSave }: WordModalProps) {
               />
             </div>
           </div>
+
+          {/* Cümledeki Kelimelerin Anlamları (Glosses) */}
+          {sentenceEn.trim() && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.45rem',
+                padding: '0.65rem 0.8rem',
+                borderRadius: '8px',
+                background: 'color-mix(in srgb, var(--input-bg) 60%, transparent)',
+                border: '1px solid var(--border)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>
+                  Cümledeki Kelime Anlamları ({Object.keys(wordGlosses).length} kelime)
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  style={{ fontSize: '0.78rem', padding: '0.2rem 0.55rem' }}
+                  disabled={extractingGlosses}
+                  onClick={handleAutoExtractGlosses}
+                  title="Cümledeki her bir kelimenin Türkçe anlamını otomatik bulur ve eşler"
+                >
+                  {extractingGlosses ? '⏳ Çıkartılıyor…' : '✨ Kelime Anlamlarını Otomatik Çıkar'}
+                </button>
+              </div>
+
+              {Object.keys(wordGlosses).length > 0 ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.35rem',
+                    maxHeight: '120px',
+                    overflowY: 'auto',
+                  }}
+                >
+                  {Object.entries(wordGlosses).map(([w, m]) => (
+                    <span
+                      key={w}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        fontSize: '0.75rem',
+                        padding: '0.2rem 0.45rem',
+                        borderRadius: '4px',
+                        background: 'color-mix(in srgb, var(--primary) 12%, transparent)',
+                        border: '1px solid color-mix(in srgb, var(--primary) 30%, transparent)',
+                      }}
+                    >
+                      <strong style={{ color: 'var(--primary)' }}>{w}:</strong> <span>{m}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveGloss(w)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: 'var(--text-muted)',
+                          padding: '0 2px',
+                          fontWeight: 700,
+                        }}
+                        title="Sil"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <span className="hint" style={{ fontSize: '0.75rem', marginTop: 0 }}>
+                  Kelime anlamlarını otomatik çıkartarak, çalışma esnasında cümleye tıklandığında anında görünmesini sağlayabilirsiniz.
+                </span>
+              )}
+            </div>
+          )}
 
           <div className="field">
             <label htmlFor="word-tags">Etiketler (Kategoriler)</label>

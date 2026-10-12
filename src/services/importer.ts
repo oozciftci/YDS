@@ -42,7 +42,11 @@ export function parsePastedText(text: string): CreateWordInput[] {
             antonyms: Array.isArray(item.antonyms) ? item.antonyms.map(String) : [],
             collocations: Array.isArray(item.collocations) ? item.collocations.map(String) : [],
             sentences: Array.isArray(item.sentences)
-              ? (item.sentences as Array<{ en: string; tr?: string }>)
+              ? (item.sentences as Array<{ en: string; tr?: string; wordGlosses?: Record<string, string> }>).map((s) => ({
+                  en: String(s?.en || ''),
+                  tr: s?.tr ? String(s.tr) : undefined,
+                  wordGlosses: s?.wordGlosses && typeof s.wordGlosses === 'object' ? s.wordGlosses : undefined,
+                }))
               : [],
             tags: Array.isArray(item.tags) ? item.tags.map(String) : [],
             difficulty: typeof item.difficulty === 'number' ? item.difficulty : 2,
@@ -222,7 +226,16 @@ JSON Formatı Örneği:
     "antonyms": ["improve", "recover"],
     "collocations": ["deteriorate rapidly", "health deteriorates"],
     "sentences": [
-      { "en": "The patient's condition deteriorated overnight.", "tr": "Hastanın durumu bir gecede kötüleşti." }
+      {
+        "en": "The patient's condition deteriorated overnight.",
+        "tr": "Hastanın durumu bir gecede kötüleşti.",
+        "wordGlosses": {
+          "patient": "hasta",
+          "condition": "durum",
+          "deteriorated": "kötüleşti / fenalaştı",
+          "overnight": "bir gecede / aniden"
+        }
+      }
     ],
     "tags": ["Sağlık", "YDS"],
     "difficulty": 2
@@ -232,7 +245,8 @@ JSON Formatı Örneği:
 Kurallar:
 1. "partOfSpeech" değeri şunlardan biri olmalıdır: "verb", "noun", "adjective", "adverb", "phrasal_verb", "conjunction", "preposition", "idiom".
 2. YDS için eş anlamlılar (synonyms) ve birlikte kullanılan kalıplar (collocations) en kritik alanlardır, zengin tut.
-3. Yalnızca geçerli JSON dizisini ver, fazladan markdown yorumu ekleme.
+3. "wordGlosses": Örnek cümledeki her bir kelimenin Türkçe karşılıklarını (özellikle anahtar kelimeleri) bir sözlük haritası olarak ekle. Uygulama içinde cümleyi okurken tıklanan her kelimenin anlamı bu sayede anında açılacaktır.
+4. Yalnızca geçerli JSON dizisini ver, fazladan markdown yorumu ekleme.
 
 Kelime Listem:
 [BURAYA KELİMELERİNİ VEYA METNİNİ YAPIŞTIR]`;

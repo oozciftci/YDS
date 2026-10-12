@@ -1,5 +1,5 @@
 import { db } from '../db'
-import type { CardState, PartOfSpeech, WordItem } from '../types/database'
+import type { CardState, PartOfSpeech, SampleSentence, WordItem } from '../types/database'
 import { logger } from './logger'
 import { queueChange } from './sync'
 
@@ -10,7 +10,7 @@ export interface CreateWordInput {
   synonyms?: string[]
   antonyms?: string[]
   collocations?: string[]
-  sentences?: Array<{ en: string; tr?: string }>
+  sentences?: SampleSentence[]
   tags?: string[]
   difficulty?: number
   notes?: string

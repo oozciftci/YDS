@@ -1,5 +1,6 @@
 import { MASTERY_CONFIG, type CardState, type MasteryLevel, type PartOfSpeech, type WordItem } from '../types/database'
 import { speakWord } from '../services/tts'
+import { InteractiveSentence } from './InteractiveSentence'
 import styles from '../pages/Words.module.css'
 
 interface WordCardProps {
@@ -127,11 +128,15 @@ export function WordCard({ word, cardState, onEdit, onDelete }: WordCardProps) {
         </div>
       )}
 
-      {/* Örnek Cümle */}
+      {/* Örnek Cümle (Her bir kelimesi tıklanabilir ve anlamı görüntülenebilir) */}
       {word.sentences && word.sentences.length > 0 && word.sentences[0].en && (
-        <div className={styles.sentence}>
-          <div className={styles.sentenceEn}>“{word.sentences[0].en}”</div>
-          {word.sentences[0].tr && <div className={styles.sentenceTr}>{word.sentences[0].tr}</div>}
+        <div style={{ marginTop: '0.4rem' }}>
+          <InteractiveSentence
+            sentence={word.sentences[0]}
+            activeUserId={word.userId}
+            highlightTerm={word.term}
+            showTranslationByDefault={true}
+          />
         </div>
       )}
 

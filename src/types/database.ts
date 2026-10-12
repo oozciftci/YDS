@@ -16,6 +16,11 @@ export type PartOfSpeech =
 export interface SampleSentence {
   en: string
   tr?: string
+  /**
+   * Cümledeki her bir kelimenin Türkçe karşılığı (kelime sözlüğü / gloss)
+   * Örn: { "patient": "hasta", "condition": "durum", "deteriorated": "kötüleşti" }
+   */
+  wordGlosses?: Record<string, string>
 }
 
 export interface WordItem {
