@@ -8,6 +8,8 @@ interface WordCardProps {
   cardState?: CardState
   onEdit: (word: WordItem) => void
   onDelete: (wordId: string) => void
+  onTransfer?: (word: WordItem) => void
+  otherUserName?: string
 }
 
 function getPosClass(pos: PartOfSpeech): string {
@@ -41,7 +43,7 @@ const POS_LABELS: Record<PartOfSpeech, string> = {
   other: 'Diğer',
 }
 
-export function WordCard({ word, cardState, onEdit, onDelete }: WordCardProps) {
+export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, otherUserName }: WordCardProps) {
   return (
     <article className={styles.wordCard}>
       <div className={styles.cardHead}>
@@ -80,6 +82,18 @@ export function WordCard({ word, cardState, onEdit, onDelete }: WordCardProps) {
         </div>
 
         <div className={styles.cardActions}>
+          {onTransfer && otherUserName && (
+            <button
+              type="button"
+              className={styles.actionBtn}
+              onClick={() => onTransfer(word)}
+              title={`${otherUserName} profiline kopyala`}
+              aria-label={`${otherUserName} profiline kopyala`}
+              style={{ color: 'var(--primary)' }}
+            >
+              ⇄
+            </button>
+          )}
           <button
             type="button"
             className={styles.actionBtn}

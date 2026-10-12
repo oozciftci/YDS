@@ -15,19 +15,24 @@ interface UserState {
 export const useUserStore = create<UserState>()(
   persist(
     (set, get) => ({
-      activeUserId: 'user_osman',
+      activeUserId: 'user_ozgur',
       activeUser: null,
       allUsers: [],
 
       async loadUsers() {
         const users = await ensureDefaultUsers()
-        const currentActiveId = get().activeUserId || 'user_osman'
-        const matched = users.find((u) => u.id === currentActiveId) || users[0] || null
+        const currentActiveId = get().activeUserId
+        const matched =
+          users.find((u) => u.id === currentActiveId) ||
+          users.find((u) => u.displayName === 'Özgür') ||
+          users.find((u) => u.id === 'user_osman') ||
+          users[0] ||
+          null
 
         set({
           allUsers: users,
           activeUser: matched,
-          activeUserId: matched ? matched.id : 'user_osman',
+          activeUserId: matched ? matched.id : 'user_ozgur',
         })
       },
 

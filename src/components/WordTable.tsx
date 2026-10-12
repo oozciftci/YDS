@@ -7,6 +7,8 @@ interface WordTableProps {
   cardMap?: Map<string, CardState>
   onEdit: (word: WordItem) => void
   onDelete: (wordId: string) => void
+  onTransfer?: (word: WordItem) => void
+  otherUserName?: string
 }
 
 function getPosClass(pos: PartOfSpeech): string {
@@ -28,7 +30,7 @@ function getPosClass(pos: PartOfSpeech): string {
   }
 }
 
-export function WordTable({ words, cardMap, onEdit, onDelete }: WordTableProps) {
+export function WordTable({ words, cardMap, onEdit, onDelete, onTransfer, otherUserName }: WordTableProps) {
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
@@ -104,6 +106,17 @@ export function WordTable({ words, cardMap, onEdit, onDelete }: WordTableProps) 
                 )}
               </td>
               <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                {onTransfer && otherUserName && (
+                  <button
+                    type="button"
+                    className={styles.actionBtn}
+                    onClick={() => onTransfer(w)}
+                    title={`${otherUserName} profiline kopyala`}
+                    style={{ color: 'var(--primary)' }}
+                  >
+                    ⇄
+                  </button>
+                )}
                 <button
                   type="button"
                   className={styles.actionBtn}

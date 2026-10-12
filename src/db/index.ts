@@ -43,20 +43,21 @@ export const db = new YdsDatabase()
  * Sen ve eşin için ayrı profil hazır gelir.
  */
 export async function ensureDefaultUsers(): Promise<UserProfile[]> {
-  const count = await db.users.count()
-  if (count === 0) {
-    const now = new Date().toISOString()
+  const users = await db.users.toArray()
+  const now = new Date().toISOString()
+
+  if (users.length === 0) {
     const defaultProfiles: UserProfile[] = [
       {
-        id: 'user_osman',
-        displayName: 'Osman',
+        id: 'user_ozgur',
+        displayName: 'Özgür',
         avatarColor: '#7c5cff',
         createdAt: now,
         lastActiveAt: now,
       },
       {
-        id: 'user_esim',
-        displayName: 'Eşim',
+        id: 'user_izafet',
+        displayName: 'İzafet',
         avatarColor: '#1fc8a9',
         createdAt: now,
         lastActiveAt: now,
@@ -65,5 +66,33 @@ export async function ensureDefaultUsers(): Promise<UserProfile[]> {
     await db.users.bulkAdd(defaultProfiles)
     return defaultProfiles
   }
-  return db.users.toArray()
+
+  // Mevcut profiller varsa isimleri güncelle: Osman -> Özgür, Eşim -> İzafet
+  for (const u of users) {
+    if (u.id === 'user_osman' || u.displayName.toLowerCase() === 'osman') {
+      await db.users.update(u.id, { displayName: 'Özgür' })
+      u.displayName = 'Özgür'
+    } else if (u.id === 'user_esim' || u.displayName.toLowerCase() === 'eşim') {
+      await db.users.update(u.id, { displayName: 'İzafet' })
+      u.displayName = 'İzafet'
+    }
+  }
+
+  // İzafet profili henüz yoksa ekle
+  const hasIzafet = users.some(
+    (u) => u.displayName.toLowerCase() === 'izafet' || u.id === 'user_izafet',
+  )
+  if (!hasIzafet) {
+    const izafet: UserProfile = {
+      id: 'user_izafet',
+      displayName: 'İzafet',
+      avatarColor: '#1fc8a9',
+      createdAt: now,
+      lastActiveAt: now,
+    }
+    await db.users.add(izafet)
+    users.push(izafet)
+  }
+
+  return users
 }

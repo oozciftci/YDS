@@ -148,8 +148,9 @@ export async function queueChange(
   action: SyncQueueItem['action'],
   recordId: string,
   payload: Record<string, unknown>,
+  targetUserId?: string,
 ) {
-  const userId = useUserStore.getState().activeUserId
+  const userId = targetUserId || useUserStore.getState().activeUserId
   const item: SyncQueueItem = {
     id: crypto.randomUUID(),
     userId,

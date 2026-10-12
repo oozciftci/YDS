@@ -2,9 +2,11 @@ import { useState, useMemo } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { BulkImportModal } from '../components/BulkImportModal'
+import { TransferWordsModal } from '../components/TransferWordsModal'
 import { WordCard } from '../components/WordCard'
 import { WordModal } from '../components/WordModal'
 import { WordTable } from '../components/WordTable'
+import { copySingleWordToUser } from '../services/wordTransfer'
 import {
   bulkCreateWords,
   createWord,
@@ -75,8 +77,8 @@ const SAMPLE_YDS_WORDS: CreateWordInput[] = [
 ]
 
 export function WordsPage() {
-  const activeUser = useUserStore((s) => s.activeUser)
-  const activeUserId = activeUser?.id || 'user_osman'
+  const { activeUser, allUsers } = useUserStore()
+  const activeUserId = activeUser?.id || 'user_ozgur'
 
   // Canlı Kelime Listesi
   const rawWords = useLiveQuery(
@@ -110,6 +112,7 @@ export function WordsPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [editingWord, setEditingWord] = useState<WordItem | null>(null)
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false)
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
 
   function toggleViewMode(mode: 'cards' | 'table') {
     setViewMode(mode)
@@ -184,6 +187,19 @@ export function WordsPage() {
     await bulkCreateWords(activeUserId, SAMPLE_YDS_WORDS)
   }
 
+  const otherUser = allUsers.find((u) => u.id !== activeUserId)
+
+  async function handleTransferSingleWord(word: WordItem) {
+    if (!otherUser) return
+    const confirmed = window.confirm(
+      `"${word.term}" kelimesini ${otherUser.displayName} profiline kopyalamak istiyor musunuz?\n\n(Kelime ${otherUser.displayName} havuzuna 1. seviye / Yeni olarak eklenecektir)`
+    )
+    if (!confirmed) return
+
+    const res = await copySingleWordToUser(word, otherUser.id)
+    alert(res.message)
+  }
+
   return (
     <section className={styles.container}>
       {/* Üst Başlık ve İşlem Butonları */}
@@ -212,6 +228,17 @@ export function WordsPage() {
           >
             📥 Toplu İçe Aktar
           </button>
+          {allUsers.length > 1 && (
+            <button
+              id="btn-transfer-words"
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => setIsTransferModalOpen(true)}
+              title="Özgür ve İzafet arasında kelime kopyalama / aktarma"
+            >
+              ⇄ Profiller Arası Aktar
+            </button>
+          )}
         </div>
       </header>
 
@@ -351,6 +378,8 @@ export function WordsPage() {
               cardState={cardMap.get(word.id)}
               onEdit={(w) => setEditingWord(w)}
               onDelete={(id) => void handleDeleteWord(id)}
+              onTransfer={otherUser ? handleTransferSingleWord : undefined}
+              otherUserName={otherUser?.displayName}
             />
           ))}
         </div>
@@ -360,6 +389,8 @@ export function WordsPage() {
           cardMap={cardMap}
           onEdit={(w) => setEditingWord(w)}
           onDelete={(id) => void handleDeleteWord(id)}
+          onTransfer={otherUser ? handleTransferSingleWord : undefined}
+          otherUserName={otherUser?.displayName}
         />
       )}
 
@@ -380,6 +411,16 @@ export function WordsPage() {
         <BulkImportModal
           onClose={() => setIsBulkModalOpen(false)}
           onImport={handleBulkImport}
+        />
+      )}
+
+      {/* Profiller Arası Kelime Aktarma Modalı */}
+      {isTransferModalOpen && (
+        <TransferWordsModal
+          activeUserId={activeUserId}
+          allUsers={allUsers}
+          onClose={() => setIsTransferModalOpen(false)}
+          onSuccess={() => setIsTransferModalOpen(false)}
         />
       )}
     </section>
