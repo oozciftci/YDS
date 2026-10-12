@@ -1,0 +1,241 @@
+.container {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.header p {
+  margin: 0.25rem 0 0;
+}
+
+/* ========================================================
+   ÖZET METRİK KARTLARI
+   ======================================================== */
+.overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+}
+
+.metricCard {
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+}
+
+.metricVal {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.metricLbl {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.metricSub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ========================================================
+   ÖĞRENME SEVİYESİ DAĞILIMI (1-5 PUAN)
+   ======================================================== */
+.sectionCard {
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.stackedBar {
+  display: flex;
+  height: 16px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+}
+
+.stackedSegment {
+  height: 100%;
+  transition: width 0.5s var(--ease);
+}
+
+.legendGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface-strong) 60%, transparent);
+  border: 1px solid var(--border);
+}
+
+.legendDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendInfo {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.legendLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.legendCount {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+/* ========================================================
+   TEKRAR TAKVİMİ (HORIZON)
+   ======================================================== */
+.calendarRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+}
+
+.calendarBlock {
+  padding: 1rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--surface-strong) 60%, transparent);
+  border: 1px solid var(--border);
+  text-align: center;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.calendarNum {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.calendarNumActive {
+  color: var(--warning);
+}
+
+.calendarLbl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ========================================================
+   EN ÇOK YANILDIKLARIM TABLOSU
+   ======================================================== */
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.troubleTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.troubleTable th,
+.troubleTable td {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.troubleTable th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, var(--surface-strong) 80%, transparent);
+}
+
+.troubleTable tr:hover td {
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
+}
+
+/* ========================================================
+   TÜR VE KATEGORİ DAĞILIMI
+   ======================================================== */
+.pillGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pillItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-strong) 70%, transparent);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.pillCount {
+  background: var(--input-bg);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary);
+}

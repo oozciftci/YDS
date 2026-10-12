@@ -1,9 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { HomePage } from './pages/Home'
-import { Placeholder } from './pages/Placeholder'
 import { SettingsPage } from './pages/Settings'
 
+import { StatsPage } from './pages/Stats'
 import { StudyPage } from './pages/Study'
 import { WordsPage } from './pages/Words'
 
@@ -15,10 +15,7 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="study" element={<StudyPage />} />
           <Route path="words" element={<WordsPage />} />
-          <Route
-            path="stats"
-            element={<Placeholder step="Adım 5" title="İstatistikler" description="Günlük ilerleme, başarı oranları ve tekrar takvimi." />}
-          />
+          <Route path="stats" element={<StatsPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
