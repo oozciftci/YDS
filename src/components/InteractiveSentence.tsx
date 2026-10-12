@@ -39,7 +39,10 @@ export function InteractiveSentence({
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Cümleyi kelime ve noktalama/boşluk token'larına ayırır
-  const sentenceEn = sentence?.en || ''
+  const rawEn = typeof sentence === 'string' ? sentence : sentence?.en || ''
+  const sentenceEn = rawEn.trim()
+  const rawTr = typeof sentence === 'object' && sentence ? sentence.tr : undefined
+
   const tokens = useMemo<ParsedToken[]>(() => {
     if (!sentenceEn) return []
     // Kelimeleri (içinde apostrof veya tire barındıranlar dahil) ve aradaki karakterleri eşle
@@ -100,6 +103,8 @@ export function InteractiveSentence({
     setPopoverPos(null)
   }
 
+  if (!sentenceEn) return null
+
   const cleanHighlight = highlightTerm ? cleanToken(highlightTerm).toLowerCase() : ''
 
   return (
@@ -138,7 +143,7 @@ export function InteractiveSentence({
       </div>
 
       {/* TÜRKÇE CÜMLE ÇEVİRİSİ ALANI */}
-      {sentence.tr && (
+      {rawTr && (
         <div className={styles.translationRow}>
           <button
             type="button"
@@ -148,7 +153,7 @@ export function InteractiveSentence({
           >
             <span>{showFullTrans ? '🙈 Çeviriyi Gizle' : '👁️ Türkçe Çeviri'}</span>
           </button>
-          {showFullTrans && <div className={styles.fullTranslation}>{sentence.tr}</div>}
+          {showFullTrans && <div className={styles.fullTranslation}>{rawTr}</div>}
         </div>
       )}
 

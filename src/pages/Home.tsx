@@ -18,7 +18,10 @@ export function HomePage() {
   const sync = useSyncStatus()
 
   const wordCount = useLiveQuery(
-    () => (activeUser ? db.words.where({ userId: activeUser.id, isDeleted: false }).count() : db.words.count()),
+    () =>
+      activeUser
+        ? db.words.where('userId').equals(activeUser.id).filter((w) => !w.isDeleted).count()
+        : db.words.filter((w) => !w.isDeleted).count(),
     [activeUser?.id],
     0,
   )

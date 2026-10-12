@@ -28,6 +28,11 @@ export class YdsDatabase extends Dexie {
       syncQueue: 'id, userId, table, timestamp, retryCount',
       users: 'id, displayName, lastActiveAt',
     })
+
+    this.version(2).stores({
+      words:
+        'id, userId, term, partOfSpeech, *tags, difficulty, updatedAt, [userId+term]',
+    })
   }
 }
 

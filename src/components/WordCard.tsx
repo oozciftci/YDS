@@ -129,10 +129,14 @@ export function WordCard({ word, cardState, onEdit, onDelete }: WordCardProps) {
       )}
 
       {/* Örnek Cümle (Her bir kelimesi tıklanabilir ve anlamı görüntülenebilir) */}
-      {word.sentences && word.sentences.length > 0 && word.sentences[0].en && (
+      {word.sentences && word.sentences.length > 0 && word.sentences[0] && (
         <div style={{ marginTop: '0.4rem' }}>
           <InteractiveSentence
-            sentence={word.sentences[0]}
+            sentence={
+              typeof word.sentences[0] === 'string'
+                ? { en: word.sentences[0] }
+                : word.sentences[0]
+            }
             activeUserId={word.userId}
             highlightTerm={word.term}
             showTranslationByDefault={true}

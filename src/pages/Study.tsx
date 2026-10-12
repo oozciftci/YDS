@@ -485,10 +485,14 @@ export function StudyPage() {
                       )}
 
                       {/* Örnek cümle (Kelimeye tıklayarak anlamını görme) */}
-                      {currentQ.word.sentences && currentQ.word.sentences[0]?.en && (
+                      {currentQ.word.sentences && currentQ.word.sentences.length > 0 && currentQ.word.sentences[0] && (
                         <div style={{ marginTop: '0.4rem', width: '100%' }}>
                           <InteractiveSentence
-                            sentence={currentQ.word.sentences[0]}
+                            sentence={
+                              typeof currentQ.word.sentences[0] === 'string'
+                                ? { en: currentQ.word.sentences[0] }
+                                : currentQ.word.sentences[0]
+                            }
                             activeUserId={currentQ.word.userId}
                             highlightTerm={currentQ.word.term}
                             showTranslationByDefault={true}

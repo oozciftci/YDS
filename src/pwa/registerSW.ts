@@ -23,23 +23,21 @@ export const useSwStatus = create<SwState>(() => ({
 }))
 
 const UPDATE_CHECK_INTERVAL_MS = 60 * 60 * 1000
-const BUSY_PATH_PREFIXES = ['/study']
-
 let applyUpdate: ((reload?: boolean) => Promise<void>) | null = null
-
-function isUserBusy(): boolean {
-  return BUSY_PATH_PREFIXES.some((p) => location.pathname.startsWith(p))
-}
 
 function tryApplyPendingUpdate(force = false) {
   if (useSwStatus.getState().status !== 'update-pending' || !applyUpdate) return
-  if (!force && isUserBusy() && document.visibilityState === 'visible') return
+  // Kullanıcı sayfayı aktif görüntülerken ekranı aniden yeniden yükleme;
+  // güncelleme sekme arka plana geçtiğinde (hidden) veya kullanıcı gezinirken uygulanır.
+  if (!force && document.visibilityState === 'visible') return
   void applyUpdate(true)
 }
 
 /** Router her sayfa değişiminde çağırır; bekleyen güncelleme uygunsa uygulanır. */
 export function notifyRouteChanged() {
-  tryApplyPendingUpdate()
+  if (document.visibilityState === 'hidden') {
+    tryApplyPendingUpdate(true)
+  }
 }
 
 export function initServiceWorker() {
