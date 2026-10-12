@@ -1,0 +1,502 @@
+.container {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.headerLeft h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.headerLeft p {
+  margin: 0.2rem 0 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* Arama ve Filtreleme Barı */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.searchRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.searchInput {
+  flex: 1;
+}
+
+.viewToggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  padding: 3px;
+  gap: 2px;
+}
+
+.viewBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: calc(var(--radius-sm) - 3px);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.viewBtnActive {
+  background: var(--surface-strong);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterSelect {
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  font-size: 0.82rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.resultsCount {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Kartlar Izgarası */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+.wordCard {
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  position: relative;
+}
+
+.wordCard:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.5);
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.termRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.term {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--text);
+}
+
+.audioBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.15s var(--ease);
+}
+
+.audioBtn:hover {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.actionBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: all 0.15s var(--ease);
+}
+
+.actionBtn:hover {
+  color: var(--text);
+  background: var(--surface-strong);
+}
+
+.actionBtnDelete:hover {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+}
+
+/* Tür Rozetleri */
+.posBadge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.posVerb {
+  background: hsl(265 85% 65% / 0.18);
+  color: hsl(265 95% 75%);
+  border: 1px solid hsl(265 85% 65% / 0.35);
+}
+
+.posNoun {
+  background: hsl(210 90% 60% / 0.18);
+  color: hsl(210 95% 70%);
+  border: 1px solid hsl(210 90% 60% / 0.35);
+}
+
+.posAdj {
+  background: hsl(160 85% 45% / 0.18);
+  color: hsl(160 90% 60%);
+  border: 1px solid hsl(160 85% 45% / 0.35);
+}
+
+.posAdv {
+  background: hsl(35 90% 55% / 0.18);
+  color: hsl(35 95% 65%);
+  border: 1px solid hsl(35 90% 55% / 0.35);
+}
+
+.posPhrasal {
+  background: hsl(330 85% 60% / 0.18);
+  color: hsl(330 95% 75%);
+  border: 1px solid hsl(330 85% 60% / 0.35);
+}
+
+.posConj {
+  background: hsl(190 90% 50% / 0.18);
+  color: hsl(190 95% 65%);
+  border: 1px solid hsl(190 90% 50% / 0.35);
+}
+
+.posOther {
+  background: hsl(230 20% 50% / 0.18);
+  color: hsl(230 30% 80%);
+  border: 1px solid hsl(230 20% 50% / 0.35);
+}
+
+.definition {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Eş Anlamlılar Bölümü (YDS için çok belirgin) */
+.synSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: color-mix(in srgb, var(--surface-strong) 40%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.65rem;
+  border-left: 3px solid var(--primary);
+}
+
+.synLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary);
+  letter-spacing: 0.04em;
+}
+
+.synChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.synChip {
+  font-size: 0.8rem;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--text);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Örnek Cümle ve Kalıp */
+.collocations {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.sentence {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg) 40%, transparent);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.sentenceEn {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.sentenceTr {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  margin-top: 0.15rem;
+}
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: auto;
+  padding-top: 0.3rem;
+}
+
+.tagChip {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--input-bg);
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+/* Tablo Görünümü */
+.tableWrapper {
+  overflow-x: auto;
+  background: var(--surface);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  background: color-mix(in srgb, var(--surface-strong) 80%, transparent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
+}
+
+/* Boş Durum (Empty State) */
+.emptyState {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  display: grid;
+  place-items: center;
+  gap: 1rem;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+}
+
+/* Modallar */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+  animation: page-in 0.2s var(--ease);
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modalHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHead h2 {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.closeBtn:hover {
+  color: var(--text);
+}
+
+/* Sekmeler (Tabs) */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.tabBtn {
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.tabBtnActive {
+  background: var(--surface);
+  color: var(--primary);
+  border-color: var(--border);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 160px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  resize: vertical;
+}
+
+.promptBox {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  font-size: 0.82rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow-y: auto;
+  color: var(--text-muted);
+}

@@ -4,6 +4,8 @@ import { HomePage } from './pages/Home'
 import { Placeholder } from './pages/Placeholder'
 import { SettingsPage } from './pages/Settings'
 
+import { WordsPage } from './pages/Words'
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -14,10 +16,7 @@ export default function App() {
             path="study"
             element={<Placeholder step="Adım 4" title="Çalış" description="Aralıklı tekrar oturumu ve soru türleri burada olacak." />}
           />
-          <Route
-            path="words"
-            element={<Placeholder step="Adım 3" title="Kelimeler" description="Kelime listesi, ekleme/düzenleme ve toplu içe aktarma." />}
-          />
+          <Route path="words" element={<WordsPage />} />
           <Route
             path="stats"
             element={<Placeholder step="Adım 5" title="İstatistikler" description="Günlük ilerleme, başarı oranları ve tekrar takvimi." />}
