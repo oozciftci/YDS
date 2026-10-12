@@ -5,6 +5,7 @@ import { BulkImportModal } from '../components/BulkImportModal'
 import { TransferWordsModal } from '../components/TransferWordsModal'
 import { WordCard } from '../components/WordCard'
 import { WordModal } from '../components/WordModal'
+import { WordPacksModal } from '../components/WordPacksModal'
 import { WordTable } from '../components/WordTable'
 import { copySingleWordToUser } from '../services/wordTransfer'
 import {
@@ -17,64 +18,6 @@ import {
 import { useUserStore } from '../stores/user'
 import type { WordItem } from '../types/database'
 import styles from './Words.module.css'
-
-const SAMPLE_YDS_WORDS: CreateWordInput[] = [
-  {
-    term: 'deteriorate',
-    definition: 'kötüleşmek, bozulmak, fenalaşmak',
-    partOfSpeech: 'verb',
-    synonyms: ['worsen', 'decline', 'degenerate', 'decay'],
-    antonyms: ['improve', 'recover'],
-    collocations: ['deteriorate rapidly', 'relations deteriorate'],
-    sentences: [{ en: "The patient's condition deteriorated overnight.", tr: 'Hastanın durumu bir gecede kötüleşti.' }],
-    tags: ['YDS', 'Sağlık'],
-    difficulty: 2,
-  },
-  {
-    term: 'abolish',
-    definition: 'yürürlükten kaldırmak, feshetmek',
-    partOfSpeech: 'verb',
-    synonyms: ['terminate', 'eliminate', 'revoke', 'annul'],
-    antonyms: ['establish', 'enact'],
-    collocations: ['abolish slavery', 'abolish taxes'],
-    sentences: [{ en: 'The government decided to abolish the outdated law.', tr: 'Hükümet eski yasayı yürürlükten kaldırmaya karar verdi.' }],
-    tags: ['YDS', 'Hukuk', 'Tarih'],
-    difficulty: 2,
-  },
-  {
-    term: 'enhance',
-    definition: 'artırmak, geliştirmek, yükseltmek',
-    partOfSpeech: 'verb',
-    synonyms: ['improve', 'boost', 'augment', 'strengthen'],
-    antonyms: ['diminish', 'impair'],
-    collocations: ['enhance performance', 'enhance quality'],
-    sentences: [{ en: 'Regular exercise can enhance cognitive functions.', tr: 'Düzenli egzersiz bilişsel işlevleri geliştirebilir.' }],
-    tags: ['YDS', 'Eğitim', 'Bilim'],
-    difficulty: 1,
-  },
-  {
-    term: 'refrain from',
-    definition: '-den kaçınmak, kendini sakınmak',
-    partOfSpeech: 'phrasal_verb',
-    synonyms: ['abstain from', 'avoid', 'hold back from'],
-    antonyms: ['indulge in'],
-    collocations: ['refrain from smoking', 'refrain from comment'],
-    sentences: [{ en: 'Please refrain from using mobile phones during the exam.', tr: 'Lütfen sınav sırasında cep telefonu kullanmaktan kaçının.' }],
-    tags: ['YDS', 'Kalıplar'],
-    difficulty: 2,
-  },
-  {
-    term: 'abrupt',
-    definition: 'ani, beklenmedik, sert',
-    partOfSpeech: 'adjective',
-    synonyms: ['sudden', 'unexpected', 'sharp', 'precipitous'],
-    antonyms: ['gradual'],
-    collocations: ['abrupt change', 'abrupt departure'],
-    sentences: [{ en: 'There was an abrupt change in the weather.', tr: 'Havada ani bir değişiklik oldu.' }],
-    tags: ['YDS'],
-    difficulty: 2,
-  },
-]
 
 export function WordsPage() {
   const { activeUser, allUsers } = useUserStore()
@@ -113,6 +56,7 @@ export function WordsPage() {
   const [editingWord, setEditingWord] = useState<WordItem | null>(null)
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false)
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
+  const [isPacksModalOpen, setIsPacksModalOpen] = useState(false)
 
   function toggleViewMode(mode: 'cards' | 'table') {
     setViewMode(mode)
@@ -183,10 +127,6 @@ export function WordsPage() {
     return await bulkCreateWords(activeUserId, items)
   }
 
-  async function handleLoadSampleWords() {
-    await bulkCreateWords(activeUserId, SAMPLE_YDS_WORDS)
-  }
-
   const otherUser = allUsers.find((u) => u.id !== activeUserId)
 
   async function handleTransferSingleWord(word: WordItem) {
@@ -219,6 +159,15 @@ export function WordsPage() {
             onClick={() => setIsAddModalOpen(true)}
           >
             + Kelime Ekle
+          </button>
+          <button
+            id="btn-word-packs"
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => setIsPacksModalOpen(true)}
+            title="Hazır Seviye ve YDS Kelime Paketleri"
+          >
+            📦 Hazır Paketler
           </button>
           <button
             id="btn-bulk-import"
@@ -341,14 +290,14 @@ export function WordsPage() {
             YDS çalışmalarınıza başlamak için tek tek kelime ekleyebilir, hazır listenizi toplu yükleyebilir veya örnek kelimeleri yükleyebilirsiniz.
           </p>
           <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <button type="button" className="btn btn-primary" onClick={() => setIsAddModalOpen(true)}>
-              + İlk Kelimeni Ekle
+            <button type="button" className="btn btn-primary" onClick={() => setIsPacksModalOpen(true)}>
+              📦 Hazır Kelime Paketlerini Yükle
             </button>
-            <button type="button" className="btn" onClick={() => setIsBulkModalOpen(true)}>
+            <button type="button" className="btn" onClick={() => setIsAddModalOpen(true)}>
+              + Kelime Ekle
+            </button>
+            <button type="button" className="btn btn-ghost" onClick={() => setIsBulkModalOpen(true)}>
               📥 Toplu İçe Aktar
-            </button>
-            <button type="button" className="btn btn-ghost" onClick={() => void handleLoadSampleWords()}>
-              ✨ 5 Örnek YDS Kelimesi Yükle
             </button>
           </div>
         </div>
@@ -411,6 +360,7 @@ export function WordsPage() {
         <BulkImportModal
           onClose={() => setIsBulkModalOpen(false)}
           onImport={handleBulkImport}
+          onOpenPacks={() => setIsPacksModalOpen(true)}
         />
       )}
 
@@ -421,6 +371,16 @@ export function WordsPage() {
           allUsers={allUsers}
           onClose={() => setIsTransferModalOpen(false)}
           onSuccess={() => setIsTransferModalOpen(false)}
+        />
+      )}
+
+      {/* Hazır Kelime Paketleri Modalı */}
+      {isPacksModalOpen && (
+        <WordPacksModal
+          activeUserId={activeUserId}
+          activeUserName={activeUser?.displayName || 'Kullanıcı'}
+          onClose={() => setIsPacksModalOpen(false)}
+          onSuccess={() => setIsPacksModalOpen(false)}
         />
       )}
     </section>

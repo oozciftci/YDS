@@ -10,9 +10,10 @@ import styles from '../pages/Words.module.css'
 interface BulkImportModalProps {
   onClose: () => void
   onImport: (items: CreateWordInput[]) => Promise<{ addedCount: number; skippedCount: number }>
+  onOpenPacks?: () => void
 }
 
-export function BulkImportModal({ onClose, onImport }: BulkImportModalProps) {
+export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportModalProps) {
   const [activeTab, setActiveTab] = useState<'paste' | 'csv' | 'prompt'>('paste')
   const [pastedText, setPastedText] = useState('')
   const [csvContent, setCsvContent] = useState('')
@@ -97,6 +98,20 @@ export function BulkImportModal({ onClose, onImport }: BulkImportModalProps) {
           >
             🤖 Yapay Zeka (AI) İstem Şablonu
           </button>
+          {onOpenPacks && (
+            <button
+              type="button"
+              className={styles.tabBtn}
+              onClick={() => {
+                onClose()
+                onOpenPacks()
+              }}
+              style={{ color: 'var(--primary)', marginLeft: 'auto', fontWeight: 700 }}
+              title="Doğrudan yüklenebilecek hazır seviye ve YDS paketleri"
+            >
+              📦 Hazır Paketleri İncele ➔
+            </button>
+          )}
         </div>
 
         {/* TAB 1: METİN YAPIŞTIR */}
