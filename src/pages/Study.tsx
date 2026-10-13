@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { processCardReview } from '../services/fsrs'
@@ -32,8 +32,9 @@ const POS_FILTERS: Array<{ id: PartOfSpeech; label: string }> = [
 ]
 
 export function StudyPage() {
+  const [searchParams] = useSearchParams()
   const activeUser = useUserStore((s) => s.activeUser)
-  const activeUserId = activeUser?.id || 'user_osman'
+  const activeUserId = activeUser?.id || 'user_ozgur'
 
   // Veritabanı sorguları
   const allWords = useLiveQuery(
@@ -51,6 +52,9 @@ export function StudyPage() {
   // Oturum Durumu ('setup' | 'studying' | 'summary')
   const [phase, setPhase] = useState<'setup' | 'studying' | 'summary'>('setup')
 
+  // Gelişmiş filtreler açık/kapalı
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
+
   // Filtreleme Ayarları
   const [selectedPos, setSelectedPos] = useState<PartOfSpeech[]>([])
   const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -59,6 +63,9 @@ export function StudyPage() {
   const [lapsesOnly, setLapsesOnly] = useState(false)
   const [mode, setMode] = useState<QuestionMode>('mixed')
   const [limit, setLimit] = useState(15)
+
+  // Otomatik başlatma ref'i (tek seferlik çalışması için)
+  const autoStartedRef = useRef(false)
 
   // Aktif Oturum Soruları ve İlerleme
   const [questions, setQuestions] = useState<StudyQuestion[]>([])
@@ -93,28 +100,87 @@ export function StudyPage() {
     return filterStudyCards(allWords, allCardStates, filterOptions)
   }, [allWords, allCardStates, selectedPos, selectedTags, selectedScores, dueOnly, lapsesOnly, mode])
 
-  // Hazır Şablonlar (Presets)
-  function applyPreset(name: 'learning' | 'hard' | 'due' | 'all') {
-    if (name === 'learning') {
-      setSelectedScores([1, 2, 3])
-      setLapsesOnly(false)
-      setDueOnly(false)
-    } else if (name === 'hard') {
+  const [nowTimestamp] = useState(() => Date.now())
+
+  // Hazır kart sayıları (Hızlı Başlat kartları için)
+  const presetCounts = useMemo(() => {
+    const nowIso = new Date(nowTimestamp).toISOString()
+    const due = allCardStates.filter((c) => c.due <= nowIso).length
+    const learning = allCardStates.filter((c) => {
+      const s = c.masteryScore || 1
+      return s <= 3
+    }).length
+    const hard = allCardStates.filter((c) => c.lapses > 0).length
+    return { due, learning, hard, total: allWords.length }
+  }, [allCardStates, allWords, nowTimestamp])
+
+
+  // Tek tıkla doğrudan başlatan fonksiyon
+  const startSessionWithFilters = useCallback(
+    (customOptions?: Partial<StudyFilterOptions>) => {
+      const filterOptions: StudyFilterOptions = {
+        posList: selectedPos,
+        tags: selectedTags,
+        masteryScores: selectedScores,
+        dueOnly,
+        lapsesOnly,
+        limit,
+        mode,
+        ...customOptions,
+      }
+
+      const cards = filterStudyCards(allWords, allCardStates, filterOptions)
+      if (cards.length === 0) return
+
+      const generated = cards.map((c) => buildQuestion(c, allWords, filterOptions.mode || mode))
+      setQuestions(generated)
+      setCurrentIndex(0)
+      setIsFlipped(false)
+      setSelectedOption(null)
+      setQuestionStartTime(Date.now())
+      setSessionResults([])
+      setPhase('studying')
+    },
+    [allWords, allCardStates, selectedPos, selectedTags, selectedScores, dueOnly, lapsesOnly, limit, mode],
+  )
+
+  // URL parametreleri ile gelindiyse (Örn: Home sayfasından butonlara tıklandığında)
+  useEffect(() => {
+    const preset = searchParams.get('preset')
+    const urlModeParam = searchParams.get('mode') as QuestionMode | null
+    const auto = searchParams.get('auto') === '1'
+
+    if (preset === 'due') {
       setSelectedScores([])
-      setLapsesOnly(true)
-      setDueOnly(false)
-    } else if (name === 'due') {
-      setSelectedScores([])
-      setLapsesOnly(false)
       setDueOnly(true)
-    } else {
-      setSelectedScores([])
-      setSelectedPos([])
-      setSelectedTags([])
       setLapsesOnly(false)
+    } else if (preset === 'learning') {
+      setSelectedScores([1, 2, 3])
       setDueOnly(false)
+      setLapsesOnly(false)
+    } else if (preset === 'hard') {
+      setSelectedScores([])
+      setDueOnly(false)
+      setLapsesOnly(true)
     }
-  }
+
+    if (urlModeParam) {
+      setMode(urlModeParam)
+    }
+
+    if (auto && !autoStartedRef.current && allWords.length > 0 && allCardStates.length > 0) {
+      autoStartedRef.current = true
+      startSessionWithFilters({
+        posList: [],
+        tags: [],
+        masteryScores: preset === 'learning' ? [1, 2, 3] : [],
+        dueOnly: preset === 'due',
+        lapsesOnly: preset === 'hard',
+        limit: 15,
+        mode: urlModeParam || 'mixed',
+      })
+    }
+  }, [searchParams, allWords, allCardStates, startSessionWithFilters])
 
   function togglePos(pos: PartOfSpeech) {
     setSelectedPos((prev) => (prev.includes(pos) ? prev.filter((p) => p !== pos) : [...prev, pos]))
@@ -128,30 +194,9 @@ export function StudyPage() {
     setSelectedScores((prev) => (prev.includes(score) ? prev.filter((s) => s !== score) : [...prev, score]))
   }
 
-  // Oturumu Başlat
+  // Oturumu Başlat (Standart)
   function startSession() {
-    if (matchedCards.length === 0) return
-
-    const filterOptions: StudyFilterOptions = {
-      posList: selectedPos,
-      tags: selectedTags,
-      masteryScores: selectedScores,
-      dueOnly,
-      lapsesOnly,
-      limit,
-      mode,
-    }
-
-    const cards = filterStudyCards(allWords, allCardStates, filterOptions)
-    const generated = cards.map((c) => buildQuestion(c, allWords, mode))
-
-    setQuestions(generated)
-    setCurrentIndex(0)
-    setIsFlipped(false)
-    setSelectedOption(null)
-    setQuestionStartTime(Date.now())
-    setSessionResults([])
-    setPhase('studying')
+    startSessionWithFilters()
   }
 
   const currentQ = questions[currentIndex]
@@ -261,183 +306,242 @@ export function StudyPage() {
       {phase === 'setup' && (
         <div className={styles.setupCard}>
           <div>
-            <h1 className={styles.setupTitle}>Çalışma Oturumu</h1>
+            <h1 className={styles.setupTitle}>Kelime Çalışma Merkezi</h1>
             <p className="muted">
-              Kategori, tür veya öğrenme puanına (1-5) göre dilediğiniz kelime grubunu filtreleyip çalışın.
+              İster bilimsel FSRS aralıklı tekrarlarını tek tıkla başlat, ister çalışma grubunu özelleştir.
             </p>
           </div>
 
-          {/* Hızlı Şablonlar */}
-          <div className="field">
-            <label>Hızlı Çalışma Şablonları</label>
-            <div className={styles.presetsRow}>
+          {/* 1. HIZLI BAŞLAT KARTLARI (TEK TIKLA BAŞLAR) */}
+          <div className={styles.quickCardsGrid}>
+            {/* Kart 1: Bugün Tekrarı Gelenler */}
+            <div className={`${styles.quickCard} ${presetCounts.due > 0 ? styles.quickCardActive : ''}`}>
+              <div className={styles.quickCardTop}>
+                <span className={styles.quickIcon}>⚡</span>
+                <span className={styles.quickCountBadge}>{presetCounts.due} Kelime</span>
+              </div>
+              <h2 className={styles.quickCardTitle}>Günün Tekrarları</h2>
+              <p className={styles.quickCardDesc}>
+                FSRS algoritmasına göre bugün unutulmadan pekiştirmen gereken kartlar.
+              </p>
               <button
                 type="button"
-                className={`${styles.presetBtn} ${
-                  selectedScores.length === 3 &&
-                  selectedScores.includes(1) &&
-                  selectedScores.includes(2) &&
-                  selectedScores.includes(3) &&
-                  !dueOnly &&
-                  !lapsesOnly
-                    ? styles.presetBtnActive
-                    : ''
-                }`}
-                onClick={() => applyPreset('learning')}
+                className="btn btn-primary"
+                disabled={presetCounts.due === 0}
+                onClick={() =>
+                  startSessionWithFilters({
+                    dueOnly: true,
+                    lapsesOnly: false,
+                    masteryScores: [],
+                    posList: [],
+                    tags: [],
+                  })
+                }
               >
-                🎯 Öğrenme Aşamasındakiler (1, 2, 3)
+                {presetCounts.due > 0 ? 'Tekrarları Başlat →' : 'Bugünlük Tekrar Yok ✓'}
               </button>
+            </div>
+
+            {/* Kart 2: Öğrenilmekte Olanlar (1, 2, 3 Puan) */}
+            <div className={styles.quickCard}>
+              <div className={styles.quickCardTop}>
+                <span className={styles.quickIcon}>🎯</span>
+                <span className={styles.quickCountBadge}>{presetCounts.learning} Kelime</span>
+              </div>
+              <h2 className={styles.quickCardTitle}>Öğrenilmekte Olanlar</h2>
+              <p className={styles.quickCardDesc}>
+                Henüz tam pekişmemiş (1, 2 ve 3 puanlı) kelime havuzun.
+              </p>
               <button
                 type="button"
-                className={`${styles.presetBtn} ${lapsesOnly ? styles.presetBtnActive : ''}`}
-                onClick={() => applyPreset('hard')}
+                className="btn"
+                disabled={presetCounts.learning === 0}
+                onClick={() =>
+                  startSessionWithFilters({
+                    dueOnly: false,
+                    lapsesOnly: false,
+                    masteryScores: [1, 2, 3],
+                    posList: [],
+                    tags: [],
+                  })
+                }
               >
-                ⚠️ En Çok Yanıldıklarım
+                Öğrenmeye Başla →
               </button>
+            </div>
+
+            {/* Kart 3: En Çok Yanıldıklarım */}
+            <div className={styles.quickCard}>
+              <div className={styles.quickCardTop}>
+                <span className={styles.quickIcon}>⚠️</span>
+                <span className={styles.quickCountBadge}>{presetCounts.hard} Kelime</span>
+              </div>
+              <h2 className={styles.quickCardTitle}>En Çok Yanıldıklarım</h2>
+              <p className={styles.quickCardDesc}>
+                Daha önce tekrar ederken zorlandığın veya hata yaptığın kritik kelimeler.
+              </p>
               <button
                 type="button"
-                className={`${styles.presetBtn} ${dueOnly ? styles.presetBtnActive : ''}`}
-                onClick={() => applyPreset('due')}
+                className="btn"
+                disabled={presetCounts.hard === 0}
+                onClick={() =>
+                  startSessionWithFilters({
+                    dueOnly: false,
+                    lapsesOnly: true,
+                    masteryScores: [],
+                    posList: [],
+                    tags: [],
+                  })
+                }
               >
-                ⏰ Bugün Tekrarı Gelenler
-              </button>
-              <button
-                type="button"
-                className={styles.presetBtn}
-                onClick={() => applyPreset('all')}
-              >
-                Tüm Kelimeler
+                Zorlukları Aş →
               </button>
             </div>
           </div>
 
-          {/* 1-5 PUAN FİLTRESİ (ÇOKLU SEÇİM) */}
-          <div className="field">
-            <label>Öğrenme Puanına Göre Seç (1 - 5 Puan)</label>
-            <span className="hint">Birden fazla puan seçebilirsiniz (Örn: 1, 2 ve 3):</span>
-            <div className={styles.scoreToggleRow}>
-              {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => {
-                const conf = MASTERY_CONFIG[score]
-                const active = selectedScores.includes(score)
-                const selClass = active ? styles[`scoreSelected_${score}` as keyof typeof styles] : ''
-                return (
-                  <button
-                    key={score}
-                    type="button"
-                    className={`${styles.scoreBtn} ${selClass}`}
-                    onClick={() => toggleScore(score)}
-                    aria-pressed={active}
+          {/* 2. GELİŞMİŞ FİLTRELER AÇILIR/KAPANIR BUTONU */}
+          <div className={styles.advancedToggleContainer}>
+            <button
+              type="button"
+              className={styles.advancedToggleBtn}
+              onClick={() => setShowAdvancedFilters((v) => !v)}
+            >
+              <span>⚙️ Filtreleri ve Soru Modunu Özelleştir</span>
+              <span>{showAdvancedFilters ? '▲ Kapat' : '▼ Aç'}</span>
+            </button>
+          </div>
+
+          {/* 3. GELİŞMİŞ FİLTRE VE AYAR PANELİ (SADECE İSTENİRSE AÇILIR) */}
+          {showAdvancedFilters && (
+            <div className={styles.advancedFilterDrawer}>
+              {/* 1-5 PUAN FİLTRESİ (ÇOKLU SEÇİM) */}
+              <div className="field">
+                <label>Öğrenme Puanına Göre Seç (1 - 5 Puan)</label>
+                <span className="hint">Birden fazla puan seçebilirsiniz (Örn: 1, 2 ve 3):</span>
+                <div className={styles.scoreToggleRow}>
+                  {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => {
+                    const conf = MASTERY_CONFIG[score]
+                    const active = selectedScores.includes(score)
+                    const selClass = active ? styles[`scoreSelected_${score}` as keyof typeof styles] : ''
+                    return (
+                      <button
+                        key={score}
+                        type="button"
+                        className={`${styles.scoreBtn} ${selClass}`}
+                        onClick={() => toggleScore(score)}
+                        aria-pressed={active}
+                      >
+                        <span className={styles.scoreNum} style={{ color: conf.color }}>
+                          {score}
+                        </span>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 700 }}>{conf.label}</span>
+                        <span className={styles.scoreDesc}>{conf.desc}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* KELİME TÜRÜ FİLTRESİ */}
+              <div className="field">
+                <label>Kelime Türüne Göre Seç (İsteğe Bağlı)</label>
+                <div className={styles.chipsRow}>
+                  {POS_FILTERS.map((p) => {
+                    const active = selectedPos.includes(p.id)
+                    return (
+                      <button
+                        key={p.id}
+                        type="button"
+                        className={`${styles.chip} ${active ? styles.chipActive : ''}`}
+                        onClick={() => togglePos(p.id)}
+                      >
+                        {p.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* ETİKET / KATEGORİ FİLTRESİ */}
+              {availableTags.length > 0 && (
+                <div className="field">
+                  <label>Kategori ve Etiketlere Göre Seç</label>
+                  <div className={styles.chipsRow}>
+                    {availableTags.map((tag) => {
+                      const active = selectedTags.includes(tag)
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          className={`${styles.chip} ${active ? styles.chipActive : ''}`}
+                          onClick={() => toggleTag(tag)}
+                        >
+                          #{tag}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* SORU TİPİ VE LİMİT */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="field">
+                  <label htmlFor="study-mode">Soru Türü</label>
+                  <select
+                    id="study-mode"
+                    className="input"
+                    value={mode}
+                    onChange={(e) => setMode(e.target.value as QuestionMode)}
                   >
-                    <span className={styles.scoreNum} style={{ color: conf.color }}>
-                      {score}
-                    </span>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 700 }}>{conf.label}</span>
-                    <span className={styles.scoreDesc}>{conf.desc}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+                    <option value="mixed">🎲 Akıllı Karışık (Önerilen)</option>
+                    <option value="flashcard">🗂️ Yalnızca Flaşkartlar (Çevir & Puanla)</option>
+                    <option value="multiple_choice">🔠 Çoktan Seçmeli Test</option>
+                    <option value="synonym">🔗 YDS Eş Anlamlı Testi</option>
+                    <option value="cloze">📝 Cümlede Boşluk Doldurma</option>
+                  </select>
+                </div>
 
-          {/* KELİME TÜRÜ FİLTRESİ */}
-          <div className="field">
-            <label>Kelime Türüne Göre Seç (İsteğe Bağlı)</label>
-            <div className={styles.chipsRow}>
-              {POS_FILTERS.map((p) => {
-                const active = selectedPos.includes(p.id)
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    className={`${styles.chip} ${active ? styles.chipActive : ''}`}
-                    onClick={() => togglePos(p.id)}
+                <div className="field">
+                  <label htmlFor="study-limit">Oturum Kelime Sayısı</label>
+                  <select
+                    id="study-limit"
+                    className="input"
+                    value={limit}
+                    onChange={(e) => setLimit(Number(e.target.value))}
                   >
-                    {p.label}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+                    <option value={10}>10 Kelime</option>
+                    <option value={15}>15 Kelime</option>
+                    <option value={20}>20 Kelime</option>
+                    <option value={30}>30 Kelime</option>
+                    <option value={0}>Filtredeki Tümü</option>
+                  </select>
+                </div>
+              </div>
 
-          {/* ETİKET / KATEGORİ FİLTRESİ (HUKUK, SAĞLIK VB.) */}
-          {availableTags.length > 0 && (
-            <div className="field">
-              <label>Kategori ve Etiketlere Göre Seç (Örn: Hukuk, Bilişim, Sağlık)</label>
-              <div className={styles.chipsRow}>
-                {availableTags.map((tag) => {
-                  const active = selectedTags.includes(tag)
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      className={`${styles.chip} ${active ? styles.chipActive : ''}`}
-                      onClick={() => toggleTag(tag)}
-                    >
-                      #{tag}
-                    </button>
-                  )
-                })}
+              {/* EŞLEŞEN KELİME SAYISI VE BAŞLAT BUTONU */}
+              <div className={styles.summaryRow}>
+                <div>
+                  <span className="muted" style={{ fontSize: '0.8rem', display: 'block' }}>
+                    Filtre Sonucu:
+                  </span>
+                  <span className={styles.matchCount}>
+                    {matchedCards.length} kelime eşleşti
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  id="start-study-btn"
+                  className="btn btn-primary"
+                  onClick={startSession}
+                  disabled={matchedCards.length === 0}
+                >
+                  Filtrelenmiş Oturumu Başlat →
+                </button>
               </div>
             </div>
           )}
-
-          {/* SORU TİPİ VE LİMİT */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="field">
-              <label htmlFor="study-mode">Soru Türü</label>
-              <select
-                id="study-mode"
-                className="input"
-                value={mode}
-                onChange={(e) => setMode(e.target.value as QuestionMode)}
-              >
-                <option value="mixed">🎲 Akıllı Karışık (Önerilen)</option>
-                <option value="flashcard">🗂️ Yalnızca Flaşkartlar (Çevir & Puanla)</option>
-                <option value="multiple_choice">🔠 Çoktan Seçmeli Test</option>
-                <option value="synonym">🔗 YDS Eş Anlamlı Testi</option>
-                <option value="cloze">📝 Cümlede Boşluk Doldurma</option>
-              </select>
-            </div>
-
-            <div className="field">
-              <label htmlFor="study-limit">Oturum Kelime Sayısı</label>
-              <select
-                id="study-limit"
-                className="input"
-                value={limit}
-                onChange={(e) => setLimit(Number(e.target.value))}
-              >
-                <option value={10}>10 Kelime</option>
-                <option value={15}>15 Kelime</option>
-                <option value={20}>20 Kelime</option>
-                <option value={30}>30 Kelime</option>
-                <option value={0}>Filtredeki Tümü</option>
-              </select>
-            </div>
-          </div>
-
-          {/* EŞLEŞEN KELİME SAYISI VE BAŞLAT BUTONU */}
-          <div className={styles.summaryRow}>
-            <div>
-              <span className="muted" style={{ fontSize: '0.8rem', display: 'block' }}>
-                Filtre Sonucu:
-              </span>
-              <span className={styles.matchCount}>
-                {matchedCards.length} kelime çalışmaya hazır
-              </span>
-            </div>
-
-            <button
-              id="start-study-btn"
-              type="button"
-              className="btn btn-primary"
-              style={{ padding: '0.8rem 1.5rem', fontSize: '1rem' }}
-              disabled={matchedCards.length === 0}
-              onClick={startSession}
-            >
-              🚀 Çalışmayı Başlat
-            </button>
-          </div>
         </div>
       )}
 
