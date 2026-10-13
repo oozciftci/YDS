@@ -9,6 +9,9 @@ export interface BackupData {
   cardStates: unknown[]
   reviewLogs: unknown[]
   logs: unknown[]
+  wordGroups?: unknown[]
+  sessionLogs?: unknown[]
+  levelProgress?: unknown[]
 }
 
 /**
@@ -16,22 +19,29 @@ export interface BackupData {
  */
 export async function exportDatabaseToJson(): Promise<void> {
   try {
-    const [users, words, cardStates, reviewLogs, logs] = await Promise.all([
-      db.users.toArray(),
-      db.words.toArray(),
-      db.cardStates.toArray(),
-      db.reviewLogs.toArray(),
-      db.logs.toArray(),
-    ])
+    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress] =
+      await Promise.all([
+        db.users.toArray(),
+        db.words.toArray(),
+        db.cardStates.toArray(),
+        db.reviewLogs.toArray(),
+        db.logs.toArray(),
+        db.wordGroups.toArray(),
+        db.sessionLogs.toArray(),
+        db.levelProgress.toArray(),
+      ])
 
     const backup: BackupData = {
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       users,
       words,
       cardStates,
       reviewLogs,
       logs,
+      wordGroups,
+      sessionLogs,
+      levelProgress,
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -50,6 +60,8 @@ export async function exportDatabaseToJson(): Promise<void> {
     logger.interaction('storage', 'Kullanıcı yerel veritabanı yedeğini JSON olarak indirdi.', {
       wordCount: words.length,
       cardCount: cardStates.length,
+      groupCount: wordGroups.length,
+      levelProgressCount: levelProgress.length,
     })
   } catch (err) {
     logger.error('storage', 'Veritabanı JSON yedeği alınırken hata oluştu', undefined, err)
@@ -69,23 +81,46 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
       throw new Error('Geçersiz yedek dosyası: Kelime listesi bulunamadı.')
     }
 
-    await db.transaction('rw', [db.users, db.words, db.cardStates, db.reviewLogs], async () => {
-      if (data.users && Array.isArray(data.users) && data.users.length > 0) {
-        await db.users.bulkPut(data.users as never)
-      }
-      if (data.words && data.words.length > 0) {
-        await db.words.bulkPut(data.words as never)
-      }
-      if (data.cardStates && Array.isArray(data.cardStates) && data.cardStates.length > 0) {
-        await db.cardStates.bulkPut(data.cardStates as never)
-      }
-      if (data.reviewLogs && Array.isArray(data.reviewLogs) && data.reviewLogs.length > 0) {
-        await db.reviewLogs.bulkPut(data.reviewLogs as never)
-      }
-    })
+    await db.transaction(
+      'rw',
+      [
+        db.users,
+        db.words,
+        db.cardStates,
+        db.reviewLogs,
+        db.wordGroups,
+        db.sessionLogs,
+        db.levelProgress,
+      ],
+      async () => {
+        if (data.users && Array.isArray(data.users) && data.users.length > 0) {
+          await db.users.bulkPut(data.users as never)
+        }
+        if (data.words && data.words.length > 0) {
+          await db.words.bulkPut(data.words as never)
+        }
+        if (data.cardStates && Array.isArray(data.cardStates) && data.cardStates.length > 0) {
+          await db.cardStates.bulkPut(data.cardStates as never)
+        }
+        if (data.reviewLogs && Array.isArray(data.reviewLogs) && data.reviewLogs.length > 0) {
+          await db.reviewLogs.bulkPut(data.reviewLogs as never)
+        }
+        if (data.wordGroups && Array.isArray(data.wordGroups) && data.wordGroups.length > 0) {
+          await db.wordGroups.bulkPut(data.wordGroups as never)
+        }
+        if (data.sessionLogs && Array.isArray(data.sessionLogs) && data.sessionLogs.length > 0) {
+          await db.sessionLogs.bulkPut(data.sessionLogs as never)
+        }
+        if (data.levelProgress && Array.isArray(data.levelProgress) && data.levelProgress.length > 0) {
+          await db.levelProgress.bulkPut(data.levelProgress as never)
+        }
+      },
+    )
 
     logger.interaction('storage', 'Kullanıcı JSON yedeğini başarıyla geri yükledi.', {
       wordsImported: data.words.length,
+      groupsImported: data.wordGroups?.length || 0,
+      progressImported: data.levelProgress?.length || 0,
     })
 
     return { wordsImported: data.words.length }

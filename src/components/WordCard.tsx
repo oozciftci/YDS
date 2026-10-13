@@ -9,6 +9,7 @@ interface WordCardProps {
   onEdit: (word: WordItem) => void
   onDelete: (wordId: string) => void
   onTransfer?: (word: WordItem) => void
+  onAssignGroup?: (word: WordItem) => void
   otherUserName?: string
 }
 
@@ -43,7 +44,7 @@ const POS_LABELS: Record<PartOfSpeech, string> = {
   other: 'Diğer',
 }
 
-export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, otherUserName }: WordCardProps) {
+export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, onAssignGroup, otherUserName }: WordCardProps) {
   return (
     <article className={styles.wordCard}>
       <div className={styles.cardHead}>
@@ -82,6 +83,18 @@ export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, otherU
         </div>
 
         <div className={styles.cardActions}>
+          {onAssignGroup && (
+            <button
+              type="button"
+              className={styles.actionBtn}
+              onClick={() => onAssignGroup(word)}
+              title="Bir gruba / desteye dahil et"
+              aria-label="Bir gruba dahil et"
+              style={{ color: '#8b5cf6' }}
+            >
+              🏷️
+            </button>
+          )}
           {onTransfer && otherUserName && (
             <button
               type="button"

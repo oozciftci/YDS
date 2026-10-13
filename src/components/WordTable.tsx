@@ -8,6 +8,7 @@ interface WordTableProps {
   onEdit: (word: WordItem) => void
   onDelete: (wordId: string) => void
   onTransfer?: (word: WordItem) => void
+  onAssignGroup?: (word: WordItem) => void
   otherUserName?: string
 }
 
@@ -30,7 +31,7 @@ function getPosClass(pos: PartOfSpeech): string {
   }
 }
 
-export function WordTable({ words, cardMap, onEdit, onDelete, onTransfer, otherUserName }: WordTableProps) {
+export function WordTable({ words, cardMap, onEdit, onDelete, onTransfer, onAssignGroup, otherUserName }: WordTableProps) {
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.table}>
@@ -106,6 +107,17 @@ export function WordTable({ words, cardMap, onEdit, onDelete, onTransfer, otherU
                 )}
               </td>
               <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                {onAssignGroup && (
+                  <button
+                    type="button"
+                    className={styles.actionBtn}
+                    onClick={() => onAssignGroup(w)}
+                    title="Bir gruba / desteye dahil et"
+                    style={{ color: '#8b5cf6' }}
+                  >
+                    🏷️
+                  </button>
+                )}
                 {onTransfer && otherUserName && (
                   <button
                     type="button"

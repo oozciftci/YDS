@@ -27,6 +27,28 @@
   letter-spacing: -0.02em;
 }
 
+.headerHomeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s var(--ease);
+}
+
+.headerHomeBtn:hover {
+  color: var(--text);
+  border-color: var(--primary);
+  background: var(--surface-strong);
+  transform: translateY(-1px);
+}
+
 .netBadge {
   display: inline-flex;
   align-items: center;

@@ -44,10 +44,21 @@ export function Layout() {
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
-        <NavLink to="/" className={styles.brand} aria-label="YDS Kelime ana sayfa">
-          <img src="/favicon.svg" alt="" width={32} height={32} />
-          <span>YDS Kelime</span>
-        </NavLink>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <NavLink to="/" className={styles.brand} aria-label="YDS Kelime ana sayfa">
+            <img src="/favicon.svg" alt="" width={32} height={32} />
+            <span>YDS Kelime</span>
+          </NavLink>
+
+          {location.pathname !== '/' && (
+            <NavLink to="/" className={styles.headerHomeBtn} title="Ana Sayfaya Dön" id="header-back-home">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4">
+                <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span>Ana Sayfa</span>
+            </NavLink>
+          )}
+        </div>
 
         <div className={styles.headerRight}>
           {/* Senkronizasyon butonu */}

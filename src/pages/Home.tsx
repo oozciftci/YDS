@@ -5,6 +5,7 @@ import { db } from '../db'
 import { ALL_WORD_PACKS } from '../data/wordPacks'
 import { speakWord } from '../services/tts'
 import { createWord } from '../services/words'
+import { formatLevelStudyTitle } from '../services/groups'
 import { useUserStore } from '../stores/user'
 import { useSyncStatus } from '../services/sync'
 import { useSettings } from '../stores/settings'
@@ -16,6 +17,9 @@ export function HomePage() {
   const activeUserId = activeUser?.id || 'user_ozgur'
   const sync = useSyncStatus()
   const exam = useSettings((s) => s.exam)
+
+  // Zaman damgası (bağımlılık sırası için en başta)
+  const [nowTimestamp] = useState(() => Date.now())
 
   // Sınava kalan gün
   const daysToExam = useMemo(() => {
@@ -40,14 +44,46 @@ export function HomePage() {
     [],
   )
 
-  const [nowTimestamp] = useState(() => Date.now())
-
   // Tekrar kayıtları (Bugünkü tekrarlar & seri için)
   const reviewLogs = useLiveQuery(
     () => db.reviewLogs.where('userId').equals(activeUserId).toArray(),
     [activeUserId],
     [],
   )
+
+  // Oturum logları (Grup bazlı çalışma geçmişi)
+  const sessionLogs = useLiveQuery(
+    () => db.sessionLogs.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  // 20'şer kelimelik seviye ilerleme kayıtları
+  const levelProgressList = useLiveQuery(
+    () => db.levelProgress.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  const inProgressLevels = useMemo(() => {
+    return levelProgressList
+      .filter((p) => p.status === 'in_progress')
+      .sort((a, b) => b.lastStudiedAt.localeCompare(a.lastStudiedAt))
+  }, [levelProgressList])
+
+  const todayCompletedLevels = useMemo(() => {
+    const todayPrefix = new Date(nowTimestamp).toISOString().slice(0, 10)
+    return levelProgressList
+      .filter((p) => p.status === 'completed' && p.lastStudiedAt.startsWith(todayPrefix))
+      .sort((a, b) => b.lastStudiedAt.localeCompare(a.lastStudiedAt))
+  }, [levelProgressList, nowTimestamp])
+
+  const todaySessions = useMemo(() => {
+    const todayPrefix = new Date(nowTimestamp).toISOString().slice(0, 10)
+    return sessionLogs
+      .filter((s) => s.startedAt.startsWith(todayPrefix))
+      .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
+  }, [sessionLogs, nowTimestamp])
 
   // Metrikler
   const { dueCount, todayReviewsCount, streakDays, masteryCounts, dailyGoal } = useMemo(() => {
@@ -68,7 +104,6 @@ export function HomePage() {
 
     let streak = 0
     const cursor = new Date(nowTimestamp)
-    // Bugün henüz çalışılmadıysa dünden itibaren seriye bak
     if (!daysWithReview.has(cursor.toISOString().slice(0, 10))) {
       cursor.setDate(cursor.getDate() - 1)
     }
@@ -95,12 +130,11 @@ export function HomePage() {
     }
   }, [cardStates, reviewLogs, nowTimestamp, exam?.dailyGoal])
 
-  // Günün YDS Kelimesi (Word of the Day)
+  // Günün YDS Kelimesi
   const wordOfTheDay = useMemo(() => {
     const allAcademicWords = ALL_WORD_PACKS[0]?.words || []
     if (allAcademicWords.length === 0) return null
 
-    // Günün tarihine göre deterministik seçim
     const now = new Date(nowTimestamp)
     const startOfYear = new Date(now.getFullYear(), 0, 0)
     const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24))
@@ -108,7 +142,6 @@ export function HomePage() {
     return allAcademicWords[index]
   }, [nowTimestamp])
 
-  // Günün kelimesi kullanıcının destesinde var mı?
   const isWotdInDeck = useMemo(() => {
     if (!wordOfTheDay) return false
     return words.some((w) => w.term.toLowerCase() === wordOfTheDay.term.toLowerCase())
@@ -123,68 +156,67 @@ export function HomePage() {
     setAddedWotd(true)
   }
 
-  // İlerleme yüzdesi
   const goalPercent = Math.min(100, Math.round((todayReviewsCount / dailyGoal) * 100))
   const totalCards = words.length
-
   const totalPending = sync.pendingOutboxCount + sync.pendingLogsCount
 
   return (
     <div className={styles.container}>
-      {/* 1. ÜST KARŞILAMA, SINAV GERİ SAYIMI VE SERİ */}
-      <section className={styles.welcomeSection}>
-        <div className={styles.greeting}>
-          <span className={styles.avatarBadge} style={{ backgroundColor: activeUser?.avatarColor || '#6366f1' }}>
+      {/* 1. ÜST BİLGİ & KARŞILAMA BARI */}
+      <header className={styles.topBar}>
+        <div className={styles.userProfile}>
+          <span
+            className={styles.avatar}
+            style={{ backgroundColor: activeUser?.avatarColor || 'var(--primary)' }}
+          >
             {activeUser?.displayName?.charAt(0) || 'Ö'}
           </span>
-          <div>
-            <h1 className={styles.userName}>Merhaba, {activeUser?.displayName || 'Öğrenci'} 👋</h1>
-            <p className={styles.userSub}>
+          <div className={styles.userMeta}>
+            <h1 className={styles.title}>Merhaba, {activeUser?.displayName || 'Öğrenci'} 👋</h1>
+            <p className={styles.subtitle}>
               {dueCount > 0
-                ? `Bugün hafızanı tazelemek için ${dueCount} kelime tekrar bekliyor.`
-                : 'Harika gidiyorsun! Günlük tekrarlarını tamamladın.'}
+                ? `Bugün ${dueCount} kelime tekrar edilmeyi bekliyor.`
+                : 'Tebrikler! Bugünkü tekrarlarını tamamladın.'}
             </p>
           </div>
         </div>
 
-        <div className={styles.badgesRight}>
-          {/* Sınav Geri Sayımı Rozeti */}
+        <div className={styles.badgeGroup}>
           {daysToExam !== null && (
             <Link to="/settings#exam" className={styles.examBadge} title="Hedef Sınav Ayarlarını Düzenle">
-              <span className={styles.examIcon}>🎯</span>
-              <div className={styles.examText}>
-                <strong>{daysToExam} Gün Kaldı</strong>
-                <span>{exam?.targetExamName || 'YDS'} (Hedef: {exam?.targetScore || 80})</span>
+              <span className={styles.badgeIcon}>🎯</span>
+              <div className={styles.badgeInfo}>
+                <span className={styles.badgeValue}>{daysToExam} Gün</span>
+                <span className={styles.badgeLabel}>{exam?.targetExamName || 'YDS'}</span>
               </div>
             </Link>
           )}
 
-          {/* Seri Rozeti */}
-          <div className={styles.streakBadge} title="Ardışık gün serisi">
-            <span className={styles.streakFlame}>🔥</span>
-            <div className={styles.streakText}>
-              <strong>{streakDays} Gün</strong>
-              <span>Seri</span>
+          <div className={styles.streakBadge} title="Ardışık çalışma serisi">
+            <span className={styles.badgeIcon}>🔥</span>
+            <div className={styles.badgeInfo}>
+              <span className={styles.badgeValue}>{streakDays} Gün</span>
+              <span className={styles.badgeLabel}>Seri</span>
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* 2. GÜNLÜK ODAK HERO KARTI (ANA ÇALIŞMA BUTONU) */}
+      {/* 2. GÜNLÜK KOMUTA & ODAK KARTI */}
       <section className={styles.heroCard}>
-        <div className={styles.heroContent}>
-          <div className={styles.heroBadge}>
-            {dueCount > 0 ? '⚡ FSRS Tekrar Zamanı' : '🎯 Yeni Bilgi Keşfi'}
-          </div>
-          <h2 className={styles.heroTitle}>
+        <div className={styles.heroLeft}>
+          <span className={styles.heroBadge}>
+            {dueCount > 0 ? '⚡ FSRS Aralıklı Tekrar' : '✨ Günlük Görev Tamam'}
+          </span>
+          <h2 className={styles.heroHeading}>
             {dueCount > 0
-              ? `${dueCount} Kelime Tekrar Edilmeyi Bekliyor`
-              : 'Bugünkü Tekrarlarını Bitirdin!'}
+              ? `${dueCount} Kelime Hafızanı Tazelemeyi Bekliyor`
+              : 'Bugünkü Tekrarlarını Tamamladın!'}
           </h2>
-          <p className={styles.heroDesc}>
+          <p className={styles.heroParagraph}>
             {dueCount > 0
-              ? 'Aralıklı tekrar algoritması, kelimeleri unutulmaya yüz tuttuğu anda önüne getirir. 5 dakikanı ayır ve pekiştir.'
-              : 'Harika bir disiplin! Dilersen öğrenme aşamasındaki kelimeleri çalışabilir veya yeni kelime paketleri ekleyebilirsin.'}
+              ? 'Aralıklı tekrar algoritması, kelimeleri unutulma eşiğinde önüne getirir. 5 dakikanı ayır ve pekiştir.'
+              : 'Disiplinini koruyorsun! Yeni kelimeler keşfedebilir veya mini sınavla kendini test edebilirsin.'}
           </p>
 
           <div className={styles.heroActions}>
@@ -194,7 +226,7 @@ export function HomePage() {
                 className="btn btn-primary"
                 onClick={() => navigate('/study?preset=due&auto=1')}
               >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4">
                   <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
                 </svg>
                 Tekrarları Başlat ({dueCount} Kelime)
@@ -205,39 +237,259 @@ export function HomePage() {
                 className="btn btn-primary"
                 onClick={() => navigate('/study?preset=learning&auto=1')}
               >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <circle cx="12" cy="12" r="10" />
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4">
                   <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" />
                 </svg>
                 Öğrenilenleri Pekiştir
               </button>
             )}
-            <Link to="/words" className="btn btn-ghost">
-              Kelime Havuzuna Git ({totalCards}) →
+            <Link to="/words" className="btn btn-secondary">
+              Kelime Havuzu ({totalCards}) →
             </Link>
           </div>
         </div>
 
-        {/* Günlük Hedef Göstergesi */}
-        <div className={styles.goalBox}>
-          <div className={styles.goalHeader}>
-            <span className={styles.goalLabel}>Günlük Tekrar Hedefi</span>
-            <span className={styles.goalCount}>
-              <strong>{todayReviewsCount}</strong> / {dailyGoal}
-            </span>
+        <div className={styles.heroRight}>
+          <div className={styles.goalCard}>
+            <div className={styles.goalTop}>
+              <span className={styles.goalLabel}>Günlük Tekrar Hedefi</span>
+              <span className={styles.goalRatio}>
+                <strong>{todayReviewsCount}</strong> / {dailyGoal}
+              </span>
+            </div>
+            <div className={styles.progressTrack}>
+              <div className={styles.progressThumb} style={{ width: `${goalPercent}%` }} />
+            </div>
+            <span className={styles.goalPercent}>%{goalPercent} tamamlandı</span>
           </div>
-          <div className={styles.progressBarBg}>
-            <div className={styles.progressBarFill} style={{ width: `${goalPercent}%` }} />
-          </div>
-          <span className={styles.goalPercentText}>%{goalPercent} tamamlandı</span>
         </div>
       </section>
 
-      {/* 3. HIZLI ÇALIŞMA MODLARI (4 KART) */}
-      <section className={styles.modesSection}>
+      {/* 2.5. YARIDA BIRAKILANLAR, BUGÜN ÇALIŞILAN SEVİYELER & HIZLI ERİŞİM */}
+      <section className={styles.sectionBlock}>
         <div className={styles.sectionHeader}>
-          <h2>Hızlı Çalışma Modları</h2>
-          <span className="muted">Sınav hedefine göre odaklan</span>
+          <div>
+            <h2 className={styles.sectionTitle}>
+              {inProgressLevels.length > 0
+                ? '⚠️ Yarıda Bırakılan ve Bugün Çalışılan Seviyeler'
+                : 'Bugün Çalışılan Seviyeler ve Gruplar'}
+            </h2>
+            <p className={styles.sectionDesc}>
+              {inProgressLevels.length > 0
+                ? `${inProgressLevels.length} seviye yarıda bırakıldı. Kaldığın yerden tek tıkla devam edebilirsin:`
+                : todaySessions.length > 0
+                ? `Bugün ${todaySessions.length} çalışma oturumu tamamladın. Detaylar ve doğru/yanlış oranların:`
+                : "Her kategori 20'şer kelimelik seviyelere ayrıldı. Bir seviye seçip çalışmaya başla:"}
+            </p>
+          </div>
+
+          <Link to="/study" className="btn btn-ghost" style={{ fontSize: '0.82rem' }}>
+            Tüm Seviyeleri Gör →
+          </Link>
+        </div>
+
+        {/* YARIDA BIRAKILAN SEVİYELER UYARISI & DEVAM BUTONU */}
+        {inProgressLevels.length > 0 && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '0.85rem',
+              marginBottom: '1rem',
+            }}
+          >
+            {inProgressLevels.map((p) => (
+              <div
+                key={p.subGroupId}
+                style={{
+                  background: 'color-mix(in srgb, #f59e0b 8%, var(--surface))',
+                  border: '1.5px solid #f59e0b',
+                  borderRadius: 'var(--radius)',
+                  padding: '1rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span
+                    style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 800,
+                      color: '#b45309',
+                      background: 'color-mix(in srgb, #f59e0b 20%, transparent)',
+                      padding: '0.2rem 0.55rem',
+                      borderRadius: '999px',
+                    }}
+                  >
+                    ⏳ Yarıda Bırakıldı ({p.completedQuestions}/{p.totalQuestions})
+                  </span>
+                  <span className="muted" style={{ fontSize: '0.75rem' }}>
+                    {new Date(p.lastStudiedAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+
+                <strong style={{ fontSize: '1rem', color: 'var(--text)' }}>
+                  {formatLevelStudyTitle(p.categoryGroupId, p.levelNumber, p.mode)}
+                </strong>
+
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  style={{ width: '100%', fontSize: '0.825rem', padding: '0.45rem 0.75rem' }}
+                  onClick={() => navigate(`/study?subLevel=${p.subGroupId}&resume=1&auto=1`)}
+                >
+                  ▶ Kaldığın Yerden Devam Et ({p.completedQuestions + 1}. Soru) →
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* BUGÜN TAMAMLANAN 20'ŞERLİK SEVİYELER */}
+        {todayCompletedLevels.length > 0 && (
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--success)', marginBottom: '0.45rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span>✅ Bugün Tamamlanan Seviyeler ({todayCompletedLevels.length}):</span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {todayCompletedLevels.map((lvl) => (
+                <div
+                  key={lvl.subGroupId}
+                  style={{
+                    background: 'var(--surface-strong)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '0.4rem 0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    fontSize: '0.82rem',
+                  }}
+                >
+                  <strong style={{ color: 'var(--text)' }}>
+                    {formatLevelStudyTitle(lvl.categoryGroupId, lvl.levelNumber, lvl.mode)}
+                  </strong>
+                  <span style={{ color: 'var(--success)', fontWeight: 700 }}>%{lvl.accuracyPercent} Başarı</span>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    style={{ padding: '0.1rem 0.4rem', fontSize: '0.78rem' }}
+                    onClick={() => navigate(`/study?subLevel=${lvl.subGroupId}&auto=1`)}
+                    title="Tekrar Çalış"
+                  >
+                    🔄
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {todaySessions.length > 0 ? (
+          <div className={styles.todaySessionsGrid}>
+            {todaySessions.map((s) => (
+              <div key={s.id} className={styles.todaySessionCard}>
+                <div className={styles.sessionTopRow}>
+                  <h3 className={styles.sessionTitle}>{s.groupName}</h3>
+                  <span className={styles.sessionTime}>
+                    {new Date(s.completedAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+
+                <div className={styles.sessionStatRow}>
+                  <span><strong>{s.totalQuestions}</strong> soru</span>
+                  <span style={{ color: 'var(--success)' }}>✓ {s.correctCount} doğru</span>
+                  {s.wrongCount > 0 && <span style={{ color: 'var(--error)' }}>✕ {s.wrongCount} yanlış</span>}
+                  <span
+                    className={styles.accuracyBadge}
+                    style={{
+                      background: s.accuracyPercent >= 70 ? 'color-mix(in srgb, var(--success) 16%, transparent)' : 'color-mix(in srgb, var(--warning) 16%, transparent)',
+                      color: s.accuracyPercent >= 70 ? 'var(--success)' : 'var(--warning)',
+                    }}
+                  >
+                    %{s.accuracyPercent} Başarı
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  style={{ width: '100%', fontSize: '0.8rem', padding: '0.4rem 0.6rem' }}
+                  onClick={() => {
+                    if (s.subGroupId) {
+                      navigate(`/study?subLevel=${s.subGroupId}&auto=1`)
+                    } else {
+                      navigate(`/study?group=${s.groupId}&auto=1`)
+                    }
+                  }}
+                >
+                  Bu Seviyeyi Tekrar Çalış →
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.levelPillsRow}>
+            <button
+              type="button"
+              className={styles.levelPillBtn}
+              onClick={() => navigate('/study?group=level_c1_c2')}
+            >
+              <span>🎯</span>
+              <span>C1-C2 İleri Düzey (45 Level)</span>
+            </button>
+            <button
+              type="button"
+              className={styles.levelPillBtn}
+              onClick={() => navigate('/study?group=level_b1_b2')}
+            >
+              <span>📘</span>
+              <span>B1-B2 Orta Düzey (92 Level)</span>
+            </button>
+            <button
+              type="button"
+              className={styles.levelPillBtn}
+              onClick={() => navigate('/study?group=level_a1_a2')}
+            >
+              <span>🌱</span>
+              <span>A1-A2 Başlangıç (71 Level)</span>
+            </button>
+            <button
+              type="button"
+              className={styles.levelPillBtn}
+              onClick={() => navigate('/study?group=yds_phrasal')}
+            >
+              <span>⚡</span>
+              <span>Phrasal Verbs (7 Level)</span>
+            </button>
+            <button
+              type="button"
+              className={styles.levelPillBtn}
+              onClick={() => navigate('/study?group=yds_conjunction')}
+            >
+              <span>🔗</span>
+              <span>Bağlaçlar (3 Level)</span>
+            </button>
+            <button
+              type="button"
+              className={styles.levelPillBtn}
+              onClick={() => navigate('/study?preset=due&auto=1')}
+            >
+              <span>🧠</span>
+              <span>FSRS Günün Tekrarları</span>
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* 3. ÇALIŞMA & SINAV MODLARI MERKEZİ (DENGELİ 4 KART) */}
+      <section className={styles.sectionBlock}>
+        <div className={styles.sectionHeader}>
+          <div>
+            <h2 className={styles.sectionTitle}>Çalışma & Sınav Modları</h2>
+            <p className={styles.sectionDesc}>YDS soru tiplerine ve ihtiyacına göre pratik yap</p>
+          </div>
         </div>
 
         <div className={styles.modesGrid}>
@@ -248,15 +500,18 @@ export function HomePage() {
             role="button"
             tabIndex={0}
           >
-            <div className={`${styles.modeIcon} ${styles.iconPurple}`}>⚡</div>
-            <div className={styles.modeInfo}>
-              <h3>FSRS Akıllı Tekrar</h3>
+            <div className={`${styles.modeIcon} ${styles.iconIndigo}`}>⚡</div>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>FSRS Akıllı Tekrar</h3>
+                <span className={styles.modePill}>Hafıza</span>
+              </div>
               <p>Unutma eğrisine göre zamanı gelen kelimeleri tazele.</p>
             </div>
-            <span className={styles.modeAction}>Başla →</span>
+            <span className={styles.modeArrow}>→</span>
           </div>
 
-          {/* Mod 2: Eş Anlamlı Eşleştirmece (YENİ OYUN MODU) */}
+          {/* Mod 2: Eş Anlamlı Eşleştirmece */}
           <div
             className={styles.modeCard}
             onClick={() => navigate('/match')}
@@ -264,29 +519,35 @@ export function HomePage() {
             tabIndex={0}
           >
             <div className={`${styles.modeIcon} ${styles.iconTeal}`}>🎮</div>
-            <div className={styles.modeInfo}>
-              <h3>Eş Anlamlı Eşleştirmece</h3>
-              <p>İngilizce eş anlamlıları hızlıca eşleştir, kombo yap.</p>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>Eş Anlamlı Eşleştirme</h3>
+                <span className={styles.modePill}>Oyunlaştırma</span>
+              </div>
+              <p>Sınavda en çok çıkan akademik eş anlamlıları hızlıca eşleştir.</p>
             </div>
-            <span className={styles.modeAction}>Oyna →</span>
+            <span className={styles.modeArrow}>→</span>
           </div>
 
-          {/* Mod 3: 10 Soruluk Mini YDS Denemesi (YENİ ÖSYM TESTİ) */}
+          {/* Mod 3: Mini YDS Denemesi */}
           <div
             className={styles.modeCard}
             onClick={() => navigate('/quiz')}
             role="button"
             tabIndex={0}
           >
-            <div className={`${styles.modeIcon} ${styles.iconBlue}`}>📝</div>
-            <div className={styles.modeInfo}>
-              <h3>Mini YDS Denemesi</h3>
-              <p>ÖSYM formatında 10 soruluk süreli kelime testi çöz.</p>
+            <div className={`${styles.modeIcon} ${styles.iconSky}`}>📝</div>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>Mini YDS Denemesi</h3>
+                <span className={styles.modePill}>10 Soru • ÖSYM</span>
+              </div>
+              <p>ÖSYM formatında 10 soruluk süreli kelime denemesi çöz.</p>
             </div>
-            <span className={styles.modeAction}>Test Çöz →</span>
+            <span className={styles.modeArrow}>→</span>
           </div>
 
-          {/* Mod 4: Cümle İçi Boşluk Doldurma (Cloze) */}
+          {/* Mod 4: Cümle İçi Cloze Test */}
           <div
             className={styles.modeCard}
             onClick={() => navigate('/study?mode=cloze&auto=1')}
@@ -294,25 +555,28 @@ export function HomePage() {
             tabIndex={0}
           >
             <div className={`${styles.modeIcon} ${styles.iconAmber}`}>🧩</div>
-            <div className={styles.modeInfo}>
-              <h3>Cümle İçi Cloze Test</h3>
-              <p>Akademik cümle bağlamında doğru kelimeyi bul.</p>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>Cümle İçi Boşluk</h3>
+                <span className={styles.modePill}>Bağlam</span>
+              </div>
+              <p>Akademik cümle bağlamında doğru kelimeyi tamamla.</p>
             </div>
-            <span className={styles.modeAction}>Başla →</span>
+            <span className={styles.modeArrow}>→</span>
           </div>
         </div>
       </section>
 
-      {/* 4. GÜNÜN YDS KELİMESİ & SEVİYE ÖZETİ */}
-      <div className={styles.bottomSplit}>
-        {/* Günün Kelimesi */}
+      {/* 4. ALT 2 SÜTUN: GÜNÜN KELİMESİ & HAKİMİYET DAĞILIMI */}
+      <div className={styles.splitGrid}>
+        {/* Sol Sütun: Günün Kelimesi */}
         {wordOfTheDay && (
           <section className={styles.wotdCard}>
-            <div className={styles.wotdHeader}>
-              <span className={styles.wotdTag}>💡 Günün YDS Kelimesi</span>
+            <div className={styles.wotdTop}>
+              <span className={styles.wotdBadge}>💡 Günün YDS Kelimesi</span>
               <button
                 type="button"
-                className={styles.speakBtn}
+                className={styles.soundButton}
                 onClick={() => speakWord(wordOfTheDay.term)}
                 title="Telaffuzu Dinle"
                 aria-label="Sesli telaffuz"
@@ -321,20 +585,20 @@ export function HomePage() {
               </button>
             </div>
 
-            <div className={styles.wotdBody}>
-              <div className={styles.wotdTermRow}>
-                <h3 className={styles.wotdTerm}>{wordOfTheDay.term}</h3>
+            <div className={styles.wotdMain}>
+              <div className={styles.wotdWordLine}>
+                <h3 className={styles.wotdWord}>{wordOfTheDay.term}</h3>
                 <span className={styles.wotdPos}>{wordOfTheDay.partOfSpeech}</span>
               </div>
 
-              <p className={styles.wotdDef}>{wordOfTheDay.definition}</p>
+              <p className={styles.wotdDefinition}>{wordOfTheDay.definition}</p>
 
               {wordOfTheDay.synonyms && wordOfTheDay.synonyms.length > 0 && (
-                <div className={styles.synonymsRow}>
-                  <span className={styles.synLabel}>Eş anlamlılar:</span>
-                  <div className={styles.synChips}>
+                <div className={styles.synonymsList}>
+                  <span className={styles.synonymsLabel}>Eş anlamlılar:</span>
+                  <div className={styles.synonymsTags}>
                     {wordOfTheDay.synonyms.slice(0, 4).map((s: string) => (
-                      <span key={s} className={styles.synChip}>
+                      <span key={s} className={styles.synonymChip}>
                         {s}
                       </span>
                     ))}
@@ -343,30 +607,30 @@ export function HomePage() {
               )}
 
               {wordOfTheDay.sentences && wordOfTheDay.sentences[0] && (
-                <div className={styles.exampleSentence}>
+                <div className={styles.sentenceBlock}>
                   <p className={styles.enSentence}>“{wordOfTheDay.sentences[0].en}”</p>
                   {showWotdTr ? (
                     <p className={styles.trSentence}>{wordOfTheDay.sentences[0].tr}</p>
                   ) : (
                     <button
                       type="button"
-                      className={styles.showTransBtn}
+                      className={styles.revealButton}
                       onClick={() => setShowWotdTr(true)}
                     >
-                      Çeviriyi göster ↓
+                      Türkçe çeviriyi göster ↓
                     </button>
                   )}
                 </div>
               )}
             </div>
 
-            <div className={styles.wotdFooter}>
+            <div className={styles.wotdBottom}>
               {isWotdInDeck || addedWotd ? (
-                <span className={styles.inDeckLabel}>✓ Havuzunda Kayıtlı</span>
+                <span className={styles.savedLabel}>✓ Havuzunda Kayıtlı</span>
               ) : (
                 <button
                   type="button"
-                  className="btn btn-ghost"
+                  className="btn btn-secondary"
                   onClick={() => void handleAddWotd()}
                 >
                   + Havuzuma Ekle
@@ -376,49 +640,53 @@ export function HomePage() {
           </section>
         )}
 
-        {/* Hakimiyet Seviyesi Dağılımı */}
+        {/* Sağ Sütun: Kelime Hakimiyeti Dağılımı */}
         <section className={styles.masteryCard}>
-          <div className={styles.masteryHeader}>
-            <h3>Kelime Hakimiyeti Dağılımın</h3>
-            <Link to="/stats" className={styles.statsLink}>
-              Detaylı İstatistikler →
+          <div className={styles.masteryTop}>
+            <div>
+              <h3 className={styles.masteryHeading}>Kelime Hakimiyeti</h3>
+              <p className={styles.masterySub}>Hafızandaki kalıcılık seviyeleri</p>
+            </div>
+            <Link to="/stats" className={styles.detailLink}>
+              Detaylar →
             </Link>
           </div>
 
-          <div className={styles.masteryBars}>
-            <MasteryRow level={5} label="Tamamen Öğrendim" count={masteryCounts[5]} total={totalCards} color="#10b981" />
-            <MasteryRow level={4} label="Baya Öğrendim" count={masteryCounts[4]} total={totalCards} color="#3b82f6" />
-            <MasteryRow level={3} label="Geliştirmeye Muhtaç" count={masteryCounts[3]} total={totalCards} color="#eab308" />
-            <MasteryRow level={2} label="Biraz Öğrendim" count={masteryCounts[2]} total={totalCards} color="#f97316" />
-            <MasteryRow level={1} label="Hiç Bilmiyorum" count={masteryCounts[1]} total={totalCards} color="#ef4444" />
+          <div className={styles.masteryList}>
+            <MasteryItem level={5} label="Tamamen Öğrendim" count={masteryCounts[5]} total={totalCards} color="#10b981" />
+            <MasteryItem level={4} label="İyi Biliyorum" count={masteryCounts[4]} total={totalCards} color="#3b82f6" />
+            <MasteryItem level={3} label="Geliştirilmeli" count={masteryCounts[3]} total={totalCards} color="#eab308" />
+            <MasteryItem level={2} label="Yeni Başlandı" count={masteryCounts[2]} total={totalCards} color="#f97316" />
+            <MasteryItem level={1} label="Hiç Bilmiyorum" count={masteryCounts[1]} total={totalCards} color="#ef4444" />
           </div>
 
-          <div className={styles.totalWordsFoot}>
-            <span>Toplam Aktif Kelime: <strong>{totalCards}</strong></span>
+          <div className={styles.masteryFooter}>
+            <span>Toplam Kayıtlı Kelime:</span>
+            <strong>{totalCards} Kelime</strong>
           </div>
         </section>
       </div>
 
-      {/* 5. MİNİMAL SİSTEM DURUM BİLGİSİ (DİKKAT DAĞITMAYAN FOOTER) */}
-      <footer className={styles.systemFooter}>
-        <div className={styles.systemStatus}>
-          <span className={styles.statusDot} />
+      {/* 5. SİSTEM DURUM BİLGİSİ (KOMPAKT ŞERİT) */}
+      <footer className={styles.statusBar}>
+        <div className={styles.statusLeft}>
+          <span className={styles.statusIndicator} />
           <span>Çevrimdışı Çalışmaya Hazır</span>
           {totalPending > 0 ? (
-            <span className={styles.pendingText}>• {totalPending} eşitlenmeyi bekleyen veri</span>
+            <span className={styles.pendingBadge}>• {totalPending} eşitlenmeyi bekleyen işlem</span>
           ) : (
-            <span className={styles.syncedText}>• Eşitlendi ✓</span>
+            <span className={styles.syncedBadge}>• Eşitlendi ✓</span>
           )}
         </div>
         <Link to="/settings" className={styles.settingsLink}>
-          Sistem ve Senkronizasyon Ayarları
+          Ayarlar ve Yedekleme →
         </Link>
       </footer>
     </div>
   )
 }
 
-function MasteryRow(props: {
+function MasteryItem(props: {
   level: number
   label: string
   count: number
@@ -428,19 +696,22 @@ function MasteryRow(props: {
   const pct = props.total > 0 ? Math.round((props.count / props.total) * 100) : 0
   return (
     <div className={styles.masteryRow}>
-      <div className={styles.masteryLabelCol}>
-        <span className={styles.levelBadge} style={{ backgroundColor: `${props.color}22`, color: props.color }}>
-          {props.level}
+      <div className={styles.masteryLabelGroup}>
+        <span
+          className={styles.levelTag}
+          style={{ backgroundColor: `${props.color}20`, color: props.color }}
+        >
+          L{props.level}
         </span>
         <span className={styles.masteryName}>{props.label}</span>
       </div>
-      <div className={styles.barTrack}>
+      <div className={styles.barBackground}>
         <div
-          className={styles.barFill}
+          className={styles.barProgress}
           style={{ width: `${pct}%`, backgroundColor: props.color }}
         />
       </div>
-      <span className={styles.masteryCount}>{props.count}</span>
+      <span className={styles.masteryNumber}>{props.count}</span>
     </div>
   )
 }

@@ -12,6 +12,7 @@ export interface CreateWordInput {
   collocations?: string[]
   sentences?: SampleSentence[]
   tags?: string[]
+  groupIds?: string[]
   difficulty?: number
   notes?: string
 }
@@ -35,6 +36,7 @@ export async function createWord(userId: string, input: CreateWordInput): Promis
     collocations: (input.collocations || []).map((c) => c.trim()).filter(Boolean),
     sentences: input.sentences || [],
     tags: (input.tags || []).map((t) => t.trim()).filter(Boolean),
+    groupIds: input.groupIds || [],
     difficulty: input.difficulty ?? 2,
     notes: input.notes?.trim() || undefined,
     createdAt: now,
@@ -98,6 +100,7 @@ export async function updateWord(
     ...(updates.collocations !== undefined ? { collocations: updates.collocations.map((c) => c.trim()).filter(Boolean) } : {}),
     ...(updates.sentences !== undefined ? { sentences: updates.sentences } : {}),
     ...(updates.tags !== undefined ? { tags: updates.tags.map((t) => t.trim()).filter(Boolean) } : {}),
+    ...(updates.groupIds !== undefined ? { groupIds: updates.groupIds } : {}),
     ...(updates.difficulty !== undefined ? { difficulty: updates.difficulty } : {}),
     ...(updates.notes !== undefined ? { notes: updates.notes.trim() || undefined } : {}),
     updatedAt: now,

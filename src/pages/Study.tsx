@@ -1,42 +1,45 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { processCardReview } from '../services/fsrs'
 import {
   buildQuestion,
-  filterStudyCards,
   type QuestionMode,
-  type StudyFilterOptions,
   type StudyQuestion,
 } from '../services/studySession'
+import {
+  BUILT_IN_GROUPS,
+  addWordToGroupAtPosition,
+  calculateGroupStats,
+  chunkIntoSubLevels,
+  createCustomGroup,
+  formatLevelStudyTitle,
+  getRecentCustomGroupIds,
+  getWordsForGroup,
+  markLevelCompleted,
+  markLevelInProgress,
+  saveRecentCustomGroupId,
+  saveStudySessionLog,
+  type SubLevel,
+} from '../services/groups'
 import { speakWord } from '../services/tts'
 import { useUserStore } from '../stores/user'
 import {
   MASTERY_CONFIG,
   type MasteryLevel,
-  type PartOfSpeech,
   type WordItem,
 } from '../types/database'
 import { InteractiveSentence } from '../components/InteractiveSentence'
 import styles from './Study.module.css'
 
-const POS_FILTERS: Array<{ id: PartOfSpeech; label: string }> = [
-  { id: 'verb', label: 'Fiiller' },
-  { id: 'noun', label: 'İsimler' },
-  { id: 'adjective', label: 'Sıfatlar' },
-  { id: 'adverb', label: 'Zarflar' },
-  { id: 'phrasal_verb', label: 'Phrasal Verbler' },
-  { id: 'conjunction', label: 'Bağlaçlar' },
-  { id: 'preposition', label: 'Edatlar' },
-]
-
 export function StudyPage() {
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const activeUser = useUserStore((s) => s.activeUser)
   const activeUserId = activeUser?.id || 'user_ozgur'
 
-  // Veritabanı sorguları
+  // Veritabanı canlı sorguları
   const allWords = useLiveQuery(
     () => db.words.where('userId').equals(activeUserId).filter((w) => !w.isDeleted).toArray(),
     [activeUserId],
@@ -49,178 +52,415 @@ export function StudyPage() {
     [],
   )
 
+  const customGroups = useLiveQuery(
+    () => db.wordGroups.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  const allLevelProgress = useLiveQuery(
+    () => db.levelProgress.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  const cardMap = useMemo(() => {
+    return new Map(allCardStates.map((c) => [c.wordId, c]))
+  }, [allCardStates])
+
+  const levelProgressMap = useMemo(() => {
+    return new Map(allLevelProgress.map((p) => [p.subGroupId, p]))
+  }, [allLevelProgress])
+
   // Oturum Durumu ('setup' | 'studying' | 'summary')
   const [phase, setPhase] = useState<'setup' | 'studying' | 'summary'>('setup')
 
-  // Gelişmiş filtreler açık/kapalı
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
+  // Seçili Kategori ve Aktif Seviye
+  const [activeCategoryId, setActiveCategoryId] = useState<string>('level_c1_c2')
+  const [activeCategoryName, setActiveCategoryName] = useState<string>('C1 - C2 İleri Düzey')
+  const [activeSubLevel, setActiveSubLevel] = useState<SubLevel | null>(null)
 
-  // Filtreleme Ayarları
-  const [selectedPos, setSelectedPos] = useState<PartOfSpeech[]>([])
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [selectedScores, setSelectedScores] = useState<number[]>([1, 2, 3]) // Varsayılan: Öğrenilmekte olanlar
-  const [dueOnly, setDueOnly] = useState(false)
-  const [lapsesOnly, setLapsesOnly] = useState(false)
-  const [mode, setMode] = useState<QuestionMode>('mixed')
-  const [limit, setLimit] = useState(15)
+  // Seviye Filtreleri
+  const [levelFilter, setLevelFilter] = useState<'all' | 'not_started' | 'in_progress' | 'completed'>('all')
+  const [levelSearch, setLevelSearch] = useState('')
 
-  // Otomatik başlatma ref'i (tek seferlik çalışması için)
-  const autoStartedRef = useRef(false)
+  // Çalışma Modu (Flaşkart / Test)
+  const [mode, setMode] = useState<QuestionMode>('flashcard')
+
+  // Yeni grup oluşturma modalı
+  const [showCreateGroupModal, setShowCreateGroupModal] = useState(false)
+  const [newGroupName, setNewGroupName] = useState('')
+  const [newGroupDesc, setNewGroupDesc] = useState('')
 
   // Aktif Oturum Soruları ve İlerleme
   const [questions, setQuestions] = useState<StudyQuestion[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
+  const currentQ = questions[currentIndex]
   const [isFlipped, setIsFlipped] = useState(false)
   const [selectedOption, setSelectedOption] = useState<number | null>(null)
   const [questionStartTime, setQuestionStartTime] = useState(() => Date.now())
+  const [sessionStartTime, setSessionStartTime] = useState(() => new Date().toISOString())
   const [sessionResults, setSessionResults] = useState<Array<{ word: WordItem; score: MasteryLevel }>>([])
-
-  // Mevcut tüm etiketler
-  const availableTags = useMemo(() => {
-    const set = new Set<string>()
-    for (const w of allWords) {
-      if (w.tags) {
-        for (const t of w.tags) set.add(t)
-      }
-    }
-    return Array.from(set).sort()
-  }, [allWords])
-
-  // Filtrelere eşleşen kelime sayısı
-  const matchedCards = useMemo(() => {
-    const filterOptions: StudyFilterOptions = {
-      posList: selectedPos,
-      tags: selectedTags,
-      masteryScores: selectedScores,
-      dueOnly,
-      lapsesOnly,
-      limit: 0,
-      mode,
-    }
-    return filterStudyCards(allWords, allCardStates, filterOptions)
-  }, [allWords, allCardStates, selectedPos, selectedTags, selectedScores, dueOnly, lapsesOnly, mode])
+  const autoStartedRef = useRef(false)
+  const summarySavedRef = useRef(false)
 
   const [nowTimestamp] = useState(() => Date.now())
+  const nowIso = useMemo(() => new Date(nowTimestamp).toISOString(), [nowTimestamp])
 
-  // Hazır kart sayıları (Hızlı Başlat kartları için)
-  const presetCounts = useMemo(() => {
-    const nowIso = new Date(nowTimestamp).toISOString()
-    const due = allCardStates.filter((c) => c.due <= nowIso).length
-    const learning = allCardStates.filter((c) => {
-      const s = c.masteryScore || 1
-      return s <= 3
-    }).length
-    const hard = allCardStates.filter((c) => c.lapses > 0).length
-    return { due, learning, hard, total: allWords.length }
-  }, [allCardStates, allWords, nowTimestamp])
+  // Özel Gruba Ekleme Modalı ve Son Kullanılan 2 Grup
+  const [showAddToGroupModal, setShowAddToGroupModal] = useState(false)
+  const [targetGroupId, setTargetGroupId] = useState<string>('')
+  const [targetPositionInput, setTargetPositionInput] = useState<string>('')
+  const [isCreatingInGroupModal, setIsCreatingInGroupModal] = useState(false)
+  const [modalNewGroupName, setModalNewGroupName] = useState('')
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [recentGroupIds, setRecentGroupIds] = useState<string[]>(() => getRecentCustomGroupIds())
 
+  // ==========================================================
+  // TÜM KATEGORİLER (Yerleşik + Kullanıcı Özel)
+  // ==========================================================
+  const allCategories = useMemo(() => {
+    const builtIn = BUILT_IN_GROUPS.map((g) => {
+      const words = getWordsForGroup(g.id, allWords, cardMap, null, nowIso)
+      const stats = calculateGroupStats(words, cardMap, nowIso)
+      return {
+        id: g.id,
+        name: g.name,
+        shortName: g.shortName,
+        description: g.description,
+        icon: g.icon,
+        color: g.color,
+        badge: g.badge,
+        isBuiltIn: true,
+        words,
+        stats,
+      }
+    })
 
-  // Tek tıkla doğrudan başlatan fonksiyon
-  const startSessionWithFilters = useCallback(
-    (customOptions?: Partial<StudyFilterOptions>) => {
-      const filterOptions: StudyFilterOptions = {
-        posList: selectedPos,
-        tags: selectedTags,
-        masteryScores: selectedScores,
-        dueOnly,
-        lapsesOnly,
-        limit,
-        mode,
-        ...customOptions,
+    const customs = customGroups.map((g) => {
+      const words = getWordsForGroup(g.id, allWords, cardMap, g, nowIso)
+      const stats = calculateGroupStats(words, cardMap, nowIso)
+      return {
+        id: g.id,
+        name: g.name,
+        shortName: g.name,
+        description: g.description || 'Özel kelime destesi',
+        icon: g.icon || '📁',
+        color: g.color || '#7c5cff',
+        badge: 'Özel',
+        isBuiltIn: false,
+        words,
+        stats,
+      }
+    })
+
+    return [...builtIn, ...customs]
+  }, [allWords, cardMap, nowIso, customGroups])
+
+  // Aktif Kategorinin Kelimeleri ve 20'şerlik Seviyeleri (SubLevels)
+  const activeCategoryObj = useMemo(() => {
+    return allCategories.find((c) => c.id === activeCategoryId) || allCategories[0]
+  }, [allCategories, activeCategoryId])
+
+  const categorySubLevels = useMemo(() => {
+    if (!activeCategoryObj) return []
+    return chunkIntoSubLevels(activeCategoryObj.id, activeCategoryObj.name, activeCategoryObj.words, 20)
+  }, [activeCategoryObj])
+
+  // Filtrelenmiş Seviyeler
+  const filteredSubLevels = useMemo(() => {
+    return categorySubLevels.filter((lvl) => {
+      const prog = levelProgressMap.get(lvl.id)
+      const status = prog?.status || 'not_started'
+
+      if (levelFilter === 'not_started' && status !== 'not_started') return false
+      if (levelFilter === 'in_progress' && status !== 'in_progress') return false
+      if (levelFilter === 'completed' && status !== 'completed') return false
+
+      if (levelSearch.trim()) {
+        const q = levelSearch.toLowerCase()
+        const matchesTitle = lvl.title.toLowerCase().includes(q)
+        const matchesWord = lvl.words.some((w) => w.term.toLowerCase().includes(q) || w.definition.toLowerCase().includes(q))
+        if (!matchesTitle && !matchesWord) return false
       }
 
-      const cards = filterStudyCards(allWords, allCardStates, filterOptions)
-      if (cards.length === 0) return
+      return true
+    })
+  }, [categorySubLevels, levelProgressMap, levelFilter, levelSearch])
 
-      const generated = cards.map((c) => buildQuestion(c, allWords, filterOptions.mode || mode))
+  // ==========================================================
+  // 🕒 SON ÇALIŞILANLAR, GÜNÜN & HAFTANIN TEKRARLARI
+  // ==========================================================
+  const recentLevels = useMemo(() => {
+    const todayPrefix = new Date().toISOString().slice(0, 10)
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+
+    const withProgress = allLevelProgress.filter((p) => p.lastStudiedAt)
+    withProgress.sort((a, b) => b.lastStudiedAt.localeCompare(a.lastStudiedAt))
+
+    const inProgressList = withProgress.filter((p) => p.status === 'in_progress')
+    const todayList = withProgress.filter((p) => p.lastStudiedAt.startsWith(todayPrefix))
+    const weekList = withProgress.filter((p) => p.lastStudiedAt >= sevenDaysAgo)
+
+    return {
+      allRecent: withProgress.slice(0, 6),
+      inProgress: inProgressList,
+      today: todayList,
+      week: weekList,
+    }
+  }, [allLevelProgress])
+
+  // Son eklenen / kullanılan 2 özel grup nesnesi
+  const recentGroups = useMemo(() => {
+    return recentGroupIds
+      .map((id) => customGroups.find((g) => g.id === id))
+      .filter((g): g is NonNullable<typeof g> => Boolean(g))
+  }, [recentGroupIds, customGroups])
+
+  // Kartın ön yüzünden son 2 gruba hızlı ekleme (tek tıkla)
+  const handleQuickAddToGroup = useCallback(
+    async (groupId: string, groupName: string) => {
+      if (!currentQ) return
+      const res = await addWordToGroupAtPosition(groupId, currentQ.word.id, null)
+      if (res.success) {
+        const updated = saveRecentCustomGroupId(groupId)
+        setRecentGroupIds(updated)
+        setToastMessage(`"${currentQ.word.term}" kelimesi "${groupName}" grubuna eklendi ✓`)
+        setTimeout(() => setToastMessage(null), 3000)
+      }
+    },
+    [currentQ],
+  )
+
+  // Gruba Ekle modalından sırayla ekleme
+  const handleModalAddToGroup = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault()
+      if (!currentQ) return
+
+      let finalGroupId = targetGroupId
+      let finalGroupName = ''
+
+      if (isCreatingInGroupModal) {
+        if (!modalNewGroupName.trim()) return
+        const created = await createCustomGroup(activeUserId, modalNewGroupName.trim())
+        finalGroupId = created.id
+        finalGroupName = created.name
+      } else {
+        const found = customGroups.find((g) => g.id === finalGroupId) || customGroups[0]
+        if (!found) return
+        finalGroupId = found.id
+        finalGroupName = found.name
+      }
+
+      if (!finalGroupId) return
+
+      const pos = targetPositionInput.trim() ? parseInt(targetPositionInput.trim(), 10) : null
+      const res = await addWordToGroupAtPosition(finalGroupId, currentQ.word.id, pos)
+
+      if (res.success) {
+        const updated = saveRecentCustomGroupId(finalGroupId)
+        setRecentGroupIds(updated)
+        setToastMessage(
+          `"${currentQ.word.term}" kelimesi "${finalGroupName}" grubuna ${res.finalPosition}. sıraya eklendi ✓`
+        )
+        setTimeout(() => setToastMessage(null), 3500)
+        setShowAddToGroupModal(false)
+        setTargetPositionInput('')
+        setModalNewGroupName('')
+        setIsCreatingInGroupModal(false)
+      }
+    },
+    [currentQ, targetGroupId, isCreatingInGroupModal, modalNewGroupName, activeUserId, customGroups, targetPositionInput],
+  )
+
+  // ==========================================================
+  // SEVİYE ÇALIŞMA OTURUMUNU BAŞLAT VEYA KALDIĞI YERDEN SÜRDÜR
+  // ==========================================================
+  const startLevelSession = useCallback(
+    (targetSubLevel: SubLevel, resumeIndex = 0) => {
+      if (targetSubLevel.words.length === 0) {
+        alert('Bu seviyede henüz kelime bulunmuyor.')
+        return
+      }
+
+      // Her seviye tam olarak kendi 20 kelimesini (veya son kalan kelimelerini) içerir
+      const generated = targetSubLevel.words.map((w) => {
+        const card = cardMap.get(w.id) || {
+          id: `${w.id}_${activeUserId}`,
+          wordId: w.id,
+          userId: activeUserId,
+          state: 0,
+          due: new Date().toISOString(),
+          stability: 0,
+          difficulty: 0,
+          elapsedDays: 0,
+          scheduledDays: 0,
+          reps: 0,
+          lapses: 0,
+          masteryScore: 1,
+          updatedAt: new Date().toISOString(),
+        }
+        return buildQuestion({ word: w, cardState: card }, allWords, mode)
+      })
+
+      const safeStartIndex = Math.min(resumeIndex, generated.length - 1)
+
       setQuestions(generated)
-      setCurrentIndex(0)
+      setCurrentIndex(safeStartIndex)
       setIsFlipped(false)
       setSelectedOption(null)
       setQuestionStartTime(Date.now())
+      setSessionStartTime(new Date().toISOString())
       setSessionResults([])
+      setActiveSubLevel(targetSubLevel)
+      setActiveCategoryId(targetSubLevel.categoryGroupId)
+      setActiveCategoryName(targetSubLevel.categoryName)
+      summarySavedRef.current = false
       setPhase('studying')
     },
-    [allWords, allCardStates, selectedPos, selectedTags, selectedScores, dueOnly, lapsesOnly, limit, mode],
+    [allWords, cardMap, activeUserId, mode],
   )
 
-  // URL parametreleri ile gelindiyse (Örn: Home sayfasından butonlara tıklandığında)
+  // URL Parametresi Dinleyici (Home'dan veya doğrudan yönlendirmeler)
   useEffect(() => {
     const preset = searchParams.get('preset')
-    const urlModeParam = searchParams.get('mode') as QuestionMode | null
+    const groupId = searchParams.get('group')
+    const subLvlId = searchParams.get('subLevel')
+    const resume = searchParams.get('resume') === '1'
     const auto = searchParams.get('auto') === '1'
 
-    if (preset === 'due') {
-      setSelectedScores([])
-      setDueOnly(true)
-      setLapsesOnly(false)
-    } else if (preset === 'learning') {
-      setSelectedScores([1, 2, 3])
-      setDueOnly(false)
-      setLapsesOnly(false)
-    } else if (preset === 'hard') {
-      setSelectedScores([])
-      setDueOnly(false)
-      setLapsesOnly(true)
-    }
-
-    if (urlModeParam) {
-      setMode(urlModeParam)
-    }
-
-    if (auto && !autoStartedRef.current && allWords.length > 0 && allCardStates.length > 0) {
+    if (auto && !autoStartedRef.current && allWords.length > 0) {
       autoStartedRef.current = true
-      startSessionWithFilters({
-        posList: [],
-        tags: [],
-        masteryScores: preset === 'learning' ? [1, 2, 3] : [],
-        dueOnly: preset === 'due',
-        lapsesOnly: preset === 'hard',
-        limit: 15,
-        mode: urlModeParam || 'mixed',
-      })
+
+      if (subLvlId) {
+        // Belirli bir alt seviye ID'si ile başlat
+        for (const cat of allCategories) {
+          const lvls = chunkIntoSubLevels(cat.id, cat.name, cat.words, 20)
+          const target = lvls.find((l) => l.id === subLvlId)
+          if (target) {
+            const prog = levelProgressMap.get(subLvlId)
+            const resumeIdx = resume && prog ? prog.completedQuestions : 0
+            startLevelSession(target, resumeIdx)
+            return
+          }
+        }
+      } else if (preset === 'due') {
+        const dueCat = allCategories.find((c) => c.id === 'fsrs_due')
+        if (dueCat && dueCat.words.length > 0) {
+          const lvls = chunkIntoSubLevels(dueCat.id, dueCat.name, dueCat.words, 20)
+          if (lvls[0]) startLevelSession(lvls[0], 0)
+        }
+      } else if (groupId) {
+        const targetCat = allCategories.find((c) => c.id === groupId)
+        if (targetCat && targetCat.words.length > 0) {
+          const lvls = chunkIntoSubLevels(targetCat.id, targetCat.name, targetCat.words, 20)
+          if (lvls[0]) startLevelSession(lvls[0], 0)
+        }
+      }
     }
-  }, [searchParams, allWords, allCardStates, startSessionWithFilters])
+  }, [searchParams, allWords.length, allCategories, levelProgressMap, startLevelSession])
 
-  function togglePos(pos: PartOfSpeech) {
-    setSelectedPos((prev) => (prev.includes(pos) ? prev.filter((p) => p !== pos) : [...prev, pos]))
-  }
-
-  function toggleTag(tag: string) {
-    setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))
-  }
-
-  function toggleScore(score: number) {
-    setSelectedScores((prev) => (prev.includes(score) ? prev.filter((s) => s !== score) : [...prev, score]))
-  }
-
-  // Oturumu Başlat (Standart)
-  function startSession() {
-    startSessionWithFilters()
-  }
-
-  const currentQ = questions[currentIndex]
-
-  // Puan Verme ve Sonraki Soruya Geçme
+  // ==========================================================
+  // PUANLAMA (Kullanıcı Talebi: Öğrendim / Öğrenmedim veya 1-5)
+  // ==========================================================
   const handleScoreCard = useCallback(
     async (score: MasteryLevel) => {
-      if (!currentQ) return
+      if (!currentQ || !activeSubLevel) return
       const durationMs = Date.now() - questionStartTime
 
       await processCardReview(currentQ.cardState, score, currentQ.type, durationMs)
+      const nextResults = [...sessionResults, { word: currentQ.word, score }]
+      setSessionResults(nextResults)
 
-      setSessionResults((prev) => [...prev, { word: currentQ.word, score }])
+      const nextIndex = currentIndex + 1
 
-      if (currentIndex + 1 < questions.length) {
-        setCurrentIndex((i) => i + 1)
+      if (nextIndex < questions.length) {
+        // İlerlemeyi 'yarıda bırakıldı' (in_progress) olarak veritabanına işle
+        const correctCount = nextResults.filter((r) => r.score >= 4).length
+        const wrongCount = nextResults.filter((r) => r.score <= 2).length
+
+        void markLevelInProgress(
+          activeUserId,
+          activeSubLevel.categoryGroupId,
+          activeSubLevel.id,
+          activeSubLevel.levelNumber,
+          activeSubLevel.title,
+          nextIndex,
+          questions.length,
+          correctCount,
+          wrongCount,
+          mode,
+        )
+
+        setCurrentIndex(nextIndex)
         setIsFlipped(false)
         setSelectedOption(null)
         setQuestionStartTime(Date.now())
       } else {
+        // Oturum 20/20 tamamlandı!
+        const correctCount = nextResults.filter((r) => r.score >= 4).length
+        const wrongCount = nextResults.filter((r) => r.score <= 2).length
+
+        await markLevelCompleted(
+          activeUserId,
+          activeSubLevel.categoryGroupId,
+          activeSubLevel.id,
+          activeSubLevel.levelNumber,
+          activeSubLevel.title,
+          questions.length,
+          correctCount,
+          wrongCount,
+          mode,
+        )
+
         setPhase('summary')
       }
     },
-    [currentQ, currentIndex, questions.length, questionStartTime],
+    [currentQ, activeSubLevel, questionStartTime, sessionResults, currentIndex, questions.length, activeUserId, mode],
+  )
+
+  // Oturumdan erken çıkış yapıldığında 'yarıda bırakıldı' olarak işaretle
+  const handleAbandonOrExit = useCallback(
+    async (targetAction: () => void) => {
+      if (activeSubLevel && currentIndex > 0 && currentIndex < questions.length) {
+        const correctCount = sessionResults.filter((r) => r.score >= 4).length
+        const wrongCount = sessionResults.filter((r) => r.score <= 2).length
+
+        await markLevelInProgress(
+          activeUserId,
+          activeSubLevel.categoryGroupId,
+          activeSubLevel.id,
+          activeSubLevel.levelNumber,
+          activeSubLevel.title,
+          currentIndex,
+          questions.length,
+          correctCount,
+          wrongCount,
+          mode,
+        )
+
+        // Oturum logunu da 'yarıda bırakıldı' olarak kaydet
+        await saveStudySessionLog({
+          userId: activeUserId,
+          groupId: activeSubLevel.categoryGroupId,
+          subGroupId: activeSubLevel.id,
+          groupName: formatLevelStudyTitle(activeSubLevel.categoryGroupId, activeSubLevel.levelNumber, mode),
+          mode,
+          startedAt: sessionStartTime,
+          completedAt: new Date().toISOString(),
+          totalQuestions: currentIndex,
+          correctCount,
+          wrongCount,
+          learningCount: sessionResults.filter((r) => r.score === 3).length,
+          accuracyPercent: Math.round((correctCount / Math.max(1, currentIndex)) * 100),
+          wordIds: sessionResults.map((r) => r.word.id),
+          isCompleted: false,
+        })
+      }
+      targetAction()
+    },
+    [activeSubLevel, currentIndex, questions.length, sessionResults, activeUserId, mode, sessionStartTime],
   )
 
   // Önceki Karta Dönme
@@ -251,21 +491,48 @@ export function StudyPage() {
     setSelectedOption(optIdx)
 
     const isCorrect = optIdx === currentQ.correctOptionIndex
-
-    // Doğruysa 4-5 puan, yanlışsa 1-2 puan otomatik uygula (veya 1.5 sn sonra geç)
     setTimeout(() => {
       void handleScoreCard(isCorrect ? 4 : 1)
-    }, 1300)
+    }, 1200)
   }
 
-  // Klavye Kısayolları
+  // Oturum Özeti Ekranına Gelindiğinde Logu Otomatik Kaydet
+  useEffect(() => {
+    if (phase === 'summary' && sessionResults.length > 0 && !summarySavedRef.current && activeSubLevel) {
+      summarySavedRef.current = true
+
+      const totalQuestions = sessionResults.length
+      const correctCount = sessionResults.filter((r) => r.score >= 4).length
+      const wrongCount = sessionResults.filter((r) => r.score <= 2).length
+      const learningCount = sessionResults.filter((r) => r.score === 3).length
+      const accuracyPercent = Math.round((correctCount / totalQuestions) * 100)
+
+      void saveStudySessionLog({
+        userId: activeUserId,
+        groupId: activeSubLevel.categoryGroupId,
+        subGroupId: activeSubLevel.id,
+        groupName: `${activeSubLevel.categoryName} • ${activeSubLevel.title}`,
+        mode,
+        startedAt: sessionStartTime,
+        completedAt: new Date().toISOString(),
+        totalQuestions,
+        correctCount,
+        wrongCount,
+        learningCount,
+        accuracyPercent,
+        wordIds: sessionResults.map((r) => r.word.id),
+        isCompleted: true,
+      })
+    }
+  }, [phase, sessionResults, activeUserId, activeSubLevel, mode, sessionStartTime])
+
+  // Klavye Kısayolları (Boşluk Tuşu ile Ön/Arka Yüz, 1-5 Tuşları ile Puanlama)
   useEffect(() => {
     if (phase !== 'studying' || !currentQ) return
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
 
-      // Boşluk: Kartı çevir / telaffuz et
       if (e.code === 'Space') {
         e.preventDefault()
         if (currentQ.type === 'flashcard') {
@@ -275,19 +542,16 @@ export function StudyPage() {
         }
       }
 
-      // Sol Ok: Önceki Soru
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
         handlePrevCard()
       }
 
-      // Sağ Ok: Sonraki Soru
       if (e.key === 'ArrowRight') {
         e.preventDefault()
         handleNextCard()
       }
 
-      // 1-5 tuşları ile doğrudan puan ver
       if (['1', '2', '3', '4', '5'].includes(e.key)) {
         const score = Number(e.key) as MasteryLevel
         void handleScoreCard(score)
@@ -298,295 +562,527 @@ export function StudyPage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [phase, currentQ, handleScoreCard, handlePrevCard, handleNextCard])
 
+  // Yeni Grup Oluşturma Formu
+  async function handleCreateGroupSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newGroupName.trim()) return
+
+    const g = await createCustomGroup(activeUserId, newGroupName.trim(), newGroupDesc.trim())
+    setNewGroupName('')
+    setNewGroupDesc('')
+    setShowCreateGroupModal(false)
+    setActiveCategoryId(g.id)
+    setActiveCategoryName(g.name)
+  }
+
+  // Güvenli Ana Sayfaya Dönüş
+  function handleGoHome() {
+    if (phase === 'studying') {
+      void handleAbandonOrExit(() => navigate('/'))
+    } else {
+      navigate('/')
+    }
+  }
+
   return (
     <section className={styles.container}>
       {/* ========================================================
-          AŞAMA 1: OTURUM BAŞLATMA VE FİLTRE SEÇİMİ
+          HER ZAMAN GÖRÜNÜR: ÜST DÖNÜŞ VE BREADCRUMB BARI
+          ======================================================== */}
+      <div className={styles.topNavRow}>
+        <button
+          type="button"
+          onClick={handleGoHome}
+          className={styles.backHomeBtn}
+          id="study-btn-go-home"
+          title="Ana Sayfaya Dön"
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4">
+            <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span>← Ana Sayfaya Dön</span>
+        </button>
+
+        <div className={styles.studyBreadcrumb}>
+          <span>Kelime Çalışma & Seviye Merkezi</span>
+          {phase !== 'setup' && activeSubLevel && (
+            <>
+              <span>/</span>
+              <span style={{ color: 'var(--text-muted)' }}>{activeSubLevel.categoryName}</span>
+              <span>/</span>
+              <strong style={{ color: 'var(--text)' }}>{activeSubLevel.title}</strong>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* ========================================================
+          AŞAMA 1: GRUPLAR & 20'ŞER KELİMELİK SEVİYE LİSTESİ MERKEZİ
           ======================================================== */}
       {phase === 'setup' && (
         <div className={styles.setupCard}>
-          <div>
-            <h1 className={styles.setupTitle}>Kelime Çalışma Merkezi</h1>
-            <p className="muted">
-              İster bilimsel FSRS aralıklı tekrarlarını tek tıkla başlat, ister çalışma grubunu özelleştir.
-            </p>
-          </div>
-
-          {/* 1. HIZLI BAŞLAT KARTLARI (TEK TIKLA BAŞLAR) */}
-          <div className={styles.quickCardsGrid}>
-            {/* Kart 1: Bugün Tekrarı Gelenler */}
-            <div className={`${styles.quickCard} ${presetCounts.due > 0 ? styles.quickCardActive : ''}`}>
-              <div className={styles.quickCardTop}>
-                <span className={styles.quickIcon}>⚡</span>
-                <span className={styles.quickCountBadge}>{presetCounts.due} Kelime</span>
-              </div>
-              <h2 className={styles.quickCardTitle}>Günün Tekrarları</h2>
-              <p className={styles.quickCardDesc}>
-                FSRS algoritmasına göre bugün unutulmadan pekiştirmen gereken kartlar.
+          <div className={styles.setupHeadRow}>
+            <div>
+              <h1 className={styles.setupTitle}>Seviye ve 20'şer Kelimelik Gruplar</h1>
+              <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+                Kelimeleri binlercesi bir arada karambole değil; 20'şer kelimelik seviyeler halinde adım adım bitir.
               </p>
-              <button
-                type="button"
-                className="btn btn-primary"
-                disabled={presetCounts.due === 0}
-                onClick={() =>
-                  startSessionWithFilters({
-                    dueOnly: true,
-                    lapsesOnly: false,
-                    masteryScores: [],
-                    posList: [],
-                    tags: [],
-                  })
-                }
-              >
-                {presetCounts.due > 0 ? 'Tekrarları Başlat →' : 'Bugünlük Tekrar Yok ✓'}
-              </button>
             </div>
 
-            {/* Kart 2: Öğrenilmekte Olanlar (1, 2, 3 Puan) */}
-            <div className={styles.quickCard}>
-              <div className={styles.quickCardTop}>
-                <span className={styles.quickIcon}>🎯</span>
-                <span className={styles.quickCountBadge}>{presetCounts.learning} Kelime</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <label htmlFor="study-mode-select" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)' }}>
+                  Mod:
+                </label>
+                <select
+                  id="study-mode-select"
+                  className="input"
+                  value={mode}
+                  onChange={(e) => setMode(e.target.value as QuestionMode)}
+                  style={{ padding: '0.35rem 0.65rem', fontSize: '0.82rem' }}
+                >
+                  <option value="flashcard">🗂️ Flaşkart Modu (Önerilen)</option>
+                  <option value="multiple_choice">🔠 Çoktan Seçmeli Test</option>
+                  <option value="synonym">🔗 YDS Eş Anlamlı</option>
+                  <option value="cloze">📝 Cümle İçi Boşluk</option>
+                </select>
               </div>
-              <h2 className={styles.quickCardTitle}>Öğrenilmekte Olanlar</h2>
-              <p className={styles.quickCardDesc}>
-                Henüz tam pekişmemiş (1, 2 ve 3 puanlı) kelime havuzun.
-              </p>
-              <button
-                type="button"
-                className="btn"
-                disabled={presetCounts.learning === 0}
-                onClick={() =>
-                  startSessionWithFilters({
-                    dueOnly: false,
-                    lapsesOnly: false,
-                    masteryScores: [1, 2, 3],
-                    posList: [],
-                    tags: [],
-                  })
-                }
-              >
-                Öğrenmeye Başla →
-              </button>
-            </div>
 
-            {/* Kart 3: En Çok Yanıldıklarım */}
-            <div className={styles.quickCard}>
-              <div className={styles.quickCardTop}>
-                <span className={styles.quickIcon}>⚠️</span>
-                <span className={styles.quickCountBadge}>{presetCounts.hard} Kelime</span>
-              </div>
-              <h2 className={styles.quickCardTitle}>En Çok Yanıldıklarım</h2>
-              <p className={styles.quickCardDesc}>
-                Daha önce tekrar ederken zorlandığın veya hata yaptığın kritik kelimeler.
-              </p>
               <button
                 type="button"
-                className="btn"
-                disabled={presetCounts.hard === 0}
-                onClick={() =>
-                  startSessionWithFilters({
-                    dueOnly: false,
-                    lapsesOnly: true,
-                    masteryScores: [],
-                    posList: [],
-                    tags: [],
-                  })
-                }
+                className="btn btn-secondary"
+                onClick={() => setShowCreateGroupModal(true)}
+                style={{ fontSize: '0.85rem' }}
               >
-                Zorlukları Aş →
+                + Yeni Özel Grup
               </button>
             </div>
           </div>
 
-          {/* 2. GELİŞMİŞ FİLTRELER AÇILIR/KAPANIR BUTONU */}
-          <div className={styles.advancedToggleContainer}>
-            <button
-              type="button"
-              className={styles.advancedToggleBtn}
-              onClick={() => setShowAdvancedFilters((v) => !v)}
+          {/* 🕒 BÖLÜM 1: SON ÇALIŞILANLAR & YARIDA BIRAKILANLAR */}
+          {recentLevels.allRecent.length > 0 && (
+            <div className={styles.recentSection}>
+              <div className={styles.sectionHeaderRow}>
+                <h3 className={styles.sectionHeading}>
+                  <span>🕒 Son Çalışılanlar & Yarıda Bırakılanlar</span>
+                </h3>
+                <span className="muted" style={{ fontSize: '0.8rem' }}>
+                  {recentLevels.inProgress.length > 0
+                    ? `⚠️ ${recentLevels.inProgress.length} seviye yarıda bırakıldı`
+                    : 'Tüm son oturumlar tamamlandı'}
+                </span>
+              </div>
+
+              <div className={styles.recentGrid}>
+                {recentLevels.allRecent.map((prog) => {
+                  const isInProgress = prog.status === 'in_progress'
+                  const cat = allCategories.find((c) => c.id === prog.categoryGroupId)
+
+                  return (
+                    <div
+                      key={prog.subGroupId}
+                      className={`${styles.recentCard} ${
+                        isInProgress ? styles.recentCard_in_progress : styles.recentCard_completed
+                      }`}
+                    >
+                      <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                          <span
+                            className={`${styles.statusTag} ${
+                              isInProgress ? styles.statusTag_in_progress : styles.statusTag_completed
+                            }`}
+                          >
+                            {isInProgress
+                              ? `⏳ Yarıda Bırakıldı (${prog.completedQuestions}/${prog.totalQuestions})`
+                              : `✅ Tamamlandı (%${prog.accuracyPercent} Başarı)`}
+                          </span>
+                          <span className="muted" style={{ fontSize: '0.75rem' }}>
+                            {new Date(prog.lastStudiedAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}
+                          </span>
+                        </div>
+
+                        <strong style={{ fontSize: '0.95rem', color: 'var(--text)', display: 'block' }}>
+                          {formatLevelStudyTitle(prog.categoryGroupId, prog.levelNumber, prog.mode)}
+                        </strong>
+                      </div>
+
+                      <button
+                        type="button"
+                        className={isInProgress ? 'btn btn-primary' : 'btn btn-secondary'}
+                        style={{ fontSize: '0.8rem', padding: '0.45rem 0.75rem', width: '100%' }}
+                        onClick={() => {
+                          if (!cat) return
+                          const lvls = chunkIntoSubLevels(cat.id, cat.name, cat.words, 20)
+                          const target = lvls.find((l) => l.id === prog.subGroupId)
+                          if (target) {
+                            startLevelSession(target, isInProgress ? prog.completedQuestions : 0)
+                          }
+                        }}
+                      >
+                        {isInProgress ? `▶ Kaldığın Yerden Devam Et (${prog.completedQuestions + 1}. Soru) →` : '🔄 Bu Seviyeyi Tekrar Çalış'}
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* 📅 BÖLÜM 2: GÜNÜN & HAFTANIN TEKRARLARI */}
+          {(recentLevels.today.length > 0 || recentLevels.week.length > 0) && (
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.75rem',
+                flexWrap: 'wrap',
+                padding: '0.85rem 1.15rem',
+                background: 'var(--surface-strong)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
-              <span>⚙️ Filtreleri ve Soru Modunu Özelleştir</span>
-              <span>{showAdvancedFilters ? '▲ Kapat' : '▼ Aç'}</span>
-            </button>
-          </div>
-
-          {/* 3. GELİŞMİŞ FİLTRE VE AYAR PANELİ (SADECE İSTENİRSE AÇILIR) */}
-          {showAdvancedFilters && (
-            <div className={styles.advancedFilterDrawer}>
-              {/* 1-5 PUAN FİLTRESİ (ÇOKLU SEÇİM) */}
-              <div className="field">
-                <label>Öğrenme Puanına Göre Seç (1 - 5 Puan)</label>
-                <span className="hint">Birden fazla puan seçebilirsiniz (Örn: 1, 2 ve 3):</span>
-                <div className={styles.scoreToggleRow}>
-                  {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => {
-                    const conf = MASTERY_CONFIG[score]
-                    const active = selectedScores.includes(score)
-                    const selClass = active ? styles[`scoreSelected_${score}` as keyof typeof styles] : ''
-                    return (
-                      <button
-                        key={score}
-                        type="button"
-                        className={`${styles.scoreBtn} ${selClass}`}
-                        onClick={() => toggleScore(score)}
-                        aria-pressed={active}
-                      >
-                        <span className={styles.scoreNum} style={{ color: conf.color }}>
-                          {score}
-                        </span>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 700 }}>{conf.label}</span>
-                        <span className={styles.scoreDesc}>{conf.desc}</span>
-                      </button>
-                    )
-                  })}
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text)' }}>
+                  📅 Tekrar Zamanı Gelmiş Gruplar:
+                </span>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                  Bugün: <strong>{recentLevels.today.length} seviye</strong> • Bu Hafta: <strong>{recentLevels.week.length} seviye</strong> çalışıldı.
+                </span>
               </div>
 
-              {/* KELİME TÜRÜ FİLTRESİ */}
-              <div className="field">
-                <label>Kelime Türüne Göre Seç (İsteğe Bağlı)</label>
-                <div className={styles.chipsRow}>
-                  {POS_FILTERS.map((p) => {
-                    const active = selectedPos.includes(p.id)
-                    return (
-                      <button
-                        key={p.id}
-                        type="button"
-                        className={`${styles.chip} ${active ? styles.chipActive : ''}`}
-                        onClick={() => togglePos(p.id)}
-                      >
-                        {p.label}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-
-              {/* ETİKET / KATEGORİ FİLTRESİ */}
-              {availableTags.length > 0 && (
-                <div className="field">
-                  <label>Kategori ve Etiketlere Göre Seç</label>
-                  <div className={styles.chipsRow}>
-                    {availableTags.map((tag) => {
-                      const active = selectedTags.includes(tag)
-                      return (
-                        <button
-                          key={tag}
-                          type="button"
-                          className={`${styles.chip} ${active ? styles.chipActive : ''}`}
-                          onClick={() => toggleTag(tag)}
-                        >
-                          #{tag}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* SORU TİPİ VE LİMİT */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div className="field">
-                  <label htmlFor="study-mode">Soru Türü</label>
-                  <select
-                    id="study-mode"
-                    className="input"
-                    value={mode}
-                    onChange={(e) => setMode(e.target.value as QuestionMode)}
-                  >
-                    <option value="mixed">🎲 Akıllı Karışık (Önerilen)</option>
-                    <option value="flashcard">🗂️ Yalnızca Flaşkartlar (Çevir & Puanla)</option>
-                    <option value="multiple_choice">🔠 Çoktan Seçmeli Test</option>
-                    <option value="synonym">🔗 YDS Eş Anlamlı Testi</option>
-                    <option value="cloze">📝 Cümlede Boşluk Doldurma</option>
-                  </select>
-                </div>
-
-                <div className="field">
-                  <label htmlFor="study-limit">Oturum Kelime Sayısı</label>
-                  <select
-                    id="study-limit"
-                    className="input"
-                    value={limit}
-                    onChange={(e) => setLimit(Number(e.target.value))}
-                  >
-                    <option value={10}>10 Kelime</option>
-                    <option value={15}>15 Kelime</option>
-                    <option value={20}>20 Kelime</option>
-                    <option value={30}>30 Kelime</option>
-                    <option value={0}>Filtredeki Tümü</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* EŞLEŞEN KELİME SAYISI VE BAŞLAT BUTONU */}
-              <div className={styles.summaryRow}>
-                <div>
-                  <span className="muted" style={{ fontSize: '0.8rem', display: 'block' }}>
-                    Filtre Sonucu:
-                  </span>
-                  <span className={styles.matchCount}>
-                    {matchedCards.length} kelime eşleşti
-                  </span>
-                </div>
-
+              {recentLevels.today.length > 0 && (
                 <button
                   type="button"
-                  id="start-study-btn"
-                  className="btn btn-primary"
-                  onClick={startSession}
-                  disabled={matchedCards.length === 0}
+                  className="btn btn-secondary"
+                  style={{ fontSize: '0.8rem', padding: '0.35rem 0.85rem' }}
+                  onClick={() => {
+                    const firstToday = recentLevels.today[0]
+                    const cat = allCategories.find((c) => c.id === firstToday.categoryGroupId)
+                    if (cat) {
+                      const lvls = chunkIntoSubLevels(cat.id, cat.name, cat.words, 20)
+                      const target = lvls.find((l) => l.id === firstToday.subGroupId)
+                      if (target) startLevelSession(target, 0)
+                    }
+                  }}
                 >
-                  Filtrelenmiş Oturumu Başlat →
+                  ⚡ Bugünün İlk Seviyesini Tekrar Et
                 </button>
+              )}
+            </div>
+          )}
+
+          {/* BÖLÜM 3: KATEGORİ SEÇİCİ SEKMELERİ (C1-C2, B1-B2, A1-A2, Phrasal, Bağlaç, Özel) */}
+          <div>
+            <div className={styles.categoryTabsRow}>
+              {allCategories.map((cat) => {
+                const isActive = cat.id === activeCategoryId
+                const lvlsCount = Math.ceil(cat.words.length / 20)
+
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    className={`${styles.categoryTabBtn} ${isActive ? styles.categoryTabBtnActive : ''}`}
+                    onClick={() => {
+                      setActiveCategoryId(cat.id)
+                      setActiveCategoryName(cat.name)
+                      setLevelFilter('all')
+                      setLevelSearch('')
+                    }}
+                  >
+                    <span>{cat.icon}</span>
+                    <span>{cat.shortName}</span>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '0.1rem 0.45rem',
+                        borderRadius: '999px',
+                        background: isActive ? 'var(--primary)' : 'var(--input-bg)',
+                        color: isActive ? '#fff' : 'var(--text-muted)',
+                      }}
+                    >
+                      {lvlsCount} Seviye
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* AKTİF KATEGORİ BAŞLIK VE FİLTRELEME BARI */}
+            {activeCategoryObj && (
+              <div className={styles.categoryHeaderBox} style={{ marginTop: '0.85rem' }}>
+                <div>
+                  <h3 style={{ margin: '0 0 0.2rem', fontSize: '1.15rem', fontWeight: 800 }}>
+                    {activeCategoryObj.icon} {activeCategoryObj.name}
+                  </h3>
+                  <p className="muted" style={{ margin: 0, fontSize: '0.82rem' }}>
+                    {activeCategoryObj.words.length} kelime • 20'şer kelimelik {categorySubLevels.length} seviyeye ayrıldı.
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  {/* Seviye Durum Filtreleri */}
+                  <div className={styles.levelFilterRow}>
+                    <button
+                      type="button"
+                      className={`${styles.filterPill} ${levelFilter === 'all' ? styles.filterPillActive : ''}`}
+                      onClick={() => setLevelFilter('all')}
+                    >
+                      Tümü ({categorySubLevels.length})
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.filterPill} ${levelFilter === 'not_started' ? styles.filterPillActive : ''}`}
+                      onClick={() => setLevelFilter('not_started')}
+                    >
+                      Başlanmamış
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.filterPill} ${levelFilter === 'in_progress' ? styles.filterPillActive : ''}`}
+                      onClick={() => setLevelFilter('in_progress')}
+                    >
+                      Yarıda Kalan
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.filterPill} ${levelFilter === 'completed' ? styles.filterPillActive : ''}`}
+                      onClick={() => setLevelFilter('completed')}
+                    >
+                      Tamamlanan
+                    </button>
+                  </div>
+
+                  {/* Hızlı Arama */}
+                  <input
+                    type="search"
+                    className="input"
+                    placeholder="Seviye veya kelime ara…"
+                    value={levelSearch}
+                    onChange={(e) => setLevelSearch(e.target.value)}
+                    style={{ padding: '0.35rem 0.65rem', fontSize: '0.82rem', width: '180px' }}
+                  />
+                </div>
               </div>
+            )}
+          </div>
+
+          {/* BÖLÜM 4: 20'ŞER KELİMELİK SEVİYE KARTLARI IZGARASI */}
+          <div>
+            <div className={styles.levelsGrid}>
+              {filteredSubLevels.map((lvl) => {
+                const prog = levelProgressMap.get(lvl.id)
+                const status = prog?.status || 'not_started'
+                const isInProgress = status === 'in_progress'
+                const isCompleted = status === 'completed'
+
+                return (
+                  <div
+                    key={lvl.id}
+                    className={`${styles.levelCard} ${
+                      isInProgress ? styles.levelCard_in_progress : isCompleted ? styles.levelCard_completed : ''
+                    }`}
+                  >
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                        <span
+                          className={`${styles.statusTag} ${
+                            isInProgress
+                              ? styles.statusTag_in_progress
+                              : isCompleted
+                              ? styles.statusTag_completed
+                              : styles.statusTag_not_started
+                          }`}
+                        >
+                          {isInProgress
+                            ? `⏳ Yarıda (${prog?.completedQuestions || 0}/20)`
+                            : isCompleted
+                            ? `✅ %${prog?.accuracyPercent} Başarı`
+                            : '⚪ Başlanmadı'}
+                        </span>
+                        <span className="muted" style={{ fontSize: '0.75rem', fontWeight: 700 }}>
+                          #{lvl.levelNumber}
+                        </span>
+                      </div>
+
+                      <h4 className={styles.levelCardTitle}>Level {lvl.levelNumber}</h4>
+                      <p className={styles.levelCardRange}>
+                        {lvl.title.replace(`Level ${lvl.levelNumber}`, '').trim()} • {lvl.wordCount} Kelime
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      className={`${styles.levelCardBtn} ${
+                        isInProgress || !isCompleted ? styles.levelCardBtn_primary : ''
+                      }`}
+                      onClick={() => startLevelSession(lvl, isInProgress ? prog?.completedQuestions || 0 : 0)}
+                    >
+                      {isInProgress
+                        ? `▶ Devam Et (${(prog?.completedQuestions || 0) + 1}. Soru)`
+                        : isCompleted
+                        ? '🔄 Tekrar Çalış'
+                        : 'Çalış (20 Kelime) →'}
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+
+            {filteredSubLevels.length === 0 && (
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '3rem 1rem',
+                  background: 'var(--surface-strong)',
+                  borderRadius: 'var(--radius)',
+                  color: 'var(--text-muted)',
+                }}
+              >
+                Bu filtreye uygun seviye bulunamadı.
+              </div>
+            )}
+          </div>
+
+          {/* YENİ ÖZEL GRUP OLUŞTURMA MODALI */}
+          {showCreateGroupModal && (
+            <div
+              style={{
+                position: 'fixed',
+                inset: 0,
+                background: 'rgba(0,0,0,0.65)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 100,
+                padding: '1rem',
+              }}
+            >
+              <form
+                onSubmit={handleCreateGroupSubmit}
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '1.5rem',
+                  maxWidth: '440px',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800 }}>Yeni Kelime Grubu Oluştur</h3>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => setShowCreateGroupModal(false)}
+                    style={{ padding: '0.2rem 0.5rem' }}
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="field">
+                  <label htmlFor="group-name-input">Grup / Deste Adı</label>
+                  <input
+                    id="group-name-input"
+                    className="input"
+                    placeholder="Örn: Hafta 1 Kelimeleri, Paragraf Fiilleri…"
+                    value={newGroupName}
+                    onChange={(e) => setNewGroupName(e.target.value)}
+                    required
+                    autoFocus
+                  />
+                </div>
+
+                <div className="field">
+                  <label htmlFor="group-desc-input">Açıklama (İsteğe Bağlı)</label>
+                  <input
+                    id="group-desc-input"
+                    className="input"
+                    placeholder="Örn: 2024 İlkbahar denemesinde çıkanlar"
+                    value={newGroupDesc}
+                    onChange={(e) => setNewGroupDesc(e.target.value)}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => setShowCreateGroupModal(false)}
+                  >
+                    İptal
+                  </button>
+                  <button type="submit" className="btn btn-primary" disabled={!newGroupName.trim()}>
+                    Grubu Oluştur ✓
+                  </button>
+                </div>
+              </form>
             </div>
           )}
         </div>
       )}
 
       {/* ========================================================
-          AŞAMA 2: AKTİF ÇALIŞMA EKRANI
+          AŞAMA 2: AKTİF ÇALIŞMA EKRANI (FLAŞKART & TEST)
           ======================================================== */}
       {phase === 'studying' && currentQ && (
         <div className={styles.activeArea}>
-          {/* İlerleme Çubuğu */}
-          {/* İlerleme Çubuğu */}
+          {/* Üst Durum Çubuğu */}
           <div className={styles.statusBar}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
               <button
                 type="button"
                 className="btn btn-ghost"
-                style={{ padding: '0.2rem 0.55rem', fontSize: '0.8rem' }}
+                style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem' }}
                 disabled={currentIndex === 0}
                 onClick={handlePrevCard}
                 title="Önceki Soru (Sol Ok Tuşu)"
               >
-                ← Geri
+                ← Önceki Soru
               </button>
-              <span style={{ fontWeight: 600, fontSize: '0.88rem' }}>
+              <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--text)' }}>
                 Soru {currentIndex + 1} / {questions.length}
               </span>
               <button
                 type="button"
                 className="btn btn-ghost"
-                style={{ padding: '0.2rem 0.55rem', fontSize: '0.8rem' }}
+                style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem' }}
                 onClick={handleNextCard}
                 title="Sonraki Soru (Sağ Ok Tuşu)"
               >
-                {currentIndex + 1 < questions.length ? 'İleri →' : 'Bitir 🏁'}
+                {currentIndex + 1 < questions.length ? 'Sonraki Soru →' : 'Sonuçları Gör 🏁'}
               </button>
             </div>
 
-            <button
-              type="button"
-              className="btn btn-ghost"
-              style={{ padding: '0.2rem 0.5rem', fontSize: '0.8rem' }}
-              onClick={() => setPhase('setup')}
-            >
-              ✕ Oturumu Bitir
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem' }}
+                onClick={() => void handleAbandonOrExit(() => setPhase('setup'))}
+                title="Farklı bir seviye seçmek için listeye dön (İlerlemen kaydedilir)"
+              >
+                Seviye Değiştir
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem', color: 'var(--error)' }}
+                onClick={() => void handleAbandonOrExit(() => setPhase('summary'))}
+                title="Oturumu şimdi tamamla ve özeti gör"
+              >
+                ✕ Oturumu Bitir
+              </button>
+            </div>
           </div>
+
+          {/* İlerleme Çubuğu */}
           <div className={styles.progressBar} aria-hidden="true">
             <div
               className={styles.progressFill}
@@ -594,184 +1090,284 @@ export function StudyPage() {
             />
           </div>
 
-          {/* Soru Alanı */}
+          {/* Soru / Flaşkart Alanı */}
           <div className={styles.cardStage}>
             <div className={styles.cardFlip}>
-              {/* ÜST BİLGİ */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className={styles.cardSubPrompt}>{currentQ.subPrompt}</span>
+              {/* ÜST BİLGİ BARI */}
+              <div className={styles.cardHeadRow}>
+                <span className={styles.cardSubPrompt}>
+                  Kelime Türü: <strong>{currentQ.word.partOfSpeech.toUpperCase()}</strong> •{' '}
+                  {activeSubLevel ? activeSubLevel.title : activeCategoryName}
+                </span>
                 <button
                   type="button"
                   className="btn btn-ghost"
+                  style={{ padding: '0.2rem 0.55rem', fontSize: '0.85rem' }}
                   onClick={() => speakWord(currentQ.word.term)}
-                  title="Dinle"
+                  title="Sesli Telaffuz Dinle"
                 >
                   🔊 Dinle
                 </button>
               </div>
 
-              {/* 1. FLAŞKART GÖRÜNÜMÜ */}
+              {/* 1. FLAŞKART GÖRÜNÜMÜ (ÖN VE ARKA YÜZ SİMETRİSİ) */}
               {currentQ.type === 'flashcard' && (
-                <>
-                  {!isFlipped ? (
-                    <div style={{ margin: 'auto 0' }}>
-                      <h2 className={styles.cardPrompt}>{currentQ.prompt}</h2>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        style={{ marginTop: '1.25rem', fontSize: '1rem', padding: '0.75rem 1.6rem' }}
-                        onClick={() => setIsFlipped(true)}
-                      >
-                        🔄 Kartı Çevir (Boşluk Tuşu)
-                      </button>
-                      <div className={styles.flipHint}>veya doğrudan 1-5 tuşlarına basarak puanlayın</div>
+                <div className={styles.faceContainer}>
+                  {/* SİMETRİK VE SABİT YÜKSEKLİKLİ ORTAK ÜST ALAN */}
+                  <div className={styles.topPromptBlock}>
+                    <div className={styles.mainPromptCenter}>
+                      {!isFlipped ? (
+                        <>
+                          <h2 className={styles.promptMainWord}>{currentQ.word.term}</h2>
+                          <div className={styles.promptSubWord}>
+                            <button
+                              type="button"
+                              className="btn btn-ghost"
+                              style={{ padding: '0.2rem 0.5rem', fontSize: '0.9rem' }}
+                              onClick={() => speakWord(currentQ.word.term)}
+                              title="Telaffuz"
+                            >
+                              🔊
+                            </button>
+                            <span
+                              style={{
+                                fontSize: '0.75rem',
+                                textTransform: 'uppercase',
+                                padding: '0.15rem 0.5rem',
+                                borderRadius: '4px',
+                                background: 'var(--input-bg)',
+                                border: '1px solid var(--border)',
+                              }}
+                            >
+                              {currentQ.word.partOfSpeech}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <h2 className={styles.promptMainWord} style={{ color: 'var(--text)' }}>
+                            {currentQ.word.definition}
+                          </h2>
+                          <div className={styles.promptSubWord}>
+                            <span>{currentQ.word.term}</span>
+                            <button
+                              type="button"
+                              className="btn btn-ghost"
+                              style={{ padding: '0.15rem 0.45rem', fontSize: '0.85rem' }}
+                              onClick={() => speakWord(currentQ.word.term)}
+                              title="Telaffuz Dinle"
+                            >
+                              🔊
+                            </button>
+                            <span
+                              style={{
+                                fontSize: '0.72rem',
+                                textTransform: 'uppercase',
+                                padding: '0.1rem 0.45rem',
+                                borderRadius: '4px',
+                                background: 'var(--input-bg)',
+                                border: '1px solid var(--border)',
+                              }}
+                            >
+                              {currentQ.word.partOfSpeech}
+                            </span>
+                          </div>
+                        </>
+                      )}
                     </div>
-                  ) : (
-                    <div className={styles.backFace}>
-                      {/* ÜST BAŞLIK: İNGİLİZCE KELİME + TELAFFUZ + KARTI TEKRAR ÇEVİR BUTONU */}
-                      <div className={styles.backHeadRow}>
-                        <div className={styles.backTermWrap}>
-                          <h2 className={styles.backTerm}>{currentQ.word.term}</h2>
-                          <button
-                            type="button"
-                            className="btn btn-ghost"
-                            style={{ padding: '0.2rem 0.45rem', fontSize: '0.9rem' }}
-                            onClick={() => speakWord(currentQ.word.term)}
-                            title="Telaffuz Dinle"
-                            aria-label="Telaffuz Dinle"
-                          >
-                            🔊
-                          </button>
-                          <span
-                            style={{
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              textTransform: 'uppercase',
-                              padding: '0.15rem 0.5rem',
-                              borderRadius: '6px',
-                              background: 'color-mix(in srgb, var(--primary) 15%, transparent)',
-                              color: 'var(--primary)',
-                            }}
-                          >
-                            {currentQ.word.partOfSpeech}
-                          </span>
-                        </div>
 
-                        {/* KARTI TEKRAR ÇEVİR BUTONU (KULLANICININ İSTEĞİ) */}
+                    {/* SİMETRİK ÇEVİRME BUTONU (ÖN VE ARKA YÜZDE BİREBİR AYNI SABİT KOORDİNATTA) */}
+                    <div className={styles.centerFlipWrap}>
+                      {!isFlipped ? (
                         <button
                           type="button"
-                          className={styles.flipBackBtn}
-                          onClick={() => setIsFlipped(false)}
-                          title="Ön yüze geri dön (Boşluk Tuşu)"
+                          className={styles.centerFlipBtn}
+                          onClick={() => setIsFlipped(true)}
+                          id="btn-flip-card"
+                          title="Kartı Çevir (Boşluk Tuşu)"
                         >
-                          🔄 Kartı Tekrar Çevir
+                          🔄 Kartı Çevir (Boşluk Tuşu)
                         </button>
-                      </div>
-
-                      {/* TÜRKÇE KARŞILIĞI */}
-                      <div>
-                        <div
-                          className="muted"
-                          style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.04em',
-                            marginBottom: '0.2rem',
-                          }}
+                      ) : (
+                        <button
+                          type="button"
+                          className={`${styles.centerFlipBtn} ${styles.centerFlipBtnBack}`}
+                          onClick={() => setIsFlipped(false)}
+                          id="btn-flip-back"
+                          title="Ön Yüze Dön (Boşluk Tuşu)"
                         >
-                          Türkçe Anlamı
-                        </div>
-                        <h3 className={styles.backDef}>{currentQ.word.definition}</h3>
-                      </div>
-
-                      {/* Eş anlamlılar */}
-                      {currentQ.word.synonyms && currentQ.word.synonyms.length > 0 && (
-                        <div style={{ fontSize: '0.95rem' }}>
-                          <strong style={{ color: 'var(--primary)' }}>Eş Anlamlılar: </strong>
-                          {currentQ.word.synonyms.join(', ')}
-                        </div>
+                          🔄 Ön Yüze Dön (Boşluk Tuşu)
+                        </button>
                       )}
-
-                      {/* Kalıplar */}
-                      {currentQ.word.collocations && currentQ.word.collocations.length > 0 && (
-                        <div className="muted" style={{ fontSize: '0.85rem', fontStyle: 'italic' }}>
-                          Kalıp: {currentQ.word.collocations.join(' • ')}
-                        </div>
-                      )}
-
-                      {/* Örnek cümle (Kelimeye tıklayarak anlamını görme) */}
-                      {currentQ.word.sentences && currentQ.word.sentences.length > 0 && currentQ.word.sentences[0] && (
-                        <div style={{ marginTop: '0.4rem', width: '100%' }}>
-                          <InteractiveSentence
-                            sentence={
-                              typeof currentQ.word.sentences[0] === 'string'
-                                ? { en: currentQ.word.sentences[0] }
-                                : currentQ.word.sentences[0]
-                            }
-                            activeUserId={currentQ.word.userId}
-                            highlightTerm={currentQ.word.term}
-                            showTranslationByDefault={true}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* 1-5 PUAN VERME BUTONLARI (KULLANICININ ÖZEL İSTEĞİ) */}
-                  <div className={styles.scoreActionBox}>
-                    <span className={styles.scoreActionTitle}>
-                      {isFlipped ? 'Bu kelimeyi ne kadar öğrendiniz? (1-5 Puan verin)' : 'Puan Verip Geç:'}
-                    </span>
-                    <div className={styles.scoreButtonsGrid}>
-                      {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => {
-                        const conf = MASTERY_CONFIG[score]
-                        return (
-                          <button
-                            key={score}
-                            type="button"
-                            className={`${styles.rateBtn} ${styles[`rateBtn_${score}` as keyof typeof styles]}`}
-                            onClick={() => void handleScoreCard(score)}
-                          >
-                            <span>{conf.badge}</span>
-                            <span style={{ fontSize: '0.72rem' }}>{conf.label}</span>
-                            <span className={styles.rateKbd}>[{score}]</span>
-                          </button>
-                        )
-                      })}
                     </div>
                   </div>
-                </>
+
+                  {/* ALT ALAN:
+                      ÖN YÜZDE: "Gruba Ekle" Hızlı Butonları + İpucu
+                      ARKA YÜZDE: Eş Anlamlılar + Örnek Cümle + Puanlama
+                  */}
+                  {!isFlipped ? (
+                    <div className={styles.frontBottomBlock}>
+                      {toastMessage && (
+                        <div className={styles.toastBanner}>
+                          <span>✓</span>
+                          <span>{toastMessage}</span>
+                        </div>
+                      )}
+
+                      {/* ➕ GRUBA EKLE VE SON 2 GRUP HIZLI BUTONLARI */}
+                      <div className={styles.groupActionBar}>
+                        <button
+                          type="button"
+                          className={styles.addGroupBtn}
+                          onClick={() => {
+                            setIsCreatingInGroupModal(customGroups.length === 0)
+                            setTargetPositionInput('')
+                            if (customGroups.length > 0) {
+                              setTargetGroupId(customGroups[0].id)
+                            }
+                            setShowAddToGroupModal(true)
+                          }}
+                          id="btn-add-to-group"
+                          title="Bu kelimeyi özel bir çalışma grubuna / desteye ekle"
+                        >
+                          <span>➕</span>
+                          <span>Gruba Ekle</span>
+                        </button>
+
+                        {/* SON EKLENEN 2 GRUP (HIZLI TEK TIKLA EKLEME) */}
+                        {recentGroups.map((rg) => {
+                          const isAlreadyIn = (rg.wordIds || []).includes(currentQ.word.id)
+                          return (
+                            <button
+                              key={rg.id}
+                              type="button"
+                              className={`${styles.quickGroupBtn} ${isAlreadyIn ? styles.quickGroupBtnActive : ''}`}
+                              onClick={() => void handleQuickAddToGroup(rg.id, rg.name)}
+                              title={isAlreadyIn ? `Bu kelime zaten "${rg.name}" grubunda yer alıyor` : `"${rg.name}" grubuna hızlı ekle`}
+                            >
+                              <span>{isAlreadyIn ? '✓' : '⚡'}</span>
+                              <span>{rg.name}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+
+                      <span className={styles.flipHint}>
+                        İpucu: Klavyeden <strong>Boşluk</strong> ile kartı çevirebilir, doğrudan <strong>1-5</strong> tuşlarıyla puanlayabilirsiniz.
+                      </span>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                      {/* EŞ ANLAMLILAR & ÖRNEK CÜMLE */}
+                      <div className={styles.subtleDetailsArea}>
+                        {currentQ.word.synonyms && currentQ.word.synonyms.length > 0 && (
+                          <div>
+                            <span className={styles.subtleLabel}>Eş Anlamlılar (YDS):</span>
+                            <div className={styles.synChipsRow}>
+                              {currentQ.word.synonyms.map((s, idx) => (
+                                <span key={idx} className={styles.synChip}>
+                                  {s}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {currentQ.word.sentences && currentQ.word.sentences.length > 0 && currentQ.word.sentences[0] && (
+                          <div style={{ marginTop: '0.35rem' }}>
+                            <span className={styles.subtleLabel}>Örnek Cümle (Tıklanabilir Çeviri):</span>
+                            <InteractiveSentence
+                              sentence={
+                                typeof currentQ.word.sentences[0] === 'string'
+                                  ? { en: currentQ.word.sentences[0] }
+                                  : currentQ.word.sentences[0]
+                              }
+                              activeUserId={activeUserId}
+                              highlightTerm={currentQ.word.term}
+                              showTranslationByDefault={true}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* YENİLENMİŞ PUANLAMA BÖLÜMÜ (ÖĞRENDİM / ÖĞRENMEDİM + SADE 1-5 BARI) */}
+                      <div className={styles.gradingContainer}>
+                        {/* Hızlı İkili Butonlar */}
+                        <div className={styles.dualActionRow}>
+                          <button
+                            type="button"
+                            className={styles.actionBtnFail}
+                            onClick={() => void handleScoreCard(1)}
+                            id="btn-not-learned"
+                            title="Öğrenmedim (Tekrar karşıma çıksın - Kısayol: 1)"
+                          >
+                            <span>❌</span>
+                            <span>Öğrenmedim (1)</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            className={styles.actionBtnSuccess}
+                            onClick={() => void handleScoreCard(4)}
+                            id="btn-learned"
+                            title="Öğrendim (Biliyorum, pekiştirildi - Kısayol: 4)"
+                          >
+                            <span>✅</span>
+                            <span>Öğrendim (4)</span>
+                          </button>
+                        </div>
+
+                        {/* Sade 1-5 Puan Barı */}
+                        <div className={styles.numericGradeRow}>
+                          <span className={styles.numericGradeLabel}>Öğrenme Düzeyi (1 - 5):</span>
+                          {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => (
+                            <button
+                              key={score}
+                              type="button"
+                              className={`${styles.numericBtn} ${styles[`numericBtn_${score}` as keyof typeof styles]}`}
+                              onClick={() => void handleScoreCard(score)}
+                              id={`grade-btn-${score}`}
+                              title={`${score}: ${MASTERY_CONFIG[score].label}`}
+                            >
+                              {score}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
 
-              {/* 2. ÇOKTAN SEÇMELİ / EŞ ANLAMLI / CLOZE TEST */}
+              {/* 2. ÇOKTAN SEÇMELİ MOD */}
               {currentQ.type !== 'flashcard' && currentQ.options && (
                 <div style={{ margin: 'auto 0' }}>
-                  <h2 className={styles.cardPrompt} style={{ fontSize: '1.6rem' }}>
+                  <h2 className={styles.promptMainWord} style={{ fontSize: '1.8rem', marginBottom: '1.25rem' }}>
                     {currentQ.prompt}
                   </h2>
 
                   <div className={styles.optionsGrid}>
                     {currentQ.options.map((opt, idx) => {
-                      const letters = ['A', 'B', 'C', 'D']
-                      let optClass = styles.optionBtn
+                      let btnClass = styles.optionBtn
                       if (selectedOption !== null) {
                         if (idx === currentQ.correctOptionIndex) {
-                          optClass = `${styles.optionBtn} ${styles.optionCorrect}`
+                          btnClass = `${styles.optionBtn} ${styles.optionCorrect}`
                         } else if (idx === selectedOption) {
-                          optClass = `${styles.optionBtn} ${styles.optionWrong}`
+                          btnClass = `${styles.optionBtn} ${styles.optionWrong}`
                         }
                       }
-
                       return (
                         <button
                           key={idx}
                           type="button"
-                          className={optClass}
+                          className={btnClass}
                           disabled={selectedOption !== null}
                           onClick={() => handleSelectOption(idx)}
                         >
-                          <span className={styles.optionLetter}>{letters[idx]}</span>
+                          <span className={styles.optLetter}>
+                            {String.fromCharCode(65 + idx)}
+                          </span>
                           <span>{opt}</span>
                         </button>
                       )
@@ -779,18 +1375,7 @@ export function StudyPage() {
                   </div>
 
                   {selectedOption !== null && currentQ.explanation && (
-                    <div
-                      role="status"
-                      style={{
-                        marginTop: '1rem',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
-                        color:
-                          selectedOption === currentQ.correctOptionIndex
-                            ? 'var(--success)'
-                            : 'var(--danger)',
-                      }}
-                    >
+                    <div className={styles.explanationBox}>
                       {currentQ.explanation}
                     </div>
                   )}
@@ -798,7 +1383,7 @@ export function StudyPage() {
               )}
             </div>
 
-            {/* ALT İLERİ - GERİ NAVİGASYON ÇUBUĞU */}
+            {/* ALT İLERİ - GERİ NAVİGASYON BARI */}
             <div className={styles.navRow}>
               <button
                 type="button"
@@ -828,71 +1413,328 @@ export function StudyPage() {
       )}
 
       {/* ========================================================
-          AŞAMA 3: OTURUM SONU RAPOR EKRANI
+          AŞAMA 3: OTURUM SONU RAPOR VE ÖZET EKRANI
           ======================================================== */}
-      {phase === 'summary' && (
+      {phase === 'summary' && activeSubLevel && (
         <div className={styles.resultCard}>
           <div style={{ fontSize: '3rem' }}>🎉</div>
-          <h1 className={styles.resultTitle}>Oturum Tamamlandı!</h1>
-          <p className="muted">
-            Tebrikler! {sessionResults.length} kelime başarıyla tekrar edildi.
-            FSRS algoritması bir sonraki tekrar zamanlarını güncelledi.
+          <h1 className={styles.resultTitle}>Seviye Tamamlandı!</h1>
+          <p className="muted" style={{ margin: '0 0 1rem' }}>
+            <strong>{activeSubLevel.categoryName} • {activeSubLevel.title}</strong> seviyesindeki {sessionResults.length} kelime başarıyla tamamlandı.
+            FSRS algoritması bu kelimelerin sonraki tekrar tarihlerini başarı durumuna göre ayarladı.
           </p>
 
           <div className={styles.resultScoreRow}>
             <div className={styles.scoreStat}>
               <span className={styles.scoreStatNum}>{sessionResults.length}</span>
-              <span className={styles.scoreStatLbl}>Çalışılan Kelime</span>
+              <span className={styles.scoreStatLbl}>Toplam Soru</span>
             </div>
             <div className={styles.scoreStat}>
-              <span className={styles.scoreStatNum}>
+              <span className={styles.scoreStatNum} style={{ color: 'var(--success)' }}>
                 {sessionResults.filter((r) => r.score >= 4).length}
               </span>
-              <span className={styles.scoreStatLbl}>Öğrenilen (4-5 Puan)</span>
+              <span className={styles.scoreStatLbl}>Öğrenildi (4-5)</span>
             </div>
             <div className={styles.scoreStat}>
-              <span className={styles.scoreStatNum}>
+              <span className={styles.scoreStatNum} style={{ color: 'var(--error)' }}>
                 {sessionResults.filter((r) => r.score <= 2).length}
               </span>
-              <span className={styles.scoreStatLbl}>Tekrar Gereken (1-2 Puan)</span>
+              <span className={styles.scoreStatLbl}>Öğrenilmedi (1-2)</span>
+            </div>
+            <div className={styles.scoreStat}>
+              <span className={styles.scoreStatNum} style={{ color: 'var(--warning)' }}>
+                {sessionResults.filter((r) => r.score === 3).length}
+              </span>
+              <span className={styles.scoreStatLbl}>Gelişmekte (3)</span>
             </div>
           </div>
+
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '1.25rem 0 0.5rem', textAlign: 'left' }}>
+            📋 Bu Seviyede Çalışılan Kelimeler
+          </h3>
 
           <div className={styles.wordReviewList}>
             {sessionResults.map((r, i) => (
               <div key={i} className={styles.reviewItem}>
-                <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                   <strong>{r.word.term}</strong>
-                  <span className="muted" style={{ marginLeft: '0.5rem', fontSize: '0.8rem' }}>
-                    ({r.word.definition})
+                  <span className="muted" style={{ fontSize: '0.85rem' }}>
+                    — {r.word.definition}
                   </span>
                 </div>
                 <span
                   style={{
                     fontWeight: 700,
+                    fontSize: '0.8rem',
                     color: MASTERY_CONFIG[r.score].color,
+                    padding: '0.2rem 0.5rem',
+                    borderRadius: '4px',
+                    background: 'var(--surface-strong)',
+                    border: '1px solid var(--border)',
                   }}
                 >
-                  {MASTERY_CONFIG[r.score].badge} - {MASTERY_CONFIG[r.score].label}
+                  {MASTERY_CONFIG[r.score].badge} {MASTERY_CONFIG[r.score].label}
                 </span>
               </div>
             ))}
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', marginTop: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', marginTop: '1.5rem', flexWrap: 'wrap' }}>
             <button
               type="button"
               className="btn btn-primary"
+              onClick={() => startLevelSession(activeSubLevel, 0)}
+            >
+              🔄 Aynı Seviyeyi Tekrar Çalış
+            </button>
+
+            {/* Sonraki Seviyeye Geç Butonu */}
+            {categorySubLevels[activeSubLevel.levelNumber] && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => startLevelSession(categorySubLevels[activeSubLevel.levelNumber], 0)}
+              >
+                Sonraki Seviyeye Geç (Level {activeSubLevel.levelNumber + 1}) →
+              </button>
+            )}
+
+            <button
+              type="button"
+              className="btn btn-ghost"
               onClick={() => setPhase('setup')}
             >
-              🔄 Yeni Oturum Başlat
+              🗂️ Seviye Listesine Dön
             </button>
-            <Link to="/" className="btn btn-ghost">
-              Ana Sayfaya Dön
-            </Link>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => navigate('/')}
+            >
+              🏠 Ana Sayfaya Dön
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================
+          MODAL 1: KELİMEYİ GRUBA EKLEME VE SIRALAMA MODALI
+          ======================================================== */}
+      {showAddToGroupModal && currentQ && (
+        <div
+          className={styles.modalBackdrop}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowAddToGroupModal(false)
+            }
+          }}
+        >
+          <div className={styles.modalCard} role="dialog" aria-modal="true">
+            <div className={styles.modalHead}>
+              <div>
+                <h3 className={styles.modalHeadTitle}>
+                  <span>📁</span>
+                  <span>Kelimeyi Gruba Ekle</span>
+                </h3>
+                <p className={styles.modalHeadSub}>
+                  <strong>{currentQ.word.term}</strong> — {currentQ.word.definition}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => setShowAddToGroupModal(false)}
+                style={{ padding: '0.2rem 0.5rem', fontSize: '1.1rem' }}
+                title="Kapat"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* SEÇİM SEKMELERİ: Mevcut Grup vs Yeni Grup */}
+            {customGroups.length > 0 && (
+              <div className={styles.modalTabs}>
+                <button
+                  type="button"
+                  className={`${styles.modalTabBtn} ${!isCreatingInGroupModal ? styles.modalTabBtnActive : ''}`}
+                  onClick={() => setIsCreatingInGroupModal(false)}
+                >
+                  📋 Mevcut Gruplardan Seç
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.modalTabBtn} ${isCreatingInGroupModal ? styles.modalTabBtnActive : ''}`}
+                  onClick={() => setIsCreatingInGroupModal(true)}
+                >
+                  ➕ Yeni Grup Oluştur
+                </button>
+              </div>
+            )}
+
+            <form onSubmit={handleModalAddToGroup} className={styles.modalForm}>
+              {!isCreatingInGroupModal && customGroups.length > 0 ? (
+                <div className={styles.modalField}>
+                  <label htmlFor="select-target-group" className={styles.modalLabel}>
+                    Hedef Grup:
+                  </label>
+                  <select
+                    id="select-target-group"
+                    className={styles.modalInput}
+                    value={targetGroupId || (customGroups[0]?.id ?? '')}
+                    onChange={(e) => setTargetGroupId(e.target.value)}
+                  >
+                    {customGroups.map((g) => {
+                      const count = (g.wordIds || []).length
+                      const isMember = (g.wordIds || []).includes(currentQ.word.id)
+                      return (
+                        <option key={g.id} value={g.id}>
+                          {g.name} ({count} kelime){isMember ? ' — Zaten bu grupta ✓' : ''}
+                        </option>
+                      )
+                    })}
+                  </select>
+                </div>
+              ) : (
+                <div className={styles.modalField}>
+                  <label htmlFor="input-new-group-name" className={styles.modalLabel}>
+                    Yeni Grup Adı:
+                  </label>
+                  <input
+                    id="input-new-group-name"
+                    type="text"
+                    required
+                    className={styles.modalInput}
+                    placeholder="Örn: Sınav Öncesi Hızlı Tekrar"
+                    value={modalNewGroupName}
+                    onChange={(e) => setModalNewGroupName(e.target.value)}
+                    autoFocus
+                  />
+                  <p className={styles.modalHelp}>
+                    Bu grup seviyelerden bağımsız olarak dilediğiniz kelimeleri toplamanızı sağlar.
+                  </p>
+                </div>
+              )}
+
+              {/* SIRALAMA / POZİSYON GİRİŞİ */}
+              <div className={styles.modalField}>
+                <label htmlFor="input-target-position" className={styles.modalLabel}>
+                  Gruptaki Sırası (İsteğe Bağlı):
+                </label>
+                <input
+                  id="input-target-position"
+                  type="number"
+                  min="1"
+                  className={styles.modalInput}
+                  placeholder="Boş bırakırsanız en sona eklenir (Örn: 4)"
+                  value={targetPositionInput}
+                  onChange={(e) => setTargetPositionInput(e.target.value)}
+                />
+                <p className={styles.modalHelp}>
+                  💡 <strong>Nasıl çalışır?</strong> Boş bırakırsanız veya gruptaki toplam elemandan büyük yazarsanız kelime en sona eklenir. Eğer örneğin <strong>4</strong> yazarsanız, kelime 4. sıraya yerleşir ve 4. sıradan sonraki kelimeler birer sıra kaydırılır.
+                </p>
+              </div>
+
+              <div className={styles.modalFoot}>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={() => setShowAddToGroupModal(false)}
+                >
+                  Vazgeç
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  id="btn-confirm-add-to-group"
+                >
+                  ✓ Gruba Ekle
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================
+          MODAL 2: SEVİYE LİSTESİNDEN YENİ ÖZEL GRUP OLUŞTURMA
+          ======================================================== */}
+      {showCreateGroupModal && (
+        <div
+          className={styles.modalBackdrop}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCreateGroupModal(false)
+          }}
+        >
+          <div className={styles.modalCard} role="dialog" aria-modal="true">
+            <div className={styles.modalHead}>
+              <div>
+                <h3 className={styles.modalHeadTitle}>
+                  <span>📁</span>
+                  <span>Yeni Özel Çalışma Grubu</span>
+                </h3>
+                <p className={styles.modalHeadSub}>
+                  Kendi kelime grubunuzu oluşturun ve seviyelerden bağımsız çalışın.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => setShowCreateGroupModal(false)}
+                style={{ padding: '0.2rem 0.5rem', fontSize: '1.1rem' }}
+                title="Kapat"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateGroupSubmit} className={styles.modalForm}>
+              <div className={styles.modalField}>
+                <label htmlFor="create-group-name" className={styles.modalLabel}>
+                  Grup Adı:
+                </label>
+                <input
+                  id="create-group-name"
+                  type="text"
+                  required
+                  className={styles.modalInput}
+                  placeholder="Örn: YDS Phrasal Verbs"
+                  value={newGroupName}
+                  onChange={(e) => setNewGroupName(e.target.value)}
+                  autoFocus
+                />
+              </div>
+
+              <div className={styles.modalField}>
+                <label htmlFor="create-group-desc" className={styles.modalLabel}>
+                  Açıklama (İsteğe Bağlı):
+                </label>
+                <input
+                  id="create-group-desc"
+                  type="text"
+                  className={styles.modalInput}
+                  placeholder="Örn: Sık çıkan deyimsel fiiller"
+                  value={newGroupDesc}
+                  onChange={(e) => setNewGroupDesc(e.target.value)}
+                />
+              </div>
+
+              <div className={styles.modalFoot}>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={() => setShowCreateGroupModal(false)}
+                >
+                  Vazgeç
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Oluştur
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
     </section>
   )
 }
+

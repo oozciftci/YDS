@@ -15,13 +15,14 @@ export interface StudyQuestion {
 }
 
 export interface StudyFilterOptions {
-  posList: PartOfSpeech[] // Seçilen türler (boşsa tümü)
-  tags: string[] // Seçilen etiketler (boşsa tümü)
-  masteryScores: number[] // Seçilen puanlar (1, 2, 3, 4, 5)
-  dueOnly: boolean // Sadece tekrarı gelenler
-  lapsesOnly: boolean // En çok hata yapılanlar
-  limit: number // Oturum soru sınırı (10, 20, 30 vb.)
+  posList?: PartOfSpeech[] // Seçilen türler (boşsa tümü)
+  tags?: string[] // Seçilen etiketler (boşsa tümü)
+  masteryScores?: number[] // Seçilen puanlar (1, 2, 3, 4, 5)
+  dueOnly?: boolean // Sadece tekrarı gelenler
+  lapsesOnly?: boolean // En çok hata yapılanlar
+  limit: number // Oturum soru sınırı (10, 20, 30 vb., 0 ise limitsiz)
   mode: QuestionMode
+  wordIds?: string[] // Belirli grup/kelime listesi kısıtlaması
 }
 
 /**
@@ -38,11 +39,17 @@ export function filterStudyCards(
   }
 
   const now = new Date().toISOString()
+  const wordIdSet = filters.wordIds ? new Set(filters.wordIds) : null
 
   const eligible: Array<{ word: WordItem; cardState: CardState }> = []
 
   for (const w of allWords) {
     if (w.isDeleted) continue
+
+    // 0. Kelime ID kısıtlaması (Grup çalışması için)
+    if (wordIdSet && !wordIdSet.has(w.id)) {
+      continue
+    }
 
     const card = cardMap.get(w.id) || {
       id: `${w.id}_${w.userId}`,
@@ -61,19 +68,19 @@ export function filterStudyCards(
     }
 
     // 1. Tür filtresi
-    if (filters.posList.length > 0 && !filters.posList.includes(w.partOfSpeech)) {
+    if (filters.posList && filters.posList.length > 0 && !filters.posList.includes(w.partOfSpeech)) {
       continue
     }
 
     // 2. Etiket / Kategori filtresi
-    if (filters.tags.length > 0) {
-      const hasMatchingTag = w.tags && w.tags.some((t) => filters.tags.includes(t))
+    if (filters.tags && filters.tags.length > 0) {
+      const hasMatchingTag = w.tags && w.tags.some((t) => filters.tags!.includes(t))
       if (!hasMatchingTag) continue
     }
 
     // 3. Kullanıcının 1-5 Puan Filtresi (örn: [1, 2, 3] seçilmişse)
     const score = card.masteryScore || 1
-    if (filters.masteryScores.length > 0 && !filters.masteryScores.includes(score)) {
+    if (filters.masteryScores && filters.masteryScores.length > 0 && !filters.masteryScores.includes(score)) {
       continue
     }
 

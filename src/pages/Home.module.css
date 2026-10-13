@@ -1,11 +1,11 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
 }
 
-/* 1. Üst karşılama & Seri */
-.welcomeSection {
+/* 1. Üst Karşılama ve Rozet Barı */
+.topBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,53 +13,60 @@
   flex-wrap: wrap;
 }
 
-.greeting {
+.userProfile {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.85rem;
 }
 
-.avatarBadge {
+.avatar {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  color: white;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
   display: grid;
   place-items: center;
   font-weight: 700;
-  font-size: 1.2rem;
-  box-shadow: var(--shadow-sm);
+  font-size: 1.25rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
   flex-shrink: 0;
 }
 
-.userName {
-  font-size: clamp(1.4rem, 3.5vw, 1.85rem);
+.userMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
   font-weight: 800;
   margin: 0;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  color: var(--text);
 }
 
-.userSub {
-  font-size: 0.9rem;
+.subtitle {
+  font-size: 0.875rem;
   color: var(--text-muted);
-  margin: 0.2rem 0 0;
+  margin: 0.15rem 0 0;
 }
 
-.badgesRight {
+.badgeGroup {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
-.examBadge {
+.examBadge,
+.streakBadge {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1rem;
+  gap: 0.55rem;
+  padding: 0.45rem 0.85rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   color: inherit;
@@ -71,75 +78,40 @@
   border-color: var(--primary);
 }
 
-.examIcon {
-  font-size: 1.25rem;
+.badgeIcon {
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
-.examText {
+.badgeInfo {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
-.examText strong {
-  font-size: 0.95rem;
-  color: var(--primary);
+.badgeValue {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
-.examText span {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-
-.streakBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: var(--shadow-sm);
-}
-
-.streakFlame {
-  font-size: 1.3rem;
-  animation: pulseFlame 2s ease-in-out infinite;
-}
-
-@keyframes pulseFlame {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-.streakText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.streakText strong {
-  font-size: 0.95rem;
-  color: var(--warning);
-}
-
-.streakText span {
-  font-size: 0.72rem;
+.badgeLabel {
+  font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-/* 2. Günlük Odak Hero Kartı */
+/* 2. Günlük Komuta Hero Kartı */
 .heroCard {
-  background: linear-gradient(145deg, var(--surface) 0%, var(--surface-strong) 100%);
+  background: var(--gradient-hero);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   box-shadow: var(--shadow);
   display: grid;
   grid-template-columns: 1fr minmax(220px, 280px);
-  gap: 2rem;
+  gap: 1.75rem;
   align-items: center;
   position: relative;
   overflow: hidden;
@@ -148,62 +120,74 @@
 @media (max-width: 768px) {
   .heroCard {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 1.4rem;
+    gap: 1.25rem;
+    padding: 1.35rem;
   }
 }
 
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+}
+
 .heroBadge {
-  display: inline-block;
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
+  align-self: flex-start;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   background: var(--primary-subtle);
   color: var(--primary);
-  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+  border: 1px solid var(--primary-glow);
   margin-bottom: 0.6rem;
 }
 
-.heroTitle {
-  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+.heroHeading {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
   font-weight: 800;
-  margin: 0 0 0.5rem;
-  letter-spacing: -0.02em;
+  margin: 0 0 0.45rem;
+  letter-spacing: -0.025em;
+  color: var(--text);
 }
 
-.heroDesc {
+.heroParagraph {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   margin: 0 0 1.25rem;
-  max-width: 580px;
-  line-height: 1.55;
+  max-width: 540px;
+  line-height: 1.5;
 }
 
 .heroActions {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
-.goalBox {
+.heroRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.goalCard {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem;
+  padding: 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.55rem;
+  box-shadow: var(--shadow-sm);
 }
 
-.goalHeader {
+.goalTop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 0.825rem;
 }
 
 .goalLabel {
@@ -211,35 +195,35 @@
   color: var(--text-muted);
 }
 
-.goalCount strong {
+.goalRatio strong {
   color: var(--text);
   font-size: 1.05rem;
 }
 
-.progressBarBg {
+.progressTrack {
   width: 100%;
   height: 8px;
   background: var(--border-subtle);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.progressBarFill {
+.progressThumb {
   height: 100%;
   background: var(--gradient-brand);
-  border-radius: 999px;
-  transition: width 0.5s var(--ease);
+  border-radius: var(--radius-full);
+  transition: width 0.45s var(--ease);
 }
 
-.goalPercentText {
-  font-size: 0.75rem;
+.goalPercent {
+  font-size: 0.72rem;
   color: var(--text-muted);
   text-align: right;
   font-weight: 600;
 }
 
-/* 3. Hızlı Çalışma Modları */
-.modesSection {
+/* 3. Çalışma Modları Merkezi */
+.sectionBlock {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
@@ -251,107 +235,225 @@
   justify-content: space-between;
 }
 
-.sectionHeader h2 {
-  font-size: 1.2rem;
+.sectionTitle {
+  font-size: 1.15rem;
   font-weight: 700;
   margin: 0;
+  color: var(--text);
+}
+
+.sectionDesc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0.15rem 0 0;
+}
+
+/* Bugün Çalışılan Gruplar */
+.todaySessionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.85rem;
+}
+
+.todaySessionCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s var(--ease);
+}
+
+.todaySessionCard:hover {
+  border-color: var(--primary);
+}
+
+.sessionTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sessionTitle {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text);
+}
+
+.sessionTime {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.sessionStatRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.accuracyBadge {
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+}
+
+.levelPillsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.levelPillBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.levelPillBtn:hover {
+  border-color: var(--primary);
+  background: var(--surface-strong);
+  transform: translateY(-1px);
 }
 
 .modesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.9rem;
 }
 
 .modeCard {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.15rem;
+  padding: 1.1rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
-  text-decoration: none;
-  color: inherit;
+  user-select: none;
 }
 
 .modeCard:hover {
   transform: translateY(-2px);
-  border-color: var(--primary);
+  border-color: var(--border-focus);
   box-shadow: var(--shadow);
 }
 
 .modeIcon {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-sm);
   display: grid;
   place-items: center;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   flex-shrink: 0;
 }
 
-.iconPurple {
+.iconIndigo {
   background: var(--primary-subtle);
-  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
+  border: 1px solid var(--primary-glow);
 }
 
 .iconTeal {
-  background: var(--accent-subtle);
-  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  background: var(--accent-teal-subtle);
+  border: 1px solid color-mix(in srgb, var(--accent-teal) 25%, transparent);
 }
 
-.iconBlue {
-  background: color-mix(in srgb, var(--primary) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+.iconSky {
+  background: var(--accent-blue-subtle);
+  border: 1px solid color-mix(in srgb, var(--accent-blue) 25%, transparent);
 }
 
 .iconAmber {
   background: var(--warning-subtle);
-  border: 1px solid color-mix(in srgb, var(--warning) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warning) 25%, transparent);
 }
 
-.modeInfo {
+.modeBody {
   flex: 1;
+  min-width: 0;
 }
 
-.modeInfo h3 {
-  font-size: 0.95rem;
+.modeHeadRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.modeHeadRow h3 {
+  font-size: 0.9rem;
   font-weight: 700;
-  margin: 0 0 0.2rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.modeInfo p {
-  font-size: 0.8rem;
+.modePill {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.modeBody p {
+  font-size: 0.775rem;
   color: var(--text-muted);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
-.modeAction {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--primary);
+.modeArrow {
+  font-size: 0.9rem;
+  color: var(--text-subtle);
+  font-weight: 700;
   flex-shrink: 0;
+  transition: transform 0.2s var(--ease), color 0.2s var(--ease);
 }
 
-/* 4. Alt Bölüm (Günün Kelimesi & Seviye Dağılımı) */
-.bottomSplit {
+.modeCard:hover .modeArrow {
+  transform: translateX(2px);
+  color: var(--primary);
+}
+
+/* 4. Alt 2 Sütun Grid */
+.splitGrid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.15fr 0.85fr;
   gap: 1.25rem;
 }
 
 @media (max-width: 860px) {
-  .bottomSplit {
+  .splitGrid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Günün Kelimesi */
+/* Günün Kelimesi Kartı */
 .wotdCard {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -360,144 +462,150 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.9rem;
+  box-shadow: var(--shadow-sm);
 }
 
-.wotdHeader {
+.wotdTop {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.wotdTag {
-  font-size: 0.75rem;
+.wotdBadge {
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent-teal);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.speakBtn {
+.soundButton {
   background: var(--surface-strong);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 0.35rem 0.6rem;
+  padding: 0.35rem 0.55rem;
   cursor: pointer;
   font-size: 0.95rem;
-  transition: transform 0.15s var(--ease);
+  line-height: 1;
+  transition: transform 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 
-.speakBtn:hover {
-  transform: scale(1.08);
+.soundButton:hover {
+  transform: scale(1.06);
+  border-color: var(--primary);
 }
 
-.wotdBody {
+.wotdMain {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
-.wotdTermRow {
+.wotdWordLine {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: 0.55rem;
 }
 
-.wotdTerm {
-  font-size: 1.4rem;
+.wotdWord {
+  font-size: 1.35rem;
   font-weight: 800;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  color: var(--text);
 }
 
 .wotdPos {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-style: italic;
   color: var(--text-muted);
   padding: 0.15rem 0.45rem;
-  border-radius: 999px;
-  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  border: 1px solid var(--border-subtle);
 }
 
-.wotdDef {
-  font-size: 0.98rem;
+.wotdDefinition {
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--primary);
   margin: 0;
 }
 
-.synonymsRow {
+.synonymsList {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   flex-wrap: wrap;
   margin-top: 0.2rem;
 }
 
-.synLabel {
-  font-size: 0.78rem;
+.synonymsLabel {
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
-.synChips {
+.synonymsTags {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.3rem;
   flex-wrap: wrap;
 }
 
-.synChip {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
+.synonymChip {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.45rem;
   background: var(--surface-strong);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   color: var(--text);
 }
 
-.exampleSentence {
+.sentenceBlock {
   margin-top: 0.4rem;
-  padding: 0.7rem;
+  padding: 0.65rem 0.8rem;
   background: var(--surface-strong);
   border-radius: var(--radius-sm);
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--accent-teal);
 }
 
 .enSentence {
-  font-size: 0.86rem;
+  font-size: 0.85rem;
   font-style: italic;
   margin: 0;
+  color: var(--text);
 }
 
 .trSentence {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
-  margin: 0.35rem 0 0;
+  margin: 0.3rem 0 0;
 }
 
-.showTransBtn {
+.revealButton {
   background: none;
   border: none;
   padding: 0;
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   cursor: pointer;
   margin-top: 0.25rem;
 }
 
-.showTransBtn:hover {
+.revealButton:hover {
   color: var(--text);
   text-decoration: underline;
 }
 
-.wotdFooter {
+.wotdBottom {
   display: flex;
   justify-content: flex-end;
   border-top: 1px solid var(--border-subtle);
-  padding-top: 0.75rem;
+  padding-top: 0.65rem;
 }
 
-.inDeckLabel {
-  font-size: 0.8rem;
+.savedLabel {
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--success);
 }
@@ -511,140 +619,146 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: var(--shadow-sm);
 }
 
-.masteryHeader {
+.masteryTop {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.9rem;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
 }
 
-.masteryHeader h3 {
+.masteryHeading {
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
+  color: var(--text);
 }
 
-.statsLink {
-  font-size: 0.8rem;
+.masterySub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0.15rem 0 0;
+}
+
+.detailLink {
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--primary);
-  text-decoration: none;
 }
 
-.statsLink:hover {
+.detailLink:hover {
   text-decoration: underline;
 }
 
-.masteryBars {
+.masteryList {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .masteryRow {
   display: grid;
-  grid-template-columns: 140px 1fr 30px;
-  gap: 0.6rem;
+  grid-template-columns: 130px 1fr 28px;
+  gap: 0.55rem;
   align-items: center;
 }
 
-.masteryLabelCol {
+.masteryLabelGroup {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-.levelBadge {
-  font-size: 0.7rem;
+.levelTag {
+  font-size: 0.68rem;
   font-weight: 800;
-  width: 18px;
-  height: 18px;
+  padding: 0.1rem 0.35rem;
   border-radius: 4px;
-  display: grid;
-  place-items: center;
 }
 
 .masteryName {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.barTrack {
+.barBackground {
   height: 6px;
   background: var(--border-subtle);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.barFill {
+.barProgress {
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   transition: width 0.4s var(--ease);
 }
 
-.masteryCount {
-  font-size: 0.8rem;
+.masteryNumber {
+  font-size: 0.78rem;
   font-weight: 600;
   text-align: right;
   color: var(--text);
 }
 
-.totalWordsFoot {
-  border-top: 1px solid var(--border-subtle);
-  padding-top: 0.75rem;
-  margin-top: 0.75rem;
-  font-size: 0.82rem;
-  color: var(--text-muted);
-}
-
-.totalWordsFoot strong {
-  color: var(--text);
-}
-
-/* 5. Minimal Sistem Durum Footer */
-.systemFooter {
+.masteryFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.9rem 1.15rem;
-  background: var(--surface-strong);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
+  margin-top: 0.75rem;
   font-size: 0.8rem;
   color: var(--text-muted);
-  flex-wrap: wrap;
-  gap: 0.6rem;
 }
 
-.systemStatus {
+.masteryFooter strong {
+  color: var(--text);
+}
+
+/* 5. Minimal Alt Durum Barı */
+.statusBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.statusLeft {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.statusDot {
+.statusIndicator {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--success);
 }
 
-.pendingText {
+.pendingBadge {
   color: var(--warning);
 }
 
-.syncedText {
+.syncedBadge {
   color: var(--success);
 }
 
 .settingsLink {
   color: var(--text-muted);
-  text-decoration: none;
   font-weight: 500;
 }
 

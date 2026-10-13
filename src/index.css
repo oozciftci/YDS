@@ -1,20 +1,26 @@
 @import '@fontsource-variable/inter';
 
-/* ============ Tasarım değişkenleri ============ */
+/* ============ Tasarım Değişkenleri (Design Tokens) ============ */
 :root {
   color-scheme: dark light;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Marka & Vurgular */
+  --primary: hsl(238 82% 67%);
+  --primary-hover: hsl(238 82% 60%);
+  --primary-subtle: hsl(238 82% 67% / 0.12);
+  --primary-glow: hsl(238 82% 67% / 0.25);
 
-  /* Marka */
-  --primary: hsl(246 80% 64%);
-  --primary-hover: hsl(246 80% 58%);
-  --primary-subtle: hsl(246 80% 64% / 0.12);
-  --accent: hsl(168 76% 42%);
-  --accent-subtle: hsl(168 76% 42% / 0.12);
-  --gradient-brand: linear-gradient(135deg, hsl(246 80% 64%) 0%, hsl(172 75% 42%) 100%);
+  --accent-teal: hsl(168 76% 42%);
+  --accent-teal-subtle: hsl(168 76% 42% / 0.12);
+  --accent-blue: hsl(204 94% 54%);
+  --accent-blue-subtle: hsl(204 94% 54% / 0.12);
 
-  /* Durum */
+  --gradient-brand: linear-gradient(135deg, hsl(238 82% 67%) 0%, hsl(204 94% 54%) 100%);
+  --gradient-surface: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(222 47% 9%) 100%);
+  --gradient-hero: linear-gradient(135deg, hsl(222 47% 12%) 0%, hsl(238 50% 14%) 100%);
+
+  /* Durum Renkleri */
   --success: hsl(152 65% 42%);
   --success-subtle: hsl(152 65% 42% / 0.14);
   --warning: hsl(38 92% 50%);
@@ -22,50 +28,55 @@
   --danger: hsl(355 80% 58%);
   --danger-subtle: hsl(355 80% 58% / 0.14);
 
-  /* Koyu tema (varsayılan) */
-  --bg: hsl(224 25% 9%);
-  --surface: hsl(224 22% 13%);
-  --surface-strong: hsl(224 20% 16%);
-  --surface-hover: hsl(224 20% 19%);
-  --border: hsl(224 16% 22%);
-  --border-subtle: hsl(224 16% 18%);
-  --text: hsl(220 25% 96%);
-  --text-muted: hsl(220 12% 65%);
-  --text-subtle: hsl(220 10% 45%);
-  --input-bg: hsl(224 25% 11%);
+  /* Koyu Tema (Varsayılan - Göz Yormayan Obsidian Slate) */
+  --bg: hsl(222 47% 7%);
+  --surface: hsl(222 44% 10%);
+  --surface-strong: hsl(222 40% 14%);
+  --surface-hover: hsl(222 36% 18%);
+  --border: hsl(222 28% 18%);
+  --border-subtle: hsl(222 28% 13%);
+  --border-focus: hsl(238 82% 67%);
+
+  --text: hsl(210 40% 98%);
+  --text-muted: hsl(215 20% 65%);
+  --text-subtle: hsl(215 16% 45%);
+  --input-bg: hsl(222 47% 8.5%);
 
   --radius-xs: 6px;
   --radius-sm: 10px;
   --radius: 14px;
   --radius-lg: 20px;
-  --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.25);
-  --shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.35);
-  --shadow-lg: 0 12px 32px -8px hsl(0 0% 0% / 0.5);
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
+  --shadow: 0 4px 16px -2px rgb(0 0 0 / 0.35);
+  --shadow-lg: 0 12px 32px -4px rgb(0 0 0 / 0.5);
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --blur: blur(12px);
   --nav-height: 64px;
-  --content-max: 1040px;
+  --content-max: 1060px;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: hsl(220 25% 97%);
+    --bg: hsl(220 30% 97%);
     --surface: hsl(0 0% 100%);
-    --surface-strong: hsl(220 20% 98%);
-    --surface-hover: hsl(220 20% 95%);
-    --border: hsl(220 16% 87%);
-    --border-subtle: hsl(220 16% 92%);
-    --text: hsl(224 35% 12%);
-    --text-muted: hsl(220 14% 45%);
-    --text-subtle: hsl(220 10% 65%);
-    --input-bg: hsl(220 25% 99%);
-    --shadow-sm: 0 1px 3px hsl(220 20% 20% / 0.06);
-    --shadow: 0 4px 18px -4px hsl(220 20% 20% / 0.08);
-    --shadow-lg: 0 12px 32px -8px hsl(220 20% 20% / 0.12);
+    --surface-strong: hsl(220 25% 95%);
+    --surface-hover: hsl(220 25% 92%);
+    --border: hsl(220 18% 86%);
+    --border-subtle: hsl(220 18% 91%);
+    --text: hsl(222 47% 12%);
+    --text-muted: hsl(215 16% 45%);
+    --text-subtle: hsl(215 12% 65%);
+    --input-bg: hsl(0 0% 100%);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 4px 16px -2px rgb(0 0 0 / 0.08);
+    --shadow-lg: 0 12px 32px -4px rgb(0 0 0 / 0.12);
   }
 }
 
-/* ============ Temel ============ */
+/* ============ Genel Sıfırlama ============ */
 *,
 *::before,
 *::after {
@@ -83,7 +94,9 @@ body {
   color: var(--text);
   background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
+  letter-spacing: -0.01em;
 }
 
 #root {
@@ -92,14 +105,17 @@ body {
 
 h1,
 h2,
-h3 {
-  line-height: 1.2;
+h3,
+h4 {
+  line-height: 1.25;
   margin: 0 0 0.5em;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  color: var(--text);
 }
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 button,
@@ -124,14 +140,14 @@ textarea {
   }
 }
 
-/* ============ Ortak bileşen sınıfları ============ */
+/* ============ Ortak Tasarım Sınıfları ============ */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem;
   box-shadow: var(--shadow-sm);
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
 .btn {
@@ -139,21 +155,27 @@ textarea {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.7rem 1.15rem;
+  padding: 0.65rem 1.15rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--surface-strong);
+  color: var(--text);
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.2;
   transition:
     transform 0.15s var(--ease),
     box-shadow 0.2s var(--ease),
-    background 0.2s var(--ease);
+    background 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+  user-select: none;
 }
 
 .btn:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: var(--shadow);
+  border-color: var(--border-focus);
 }
 
 .btn:active:not(:disabled) {
@@ -161,54 +183,57 @@ textarea {
 }
 
 .btn:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .btn-primary {
   background: var(--gradient-brand);
   border-color: transparent;
-  color: white;
+  color: #ffffff;
+  box-shadow: 0 2px 10px var(--primary-glow);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 18px var(--primary-glow);
+  filter: brightness(1.06);
+}
+
+.btn-secondary {
+  background: var(--surface-strong);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
 }
 
 .btn-ghost {
   background: transparent;
-}
-
-.field {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.field label {
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.field .hint {
-  font-size: 0.8rem;
+  border-color: transparent;
   color: var(--text-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-strong);
+  color: var(--text);
 }
 
 .input {
   width: 100%;
-  padding: 0.7rem 0.9rem;
+  padding: 0.7rem 0.95rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--input-bg);
-  transition:
-    border-color 0.2s var(--ease),
-    box-shadow 0.2s var(--ease);
+  color: var(--text);
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 
 .input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px hsl(252 100% 68% / 0.2);
-}
-
-.input:user-invalid {
-  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--primary-subtle);
 }
 
 .muted {
@@ -216,13 +241,13 @@ textarea {
 }
 
 .page-enter {
-  animation: page-in 0.35s var(--ease) both;
+  animation: page-in 0.28s var(--ease) both;
 }
 
 @keyframes page-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;

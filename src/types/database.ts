@@ -34,6 +34,7 @@ export interface WordItem {
   collocations?: string[] // Birlikte kullanılan kalıplar (örn: ["deteriorate rapidly", "health deteriorates"])
   sentences?: SampleSentence[] // Örnek cümleler
   tags?: string[] // Etiketler (örn: ["Sağlık", "YDS 2023", "Akademik"])
+  groupIds?: string[] // Dahil olduğu özel kelime grupları (Örn: ["grup_1", "grup_2"])
   difficulty?: number // 1: Kolay, 2: Orta, 3: İleri seviye (Varsayılan: 2)
   notes?: string // Kullanıcının kişisel notları veya mnemonik/ipucu
   audioUrl?: string // Özel ses bağlantısı veya yerel ses dosya anahtarı
@@ -144,4 +145,62 @@ export interface UserProfile {
   avatarColor?: string
   createdAt: string
   lastActiveAt: string
+}
+
+/**
+ * Kelime Grupları & Özel Desteler (Level / Konu / Kullanıcı Grupları)
+ */
+export interface WordGroup {
+  id: string
+  userId: string
+  name: string
+  description?: string
+  color?: string
+  icon?: string
+  isBuiltIn?: boolean
+  wordIds?: string[] // Özel gruptaki kelime ID listesi
+  targetLevel?: string // 'A1-A2' | 'B1-B2' | 'C1-C2' | 'Özel'
+  createdAt: string
+  updatedAt: string
+}
+
+/**
+ * Tamamlanan Çalışma Oturumu Kaydı (Grup bazlı günlük takip)
+ */
+export interface StudySessionLog {
+  id: string
+  userId: string
+  groupId: string
+  subGroupId?: string
+  groupName: string
+  mode: 'flashcard' | 'mixed' | 'multiple_choice' | 'synonym' | 'cloze'
+  startedAt: string
+  completedAt: string
+  totalQuestions: number
+  correctCount: number // Skor 4-5 veya test doğru
+  wrongCount: number // Skor 1-2 veya test yanlış
+  learningCount: number // Skor 3
+  accuracyPercent: number
+  wordIds: string[]
+  isCompleted?: boolean // Oturum sonuna kadar tamamlandı mı yoksa yarıda mı bırakıldı
+}
+
+/**
+ * 20'şer Kelimelik Alt Seviye (Level) İlerleme Kaydı
+ */
+export interface LevelProgress {
+  id: string // `${userId}_${subGroupId}`
+  userId: string
+  categoryGroupId: string // 'level_c1_c2', 'level_b1_b2', etc.
+  subGroupId: string // 'level_c1_c2_lvl_1'
+  levelNumber: number
+  title: string
+  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed'
+  status: 'completed' | 'in_progress' | 'not_started'
+  completedQuestions: number
+  totalQuestions: number
+  correctCount: number
+  wrongCount: number
+  accuracyPercent: number
+  lastStudiedAt: string
 }

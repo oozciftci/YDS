@@ -25,7 +25,7 @@ const POS_LABELS: Record<PartOfSpeech, string> = {
 
 export function StatsPage() {
   const activeUser = useUserStore((s) => s.activeUser)
-  const activeUserId = activeUser?.id || 'user_osman'
+  const activeUserId = activeUser?.id || 'user_ozgur'
 
   // Canlı Veritabanı Sorguları
   const words = useLiveQuery(
@@ -42,6 +42,12 @@ export function StatsPage() {
 
   const reviewLogs = useLiveQuery(
     () => db.reviewLogs.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  const sessionLogs = useLiveQuery(
+    () => db.sessionLogs.where('userId').equals(activeUserId).toArray(),
     [activeUserId],
     [],
   )
@@ -339,6 +345,82 @@ export function StatsPage() {
           </div>
         </section>
       )}
+
+      {/* 4.5. ÇALIŞILAN GRUPLAR VE OTURUM GEÇMİŞİ */}
+      <section className={styles.sectionCard}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+          <div>
+            <h2 className={styles.sectionTitle}>Çalışılan Gruplar ve Oturum Geçmişi</h2>
+            <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+              Tamamlanan tüm çalışma oturumları ve grup bazlı performansın.
+            </p>
+          </div>
+          <Link to="/study" className="btn btn-secondary" style={{ fontSize: '0.82rem' }}>
+            Yeni Oturum Başlat →
+          </Link>
+        </div>
+
+        {sessionLogs.length === 0 ? (
+          <p className="muted" style={{ textAlign: 'center', padding: '1.5rem 0', margin: 0 }}>
+            Henüz tamamlanmış bir grup oturumu bulunmuyor. Çalış sayfasından bir seviye veya deste seçerek başlayabilirsiniz.
+          </p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table className="table" style={{ width: '100%', fontSize: '0.875rem' }}>
+              <thead>
+                <tr>
+                  <th>Tarih & Saat</th>
+                  <th>Grup / Deste</th>
+                  <th>Mod</th>
+                  <th>Soru Sayısı</th>
+                  <th>Doğru</th>
+                  <th>Yanlış</th>
+                  <th>Başarı</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sessionLogs
+                  .slice()
+                  .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
+                  .slice(0, 15)
+                  .map((s) => (
+                    <tr key={s.id}>
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        {new Date(s.completedAt).toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' })}{' '}
+                        <span className="muted">
+                          {new Date(s.completedAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </td>
+                      <td>
+                        <strong>{s.groupName}</strong>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '0.8rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)' }}>
+                          {s.mode === 'flashcard' ? '🗂️ Flaşkart' : s.mode}
+                        </span>
+                      </td>
+                      <td>{s.totalQuestions} soru</td>
+                      <td style={{ color: 'var(--success)', fontWeight: 700 }}>{s.correctCount}</td>
+                      <td style={{ color: s.wrongCount > 0 ? 'var(--error)' : 'var(--text-muted)', fontWeight: 700 }}>
+                        {s.wrongCount}
+                      </td>
+                      <td>
+                        <span
+                          style={{
+                            fontWeight: 800,
+                            color: s.accuracyPercent >= 70 ? 'var(--success)' : 'var(--warning)',
+                          }}
+                        >
+                          %{s.accuracyPercent}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       {/* 5. TÜR VE KATEGORİ DAĞILIMI */}
       <section className={styles.sectionCard}>

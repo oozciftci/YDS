@@ -1,0 +1,100 @@
+# YDS Projesi Hafıza & Durum Raporu (PROJECT_MEMORY)
+
+Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uygulamasının tüm mimarisini, bugüne kadar alınan kararları, mevcut durumunu ve yapılacak işleri belgeleyen **kalıcı proje hafızasıdır**.
+
+> **Son Güncelleme:** 13 Ekim 2026  
+> **Konuşma / Oturum Geçmişi:** `session-history/` klasöründe arşivlenmiştir.
+
+---
+
+## 1. Proje Özeti ve Temel Mimari
+
+- **Uygulama Türü:** Progressive Web App (PWA) — Masaüstü ve mobilde çevrimdışı (offline-first) çalışır.
+- **Odak Noktası:** YDS odaklı kelime pratikleri, Spaced Repetition (FSRS / SM-2 algoritması), eş anlamlı kelime eşleştirme, çoktan seçmeli sınav simülasyonu ve Web Speech TTS (telaffuz).
+- **Frontend:** React 19 + TypeScript + Vite 8
+- **Tasarım & Stil:** Vanilla CSS / CSS Modules + Inter Variable font
+- **Yerel Veritabanı:** Dexie.js v4 (IndexedDB) — İnternetsiz tam işlevsellik
+- **State Yönetimi:** Zustand v5
+- **Senkronizasyon:** Supabase JS Client (İnternet olduğunda iki yönlü senkronizasyon altyapısı)
+- **Hafıza & Algoritma:** `ts-fsrs` (Free Spaced Repetition Scheduler — Anki standardı)
+- **PWA / SW:** `vite-plugin-pwa` + Workbox (Otomatik sessiz arka plan güncellemeleri)
+
+---
+
+## 2. Kritik Teknik Kurallar (Tavizsiz İlkeler)
+
+1. **Offline-First:** İnternet bağlantısı olmasa dahi kelime çalışılabilmeli, test çözülebilmeli ve skorlar kaydedilebilmelidir.
+2. **Kapsamlı Loglama:** Etkileşimler (bildi/bilemedi, oturum süreleri, hatalar) yerelde biriktirilir (`logger.ts`), internet geldiğinde backend'e aktarılır.
+3. **Dinamik Backend Ayarları:** API veya sunucu adresleri kod içine gömülmez (`hardcoded` yasaktır). `SettingsPage` üzerinden kullanıcı URL tanımlar ve `localStorage`'da saklanır.
+4. **Çoklu Kullanıcı Desteği:** Farklı kullanıcı profilleri oluşturulabilir, kelimeler ve ilerlemeler kullanıcı bazlı saklanır ve profiller arası kelime aktarımı yapılabilir.
+
+---
+
+## 3. Sayfa ve Bileşen Haritası
+
+| Sayfa / Bileşen | Dosya Yolu | Görevi |
+| :--- | :--- | :--- |
+| **Ana Sayfa (Dashboard)** | `src/pages/Home.tsx` | Günlük hedef takibi, tekrar bekleyen kelime sayısı, hızlı pratik başlatıcılar. |
+| **Akıllı Tekrar (Study)** | `src/pages/Study.tsx` | FSRS algoritmasıyla 4 kademeli (Again, Hard, Good, Easy) kelime kartı çalışması. |
+| **Sınav / Test (ExamQuiz)**| `src/pages/ExamQuiz.tsx` | 4 seçenekli YDS sınav simülasyonu, anlık skor ve kelime açıklamaları. |
+| **Eş Anlamlı Eşleştirme** | `src/pages/SynonymMatch.tsx` | YDS soru köklerinde sık çıkan eş anlamlı kelimeleri interaktif kartlarla eşleştirme. |
+| **Kelime Kütüphanesi** | `src/pages/Words.tsx` | Kelime arama, filtreleme, telaffuz dinleme, yeni kelime ekleme/düzenleme/silme. |
+| **İstatistikler** | `src/pages/Stats.tsx` | Öğrenme kademeleri (New, Learning, Review, Mastered) ve unutma eğrisi grafikleri. |
+| **Ayarlar** | `src/pages/Settings.tsx` | Dinamik backend URL testi, PWA/SW durumu, depolama kullanımı, profil yönetimi, JSON yedekleme/yükleme. |
+| **Etkileşimli Cümle** | `src/components/InteractiveSentence.tsx` | Örnek cümlelerdeki kelimelere tıklayarak anında anlamını görme. |
+| **Kelime Paketleri** | `src/data/wordPacks.ts` | Hazır YDS kelime paketleri (Akademik, Bağlaçlar, Fiiller vb. tek tıkla kütüphaneye aktarım). |
+
+---
+
+## 4. Tamamlanan Aşamalar & Kronoloji
+
+- **Adım 1 (12 Ekim 2026):** Vite + React + TS iskeleti kuruldu, PWA yapılandırması (manifest, service worker) hazırlandı, dinamik backend destekli `Settings` sayfası geliştirildi.
+- **Adım 2 (12 Ekim 2026):** Dexie.js ile yerel veritabanı şemaları kuruldu (`words`, `study_logs`, `logs`, `users`). FSRS aralıklı tekrar algoritması entegre edildi.
+- **Adım 3 (12 Ekim 2026):** `Home`, `Study`, `Words`, `Stats` sayfaları tamamlandı. Hazır kelime paketleri oluşturuldu.
+- **Adım 4 (12 Ekim 2026):** `ExamQuiz` ve `SynonymMatch` interaktif oyun modları eklendi. Çoklu kullanıcı yönetimi ve kelime transfer modalları geliştirildi.
+- **Adım 5 (13 Ekim 2026):** Oturum geçmişi yönetim altyapısı kuruldu (`npm run history`), konuşma logları arşivlendi.
+- **Adım 6 (13 Ekim 2026):** Görsel iyileştirme ve tasarım standardizasyonu (4 Aşama) başarıyla tamamlandı.
+- **Adım 7 (13 Ekim 2026):** Seviye ve Grup Odaklı Çalışma Mimarisi (Kullanıcı Geri Bildirimiyle Yeniden Yapılandırma):
+  - **Kesintisiz Navigasyon:** Çalışma ekranına veya FSRS tekrarlarına girildiğinde kullanıcıyı hapseden yapı kaldırıldı; üst barda her ekranda çalışan `← Ana Sayfaya Dön` bağlantısı ve kırıntı (breadcrumb) sistemi eklendi.
+  - **3.350+ Kelimenin Seviye & Grup Odaklı Yapılandırılması:** Karambole rastgele 15 soru hissi tamamen ortadan kaldırıldı; kelimeler `Seviye 3: C1-C2 İleri Düzey (YDS Akademik)`, `Seviye 2: B1-B2 Orta Düzey`, `Seviye 1: A1-A2 Başlangıç`, `YDS Phrasal Verbs` ve `Bağlaçlar & Edatlar` hazır seviye destelerine ayrıldı.
+  - **Özel Grup & Deste Oluşturma ("Kelimeyi Grupla"):** Kullanıcının kendi adlandırdığı özel gruplar açabilmesi, kelimeleri tek tıkla (`🏷️ Gruba Ekle`) bu destelere dahil edebilmesi ve dilediği zaman yalnızca o desteyi çalışabilmesi sağlandı (`AssignGroupModal.tsx`).
+  - **Flaş Kartların Öncelikli / Önerilen Mod Yapılması:** Soru türü seçimi varsayılan olarak doğrudan `🗂️ Flaş Kartlar (Önerilen)` moduna getirildi.
+  - **Grup Bazlı Günlük İlerleme & İstatistik Takibi:** Yapılan tüm oturumlar `sessionLogs` tablosunda doğru/yanlış, soru sayısı ve başarı yüzdesiyle kaydedildi; Ana Sayfa ve İstatistikler ekranında "Bugün Çalışılan Gruplar ve Performans" panelleriyle gösterildi.
+- **Adım 8 (13 Ekim 2026 - İkinci Oturum):** Kart İyileştirmeleri, Simetrik Flaşkart & Sıralı Grup Ekleme:
+  - **"Yarıda Bırakıldı" Başlık Temizliği:** Kafa karıştıran `(41 - 60)` aralıkları kaldırıldı; kategori adı, seviye numarası ve çalışma modu entegre edildi (`C1-C2 İleri Düzey • Level 3 • Flaşkart Modu`).
+  - **Simetrik Flaşkart & Sıfır Dikey Kayma:** Ön ve arka yüzler `faceContainer`, `topPromptBlock`, sabit 115px `mainPromptCenter` ve sabit 54px `centerFlipWrap` ile eşitlendi; kart çevrilirken buton ve kelime tam olarak aynı pikselde kalacak şekilde hizalandı.
+  - **Ön Yüzde Gruba Ekle & Sıra Numarası Belirleme:** Ön yüze `➕ Gruba Ekle` butonu ve modalı eklendi. Kelime eklenirken sıra numarası seçilebiliyor (örn: 4 yazılırsa 4. sıraya yerleşip sonrakiler kaydırılıyor, boş bırakılırsa sona ekleniyor).
+  - **Son Kullanılan 2 Grup Hızlı Butonları (`⚡`):** Ön yüzde en son işlem yapılan 2 grubun adını dinamik gösteren ve tek tıkla ekleme sağlayan hızlı butonlar eklendi.
+  - **Tam Yedekleme Kapsamı (`backup.ts`):** JSON export/import motoru `wordGroups`, `sessionLogs` ve `levelProgress` tablolarını da içerecek şekilde v2'ye yükseltildi.
+  - **Ev Kurulum Kılavuzu & Dokümantasyon:** `KURULUM_VE_GELISTIRME_REHBERI.md` ve kapsamlı `README.md` hazırlandı.
+
+---
+
+## 5. Sıradaki Hedefler ve İyileştirmeler
+
+### Tamamlananlar:
+- [x] Tasarım Sistemi ve Renk Tokenları Standardizasyonu (`index.css`)
+- [x] Ana Sayfa (Dashboard) Sadeleştirmesi ve Odak Akışı (`Home.tsx`)
+- [x] Çalışma Ekranı (Study / Flashcard) Tasarım Sadeleştirmesi (`Study.module.css`)
+- [x] Kelimeler (Words) Kütüphanesi & Tablo Standardizasyonu (`Words.module.css`)
+- [x] Oturum geçmişi yönetim altyapısı (`npm run history` & `session-history/`)
+- [x] Seviye & Grup Mimarisi, Flaşkart Önceliği, Kesintisiz Navigasyon ve Oturum Kayıtları (`groups.ts`, `AssignGroupModal.tsx`)
+- [x] Kart başlık formatı, simetrik çevirme hizalaması, sıralı gruba ekleme ve son 2 grup hızlı butonları
+- [x] Tam veritabanı JSON yedekleme/geri yükleme altyapısı (v2)
+- [x] Ev bilgisayarı kurulum rehberi (`KURULUM_VE_GELISTIRME_REHBERI.md`) ve `README.md`
+
+### Sıradaki Önerilen Adımlar:
+1. **GitHub Güncellemesi:** Yapılan tüm geliştirmelerin GitHub'a push edilmesi.
+2. **Ev Bilgisayarı Kurulumu:** `KURULUM_VE_GELISTIRME_REHBERI.md` adımları takip edilerek ev bilgisayarında projenin çalıştırılması ve JSON yedeğinin aktarılması.
+
+---
+
+## 6. Antigravity IDE Oturum Kayıtları (Session Log Reference)
+
+Diskte saklanan ve gerektiğinde `npm run history -- --export <num>` ile okunabilen oturumlar:
+
+| No | Tarih | Oturum ID | Konu |
+| :---: | :---: | :--- | :--- |
+| **1** | 13.10.2026 13:18 | `e4fd061e...` | Oturum geçmişi sorununun çözümü, hafıza sistemi & script kurulumu (Şu anki oturum). |
+| **2** | 13.10.2026 09:55 | `257932f3...` | YDS geliştirme süreci, tasarım kaosunun giderilmesi üzerine ilk analizler. |
+| **3** | 12.10.2026 12:59 | `2a66d201...` | **YDS Projesinin ana mimarisinin, tüm sayfalarının ve modüllerinin inşa edildiği büyük oturum.** |

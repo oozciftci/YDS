@@ -7,6 +7,8 @@ import { WordCard } from '../components/WordCard'
 import { WordModal } from '../components/WordModal'
 import { WordPacksModal } from '../components/WordPacksModal'
 import { WordTable } from '../components/WordTable'
+import { AssignGroupModal } from '../components/AssignGroupModal'
+import { BUILT_IN_GROUPS } from '../services/groups'
 import { copySingleWordToUser } from '../services/wordTransfer'
 import {
   bulkCreateWords,
@@ -40,11 +42,18 @@ export function WordsPage() {
     return new Map(allCardStates.map((c) => [c.wordId, c]))
   }, [allCardStates])
 
+  const customGroups = useLiveQuery(
+    () => db.wordGroups.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
   // Filtre State'leri
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedPos, setSelectedPos] = useState<string>('all')
   const [selectedTag, setSelectedTag] = useState<string>('all')
   const [selectedDiff, setSelectedDiff] = useState<string>('all')
+  const [selectedGroup, setSelectedGroup] = useState<string>('all')
 
   // Görünüm Modu ('cards' | 'table')
   const [viewMode, setViewMode] = useState<'cards' | 'table'>(() => {
@@ -54,6 +63,7 @@ export function WordsPage() {
   // Modal State'leri
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [editingWord, setEditingWord] = useState<WordItem | null>(null)
+  const [groupingWord, setGroupingWord] = useState<WordItem | null>(null)
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false)
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
   const [isPacksModalOpen, setIsPacksModalOpen] = useState(false)
@@ -104,10 +114,25 @@ export function WordsPage() {
           return false
         }
 
+        // Grup / Deste filtresi
+        if (selectedGroup !== 'all') {
+          const builtIn = BUILT_IN_GROUPS.find((g) => g.id === selectedGroup)
+          if (builtIn) {
+            const card = cardMap.get(w.id)
+            if (!builtIn.matcher(w, card, new Date().toISOString())) return false
+          } else {
+            const custom = customGroups.find((g) => g.id === selectedGroup)
+            if (custom) {
+              const inGroup = (custom.wordIds && custom.wordIds.includes(w.id)) || (w.groupIds && w.groupIds.includes(custom.id))
+              if (!inGroup) return false
+            }
+          }
+        }
+
         return true
       })
       .sort((a, b) => a.term.localeCompare(b.term, 'en'))
-  }, [rawWords, searchQuery, selectedPos, selectedTag, selectedDiff])
+  }, [rawWords, searchQuery, selectedPos, selectedTag, selectedDiff, selectedGroup, cardMap, customGroups])
 
   // CRUD İşlemleri
   async function handleSaveWord(data: CreateWordInput) {
@@ -245,6 +270,33 @@ export function WordsPage() {
             <option value="idiom">Deyimler</option>
           </select>
 
+          {/* Grup / Deste Filtresi */}
+          <select
+            className={styles.filterSelect}
+            value={selectedGroup}
+            onChange={(e) => setSelectedGroup(e.target.value)}
+            aria-label="Grup ve deste filtresi"
+            style={{ fontWeight: 600, color: selectedGroup !== 'all' ? 'var(--primary)' : undefined }}
+          >
+            <option value="all">🎯 Tüm Gruplar / Seviyeler</option>
+            <optgroup label="Yerleşik Seviyeler & YDS">
+              {BUILT_IN_GROUPS.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.icon} {g.shortName}
+                </option>
+              ))}
+            </optgroup>
+            {customGroups.length > 0 && (
+              <optgroup label="Özel Destelerim">
+                {customGroups.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    📁 {g.name} ({g.wordIds?.length || 0})
+                  </option>
+                ))}
+              </optgroup>
+            )}
+          </select>
+
           {/* Zorluk Filtresi */}
           <select
             className={styles.filterSelect}
@@ -328,6 +380,7 @@ export function WordsPage() {
               onEdit={(w) => setEditingWord(w)}
               onDelete={(id) => void handleDeleteWord(id)}
               onTransfer={otherUser ? handleTransferSingleWord : undefined}
+              onAssignGroup={(w) => setGroupingWord(w)}
               otherUserName={otherUser?.displayName}
             />
           ))}
@@ -339,6 +392,7 @@ export function WordsPage() {
           onEdit={(w) => setEditingWord(w)}
           onDelete={(id) => void handleDeleteWord(id)}
           onTransfer={otherUser ? handleTransferSingleWord : undefined}
+          onAssignGroup={(w) => setGroupingWord(w)}
           otherUserName={otherUser?.displayName}
         />
       )}
@@ -352,6 +406,15 @@ export function WordsPage() {
             setEditingWord(null)
           }}
           onSave={handleSaveWord}
+        />
+      )}
+
+      {/* Kelimeyi Grupla & Desteye Ekle Modalı */}
+      {groupingWord && (
+        <AssignGroupModal
+          word={groupingWord}
+          activeUserId={activeUserId}
+          onClose={() => setGroupingWord(null)}
         />
       )}
 
