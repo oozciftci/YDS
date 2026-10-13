@@ -7,6 +7,7 @@ import { speakWord } from '../services/tts'
 import { createWord } from '../services/words'
 import { useUserStore } from '../stores/user'
 import { useSyncStatus } from '../services/sync'
+import { useSettings } from '../stores/settings'
 import styles from './Home.module.css'
 
 export function HomePage() {
@@ -14,6 +15,16 @@ export function HomePage() {
   const activeUser = useUserStore((s) => s.activeUser)
   const activeUserId = activeUser?.id || 'user_ozgur'
   const sync = useSyncStatus()
+  const exam = useSettings((s) => s.exam)
+
+  // Sınava kalan gün
+  const daysToExam = useMemo(() => {
+    if (!exam?.targetExamDate) return null
+    const target = new Date(exam.targetExamDate).getTime()
+    const now = new Date(nowTimestamp).getTime()
+    const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24))
+    return Math.max(0, diff)
+  }, [exam?.targetExamDate, nowTimestamp])
 
   // Kullanıcının kayıtlı aktif kelimeleri
   const words = useLiveQuery(
@@ -80,9 +91,9 @@ export function HomePage() {
       todayReviewsCount: todayReviews,
       streakDays: streak,
       masteryCounts: counts,
-      dailyGoal: 20, // Günlük hedef 20 kelime
+      dailyGoal: exam?.dailyGoal || 20,
     }
-  }, [cardStates, reviewLogs, nowTimestamp])
+  }, [cardStates, reviewLogs, nowTimestamp, exam?.dailyGoal])
 
   // Günün YDS Kelimesi (Word of the Day)
   const wordOfTheDay = useMemo(() => {
@@ -120,7 +131,7 @@ export function HomePage() {
 
   return (
     <div className={styles.container}>
-      {/* 1. ÜST KARŞILAMA VE GÜNLÜK SERİ */}
+      {/* 1. ÜST KARŞILAMA, SINAV GERİ SAYIMI VE SERİ */}
       <section className={styles.welcomeSection}>
         <div className={styles.greeting}>
           <span className={styles.avatarBadge} style={{ backgroundColor: activeUser?.avatarColor || '#6366f1' }}>
@@ -136,11 +147,25 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className={styles.streakBadge} title="Ardışık gün serisi">
-          <span className={styles.streakFlame}>🔥</span>
-          <div className={styles.streakText}>
-            <strong>{streakDays} Gün</strong>
-            <span>Seri</span>
+        <div className={styles.badgesRight}>
+          {/* Sınav Geri Sayımı Rozeti */}
+          {daysToExam !== null && (
+            <Link to="/settings#exam" className={styles.examBadge} title="Hedef Sınav Ayarlarını Düzenle">
+              <span className={styles.examIcon}>🎯</span>
+              <div className={styles.examText}>
+                <strong>{daysToExam} Gün Kaldı</strong>
+                <span>{exam?.targetExamName || 'YDS'} (Hedef: {exam?.targetScore || 80})</span>
+              </div>
+            </Link>
+          )}
+
+          {/* Seri Rozeti */}
+          <div className={styles.streakBadge} title="Ardışık gün serisi">
+            <span className={styles.streakFlame}>🔥</span>
+            <div className={styles.streakText}>
+              <strong>{streakDays} Gün</strong>
+              <span>Seri</span>
+            </div>
           </div>
         </div>
       </section>
@@ -208,7 +233,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 3. HIZLI ÇALIŞMA MODLARI (3 KART) */}
+      {/* 3. HIZLI ÇALIŞMA MODLARI (4 KART) */}
       <section className={styles.modesSection}>
         <div className={styles.sectionHeader}>
           <h2>Hızlı Çalışma Modları</h2>
@@ -231,22 +256,37 @@ export function HomePage() {
             <span className={styles.modeAction}>Başla →</span>
           </div>
 
-          {/* Mod 2: Eş Anlamlı Eşleştirme (YDS'nin kalbi) */}
+          {/* Mod 2: Eş Anlamlı Eşleştirmece (YENİ OYUN MODU) */}
           <div
             className={styles.modeCard}
-            onClick={() => navigate('/study?mode=synonym&auto=1')}
+            onClick={() => navigate('/match')}
             role="button"
             tabIndex={0}
           >
-            <div className={`${styles.modeIcon} ${styles.iconTeal}`}>🎯</div>
+            <div className={`${styles.modeIcon} ${styles.iconTeal}`}>🎮</div>
             <div className={styles.modeInfo}>
-              <h3>Eş Anlamlı Testi</h3>
-              <p>YDS sorularının anahtarı olan eş anlamlıları pekiştir.</p>
+              <h3>Eş Anlamlı Eşleştirmece</h3>
+              <p>İngilizce eş anlamlıları hızlıca eşleştir, kombo yap.</p>
             </div>
-            <span className={styles.modeAction}>Başla →</span>
+            <span className={styles.modeAction}>Oyna →</span>
           </div>
 
-          {/* Mod 3: Cümle İçi Boşluk Doldurma (Cloze) */}
+          {/* Mod 3: 10 Soruluk Mini YDS Denemesi (YENİ ÖSYM TESTİ) */}
+          <div
+            className={styles.modeCard}
+            onClick={() => navigate('/quiz')}
+            role="button"
+            tabIndex={0}
+          >
+            <div className={`${styles.modeIcon} ${styles.iconBlue}`}>📝</div>
+            <div className={styles.modeInfo}>
+              <h3>Mini YDS Denemesi</h3>
+              <p>ÖSYM formatında 10 soruluk süreli kelime testi çöz.</p>
+            </div>
+            <span className={styles.modeAction}>Test Çöz →</span>
+          </div>
+
+          {/* Mod 4: Cümle İçi Boşluk Doldurma (Cloze) */}
           <div
             className={styles.modeCard}
             onClick={() => navigate('/study?mode=cloze&auto=1')}

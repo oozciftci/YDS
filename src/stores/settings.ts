@@ -13,28 +13,45 @@ export interface BackendSettings {
   anonKey: string
 }
 
+export interface ExamSettings {
+  targetExamName: string
+  targetExamDate: string
+  targetScore: number
+  dailyGoal: number
+}
+
 export interface SettingsState {
   backend: BackendSettings
+  exam: ExamSettings
   setBackend: (patch: Partial<BackendSettings>) => void
   resetBackend: () => void
+  setExam: (patch: Partial<ExamSettings>) => void
 }
 
 export const SETTINGS_STORAGE_KEY = 'yds.settings'
 
 const emptyBackend: BackendSettings = { url: '', anonKey: '' }
+const defaultExam: ExamSettings = {
+  targetExamName: 'YDS 2026',
+  targetExamDate: '2026-11-22',
+  targetScore: 80,
+  dailyGoal: 20,
+}
 
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
       backend: emptyBackend,
+      exam: defaultExam,
       setBackend: (patch) => set((s) => ({ backend: { ...s.backend, ...patch } })),
       resetBackend: () => set({ backend: emptyBackend }),
+      setExam: (patch) => set((s) => ({ exam: { ...s.exam, ...patch } })),
     }),
     {
       name: SETTINGS_STORAGE_KEY,
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => ({ backend: s.backend }),
+      partialize: (s) => ({ backend: s.backend, exam: s.exam }),
     },
   ),
 )

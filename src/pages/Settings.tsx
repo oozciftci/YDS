@@ -38,6 +38,26 @@ export function SettingsPage() {
   const [testing, setTesting] = useState(false)
   const [result, setResult] = useState<ConnectionTestResult | null>(null)
 
+  const exam = useSettings((s) => s.exam)
+  const setExam = useSettings((s) => s.setExam)
+  const [examName, setExamName] = useState(exam?.targetExamName || 'YDS 2026')
+  const [examDate, setExamDate] = useState(exam?.targetExamDate || '2026-11-22')
+  const [examScore, setExamScore] = useState(exam?.targetScore || 80)
+  const [examDailyGoal, setExamDailyGoal] = useState(exam?.dailyGoal || 20)
+  const [examSaved, setExamSaved] = useState(false)
+
+  function onSaveExam(e: FormEvent) {
+    e.preventDefault()
+    setExam({
+      targetExamName: examName.trim(),
+      targetExamDate: examDate,
+      targetScore: Number(examScore),
+      dailyGoal: Number(examDailyGoal),
+    })
+    setExamSaved(true)
+    setTimeout(() => setExamSaved(false), 2000)
+  }
+
   // Yeni kullanıcı ekleme state'i
   const [newUserName, setNewUserName] = useState('')
 
@@ -201,7 +221,81 @@ export function SettingsPage() {
         </form>
       </section>
 
-      {/* 2. SENKRONİZASYON VE SUNUCU AYARLARI */}
+      {/* 2. HEDEF SINAV VE GÜNLÜK ÇALIŞMA HEDEFİ */}
+      <section id="exam" className="card">
+        <h2 className={styles.cardTitle}>Hedef Sınav ve Çalışma Kotası</h2>
+        <p className="muted" style={{ margin: '0 0 1rem' }}>
+          Sınav geri sayımını ve günlük kelime tekrar kotanızı buradan belirleyebilirsiniz.
+        </p>
+
+        <form onSubmit={onSaveExam} style={{ display: 'grid', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="field">
+              <label htmlFor="exam-name">Hedef Sınav Adı</label>
+              <input
+                id="exam-name"
+                className="input"
+                type="text"
+                placeholder="Örn: YDS 2026, YÖKDİL Sağlık"
+                value={examName}
+                onChange={(e) => setExamName(e.target.value)}
+              />
+            </div>
+
+            <div className="field">
+              <label htmlFor="exam-date">Sınav Tarihi</label>
+              <input
+                id="exam-date"
+                className="input"
+                type="date"
+                value={examDate}
+                onChange={(e) => setExamDate(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className="field">
+              <label htmlFor="exam-score">Hedef Sınav Puanı (0 - 100)</label>
+              <input
+                id="exam-score"
+                className="input"
+                type="number"
+                min={50}
+                max={100}
+                value={examScore}
+                onChange={(e) => setExamScore(Number(e.target.value))}
+              />
+            </div>
+
+            <div className="field">
+              <label htmlFor="exam-daily-goal">Günlük Kelime Tekrar Kotası</label>
+              <input
+                id="exam-daily-goal"
+                className="input"
+                type="number"
+                min={5}
+                max={100}
+                value={examDailyGoal}
+                onChange={(e) => setExamDailyGoal(Number(e.target.value))}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button type="submit" className="btn btn-primary">
+              Sınav Hedefini Kaydet
+            </button>
+            {examSaved && (
+              <span style={{ color: 'var(--success)', fontWeight: 600, fontSize: '0.85rem' }}>
+                ✓ Hedef ayarları kaydedildi!
+              </span>
+            )}
+          </div>
+        </form>
+      </section>
+
+      {/* 3. SENKRONİZASYON VE SUNUCU AYARLARI */}
       <form className="card" onSubmit={onSave} noValidate>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h2 className={styles.cardTitle}>Sunucu (Supabase Senkronizasyonu)</h2>
