@@ -34,7 +34,7 @@ export function WordPacksModal({
     setImportProgress({ current: 0, total: 3354, label: 'Veri tabanı indiriliyor…' })
 
     try {
-      const res = await fetch('/data/oxford3000_tr.json')
+      const res = await fetch(`${import.meta.env.BASE_URL}data/oxford3000_tr.json`)
       if (!res.ok) throw new Error('Veri tabanı dosyası yüklenemedi: ' + res.status)
 
       let rawWords: CreateWordInput[] = await res.json()

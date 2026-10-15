@@ -46,7 +46,7 @@ export function Layout() {
       <header className={styles.header}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <NavLink to="/" className={styles.brand} aria-label="YDS Kelime ana sayfa">
-            <img src="/favicon.svg" alt="" width={32} height={32} />
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width={32} height={32} />
             <span>YDS Kelime</span>
           </NavLink>
 

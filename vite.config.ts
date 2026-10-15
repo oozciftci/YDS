@@ -2,8 +2,12 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// GitHub Pages alt dizinde yayınlanır (/YDS/); yerelde '/' kalır.
+const base = process.env.BASE_PATH || '/'
+
 // https://vite.dev/config/
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -14,14 +18,14 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
-        id: '/',
+        id: base,
         name: 'YDS Kelime',
         short_name: 'YDS Kelime',
         description: 'YDS kelime çalışması: aralıklı tekrar, testler ve dinleme. Çevrimdışı çalışır.',
         lang: 'tr',
         dir: 'ltr',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#0d1020',
@@ -36,8 +40,9 @@ export default defineConfig({
       },
       workbox: {
         // Uygulama kabuğunun tamamı önbelleğe alınır -> internet yokken açılır.
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2,webmanifest}'],
-        navigateFallback: '/index.html',
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2,webmanifest,json}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true,
         // Backend (Supabase vb.) istekleri asla SW önbelleğine alınmaz;
         // çevrimdışı veri IndexedDB'de tutulacak.
