@@ -27,7 +27,21 @@ function localExamData(): Plugin {
             ? fs
                 .readdirSync(dir)
                 .filter((f) => f.endsWith('.json') && !f.endsWith('.tr.json'))
-                .map((f) => f.replace(/\.json$/, ''))
+                .map((f) => {
+                  const id = f.replace(/\.json$/, '')
+                  const meta = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))
+                  return { id, title: meta.title || id }
+                })
+                // Başlıktaki yıl + dönem sırasına göre (kronolojik)
+                .sort((a, b) => {
+                  const key = (t: string) => {
+                    const year = Number(/(20\d\d)/.exec(t)?.[1] || 0)
+                    const months: [RegExp, number][] = [[/mart/i, 3], [/nisan|ilkbahar/i, 4], [/eylül|sonbahar/i, 9], [/ekim/i, 10], [/kasım/i, 11], [/aralık/i, 12]]
+                    const month = months.find(([re]) => re.test(t))?.[1] ?? 6
+                    return year * 100 + month
+                  }
+                  return key(a.title) - key(b.title) || a.id.localeCompare(b.id)
+                })
             : []
           res.end(JSON.stringify(list))
           return

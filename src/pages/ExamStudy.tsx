@@ -97,7 +97,7 @@ function SentenceView({
 
 export function ExamStudyPage() {
   const activeUserId = useUserStore((s) => s.activeUserId)
-  const [exams, setExams] = useState<string[]>([])
+  const [exams, setExams] = useState<{ id: string; title: string }[]>([])
   const [examId, setExamId] = useState<string>(() => localStorage.getItem('yds-exam-last') || '')
   const [data, setData] = useState<{ exam: Exam; tr: Record<string, string> } | null>(null)
   const [error, setError] = useState('')
@@ -121,9 +121,9 @@ export function ExamStudyPage() {
   useEffect(() => {
     fetch('/local-api/yds/')
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((list: string[]) => {
+      .then((list: { id: string; title: string }[]) => {
         setExams(list)
-        setExamId((cur) => (cur && list.includes(cur) ? cur : list[0] || ''))
+        setExamId((cur) => (cur && list.some((x) => x.id === cur) ? cur : list[list.length - 1]?.id || ''))
       })
       .catch(() => setError('Sınav verisi okunamadı. Bu sayfa yalnızca yerelde (npm run dev) çalışır.'))
   }, [])
@@ -234,8 +234,8 @@ export function ExamStudyPage() {
           aria-label="Sınav seç"
         >
           {exams.map((e) => (
-            <option key={e} value={e}>
-              {e}
+            <option key={e.id} value={e.id}>
+              {e.title}
             </option>
           ))}
         </select>

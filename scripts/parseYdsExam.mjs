@@ -47,6 +47,7 @@ let body = ''
 let keyHtml = ''
 let title = ''
 let started = false
+const extraAnswers = {}
 const PAGE_MARK = '\u0001PAGE:'
 for (const { f, pdfPage } of pages) {
   const t = fs.readFileSync(path.join(ocrDir, f), 'utf8')
@@ -54,6 +55,14 @@ for (const { f, pdfPage } of pages) {
     keyHtml += t
     continue
   }
+  // Eski/derleme kitapçıklarda cevap anahtarı: "1. A" satırları, iki sütunlu "1. C   48. A" ya da <th>1.C</th>
+  const keyPairs = [...t.matchAll(/(?:^|[\s>])(\d{1,2})\s*[.\-]\s*([A-E])(?![A-Za-z)\w])/gm)]
+  if (keyPairs.length >= 40) {
+    for (const m of keyPairs) if (Number(m[1]) <= 80 && !extraAnswers[Number(m[1])]) extraAnswers[Number(m[1])] = m[2]
+    continue
+  }
+  // Kitapçık sonundaki "SINAVDA UYULACAK KURALLAR" sayfası soru içermez
+  if (/SINAVDA UYULACAK KURALLAR/i.test(t)) continue
   // Kapak / "AÇIKLAMA" sayfaları: ilk şık satırı (A) ...) görülene kadar atlanır
   if (!started && !/^\s*A\)/m.test(t)) continue
   started = true
@@ -73,6 +82,10 @@ const answers = {}
   })
   // Resmî ÖSYM kitapçığı biçimi: <td>20-A</td> çiftleri
   for (const m of keyHtml.matchAll(/<td>\s*(\d{1,2})-([A-E])\s*<\/td>/g)) answers[Number(m[1])] = m[2]
+  for (const [k, v] of Object.entries(extraAnswers)) if (!answers[k]) answers[k] = v
+  // OCR'ın okuyamadığı (filigranlı) cevaplar elle düzeltilir: scripts/data/answer_overrides.json
+  const ovFile = 'scripts/data/answer_overrides.json'
+  if (fs.existsSync(ovFile)) Object.assign(answers, JSON.parse(fs.readFileSync(ovFile, 'utf8'))[name] || {})
 }
 
 // ---- cümlelere bölme ----
@@ -150,7 +163,10 @@ for (const raw of lines) {
     continue
   }
   // "17 - 21: For these questions, ..." gibi bölüm yönergeleri soru/paragraf değildir
-  if (/^\d{1,2}\s*-\s*\d{1,2}\s*:/.test(line)) continue
+  // (Türkçe biçim: "43. - 46. soruları aşağıdaki parçaya göre cevaplayınız.")
+  if (/^\d{1,2}\.?\s*-\s*\d{1,2}\.?\s*(:|sorular)/i.test(line)) continue
+  // Sayfa üst bilgileri: "2013-YDS İlkbahar/İNGİLİZCE", "TEST OF ENGLISH"
+  if (/^\d{4}\s*[-–]\s*YDS\b/i.test(line) || /^(TEST OF ENGLISH|İNGİLİZCE|ENGLISH)\s*$/i.test(line)) continue
   const numMatch = /^(\d{1,2})\.?$/.exec(line)
   // Resmî kitapçık biçimi: "12. Soru metni ..." (numara + nokta + aynı satırda metin); sırayla artmalı
   const inlineNum = /^(\d{1,2})\.\s+(\S.*)$/.exec(line)
@@ -171,14 +187,12 @@ for (const raw of lines) {
     q = { no: Number(numMatch[1]), page: curPage, stem: [], options: {} }
     continue
   }
-  const inline = INLINE_OPTS.exec(line)
-  if (inline && q) {
-    'ABCDE'.split('').forEach((k, i) => (q.options[k] = inline[i + 1]))
-    continue
-  }
-  const optMatch = /^([A-E])\)\s*(.*)$/.exec(line)
-  if (optMatch && q) {
-    q.options[optMatch[1]] = optMatch[2].trim()
+  // Bir satırda birden çok şık olabilir: "A) x    B) y    C) z" ya da "D) x    E) y"
+  if (q && /^[A-E]\)\s/.test(line)) {
+    for (const piece of line.split(/\s{2,}(?=[A-E]\)\s)/)) {
+      const m = /^([A-E])\)\s*(.*)$/.exec(piece.trim())
+      if (m) q.options[m[1]] = m[2].trim()
+    }
     continue
   }
   if (q && Object.keys(q.options).length >= 5) {
@@ -221,7 +235,7 @@ for (const p of passages) delete p.afterNo
 
 const exam = {
   id: name,
-  title: title || name,
+  title: flags.title || title || name,
   pdf: pdfName,
   pageFrom: pages[0].pdfPage,
   pageTo: pages[pages.length - 1].pdfPage,

@@ -101,6 +101,7 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 - Durum (16 Ekim 2026): 5 sınavın tamamı çevrildi (2024 Mart/Kasım, 2025 Mart/Kasım, 2026 Mart). 2025 Yaz atlandı: OCR çıktısı iki sütun karışıklığıyla bozuk (`local-data/yds/_eksik/`). Yeni sınav eklemek: OCR -> `parseYdsExam.mjs` -> `trTools.mjs list/merge`.
 - Her soru/paragraf kaynak PDF sayfasını (`page`) taşır; sayfada "📄 Orijinal sayfa N" düğmesi PDF'i o sayfada açar (dev-only `/local-api/pdf/<dosya>`, yalnızca 127.0.0.1). `parseYdsExam.mjs` seçenekleri: `--pdf --prefix --offset --range`.
 - 2013-2023 derlemesi (594 sayfa) OCR hattının 300 sayfa sınırı nedeniyle `tumydsler-p1/p2` olarak ikiye bölünüp okutuldu (p2 için `--offset 300`).
+- 2013-2023 derlemesi (OCR'lı, 22 sınav) ayrıştırıldı: sayfalar `scratchpad/all/tum_sNNN.md` altında birleştirilip `parseYdsExam.mjs <id> <klasör> --prefix tum --range a-b --pdf 2013-2023-tum-ydsler.pdf --title ...` ile işlendi. Cevap anahtarı, her kitapçığın "SINAVDA UYULACAK KURALLAR" sayfasından sonraki sayfadadır (3 biçim: "1. A" satırları, iki sütun, `<th>1.C</th>`). Yapısal denetim: `node scripts/qcExams.mjs`. `yds-2022-a-anahtarsiz` (518-542) için cevap anahtarı derlemede YOK; `yds-2021-nisan` 65. cevap OCR'da okunamadı, `scripts/data/answer_overrides.json` ile D olarak düzeltildi.
 - Sıklık etiketleri 2013-2023 derlemesi + 5 OCR'lı sınavla yeniden hesaplandı (eşikler 70/25/10); `levelMigration` bayrağı `yds-levels-v3`.
 
 ### Sıradaki Önerilen Adımlar:
