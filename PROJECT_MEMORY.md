@@ -83,6 +83,12 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 - [x] Tam veritabanı JSON yedekleme/geri yükleme altyapısı (v2)
 - [x] Ev bilgisayarı kurulum rehberi (`KURULUM_VE_GELISTIRME_REHBERI.md`) ve `README.md`
 
+### Seviye Düzeltmesi ve YDS Sıklığı (16 Ekim 2026)
+- **Sorun:** Havuzdaki CEFR seviyeleri Oxford 5000'den alınırken bir kelimenin birden çok anlamından *sonuncusu* kullanılıyordu (örn. `arm` A1 yerine C1). Listede olmayan 417 kelime sessizce B1 yapılmıştı. Ayrıca `groups.ts` içindeki C1-C2 grubu `difficulty` 4'ü de (yani B2'yi) içeriyordu.
+- **Çözüm:** `scripts/fixLevels.mjs` en düşük anlam seviyesini kullanır, listede olmayan kelimeleri kök/türeme/phrasal kuralıyla çıkarır ve `Seviye-Tahmini` etiketi koyar. `getWordLevelGroup()` her kelimeyi tek gruba koyar. `src/services/levelMigration.ts` daha önce içe aktarılmış kelimeleri bir kez günceller (`yds-levels-v2` bayrağı).
+- **YDS sıklığı:** `2013-2023-tum-ydsler.pdf` (pdftotext ile) metninden sayıldı; etiketler `YDS-Çok-Sık` (>=55), `YDS-Sık` (>=20), `YDS-Ara` (>=8). Korpus küçüktür (~150 bin sözcük). Son YDS PDF'leri taranmış görüntü olduğundan OCR gerekir (kurulu değil). Resmi/doğrulanmış YDS sıklık listesi bulunamadı.
+- **Yeniden üretmek için:** `pdftotext -layout cikmis_sorular/2013-2023-tum-ydsler.pdf yds.txt` sonra `node scripts/fixLevels.mjs yds.txt`.
+
 ### Sıradaki Önerilen Adımlar:
 1. **GitHub Güncellemesi:** Yapılan tüm geliştirmelerin GitHub'a push edilmesi.
 2. **Ev Bilgisayarı Kurulumu:** `KURULUM_VE_GELISTIRME_REHBERI.md` adımları takip edilerek ev bilgisayarında projenin çalıştırılması ve JSON yedeğinin aktarılması.

@@ -13,6 +13,29 @@ export interface GroupDefinition {
   matcher: (word: WordItem, card?: CardState, nowIso?: string) => boolean
 }
 
+export type LevelGroup = 'A' | 'B' | 'C'
+
+const CEFR_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+
+/**
+ * Kelimenin seviye grubunu (A / B / C) döndürür. Her kelime tam olarak bir gruba girer.
+ * Öncelik: CEFR etiketi (en düşük olan) > eski grup etiketleri > zorluk puanı.
+ * Not: Zorluk puanı yalnızca etiketsiz (elle eklenen) kelimelerde kullanılır; aksi halde
+ * B2 kelimeleri (puan 4) C1-C2 grubuna karışırdı.
+ */
+export function getWordLevelGroup(w: WordItem): LevelGroup | null {
+  const tags = w.tags || []
+  const cefr = CEFR_ORDER.find((l) => tags.includes(l))
+  if (cefr) return cefr[0] as LevelGroup
+  if (tags.includes('İleri') || tags.includes('YDS-Akademik') || tags.includes('C1-İleri')) return 'C'
+  if (tags.includes('Orta')) return 'B'
+  if (tags.includes('Başlangıç')) return 'A'
+  if (w.difficulty === 1 || w.difficulty === 2) return 'A'
+  if (w.difficulty === 3) return 'B'
+  if (w.difficulty === 4 || w.difficulty === 5) return 'C'
+  return null
+}
+
 export const BUILT_IN_GROUPS: GroupDefinition[] = [
   {
     id: 'level_c1_c2',
@@ -23,17 +46,7 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
     color: '#8b5cf6',
     badge: 'C1-C2',
     isBuiltIn: true,
-    matcher: (w) => {
-      const tags = w.tags || []
-      return (
-        tags.includes('C1') ||
-        tags.includes('C2') ||
-        tags.includes('İleri') ||
-        tags.includes('YDS-Akademik') ||
-        w.difficulty === 4 ||
-        w.difficulty === 5
-      )
-    },
+    matcher: (w) => getWordLevelGroup(w) === 'C',
   },
   {
     id: 'level_b1_b2',
@@ -44,14 +57,7 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
     color: '#3b82f6',
     badge: 'B1-B2',
     isBuiltIn: true,
-    matcher: (w) => {
-      const tags = w.tags || []
-      return (
-        (tags.includes('B1') || tags.includes('B2') || tags.includes('Orta') || w.difficulty === 3) &&
-        !tags.includes('C1') &&
-        !tags.includes('C2')
-      )
-    },
+    matcher: (w) => getWordLevelGroup(w) === 'B',
   },
   {
     id: 'level_a1_a2',
@@ -62,15 +68,7 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
     color: '#10b981',
     badge: 'A1-A2',
     isBuiltIn: true,
-    matcher: (w) => {
-      const tags = w.tags || []
-      return (
-        (tags.includes('A1') || tags.includes('A2') || tags.includes('Başlangıç') || w.difficulty === 1 || w.difficulty === 2) &&
-        !tags.includes('B1') &&
-        !tags.includes('B2') &&
-        !tags.includes('C1')
-      )
-    },
+    matcher: (w) => getWordLevelGroup(w) === 'A',
   },
   {
     id: 'yds_phrasal',
