@@ -62,7 +62,7 @@ function splitSentences(text) {
   for (let i = 0; i < tokens.length; i++) {
     cur += (cur ? ' ' : '') + tokens[i]
     const next = tokens[i + 1]
-    const endsSentence = /[.!?]["'”’)]*$/.test(tokens[i]) && !ABBR.test(tokens[i]) && !/^\d+\.$/.test(tokens[i])
+    const endsSentence = /[.!?]["'”’)]*$/.test(tokens[i]) && !ABBR.test(tokens[i]) && !/^\d{1,2}\.$/.test(tokens[i])
     if (endsSentence && (!next || /^["'“‘(]*[A-ZİÖÜÇŞĞ0-9]/.test(next))) {
       parts.push(cur)
       cur = ''
@@ -151,11 +151,14 @@ for (const p of passages) {
     // Sorular paragraftan hemen sonra gelir; bir sonraki paragrafın başladığı soruya kadar sürer.
     // Son paragrafta "passage/paragraph/author/..." geçmeyen ilk soruda durulur.
     const next = passages.find((y) => y.afterNo > p.afterNo)
+    let taken = 0
     for (const x of questions.filter((y) => y.no > p.afterNo).sort((a, b) => a.no - b.no)) {
       if (next && x.no > next.afterNo) break
       const stem = x.stem.map((t) => t.en).join(' ')
-      if (!next && !/\b(passage|paragraph|author|writer|text)\b/i.test(stem)) break
+      // Son paragraf: YDS'de okuma paragrafları 4'er sorudur; diyalog sorusu ("Ad: – ...") başlarsa dur
+      if (!next && (taken >= 4 || /^[A-Z][A-Za-z ]{1,20}: [–-]/.test(stem))) break
       x.passage = p.id
+      taken++
     }
   }
 }

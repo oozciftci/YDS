@@ -59,6 +59,10 @@ function SentenceView({
   const [open, setOpen] = useState(false)
   const show = open || forceShow
   const tokens = useMemo(() => seg.en.match(WORD_RE) || [seg.en], [seg.en])
+  // Çeviri sorularında Türkçe cümleler olur: çevirisi/sözlük tıklaması gerekmez, düz metin gösterilir
+  if ((seg.en.match(/[çğıöşüÇĞİÖŞÜ]/g) || []).length >= 2) {
+    return <span className={styles.sentence}>{seg.en} </span>
+  }
   return (
     <span className={styles.sentence}>
       <button
