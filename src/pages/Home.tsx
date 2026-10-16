@@ -246,6 +246,11 @@ export function HomePage() {
             <Link to="/words" className="btn btn-secondary">
               Kelime Havuzu ({totalCards}) →
             </Link>
+            {import.meta.env.DEV && (
+              <Link to="/yds-sorular" className="btn btn-ghost" title="Yalnızca yerelde görünür">
+                📖 YDS Soru Çalışması
+              </Link>
+            )}
           </div>
         </div>
 

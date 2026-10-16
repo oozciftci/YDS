@@ -1,6 +1,51 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import fs from 'node:fs'
+import path from 'node:path'
+
+// YDS soru çalışma verisi (local-data/yds) YALNIZCA geliştirme sunucusunda, localhost üzerinden
+// sunulur. Üretim derlemesine (dist) ve GitHub'a asla girmez: apply:'serve' sadece `npm run dev`.
+function localExamData(): Plugin {
+  const dir = path.resolve(import.meta.dirname, 'local-data/yds')
+  return {
+    name: 'local-exam-data',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/local-api/yds', (req, res, next) => {
+        const remote = req.socket.remoteAddress || ''
+        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        const id = decodeURIComponent((req.url || '/').replace(/^\//, '').replace(/\?.*$/, ''))
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store')
+        if (!id) {
+          const list = fs.existsSync(dir)
+            ? fs
+                .readdirSync(dir)
+                .filter((f) => f.endsWith('.json') && !f.endsWith('.tr.json'))
+                .map((f) => f.replace(/\.json$/, ''))
+            : []
+          res.end(JSON.stringify(list))
+          return
+        }
+        if (!/^[a-z0-9-]+$/i.test(id)) return next()
+        const file = path.join(dir, id + '.json')
+        if (!fs.existsSync(file)) {
+          res.statusCode = 404
+          res.end('{}')
+          return
+        }
+        const trFile = path.join(dir, id + '.tr.json')
+        const tr = fs.existsSync(trFile) ? JSON.parse(fs.readFileSync(trFile, 'utf8')) : {}
+        res.end(JSON.stringify({ exam: JSON.parse(fs.readFileSync(file, 'utf8')), tr }))
+      })
+    },
+  }
+}
 
 // GitHub Pages alt dizinde yayınlanır (/YDS/); yerelde '/' kalır.
 const base = process.env.BASE_PATH || '/'
@@ -10,6 +55,7 @@ export default defineConfig({
   base,
   plugins: [
     react(),
+    localExamData(),
     VitePWA({
       // 'prompt' modunda yeni SW bekler; ne zaman devreye gireceğine biz karar veririz
       // (src/pwa/registerSW.ts). Kullanıcıya hiçbir şey sorulmaz -> sessiz güncelleme,

@@ -1,0 +1,300 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.examSelect {
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+}
+
+.navigator {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+  gap: 6px;
+}
+
+.navBtn {
+  padding: 0.35rem 0;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.navCurrent {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-subtle);
+}
+
+.navOk {
+  background: var(--success-subtle);
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.navBad {
+  background: var(--danger-subtle);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.sectionTitle {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0;
+}
+
+.text {
+  margin: 0;
+  line-height: 2;
+  font-size: 1.02rem;
+}
+
+.sentence {
+  display: inline;
+  margin-right: 0.25em;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  font-size: 0.7rem;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.badgeOn {
+  background: var(--primary-subtle);
+  border-color: var(--primary);
+}
+
+.word {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px dotted var(--text-subtle);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.word:hover,
+.word:focus-visible {
+  background: var(--primary-subtle);
+  border-bottom-color: var(--primary);
+}
+
+.trLine {
+  display: block;
+  margin: 0.15rem 0 0.5rem 26px;
+  padding: 0.35rem 0.6rem;
+  border-left: 3px solid var(--primary);
+  background: var(--primary-subtle);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  color: var(--text);
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.noTr {
+  color: var(--text-subtle);
+  font-style: italic;
+}
+
+.options {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.option {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.optPicked {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+}
+
+.optCorrect {
+  border-color: var(--success);
+  background: var(--success-subtle);
+}
+
+.optWrong {
+  border-color: var(--danger);
+  background: var(--danger-subtle);
+}
+
+.optPick {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.optLetter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.optBody {
+  min-width: 0;
+  line-height: 1.8;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.okText {
+  color: var(--success);
+  font-weight: 700;
+}
+
+.badText {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.details {
+  border-top: 1px solid var(--border-subtle);
+  padding: 0.5rem 0;
+}
+
+.details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.trBlock {
+  margin: 0.4rem 0 0;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.optTrList {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.popBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.pop {
+  position: fixed;
+  z-index: 41;
+  width: min(300px, calc(100vw - 16px));
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.popHead {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.popHead strong {
+  flex: 1;
+  font-size: 1.05rem;
+}
+
+.popIcon {
+  border: 0;
+  background: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.popMeaning {
+  margin: 0;
+  font-weight: 600;
+}
