@@ -84,7 +84,31 @@ export function WordPacksModal({
     }
   }
 
-  // 2. Yerleşik özel YDS paketlerini yükleme
+  // 2. Çıkmış YDS metinlerinden çıkarılan, havuzda olmayan sınav kelimeleri
+  async function handleLoadYdsExamPack() {
+    setLoadingAction('yds_exam_pack')
+    setResultMsg(null)
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}data/yds_sinav_paketi.json`)
+      if (!res.ok) throw new Error('Paket dosyası yüklenemedi: ' + res.status)
+      const words: CreateWordInput[] = await res.json()
+      const added = await bulkCreateWords(activeUserId, words)
+      setResultMsg({
+        type: 'success',
+        text: `✓ YDS Sınav Kelimeleri paketinden ${added.addedCount} yeni kelime ${activeUserName} havuzuna eklendi! (${added.skippedCount} mükerrer atlandı)`,
+      })
+      onSuccess()
+    } catch (err) {
+      setResultMsg({
+        type: 'error',
+        text: `Hata: ${err instanceof Error ? err.message : String(err)}`,
+      })
+    } finally {
+      setLoadingAction(null)
+    }
+  }
+
+  // 3. Yerleşik özel YDS paketlerini yükleme
   async function handleLoadPack(pack: WordPack) {
     setLoadingAction(pack.id)
     setResultMsg(null)
@@ -375,13 +399,13 @@ export function WordPacksModal({
           >
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🎯 C1 - C2 İleri Seviye & YDS Çıkmış Akademik Kelimeler</span>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🎯 C1 İleri Seviye (Oxford)</span>
                 <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
-                  145+ Kelime
+                  106 Kelime
                 </span>
               </div>
               <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
-                ÖSYM YDS, YÖKDİL, YDT sınavlarının en çok sorulan çeldirici ve akademik kelimeleri.
+                Tam havuzdaki C1 seviye kelimeler. Tam havuzu yüklediyseniz bunlar zaten içindedir.
               </p>
             </div>
             <button
@@ -394,8 +418,43 @@ export function WordPacksModal({
             </button>
           </div>
 
-          {/* Özel YDS Phrasal Verbs & Bağlaçlar */}
-          {ALL_WORD_PACKS.slice(1, 3).map((pack) => (
+          {/* Çıkmış YDS sınav kelimeleri (havuzda olmayanlar) */}
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--primary)',
+              background: 'var(--primary-subtle)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>📝 YDS Sınav Kelimeleri</span>
+                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                  B1-C1 • 397 Kelime
+                </span>
+              </div>
+              <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                2013-2023 çıkmış YDS metinlerinde sık geçen ama Oxford 3000 havuzunda olmayan kelimeler (psychological, symptom, chronic…). Tam havuzdan ayrıdır.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => void handleLoadYdsExamPack()}
+              disabled={loadingAction !== null}
+            >
+              {loadingAction === 'yds_exam_pack' ? '⏳ Yükleniyor…' : '📥 YDS Sınav Kelimelerini Yükle'}
+            </button>
+          </div>
+
+          {/* Özel YDS Akademik Çekirdek, Phrasal Verbs & Bağlaçlar */}
+          {ALL_WORD_PACKS.slice(0, 3).map((pack) => (
             <div
               key={pack.id}
               style={{

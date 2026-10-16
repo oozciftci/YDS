@@ -89,6 +89,11 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 - **YDS sıklığı:** `2013-2023-tum-ydsler.pdf` (pdftotext ile) metninden sayıldı; etiketler `YDS-Çok-Sık` (>=55), `YDS-Sık` (>=20), `YDS-Ara` (>=8). Korpus küçüktür (~150 bin sözcük). Son YDS PDF'leri taranmış görüntü olduğundan OCR gerekir (kurulu değil). Resmi/doğrulanmış YDS sıklık listesi bulunamadı.
 - **Yeniden üretmek için:** `pdftotext -layout cikmis_sorular/2013-2023-tum-ydsler.pdf yds.txt` sonra `node scripts/fixLevels.mjs yds.txt`.
 
+### YDS Sınav Kelimeleri Paketi (16 Ekim 2026)
+- Çıkmış YDS metinlerinde sık geçen ama Oxford 3000 havuzunda olmayan 397 kelime (`scripts/data/yds_sinav_kelimeleri.txt`, Türkçe anlam + eş anlamlı + özgün örnek cümle). Sınav cümleleri telif nedeniyle kullanılmadı.
+- `node scripts/buildYdsPack.mjs <metin.txt...>` -> `public/data/yds_sinav_paketi.json` (seviye Oxford 5000'den, yoksa C1 + `Seviye-Tahmini`; `YDS-Sınav-Paketi` etiketi; sıklık notu).
+- Paketler penceresinde "📝 YDS Sınav Kelimeleri" kartı. Akademik çekirdek paket (30) de görünür yapıldı.
+
 ### Sıradaki Önerilen Adımlar:
 1. **GitHub Güncellemesi:** Yapılan tüm geliştirmelerin GitHub'a push edilmesi.
 2. **Ev Bilgisayarı Kurulumu:** `KURULUM_VE_GELISTIRME_REHBERI.md` adımları takip edilerek ev bilgisayarında projenin çalıştırılması ve JSON yedeğinin aktarılması.

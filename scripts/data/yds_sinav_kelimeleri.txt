@@ -1,0 +1,400 @@
+# YDS sınav kelimeleri: çıkmış YDS metinlerinde sık geçen ama Oxford 3000 havuzunda olmayan kelimeler.
+# Biçim: kelime|tür|Türkçe anlam|eş anlamlılar (virgülle)|örnek cümle
+# tür: n=isim, v=fiil, adj=sıfat, adv=zarf, prep=edat
+disorder|n|bozukluk, rahatsızlık|illness,condition|Sleep disorders can affect concentration at work.
+consume|v|tüketmek|use up,eat|Large cities consume huge amounts of energy.
+psychological|adj|psikolojik|mental,emotional|Stress has both physical and psychological effects.
+gene|n|gen|DNA,hereditary unit|Some diseases are passed on through a single gene.
+symptom|n|belirti, semptom|sign,indication|Fever is a common symptom of infection.
+detect|v|tespit etmek, saptamak|discover,notice|The test can detect the disease at an early stage.
+genetic|adj|genetik|hereditary,inherited|Eye colour is largely determined by genetic factors.
+infer|v|çıkarım yapmak, sonuç çıkarmak|deduce,conclude|What can we infer from the author's words?
+trait|n|özellik, nitelik|characteristic,feature|Patience is a valuable personality trait.
+habitat|n|doğal yaşam alanı|environment,home|Many species are losing their natural habitat.
+psychologist|n|psikolog|therapist,analyst|The psychologist studied how children learn language.
+consumption|n|tüketim|use,intake|Sugar consumption has risen sharply in recent decades.
+technological|adj|teknolojik|technical,scientific|Technological progress has changed the way we work.
+fossil|n|fosil|remains,relic|Scientists found the fossil of an early bird.
+chronic|adj|kronik, süreğen|persistent,long-term|She suffers from chronic back pain.
+scholar|n|akademisyen, bilgin|academic,researcher|Scholars disagree about the origin of the text.
+psychology|n|psikoloji|study of the mind|He studied psychology at university.
+visual|adj|görsel|optical,seen|Visual information is processed in the brain very quickly.
+carbon|n|karbon|carbon element|Trees absorb carbon from the atmosphere.
+globalization|n|küreselleşme|internationalization,integration|Globalization has increased trade between countries.
+enhance|v|artırmak, geliştirmek|improve,boost|Regular exercise can enhance memory.
+agricultural|adj|tarımsal|farming,agrarian|Most of the region is agricultural land.
+finding|n|bulgu|result,discovery|The findings of the study were published last year.
+efficient|adj|verimli, etkili|effective,productive|Electric cars are more efficient than petrol cars.
+organ|n|organ|body part|The heart is a vital organ.
+universal|adj|evrensel|global,general|Music is often described as a universal language.
+surgery|n|ameliyat, cerrahi|operation|He needed surgery on his knee.
+labour|n|emek, iş gücü|work,workforce|The factory relies on cheap labour.
+regardless|adv|-e bakmaksızın, ne olursa olsun|irrespective,despite|The law applies to everyone regardless of age.
+native|adj|yerli, ana (dil)|indigenous,local|The kangaroo is native to Australia.
+evolve|v|evrimleşmek, gelişmek|develop,change|Languages evolve over time.
+cognitive|adj|bilişsel|mental,intellectual|Sleep improves cognitive performance.
+depression|n|depresyon; ekonomik durgunluk|sadness,recession|Depression is a serious medical condition.
+inspire|v|ilham vermek|motivate,encourage|Her story inspired many young women.
+boost|v|artırmak, desteklemek|increase,raise|The new policy aims to boost tourism.
+infant|n|bebek|baby,newborn|Infants need many hours of sleep.
+trigger|v|tetiklemek|cause,provoke|Certain foods can trigger an allergic reaction.
+surgeon|n|cerrah|doctor,operating physician|The surgeon removed the tumour successfully.
+solar|adj|güneşe ait, güneş|sun-related|Solar panels turn sunlight into electricity.
+predator|n|yırtıcı hayvan, avcı|hunter,carnivore|Lions are the top predators in the savanna.
+survival|n|hayatta kalma|existence,continuation|Water is essential for survival.
+compound|n|bileşik|mixture,combination|Salt is a compound of sodium and chlorine.
+intake|n|alım (besin vb.)|consumption,ingestion|Doctors recommend reducing salt intake.
+beneficial|adj|yararlı, faydalı|useful,helpful|Fresh air is beneficial to health.
+peer|n|akran, emsal|equal,fellow|Teenagers are strongly influenced by their peers.
+innovation|n|yenilik|invention,novelty|Innovation drives economic growth.
+differ|v|farklı olmak|vary,contrast|Opinions differ on this issue.
+drought|n|kuraklık|dry spell,water shortage|The drought destroyed most of the crops.
+contrary|adj|aksi, zıt|opposite,conflicting|Contrary to popular belief, bats are not blind.
+strengthen|v|güçlendirmek|reinforce,fortify|Exercise strengthens the muscles.
+protein|n|protein|nutrient|Eggs are a good source of protein.
+textbook|n|ders kitabı|coursebook,manual|The textbook explains the theory clearly.
+mechanism|n|mekanizma, işleyiş|process,system|Scientists are studying the mechanism of memory.
+intervention|n|müdahale|involvement,interference|Early intervention can prevent serious problems.
+vitamin|n|vitamin|nutrient,supplement|Oranges are rich in vitamin C.
+emission|n|salınım, emisyon|discharge,release|Carbon emissions must be reduced.
+awareness|n|farkındalık, bilinç|consciousness,knowledge|The campaign raised awareness of the disease.
+obesity|n|obezite, aşırı şişmanlık|overweight,corpulence|Obesity is linked to many health problems.
+therapy|n|tedavi, terapi|treatment,remedy|She is receiving therapy for her anxiety.
+widespread|adj|yaygın|common,extensive|The use of mobile phones is now widespread.
+literacy|n|okuryazarlık|reading ability,education|Literacy rates have improved in rural areas.
+excessive|adj|aşırı|extreme,too much|Excessive noise can damage your hearing.
+interaction|n|etkileşim|communication,contact|Social interaction is important for children.
+composer|n|besteci|songwriter,musician|Mozart was a famous composer.
+perception|n|algı|view,understanding|Our perception of time changes with age.
+dairy|n|süt ürünleri|milk products|Cheese and yoghurt are dairy products.
+gender|n|cinsiyet, toplumsal cinsiyet|sex|The survey asked about age and gender.
+interact|v|etkileşimde bulunmak|communicate,engage|Children learn by interacting with others.
+sophisticated|adj|gelişmiş, karmaşık; sofistike|advanced,complex|The system uses sophisticated software.
+outcome|n|sonuç|result,consequence|The outcome of the election surprised everyone.
+agriculture|n|tarım|farming|Agriculture is the main industry in the area.
+popularity|n|popülerlik, rağbet|fame,acceptance|The game gained popularity quickly.
+earthquake|n|deprem|tremor,quake|The earthquake damaged many buildings.
+transmit|v|iletmek, bulaştırmak|send,pass on|Mosquitoes can transmit diseases.
+herb|n|bitki (şifalı/baharat)|plant,spice|Many herbs are used in traditional medicine.
+childhood|n|çocukluk|early years|She spent her childhood in a small village.
+stem|v|kaynaklanmak (from)|originate,arise|His problems stem from a lack of sleep.
+humanity|n|insanlık|mankind,humankind|Climate change is a threat to humanity.
+medication|n|ilaç, ilaç tedavisi|medicine,drug|Take this medication twice a day.
+literary|adj|edebi|written,poetic|The novel won a major literary prize.
+satellite|n|uydu|spacecraft,moon|Satellites send weather data to Earth.
+palm|n|avuç içi; palmiye|hand,palm tree|She held the coin in her palm.
+tribe|n|kabile, aşiret|clan,people|The tribe lived in the forest for centuries.
+assumption|n|varsayım|belief,supposition|The theory is based on a false assumption.
+educational|adj|eğitimsel, eğitici|instructive,academic|The museum offers educational programmes.
+perspective|n|bakış açısı|viewpoint,outlook|Try to see the problem from a different perspective.
+physician|n|doktor, hekim|doctor,medical practitioner|Consult your physician before starting the diet.
+prompt|v|sebep olmak, -e yöneltmek|cause,provoke|The crisis prompted a change in policy.
+worldwide|adj|dünya çapında|global,international|The film was a worldwide success.
+intense|adj|yoğun, şiddetli|strong,extreme|The athletes are under intense pressure.
+intellectual|adj|zihinsel, entelektüel|mental,academic|Reading supports intellectual development.
+inequality|n|eşitsizlik|disparity,imbalance|Income inequality is growing in many countries.
+obsession|n|saplantı, takıntı|fixation,preoccupation|His obsession with work damaged his health.
+neutral|adj|tarafsız, nötr|impartial,unbiased|Switzerland remained neutral during the war.
+accelerate|v|hızlandırmak|speed up,hasten|Heat accelerates the chemical reaction.
+distribution|n|dağıtım, dağılım|allocation,spread|The distribution of wealth is unequal.
+leisure|n|boş zaman|free time,recreation|People have more leisure time than before.
+tissue|n|doku|cells,material|Muscle tissue repairs itself after exercise.
+wildlife|n|yaban hayatı|animals,fauna|The park protects local wildlife.
+philosopher|n|filozof|thinker|Socrates was a Greek philosopher.
+capability|n|yetenek, kapasite|ability,capacity|The new phone has advanced camera capabilities.
+limitation|n|sınırlama, kısıt|restriction,constraint|The study has several limitations.
+biological|adj|biyolojik|organic,natural|Hunger is a biological need.
+timber|n|kereste|wood,lumber|The house was built of timber.
+primarily|adv|öncelikle, esas olarak|mainly,chiefly|The book is primarily for students.
+diverse|adj|çeşitli, farklı|varied,different|London has a diverse population.
+reserve|n|rezerv, yedek|supply,stock|The country has large oil reserves.
+distant|adj|uzak|far,remote|They heard a distant sound of thunder.
+eliminate|v|ortadan kaldırmak, elemek|remove,get rid of|The new system will eliminate errors.
+productivity|n|verimlilik|efficiency,output|New technology increased productivity.
+prosperity|n|refah, zenginlik|wealth,welfare|Trade brought prosperity to the region.
+external|adj|dış, harici|outer,outside|External factors affected the results.
+adverse|adj|olumsuz, ters|negative,harmful|The drug has few adverse effects.
+diagnose|v|teşhis etmek|identify,detect|She was diagnosed with diabetes.
+regulate|v|düzenlemek, denetlemek|control,manage|Hormones regulate body temperature.
+hydrogen|n|hidrojen|gas element|Water consists of hydrogen and oxygen.
+expedition|n|keşif gezisi, sefer|journey,exploration|The expedition reached the North Pole.
+clinical|adj|klinik|medical|Clinical trials are testing the new drug.
+volunteer|n|gönüllü|helper,unpaid worker|Volunteers helped clean the beach.
+ethnic|adj|etnik|racial,cultural|The country has many ethnic groups.
+prey|n|av (hayvan)|victim,quarry|The eagle caught its prey.
+greenhouse|n|sera|glasshouse|Greenhouse gases trap heat in the atmosphere.
+restrict|v|kısıtlamak|limit,constrain|The law restricts the sale of alcohol.
+vulnerable|adj|savunmasız, hassas|weak,exposed|Old people are vulnerable to the flu.
+reliable|adj|güvenilir|dependable,trustworthy|We need reliable data.
+component|n|bileşen, parça|part,element|Trust is an important component of friendship.
+irrelevant|adj|alakasız, ilgisiz|unrelated,beside the point|His age is irrelevant to the job.
+manipulate|v|manipüle etmek, yönlendirmek|control,influence|Advertisements try to manipulate consumers.
+genre|n|tür (sanat/edebiyat)|category,style|Science fiction is my favourite genre.
+partial|adj|kısmi|incomplete,limited|The project was only a partial success.
+settler|n|yerleşimci|colonist,pioneer|European settlers arrived in the 17th century.
+immune|adj|bağışık|resistant,protected|The immune system fights infection.
+addiction|n|bağımlılık|dependence,habit|Internet addiction is becoming common.
+territory|n|bölge, toprak|area,land|The animals defend their territory.
+complexity|n|karmaşıklık|complication,intricacy|The complexity of the problem surprised us.
+radical|adj|köklü, radikal|fundamental,extreme|The company made radical changes.
+ideology|n|ideoloji|belief system,doctrine|The party has a clear political ideology.
+historical|adj|tarihsel, tarihi|past,ancient|The town has many historical buildings.
+yield|v|ürün vermek; sonuç vermek|produce,give|The research yielded useful results.
+critic|n|eleştirmen|reviewer,commentator|The critics praised the film.
+warrior|n|savaşçı|fighter,soldier|The warriors defended the city.
+devise|v|tasarlamak, geliştirmek|invent,design|They devised a new method of teaching.
+motivate|v|motive etmek, güdülemek|encourage,inspire|Good teachers motivate their students.
+diversity|n|çeşitlilik|variety,range|The region is known for its biological diversity.
+convey|v|iletmek, aktarmak|communicate,express|Pictures can convey strong emotions.
+conquer|v|fethetmek, yenmek|defeat,overcome|The Romans conquered much of Europe.
+pose|v|(sorun/tehdit) oluşturmak|present,create|Pollution poses a serious threat to health.
+migration|n|göç|movement,relocation|Bird migration happens every autumn.
+induce|v|neden olmak, teşvik etmek|cause,bring about|The drug may induce sleep.
+efficiency|n|verimlilik, etkinlik|effectiveness,productivity|We need to improve energy efficiency.
+investor|n|yatırımcı|financier,backer|Foreign investors are interested in the project.
+lens|n|mercek, lens|glass|The camera has a powerful lens.
+slave|n|köle|servant,captive|Slaves worked on the plantations.
+medieval|adj|ortaçağa ait|of the Middle Ages|The castle is a medieval building.
+slavery|n|kölelik|bondage,servitude|Slavery was abolished in the 19th century.
+coordination|n|koordinasyon, eşgüdüm|cooperation,organization|Dancing requires good coordination.
+overwhelm|v|bunaltmak, alt etmek|overpower,swamp|She was overwhelmed by the amount of work.
+fulfil|v|yerine getirmek, gerçekleştirmek|achieve,complete|He fulfilled his dream of becoming a pilot.
+constitute|v|oluşturmak, teşkil etmek|form,make up|Women constitute half of the workforce.
+incentive|n|teşvik, özendirici|motivation,encouragement|Tax incentives attract new businesses.
+sustain|v|sürdürmek, devam ettirmek|maintain,support|The planet cannot sustain this population growth.
+dependent|adj|bağımlı, -e bağlı|reliant,relying|The economy is dependent on tourism.
+ideological|adj|ideolojik|political,doctrinal|They had deep ideological differences.
+dose|n|doz|amount,dosage|Do not exceed the recommended dose.
+prediction|n|tahmin, öngörü|forecast,prophecy|His prediction proved correct.
+innovative|adj|yenilikçi|creative,original|The company is known for innovative products.
+weaken|v|zayıflatmak|undermine,reduce|The illness weakened his heart.
+former|adj|önceki, eski; ilki|previous,earlier|The former president gave a speech.
+integrate|v|bütünleştirmek, entegre etmek|combine,incorporate|Immigrants need help to integrate into society.
+advocate|v|savunmak, desteklemek|support,promote|Doctors advocate a balanced diet.
+statistic|n|istatistik|figure,data|The statistics show a fall in crime.
+accomplish|v|başarmak, tamamlamak|achieve,complete|We accomplished the task in two days.
+establishment|n|kuruluş; kurum|foundation,institution|The establishment of the school took years.
+creativity|n|yaratıcılık|imagination,originality|Art lessons encourage creativity.
+exploration|n|keşif, araştırma|investigation,discovery|Space exploration is very expensive.
+administration|n|yönetim, idare|management,government|The administration announced new taxes.
+myth|n|efsane, mit; yanlış inanış|legend,misconception|It is a myth that goldfish have short memories.
+activate|v|harekete geçirmek, etkinleştirmek|trigger,start|Light activates the sensor.
+grip|n|kavrama, hâkimiyet|grasp,control|The country is in the grip of a crisis.
+sustainable|adj|sürdürülebilir|renewable,lasting|We need sustainable sources of energy.
+tale|n|hikâye, masal|story,legend|The old man told tales of his youth.
+profound|adj|derin, köklü|deep,significant|The war had a profound effect on him.
+emergence|n|ortaya çıkış|appearance,rise|The emergence of the internet changed society.
+multiple|adj|çoklu, birden fazla|many,numerous|The question has multiple answers.
+workplace|n|işyeri|office,work environment|Safety in the workplace is important.
+tolerate|v|tahammül etmek, hoş görmek|bear,accept|Some plants cannot tolerate cold weather.
+blend|v|karıştırmak, harmanlamak|mix,combine|Blend the sugar and butter together.
+globe|n|dünya, küre|world,earth|Tourists come from all over the globe.
+controversial|adj|tartışmalı|disputed,debatable|The new law is highly controversial.
+evaluate|v|değerlendirmek|assess,judge|Teachers evaluate students' progress.
+percentage|n|yüzde, oran|proportion,rate|A large percentage of students passed.
+prevention|n|önleme|avoidance,protection|Prevention is better than cure.
+prominent|adj|önde gelen, belirgin|leading,notable|She is a prominent scientist.
+nutrition|n|beslenme|diet,nourishment|Good nutrition is essential for growth.
+wealthy|adj|varlıklı, zengin|rich,affluent|Wealthy families can afford private schools.
+span|n|süre, aralık|period,length|The attention span of children is short.
+radiation|n|radyasyon, ışınım|rays,emission|Exposure to radiation can cause cancer.
+stimulate|v|uyarmak, teşvik etmek|encourage,activate|Music stimulates the brain.
+ritual|n|ritüel, tören|ceremony,custom|Drinking tea is a daily ritual for many people.
+formation|n|oluşum|creation,development|The formation of the Earth took millions of years.
+exhibit|v|sergilemek, göstermek|display,show|The patient exhibited signs of stress.
+historian|n|tarihçi|chronicler|Historians disagree about the cause of the war.
+elaborate|adj|ayrıntılı, özenli|detailed,complex|They made elaborate plans for the trip.
+minimal|adj|asgari, en az|minimum,slight|The storm caused minimal damage.
+motivation|n|motivasyon, güdü|drive,incentive|Lack of motivation is a common problem.
+endure|v|katlanmak, dayanmak|bear,withstand|They endured years of hardship.
+overlook|v|gözden kaçırmak|miss,neglect|It is easy to overlook small mistakes.
+poet|n|şair|writer,versifier|Yunus Emre is a famous Turkish poet.
+foster|v|teşvik etmek, geliştirmek|encourage,promote|The program fosters cooperation between countries.
+dispute|n|anlaşmazlık|disagreement,conflict|The dispute was settled in court.
+originate|v|kaynaklanmak, doğmak|arise,begin|The custom originated in China.
+diminish|v|azalmak, azaltmak|decrease,reduce|The pain diminished after a few days.
+import|v|ithal etmek|bring in|The country imports most of its oil.
+mature|adj|olgun, yetişkin|adult,grown-up|She is very mature for her age.
+devastate|v|harap etmek, yıkmak|destroy,ruin|The flood devastated the town.
+ancestor|n|ata, cet|forebear,predecessor|Our ancestors lived in caves.
+relieve|v|hafifletmek, rahatlatmak|ease,reduce|This medicine relieves pain.
+accuracy|n|doğruluk, kesinlik|precision,correctness|The accuracy of the data is important.
+latter|adj|ikincisi, sonraki|second,last-mentioned|Of tea and coffee, I prefer the latter.
+perceive|v|algılamak|notice,see|Children perceive the world differently.
+supervisor|n|amir, danışman|manager,boss|My supervisor approved the plan.
+manifest|v|göstermek, ortaya koymak|show,reveal|The disease manifests itself in many ways.
+influential|adj|etkili, nüfuzlu|powerful,important|He was one of the most influential writers.
+instant|adj|anında, ani|immediate,sudden|The book was an instant success.
+frequency|n|sıklık; frekans|rate,occurrence|The frequency of storms is increasing.
+meaningful|adj|anlamlı|significant,important|She wanted a meaningful job.
+obstacle|n|engel|barrier,hurdle|Lack of money is a major obstacle.
+disability|n|engellilik|handicap,impairment|The building is accessible to people with disabilities.
+portion|n|kısım, porsiyon|part,share|A large portion of the budget goes to education.
+precision|n|kesinlik, hassasiyet|accuracy,exactness|The work requires great precision.
+distinct|adj|belirgin, ayrı|clear,separate|There are two distinct types of the disease.
+facility|n|tesis, olanak|building,service|The hospital has modern facilities.
+consistent|adj|tutarlı|steady,constant|His results are consistent with earlier studies.
+shortage|n|kıtlık, eksiklik|lack,deficiency|There is a shortage of teachers.
+spectrum|n|yelpaze, spektrum|range,variety|The book covers a wide spectrum of topics.
+fatal|adj|ölümcül|deadly,lethal|The accident was fatal.
+boom|n|patlama, hızlı artış|growth,expansion|There was a boom in house prices.
+expansion|n|genişleme|growth,increase|The company plans further expansion.
+recession|n|durgunluk (ekonomik)|depression,downturn|Many people lost their jobs during the recession.
+ongoing|adj|devam eden, süregelen|continuing,current|The research is still ongoing.
+bias|n|önyargı, taraflılık|prejudice,partiality|The study shows a clear bias against women.
+utilize|v|kullanmak, yararlanmak|use,employ|We must utilize our resources better.
+circulate|v|dolaşmak, yayılmak|flow,spread|Blood circulates through the body.
+scan|v|taramak, göz gezdirmek|examine,skim|Doctors scanned his brain.
+necessarily|adv|zorunlu olarak, illa ki|inevitably,certainly|Expensive does not necessarily mean better.
+kidney|n|böbrek|renal organ|The kidneys remove waste from the blood.
+restore|v|onarmak, eski haline getirmek|repair,renew|The old church has been restored.
+colony|n|koloni|settlement,community|Ants live in large colonies.
+exploitation|n|sömürü; yararlanma|abuse,use|They protested against the exploitation of workers.
+accordingly|adv|buna göre, dolayısıyla|therefore,consequently|Prices rose and demand fell accordingly.
+combat|v|mücadele etmek|fight,tackle|New laws were passed to combat crime.
+voluntary|adj|gönüllü, isteğe bağlı|optional,unpaid|Attendance is voluntary.
+prejudice|n|önyargı|bias,discrimination|We must fight racial prejudice.
+mathematical|adj|matematiksel|numerical|The problem requires mathematical skills.
+modify|v|değiştirmek, düzenlemek|change,alter|Scientists modified the plant's genes.
+compose|v|bestelemek; oluşturmak|write,create|He composed his first symphony at nine.
+portray|v|tasvir etmek, canlandırmak|depict,represent|The film portrays life in the 1920s.
+seal|v|mühürlemek, kapatmak|close,shut|Seal the box with tape.
+distress|n|sıkıntı, ızdırap|anxiety,suffering|The news caused great distress.
+toxic|adj|zehirli|poisonous,harmful|Some plants are toxic to pets.
+supportive|adj|destekleyici|helpful,encouraging|Her family was very supportive.
+leadership|n|liderlik|guidance,management|The team needs strong leadership.
+stereotype|n|kalıp yargı, klişe|cliché,generalization|The film challenges gender stereotypes.
+insight|n|içgörü, kavrayış|understanding,awareness|The book gives insight into the life of soldiers.
+oral|adj|sözlü; ağızla ilgili|spoken,verbal|The exam has an oral part.
+hazard|n|tehlike, risk|danger,threat|Smoking is a health hazard.
+sake|n|hatır, uğruna (for the sake of)|benefit,purpose|He moved to the coast for the sake of his health.
+stability|n|istikrar, denge|steadiness,balance|The country needs political stability.
+nowadays|adv|günümüzde|today,these days|Nowadays most people shop online.
+clue|n|ipucu|hint,sign|The police found no clues.
+collector|n|koleksiyoncu|gatherer|He is a collector of old coins.
+inject|v|enjekte etmek|insert,introduce|The nurse injected the vaccine.
+narrative|n|anlatı|story,account|The novel has a complex narrative.
+outlook|n|bakış açısı; görünüm|view,prospect|The economic outlook is positive.
+imply|v|ima etmek|suggest,hint|His silence implied agreement.
+reverse|v|tersine çevirmek|undo,invert|It is difficult to reverse the damage.
+restriction|n|kısıtlama|limitation,constraint|There are restrictions on travel.
+peculiar|adj|tuhaf; -e özgü|strange,unusual|The food had a peculiar taste.
+adolescent|n|ergen|teenager,youth|Adolescents need more sleep than adults.
+prescribe|v|reçete yazmak|order,recommend|The doctor prescribed antibiotics.
+verbal|adj|sözel|spoken,oral|Verbal skills develop early in life.
+execute|v|uygulamak; idam etmek|carry out,perform|The plan was executed perfectly.
+praise|v|övmek|commend,applaud|The teacher praised her work.
+embrace|v|benimsemek; kucaklamak|adopt,accept|Young people quickly embrace new technology.
+similarity|n|benzerlik|resemblance,likeness|There are similarities between the two languages.
+accessible|adj|erişilebilir|reachable,available|The museum is accessible to everyone.
+compensate|v|telafi etmek, tazmin etmek|make up for,offset|Nothing can compensate for the loss.
+consciousness|n|bilinç|awareness,mind|He lost consciousness after the fall.
+boundary|n|sınır|border,limit|The river forms the boundary between the two countries.
+significance|n|önem, anlam|importance,meaning|The discovery has great historical significance.
+endeavour|n|çaba, girişim|effort,attempt|Science is a human endeavour.
+specialist|n|uzman|expert,professional|She was referred to a heart specialist.
+abundance|n|bolluk|plenty,wealth|The region has an abundance of fresh water.
+immense|adj|muazzam, devasa|huge,enormous|The project requires immense effort.
+adaptation|n|uyum, adaptasyon|adjustment,modification|Adaptation to the climate took thousands of years.
+invisible|adj|görünmez|unseen,hidden|Air is invisible.
+patent|n|patent|licence,copyright|He holds a patent for the invention.
+flourish|v|gelişmek, serpilmek|thrive,prosper|Trade flourished in the city.
+marine|adj|denizel, deniz|sea,oceanic|Marine life is threatened by plastic.
+moderate|adj|ılımlı, orta derecede|average,reasonable|Moderate exercise is good for you.
+investigation|n|soruşturma, araştırma|inquiry,research|The police started an investigation.
+fluid|n|sıvı|liquid|Drink plenty of fluids when you are ill.
+genius|n|dahi, deha|mastermind,talent|Einstein was a genius.
+breakthrough|n|çığır açan buluş, atılım|discovery,advance|Scientists made a breakthrough in cancer research.
+destructive|adj|yıkıcı|damaging,harmful|The storm was very destructive.
+encompass|v|kapsamak|include,cover|The course encompasses all areas of history.
+orchestra|n|orkestra|ensemble,band|She plays violin in an orchestra.
+autonomy|n|özerklik|independence,self-rule|The region was given greater autonomy.
+facilitate|v|kolaylaştırmak|ease,help|Computers facilitate learning.
+bare|adj|çıplak, yalın|naked,plain|They walked on the beach in bare feet.
+underlying|adj|altta yatan, temel|basic,fundamental|We must find the underlying cause.
+accumulation|n|birikim|collection,build-up|The accumulation of fat causes heart disease.
+operational|adj|işler durumda, operasyonel|working,functional|The new airport will be operational next year.
+antibiotic|n|antibiyotik|medicine,drug|Antibiotics do not work against viruses.
+sunlight|n|güneş ışığı|daylight,sunshine|Plants need sunlight to grow.
+hormone|n|hormon|chemical messenger|Stress hormones affect sleep.
+sensory|adj|duyusal|perceptual|Babies learn through sensory experiences.
+recreational|adj|eğlence amaçlı, rekreasyonel|leisure,amusement|The park offers recreational activities.
+neuron|n|nöron, sinir hücresi|nerve cell|The brain contains billions of neurons.
+telescope|n|teleskop|optical instrument|They watched the planets through a telescope.
+civilisation|n|medeniyet, uygarlık|culture,society|Ancient Egypt was a great civilisation.
+nutrient|n|besin maddesi|nourishment|Plants take nutrients from the soil.
+glacier|n|buzul|ice field|Glaciers are melting due to global warming.
+extinction|n|nesli tükenme|dying out,disappearance|Many animals face extinction.
+vegetarian|n|vejetaryen|non-meat eater|She has been a vegetarian for years.
+molecule|n|molekül|particle|A water molecule has three atoms.
+adolescence|n|ergenlik|teenage years,youth|Adolescence is a time of rapid change.
+archaeologist|n|arkeolog|excavator|Archaeologists discovered an ancient city.
+pharmaceutical|adj|ilaçla ilgili, farmasötik|medicinal,drug|Pharmaceutical companies develop new drugs.
+calorie|n|kalori|energy unit|This drink contains few calories.
+extinct|adj|nesli tükenmiş|vanished,dead|Dinosaurs have been extinct for millions of years.
+archaeological|adj|arkeolojik|historical,ancient|The site has great archaeological value.
+caffeine|n|kafein|stimulant|Coffee contains caffeine.
+microscope|n|mikroskop|magnifier|Bacteria can only be seen under a microscope.
+placebo|n|plasebo|dummy pill|Some patients improved after taking a placebo.
+traumatic|adj|travmatik, sarsıcı|shocking,distressing|The accident was a traumatic experience.
+astronomer|n|gökbilimci|stargazer,scientist|Astronomers discovered a new planet.
+petroleum|n|petrol, ham petrol|crude oil|Plastic is made from petroleum.
+prone|adj|eğilimli, yatkın|likely,inclined|Older people are more prone to illness.
+adulthood|n|yetişkinlik|maturity|Habits formed in childhood continue into adulthood.
+demographic|adj|demografik, nüfusla ilgili|population|Demographic changes affect the economy.
+organism|n|organizma|living thing|Bacteria are tiny organisms.
+resistant|adj|dirençli|immune,unaffected|Some bacteria are resistant to antibiotics.
+inflammation|n|iltihap, enflamasyon|swelling,infection|The drug reduces inflammation.
+precaution|n|önlem, tedbir|safeguard,measure|Take precautions against fire.
+humankind|n|insanlık, insanoğlu|mankind,humanity|The invention changed the history of humankind.
+fertile|adj|verimli, doğurgan|productive,rich|The valley has fertile soil.
+reptile|n|sürüngen|lizard,snake|Snakes and crocodiles are reptiles.
+ecosystem|n|ekosistem|environment,habitat|Pollution damages the marine ecosystem.
+owing to|prep|-den dolayı, yüzünden|because of,due to|The match was cancelled owing to rain.
+geographic|adj|coğrafi|geographical,territorial|The country's geographic position is important.
+particle|n|parçacık, tanecik|fragment,bit|Dust particles float in the air.
+theorist|n|kuramcı|thinker,theoretician|He is a leading economic theorist.
+beverage|n|içecek|drink|Alcoholic beverages are not sold here.
+linguistic|adj|dilbilimsel, dilsel|language,verbal|Children show great linguistic ability.
+parasite|n|parazit, asalak|bloodsucker|The parasite lives inside the host's body.
+toxin|n|toksin, zehir|poison|The body removes toxins through the liver.
+pesticide|n|tarım ilacı, böcek ilacı|insecticide,chemical|Pesticides can harm bees.
+metabolism|n|metabolizma|body chemistry|Exercise speeds up your metabolism.
+prehistoric|adj|tarih öncesi|ancient,primitive|They found prehistoric cave paintings.
+disparity|n|eşitsizlik, farklılık|gap,inequality|There is a disparity between rich and poor regions.
+dialect|n|lehçe, şive|accent,variety|They speak a local dialect.
+allergy|n|alerji|sensitivity|She has an allergy to nuts.
+cloning|n|klonlama|replication,copying|Cloning raises many ethical questions.
+atmospheric|adj|atmosferik|climatic,air|Atmospheric pressure falls with height.
+instability|n|istikrarsızlık|insecurity,unrest|Political instability hurt the economy.
+asteroid|n|asteroit, göktaşı|space rock|An asteroid may have killed the dinosaurs.
+acidification|n|asitleşme|souring|Ocean acidification threatens coral reefs.
+subliminal|adj|bilinçaltı, eşikaltı|unconscious,hidden|Subliminal messages in adverts are banned.
+captive|adj|tutsak, esir|imprisoned,confined|Captive animals often live longer.
+mankind|n|insanlık, insanoğlu|humankind,humanity|The moon landing was a giant leap for mankind.
+vaccination|n|aşılama|immunization|Vaccination protects children from disease.
+mammal|n|memeli|warm-blooded animal|Whales are mammals, not fish.
+diabetes|n|diyabet, şeker hastalığı|sugar disease|Diabetes affects millions of people.
+interpersonal|adj|kişilerarası|social,relational|Good interpersonal skills are important at work.
+botanical|adj|botanik, bitkisel|plant|We visited the botanical garden.
+detrimental|adj|zararlı|harmful,damaging|Smoking is detrimental to health.
+undesirable|adj|istenmeyen|unwanted,unpleasant|The drug has some undesirable side effects.
+sociologist|n|sosyolog, toplumbilimci|social scientist|Sociologists study human behaviour in groups.
+expectancy|n|beklenti (life expectancy: yaşam süresi)|expectation,prospect|Life expectancy has risen in most countries.
+autism|n|otizm|developmental disorder|Autism affects communication and behaviour.
+unreliable|adj|güvenilmez|untrustworthy,undependable|The old car is unreliable.
+deterioration|n|kötüleşme, bozulma|decline,worsening|There was a deterioration in his health.
+esteem|n|saygı, itibar (self-esteem: özsaygı)|respect,regard|Success can improve self-esteem.
+plausible|adj|akla yatkın, makul|believable,reasonable|His explanation sounded plausible.
+contamination|n|kirlenme, bulaşma|pollution,infection|Contamination of water causes disease.
+neurological|adj|nörolojik|neural,nervous|Stroke can cause neurological damage.
+disturbance|n|rahatsızlık, karışıklık|disruption,disorder|Sleep disturbances are common in old age.
+fluctuation|n|dalgalanma|variation,change|Fluctuations in prices worry investors.
+forensic|adj|adli|legal,criminal|Forensic experts examined the evidence.
+medicinal|adj|tıbbi, şifalı|healing,therapeutic|The plant has medicinal properties.
+predatory|adj|yırtıcı, avcı|hunting,carnivorous|Sharks are predatory fish.
+cardiovascular|adj|kalp-damar ile ilgili|heart-related|Exercise reduces the risk of cardiovascular disease.
+microorganism|n|mikroorganizma|microbe,germ|Microorganisms live everywhere.
+migraine|n|migren|severe headache|Bright light can trigger a migraine.
+galaxy|n|galaksi|star system|Our galaxy is called the Milky Way.
+vaccine|n|aşı|immunization|A new vaccine was developed quickly.
