@@ -129,7 +129,7 @@ function countOf(term) {
   }
   return freq.get(t) || 0
 }
-const freqTag = (n) => (n >= 55 ? 'YDS-Çok-Sık' : n >= 20 ? 'YDS-Sık' : n >= 8 ? 'YDS-Ara' : null)
+const freqTag = (n) => (n >= 70 ? 'YDS-Çok-Sık' : n >= 25 ? 'YDS-Sık' : n >= 10 ? 'YDS-Ara' : null)
 
 // ---- 3. Uygula ----
 const GROUP_TAGS = { A: ['Başlangıç', 'Temel-İngilizce'], B: ['Orta', 'Genel-İngilizce'], C: ['İleri'] }

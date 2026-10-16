@@ -41,7 +41,7 @@ function countOf(term) {
   for (const f of forms) n += (text.match(new RegExp('\\b' + f + '\\b', 'g')) || []).length
   return n
 }
-const freqTag = (n) => (n >= 55 ? 'YDS-Çok-Sık' : n >= 20 ? 'YDS-Sık' : n >= 8 ? 'YDS-Ara' : null)
+const freqTag = (n) => (n >= 70 ? 'YDS-Çok-Sık' : n >= 25 ? 'YDS-Sık' : n >= 10 ? 'YDS-Ara' : null)
 
 const words = []
 for (const line of fs.readFileSync(SOURCE, 'utf8').split(/\r?\n/)) {

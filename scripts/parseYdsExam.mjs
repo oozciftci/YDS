@@ -25,12 +25,16 @@ if (pages.length === 0) throw new Error(`OCR sayfası bulunamadı: ${name} (${oc
 let body = ''
 let keyHtml = ''
 let title = ''
+let started = false
 for (const f of pages) {
   const t = fs.readFileSync(path.join(ocrDir, f), 'utf8')
-  if (/ANSWER KEY/i.test(t)) {
+  if (/ANSWER KEY/i.test(t) || /<td>\s*\d{1,2}-[A-E]\s*<\/td>/.test(t)) {
     keyHtml += t
     continue
   }
+  // Kapak / "AÇIKLAMA" sayfaları: ilk şık satırı (A) ...) görülene kadar atlanır
+  if (!started && !/^\s*A\)/m.test(t)) continue
+  started = true
   const lines = t.split(/\r?\n/)
   // sayfa başlığı ("2024 Mart YDS") ve boş kapak sayfası
   if (!title && /^\d{4}\s.*YDS/i.test(lines[0] || '')) title = lines[0].trim()
@@ -45,6 +49,8 @@ const answers = {}
   nums.forEach((n, i) => {
     if (letters[i]) answers[n] = letters[i]
   })
+  // Resmî ÖSYM kitapçığı biçimi: <td>20-A</td> çiftleri
+  for (const m of keyHtml.matchAll(/<td>\s*(\d{1,2})-([A-E])\s*<\/td>/g)) answers[Number(m[1])] = m[2]
 }
 
 // ---- cümlelere bölme ----
@@ -109,7 +115,22 @@ const INLINE_OPTS = /^A\)\s*(\S+)\s{2,}B\)\s*(\S+)\s{2,}C\)\s*(\S+)\s{2,}D\)\s*(
 for (const raw of lines) {
   const line = raw.trim()
   if (!line) continue
-  const numMatch = /^(\d{1,2})$/.exec(line)
+  // "17 - 21: For these questions, ..." gibi bölüm yönergeleri soru/paragraf değildir
+  if (/^\d{1,2}\s*-\s*\d{1,2}\s*:/.test(line)) continue
+  const numMatch = /^(\d{1,2})\.?$/.exec(line)
+  // Resmî kitapçık biçimi: "12. Soru metni ..." (numara + nokta + aynı satırda metin); sırayla artmalı
+  const inlineNum = /^(\d{1,2})\.\s+(\S.*)$/.exec(line)
+  const expectedNo = (q ? q.no : questions.length ? questions[questions.length - 1].no : 0) + 1
+  if (inlineNum && Number(inlineNum[1]) === expectedNo && expectedNo <= 80) {
+    flushQuestion()
+    if (expectedNo === 1) {
+      passages.length = 0
+      passageBuf = []
+    }
+    if (passageBuf.length) flushPassage()
+    q = { no: expectedNo, stem: [inlineNum[2]], options: {} }
+    continue
+  }
   if (numMatch && Number(numMatch[1]) <= 80) {
     flushQuestion()
     if (passageBuf.length) flushPassage()

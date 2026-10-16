@@ -3,7 +3,7 @@ import { logger } from './logger'
 import { queueBulkChanges } from './sync'
 import type { WordItem } from '../types/database'
 
-const FLAG = 'yds-levels-v2'
+const FLAG = 'yds-levels-v3'
 const CEFR = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 // Havuz kelimelerinde otomatik üretilen etiketler; bunlar yeniden yazılır, kullanıcı etiketleri korunur
 const MANAGED_TAGS = new Set([
