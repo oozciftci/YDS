@@ -316,7 +316,8 @@ textarea {
 }
 
 .page-enter {
-  animation: page-in 0.28s var(--ease) both;
+  /* "backwards": bitince transform bırakılır; aksi halde içindeki position:fixed modallar sayfaya hapsolur */
+  animation: page-in 0.28s var(--ease) backwards;
 }
 
 @keyframes page-in {
