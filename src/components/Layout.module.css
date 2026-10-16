@@ -351,3 +351,20 @@
     background: color-mix(in srgb, var(--primary) 16%, transparent);
   }
 }
+
+/* Dar ekranlar: üst çubuk taşmasın, yalnızca simgeler kalsın */
+@media (max-width: 559px) {
+  .brandText,
+  .hideMobile {
+    display: none;
+  }
+
+  .header {
+    gap: 0.5rem;
+  }
+
+  .headerRight {
+    gap: 0.4rem;
+    min-width: 0;
+  }
+}

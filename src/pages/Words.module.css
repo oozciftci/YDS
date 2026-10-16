@@ -219,43 +219,43 @@
 
 .posVerb {
   background: hsl(265 85% 65% / 0.15);
-  color: hsl(265 95% 75%);
+  color: color-mix(in srgb, hsl(265 60% 55%) 65%, var(--text));
   border: 1px solid hsl(265 85% 65% / 0.3);
 }
 
 .posNoun {
   background: hsl(210 90% 60% / 0.15);
-  color: hsl(210 95% 70%);
+  color: color-mix(in srgb, hsl(210 60% 55%) 65%, var(--text));
   border: 1px solid hsl(210 90% 60% / 0.3);
 }
 
 .posAdj {
   background: hsl(160 85% 45% / 0.15);
-  color: hsl(160 90% 60%);
+  color: color-mix(in srgb, hsl(160 60% 55%) 65%, var(--text));
   border: 1px solid hsl(160 85% 45% / 0.3);
 }
 
 .posAdv {
   background: hsl(35 90% 55% / 0.15);
-  color: hsl(35 95% 65%);
+  color: color-mix(in srgb, hsl(35 60% 55%) 65%, var(--text));
   border: 1px solid hsl(35 90% 55% / 0.3);
 }
 
 .posPhrasal {
   background: hsl(330 85% 60% / 0.15);
-  color: hsl(330 95% 75%);
+  color: color-mix(in srgb, hsl(330 60% 55%) 65%, var(--text));
   border: 1px solid hsl(330 85% 60% / 0.3);
 }
 
 .posConj {
   background: hsl(190 90% 50% / 0.15);
-  color: hsl(190 95% 65%);
+  color: color-mix(in srgb, hsl(190 60% 55%) 65%, var(--text));
   border: 1px solid hsl(190 90% 50% / 0.3);
 }
 
 .posOther {
   background: hsl(230 20% 50% / 0.15);
-  color: hsl(230 30% 80%);
+  color: color-mix(in srgb, hsl(230 60% 55%) 65%, var(--text));
   border: 1px solid hsl(230 20% 50% / 0.3);
 }
 

@@ -47,7 +47,7 @@ export function Layout() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <NavLink to="/" className={styles.brand} aria-label="YDS Kelime ana sayfa">
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width={32} height={32} />
-            <span>YDS Kelime</span>
+            <span className={styles.brandText}>YDS Kelime</span>
           </NavLink>
 
           {location.pathname !== '/' && (
@@ -55,7 +55,7 @@ export function Layout() {
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.4">
                 <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span>Ana Sayfa</span>
+              <span className={styles.hideMobile}>Ana Sayfa</span>
             </NavLink>
           )}
         </div>
@@ -87,7 +87,7 @@ export function Layout() {
             aria-live="polite"
           >
             <span className={styles.dot} />
-            {online ? 'Çevrimiçi' : 'Çevrimdışı'}
+            <span className={styles.hideMobile}>{online ? 'Çevrimiçi' : 'Çevrimdışı'}</span>
           </span>
 
           {/* Aktif Kullanıcı Değiştirici */}

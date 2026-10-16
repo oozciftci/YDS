@@ -54,7 +54,7 @@
 
 .wordSelected {
   background: var(--primary) !important;
-  color: #ffffff !important;
+  color: var(--on-primary) !important;
   border-bottom-color: transparent !important;
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 40%, transparent);
 }
@@ -236,7 +236,7 @@
   border-radius: 6px;
   font-weight: 600;
   background: var(--primary);
-  color: #ffffff;
+  color: var(--on-primary);
   border: none;
   cursor: pointer;
   transition: opacity 150ms ease;

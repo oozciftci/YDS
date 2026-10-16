@@ -28,8 +28,8 @@ export default defineConfig({
         scope: base,
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#0d1020',
-        theme_color: '#0d1020',
+        background_color: '#131416',
+        theme_color: '#131416',
         categories: ['education', 'productivity'],
         icons: [
           { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },

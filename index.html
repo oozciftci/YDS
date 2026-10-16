@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>YDS Kelime — Aralıklı Tekrarla Kelime Çalış</title>
     <meta name="description" content="YDS sınavı için kişisel kelime çalışma uygulaması: aralıklı tekrar, testler ve dinleme. İnternetsiz de çalışır." />
-    <meta name="theme-color" content="#0d1020" />
+    <meta name="theme-color" content="#f6f7f9" />
+    <script>
+      // Açılışta tema yanıp sönmesin diye seçimi React'ten önce uygula
+      try {
+        var t = localStorage.getItem('yds-theme')
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t)
+      } catch (e) {}
+    </script>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="YDS Kelime" />

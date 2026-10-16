@@ -90,7 +90,7 @@ export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, onAssi
               onClick={() => onAssignGroup(word)}
               title="Bir gruba / desteye dahil et"
               aria-label="Bir gruba dahil et"
-              style={{ color: '#8b5cf6' }}
+              style={{ color: 'var(--primary)' }}
             >
               🏷️
             </button>

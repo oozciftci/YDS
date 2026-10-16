@@ -113,7 +113,7 @@ export function WordTable({ words, cardMap, onEdit, onDelete, onTransfer, onAssi
                     className={styles.actionBtn}
                     onClick={() => onAssignGroup(w)}
                     title="Bir gruba / desteye dahil et"
-                    style={{ color: '#8b5cf6' }}
+                    style={{ color: 'var(--primary)' }}
                   >
                     🏷️
                   </button>

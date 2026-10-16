@@ -800,7 +800,7 @@ export function StudyPage() {
                         padding: '0.1rem 0.45rem',
                         borderRadius: '999px',
                         background: isActive ? 'var(--primary)' : 'var(--input-bg)',
-                        color: isActive ? '#fff' : 'var(--text-muted)',
+                        color: isActive ? 'var(--on-primary)' : 'var(--text-muted)',
                       }}
                     >
                       {lvlsCount} Seviye

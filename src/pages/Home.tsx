@@ -302,8 +302,8 @@ export function HomePage() {
               <div
                 key={p.subGroupId}
                 style={{
-                  background: 'color-mix(in srgb, #f59e0b 8%, var(--surface))',
-                  border: '1.5px solid #f59e0b',
+                  background: 'color-mix(in srgb, var(--warning) 8%, var(--surface))',
+                  border: '1.5px solid var(--warning)',
                   borderRadius: 'var(--radius)',
                   padding: '1rem',
                   display: 'flex',
@@ -316,8 +316,8 @@ export function HomePage() {
                     style={{
                       fontSize: '0.75rem',
                       fontWeight: 800,
-                      color: '#b45309',
-                      background: 'color-mix(in srgb, #f59e0b 20%, transparent)',
+                      color: 'var(--warning)',
+                      background: 'color-mix(in srgb, var(--warning) 20%, transparent)',
                       padding: '0.2rem 0.55rem',
                       borderRadius: '999px',
                     }}
@@ -653,11 +653,11 @@ export function HomePage() {
           </div>
 
           <div className={styles.masteryList}>
-            <MasteryItem level={5} label="Tamamen Öğrendim" count={masteryCounts[5]} total={totalCards} color="#10b981" />
-            <MasteryItem level={4} label="İyi Biliyorum" count={masteryCounts[4]} total={totalCards} color="#3b82f6" />
-            <MasteryItem level={3} label="Geliştirilmeli" count={masteryCounts[3]} total={totalCards} color="#eab308" />
-            <MasteryItem level={2} label="Yeni Başlandı" count={masteryCounts[2]} total={totalCards} color="#f97316" />
-            <MasteryItem level={1} label="Hiç Bilmiyorum" count={masteryCounts[1]} total={totalCards} color="#ef4444" />
+            <MasteryItem level={5} label="Tamamen Öğrendim" count={masteryCounts[5]} total={totalCards} color="var(--success)" />
+            <MasteryItem level={4} label="İyi Biliyorum" count={masteryCounts[4]} total={totalCards} color="var(--info)" />
+            <MasteryItem level={3} label="Geliştirilmeli" count={masteryCounts[3]} total={totalCards} color="var(--yellow)" />
+            <MasteryItem level={2} label="Yeni Başlandı" count={masteryCounts[2]} total={totalCards} color="var(--orange)" />
+            <MasteryItem level={1} label="Hiç Bilmiyorum" count={masteryCounts[1]} total={totalCards} color="var(--danger)" />
           </div>
 
           <div className={styles.masteryFooter}>

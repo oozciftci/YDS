@@ -6,8 +6,10 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { initServiceWorker } from './pwa/registerSW'
 import { logger } from './services/logger'
 import { initAutoSync } from './services/sync'
+import { initTheme } from './stores/theme'
 import { useUserStore } from './stores/user'
 
+initTheme()
 logger.init()
 initServiceWorker()
 initAutoSync()
