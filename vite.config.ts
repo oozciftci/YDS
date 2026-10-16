@@ -43,6 +43,42 @@ function localExamData(): Plugin {
         const tr = fs.existsSync(trFile) ? JSON.parse(fs.readFileSync(trFile, 'utf8')) : {}
         res.end(JSON.stringify({ exam: JSON.parse(fs.readFileSync(file, 'utf8')), tr }))
       })
+
+      // Orijinal PDF'ler (cikmis_sorular): doğrulama için tarayıcının PDF görüntüleyicisinde açılır
+      const pdfDir = path.resolve(import.meta.dirname, 'cikmis_sorular')
+      server.middlewares.use('/local-api/pdf', (req, res, next) => {
+        const remote = req.socket.remoteAddress || ''
+        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        const file = decodeURIComponent((req.url || '/').replace(/^\//, '').replace(/[?#].*$/, ''))
+        if (!/^[a-z0-9-]+\.pdf$/i.test(file)) return next()
+        const full = path.join(pdfDir, file)
+        if (!fs.existsSync(full)) {
+          res.statusCode = 404
+          res.end('PDF bulunamadı')
+          return
+        }
+        const { size } = fs.statSync(full)
+        res.setHeader('Content-Type', 'application/pdf')
+        res.setHeader('Cache-Control', 'no-store')
+        res.setHeader('Accept-Ranges', 'bytes')
+        // PDF görüntüleyici büyük dosyalarda aralık isteği yapar
+        const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '')
+        if (range) {
+          const start = range[1] ? Number(range[1]) : 0
+          const end = range[2] ? Math.min(Number(range[2]), size - 1) : size - 1
+          res.statusCode = 206
+          res.setHeader('Content-Range', `bytes ${start}-${end}/${size}`)
+          res.setHeader('Content-Length', end - start + 1)
+          fs.createReadStream(full, { start, end }).pipe(res)
+        } else {
+          res.setHeader('Content-Length', size)
+          fs.createReadStream(full).pipe(res)
+        }
+      })
     },
   }
 }

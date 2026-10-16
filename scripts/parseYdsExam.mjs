@@ -10,15 +10,36 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const name = process.argv[2]
-if (!name) throw new Error('Kullanım: node scripts/parseYdsExam.mjs <sınav-adı> [ocr-klasörü]')
-const ocrDir = process.argv[3] || 'C:/Projeler/OCR/output/raw/olmocr'
+// Seçenekler (isteğe bağlı):
+//   --pdf <dosya>     kaynak PDF adı (cikmis_sorular içinde); varsayılan <sınav-adı>.pdf
+//   --prefix <ön ek>  OCR sayfa dosyalarının ön eki; varsayılan <sınav-adı>
+//   --offset <n>      OCR sayfa numarasına eklenip PDF sayfa numarası bulunur (bölünmüş PDF'ler için)
+//   --range a-b       yalnızca bu PDF sayfa aralığı (büyük derlemeden tek sınav ayırmak için)
+const argv = process.argv.slice(2)
+const flags = {}
+const positional = []
+for (let i = 0; i < argv.length; i++) {
+  if (argv[i].startsWith('--')) flags[argv[i].slice(2)] = argv[++i]
+  else positional.push(argv[i])
+}
+const name = positional[0]
+if (!name) throw new Error('Kullanım: node scripts/parseYdsExam.mjs <sınav-adı> [ocr-klasörü] [--pdf f] [--prefix p] [--offset n] [--range a-b]')
+const ocrDir = positional[1] || 'C:/Projeler/OCR/output/raw/olmocr'
 const outDir = 'local-data/yds'
+const pdfName = flags.pdf || name + '.pdf'
+const prefix = flags.prefix || name
+const offset = Number(flags.offset || 0)
+const [rangeFrom, rangeTo] = (flags.range || '1-99999').split('-').map(Number)
 
+// OCR sayfa dosyaları: <ön ek>_s<no>.md ; PDF sayfa numarası = no + offset
+const pageRe = new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '_s(\\d+)\\.md$')
 const pages = fs
   .readdirSync(ocrDir)
-  .filter((f) => f.startsWith(name + '_s') && f.endsWith('.md'))
-  .sort()
+  .map((f) => ({ f, m: pageRe.exec(f) }))
+  .filter((x) => x.m)
+  .map((x) => ({ f: x.f, pdfPage: Number(x.m[1]) + offset }))
+  .filter((x) => x.pdfPage >= rangeFrom && x.pdfPage <= rangeTo)
+  .sort((a, b) => a.pdfPage - b.pdfPage)
 if (pages.length === 0) throw new Error(`OCR sayfası bulunamadı: ${name} (${ocrDir})`)
 
 // ---- sayfaları birleştir; cevap anahtarı sayfasını ayır ----
@@ -26,7 +47,8 @@ let body = ''
 let keyHtml = ''
 let title = ''
 let started = false
-for (const f of pages) {
+const PAGE_MARK = '\u0001PAGE:'
+for (const { f, pdfPage } of pages) {
   const t = fs.readFileSync(path.join(ocrDir, f), 'utf8')
   if (/ANSWER KEY/i.test(t) || /<td>\s*\d{1,2}-[A-E]\s*<\/td>/.test(t)) {
     keyHtml += t
@@ -38,7 +60,7 @@ for (const f of pages) {
   const lines = t.split(/\r?\n/)
   // sayfa başlığı ("2024 Mart YDS") ve boş kapak sayfası
   if (!title && /^\d{4}\s.*YDS/i.test(lines[0] || '')) title = lines[0].trim()
-  body += lines.filter((l) => !/^\d{4}\s.*(YDS|YÖKDİL)\s*$/i.test(l.trim())).join('\n') + '\n\n'
+  body += PAGE_MARK + pdfPage + '\n' + lines.filter((l) => !/^\d{4}\s.*(YDS|YÖKDİL)\s*$/i.test(l.trim())).join('\n') + '\n\n'
 }
 
 // ---- cevap anahtarı: <th>no</th> ... <td>harf</td> ----
@@ -84,6 +106,12 @@ const passages = []
 const questions = []
 let q = null
 let passageBuf = []
+let curPage = 0
+let passagePage = 0
+const pushPassageLine = (l) => {
+  if (passageBuf.length === 0) passagePage = curPage
+  passageBuf.push(l)
+}
 
 function flushPassage() {
   const text = passageBuf.join(' ').replace(/\s+/g, ' ').trim()
@@ -92,6 +120,7 @@ function flushPassage() {
   const id = `p${passages.length + 1}`
   passages.push({
     id,
+    page: passagePage,
     afterNo: questions.length ? questions[questions.length - 1].no : 0,
     text,
     sentences: splitSentences(text).map((en, i) => ({ id: `${id}.${i + 1}`, en })),
@@ -102,6 +131,7 @@ function flushQuestion() {
   const stemText = q.stem.join(' ').replace(/\s+/g, ' ').trim()
   questions.push({
     no: q.no,
+    page: q.page,
     passage: null,
     stem: stemText ? splitSentences(stemText).map((en, i) => ({ id: `q${q.no}.s${i + 1}`, en })) : [],
     options: Object.fromEntries(Object.entries(q.options).map(([k, en]) => [k, { id: `q${q.no}.${k}`, en }])),
@@ -115,6 +145,10 @@ const INLINE_OPTS = /^A\)\s*(\S+)\s{2,}B\)\s*(\S+)\s{2,}C\)\s*(\S+)\s{2,}D\)\s*(
 for (const raw of lines) {
   const line = raw.trim()
   if (!line) continue
+  if (line.startsWith(PAGE_MARK)) {
+    curPage = Number(line.slice(PAGE_MARK.length))
+    continue
+  }
   // "17 - 21: For these questions, ..." gibi bölüm yönergeleri soru/paragraf değildir
   if (/^\d{1,2}\s*-\s*\d{1,2}\s*:/.test(line)) continue
   const numMatch = /^(\d{1,2})\.?$/.exec(line)
@@ -128,13 +162,13 @@ for (const raw of lines) {
       passageBuf = []
     }
     if (passageBuf.length) flushPassage()
-    q = { no: expectedNo, stem: [inlineNum[2]], options: {} }
+    q = { no: expectedNo, page: curPage, stem: [inlineNum[2]], options: {} }
     continue
   }
   if (numMatch && Number(numMatch[1]) <= 80) {
     flushQuestion()
     if (passageBuf.length) flushPassage()
-    q = { no: Number(numMatch[1]), stem: [], options: {} }
+    q = { no: Number(numMatch[1]), page: curPage, stem: [], options: {} }
     continue
   }
   const inline = INLINE_OPTS.exec(line)
@@ -150,11 +184,11 @@ for (const raw of lines) {
   if (q && Object.keys(q.options).length >= 5) {
     // soru bitti; bu satır yeni bir paragrafın başlangıcı
     flushQuestion()
-    passageBuf.push(line)
+    pushPassageLine(line)
     continue
   }
   if (q) q.stem.push(line)
-  else passageBuf.push(line)
+  else pushPassageLine(line)
 }
 flushQuestion()
 if (passageBuf.length) flushPassage()
@@ -188,6 +222,9 @@ for (const p of passages) delete p.afterNo
 const exam = {
   id: name,
   title: title || name,
+  pdf: pdfName,
+  pageFrom: pages[0].pdfPage,
+  pageTo: pages[pages.length - 1].pdfPage,
   questionCount: questions.length,
   answered: questions.filter((x) => x.answer).length,
   passages,

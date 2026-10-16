@@ -15,12 +15,14 @@ interface Seg {
 }
 interface Passage {
   id: string
+  page?: number
   kind: 'cloze' | 'reading'
   text: string
   sentences: Seg[]
 }
 interface Question {
   no: number
+  page?: number
   passage: string | null
   stem: Seg[]
   options: Record<string, Seg>
@@ -28,6 +30,9 @@ interface Question {
 }
 interface Exam {
   id: string
+  pdf?: string
+  pageFrom?: number
+  pageTo?: number
   title: string
   passages: Passage[]
   questions: Question[]
@@ -105,6 +110,7 @@ export function ExamStudyPage() {
   const [lookup, setLookup] = useState<WordLookupResult | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
   const [added, setAdded] = useState(false)
+  const [pdfPage, setPdfPage] = useState<number | null>(null)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPop(null)
@@ -269,6 +275,11 @@ export function ExamStudyPage() {
         <article className={`card ${styles.passage}`}>
           <h2 className={styles.sectionTitle}>
             {passage.kind === 'cloze' ? 'Boşluk doldurma paragrafı' : 'Okuma paragrafı'}
+            {data.exam.pdf && passage.page ? (
+              <button type="button" className={styles.pdfBtn} onClick={() => setPdfPage(passage.page ?? 1)}>
+                📄 Orijinal sayfa {passage.page}
+              </button>
+            ) : null}
           </h2>
           <p className={styles.text}>
             {passage.sentences.map((s) => (
@@ -280,7 +291,14 @@ export function ExamStudyPage() {
 
       {/* Soru */}
       <article className={`card ${styles.question}`}>
-        <h2 className={styles.sectionTitle}>Soru {q.no}</h2>
+        <h2 className={styles.sectionTitle}>
+          Soru {q.no}
+          {data.exam.pdf && q.page ? (
+            <button type="button" className={styles.pdfBtn} onClick={() => setPdfPage(q.page ?? 1)}>
+              📄 Orijinal sayfa {q.page}
+            </button>
+          ) : null}
+        </h2>
         {q.stem.length > 0 && (
           <p className={styles.text}>
             {q.stem.map((s) => (
@@ -401,6 +419,41 @@ export function ExamStudyPage() {
             )}
           </div>
         </>
+      )}
+
+      {/* Orijinal PDF sayfası: kelime/cümle doğrulaması için */}
+      {pdfPage !== null && data.exam.pdf && (
+        <div className={styles.pdfBackdrop} onClick={() => setPdfPage(null)} role="dialog" aria-modal="true">
+          <div className={styles.pdfModal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.pdfHead}>
+              <strong>{data.exam.title} — PDF sayfa {pdfPage}</strong>
+              <span className={styles.spacer} />
+              <button type="button" className="btn btn-ghost" disabled={pdfPage <= 1} onClick={() => setPdfPage(pdfPage - 1)}>
+                ←
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={() => setPdfPage(pdfPage + 1)}>
+                →
+              </button>
+              <a
+                className="btn btn-secondary"
+                href={`/local-api/pdf/${data.exam.pdf}#page=${pdfPage}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Yeni sekmede aç
+              </a>
+              <button type="button" className="btn btn-ghost" onClick={() => setPdfPage(null)} aria-label="Kapat">
+                ✕
+              </button>
+            </div>
+            <iframe
+              key={pdfPage}
+              className={styles.pdfFrame}
+              title="Orijinal PDF sayfası"
+              src={`/local-api/pdf/${data.exam.pdf}#page=${pdfPage}&zoom=page-width`}
+            />
+          </div>
+        </div>
       )}
     </section>
   )

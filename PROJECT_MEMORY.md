@@ -99,6 +99,8 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 - Boru hattı: PDF -> `C:\Projeler\OCR` (olmOCR, `--models olmocr --no-consensus`) -> `node scripts/parseYdsExam.mjs <sınav-adı>` -> `local-data/yds/<sınav>.json` (paragraflar, soru/şık, cümle kimlikleri, cevap anahtarı). Çeviriler ayrı dosyada: `local-data/yds/<sınav>.tr.json` (cümle kimliği -> Türkçe), ayrıştırıcı yeniden çalışınca kaybolmaz.
 - Arayüz: cümle başındaki 🌐 çeviriyi açar, kelimeye dokununca anlam balonu (havuza ekleme dahil), şık seçip cevap kontrolü, altta paragraf/soru/şık çevirileri. İlerleme tarayıcıda (`yds-exam-progress:*`).
 - Durum (16 Ekim 2026): 5 sınavın tamamı çevrildi (2024 Mart/Kasım, 2025 Mart/Kasım, 2026 Mart). 2025 Yaz atlandı: OCR çıktısı iki sütun karışıklığıyla bozuk (`local-data/yds/_eksik/`). Yeni sınav eklemek: OCR -> `parseYdsExam.mjs` -> `trTools.mjs list/merge`.
+- Her soru/paragraf kaynak PDF sayfasını (`page`) taşır; sayfada "📄 Orijinal sayfa N" düğmesi PDF'i o sayfada açar (dev-only `/local-api/pdf/<dosya>`, yalnızca 127.0.0.1). `parseYdsExam.mjs` seçenekleri: `--pdf --prefix --offset --range`.
+- 2013-2023 derlemesi (594 sayfa) OCR hattının 300 sayfa sınırı nedeniyle `tumydsler-p1/p2` olarak ikiye bölünüp okutuldu (p2 için `--offset 300`).
 - Sıklık etiketleri 2013-2023 derlemesi + 5 OCR'lı sınavla yeniden hesaplandı (eşikler 70/25/10); `levelMigration` bayrağı `yds-levels-v3`.
 
 ### Sıradaki Önerilen Adımlar:
