@@ -55,7 +55,7 @@ export default function App() {
             }
           />
           <Route
-            path="yds-test"
+            path="yds-test/*"
             element={
               <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                 <YdsTestPage />
