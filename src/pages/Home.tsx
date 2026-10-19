@@ -12,7 +12,8 @@ import { useSettings } from '../stores/settings'
 import { buildDailyPlan, planPercent } from '../services/dailyPlan'
 import { dayKey, daysUntil, streakFromDays } from '../services/dates'
 import { summarizeBySection } from '../services/examProgress'
-import { getSection } from '../services/ydsSections'
+import { getSection, isYokdil } from '../services/ydsSections'
+import { buildTargetPlan } from '../services/targetPlan'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
 
@@ -144,6 +145,13 @@ export function HomePage() {
     return s && (s.percent ?? 100) < 75 ? s : null
   }, [examAnswers])
 
+  // Hedef puana göre en çok kazandıracak tip (yeterli YDS cevabı varsa)
+  const targetTip = useMemo(() => {
+    const tp = buildTargetPlan(exam?.targetScore ?? 0, summarizeBySection(examAnswers.filter((a) => !isYokdil(a.examId))))
+    const g = tp && tp.gap > 0 ? tp.gains[0] : null
+    return tp && g && g.gain >= 0.5 ? { gap: Math.ceil(tp.gap), key: g.key } : null
+  }, [examAnswers, exam?.targetScore])
+
   // Günün YDS Kelimesi
   const wordOfTheDay = useMemo(() => {
     const allAcademicWords = ALL_WORD_PACKS[0]?.words || []
@@ -272,10 +280,16 @@ export function HomePage() {
           })}
         </ul>
 
-        {weakest && (
+        {targetTip ? (
+          <Link to={`/yds-sorular/konu/${targetTip.key}`} className={styles.planTip}>
+            🎯 Hedef puana ~{targetTip.gap} doğru eksik; en çok kazanç: <strong>{getSection(targetTip.key).label}</strong>. Bu tipten çalış →
+          </Link>
+        ) : (
+          weakest && (
           <Link to={`/yds-sorular/konu/${weakest.key}`} className={styles.planTip}>
             💡 En zayıf soru tipin: <strong>{getSection(weakest.key).label}</strong> (%{weakest.percent}). Bu tipten çalış →
           </Link>
+          )
         )}
       </section>
       )}

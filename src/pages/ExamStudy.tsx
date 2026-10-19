@@ -10,6 +10,7 @@ import styles from './ExamStudy.module.css'
 import { inPool, listExams, POOLS, readPool, savePool, type ExamMeta, type Pool } from './exam/examData'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
+import { TargetPlanner } from './exam/TargetPlanner'
 import { PracticeExam } from './exam/PracticeExam'
 import { TacticsBookPage } from './exam/TacticsBookPage'
 import { MistakeAnalysis } from './exam/MistakeAnalysis'
@@ -186,6 +187,7 @@ function Hub() {
       </div>
 
       <MockHistory />
+      <TargetPlanner answers={answers} />
 
       {/* Konuya göre çalış + tip bazlı başarı */}
       <article className="card">
