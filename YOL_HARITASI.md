@@ -20,7 +20,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 **Bu sırayla yürütülür (Faz 7–10 aşağıda ayrıntılı):**
 
-1. ✅ 7.1 Hedef puan planlayıcı · ✅ 7.2 Deneme zaman analizi → 7.3 Yanlış nedeni etiketi ✅ → ✅ 7.4 Özel deneme oluşturucu → ✅ 7.5 Denemeler arası tablo + deneme sıklığı önerisi → 7.6 Gramer konusu sınav sıklığı
+1. ✅ 7.1 Hedef puan planlayıcı · ✅ 7.2 Deneme zaman analizi → 7.3 Yanlış nedeni etiketi ✅ → ✅ 7.4 Özel deneme oluşturucu → ✅ 7.5 Denemeler arası tablo + deneme sıklığı önerisi → ✅ 7.6 Gramer konusu sınav sıklığı
 2. ⏳ 8.1 Özgün soru bankası (yayına girebilir) ve Alıştırma Merkezi · 8.2 Gramer mikro-alıştırma genişletme · 8.3 Özgün okuma metinleri · 8.4 YÖKDİL alan terimi paketleri · 8.5 Çeviri cümleleri
 3. ⏳ 9.1 Soru etiket veritabanı (yerel) · 9.2 Kelime–soru eşleme (YÖKDİL dâhil) · 9.3 Doğrulama notları (2018 Aralık cevap farkı)
 4. ⏳ 10.1 Yayın güvenlik denetimi · 10.2 Birim testleri · 10.3 Temizlik
@@ -50,6 +50,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 7.3 – Yanlış nedeni etiketi** | Yanlış cevabın altında tek dokunuşluk “Bilmiyordum / Dikkatsizlik / Süre yetmedi” (alıştırma, Yanlış Defteri, deneme incelemesi). `examAnswers.wrongReason` (isteğe bağlı alan; Dexie sürümü gerekmedi, JSON yedeğe kendiliğinden girer). “Hatalarımı analiz et” sayfasında dağılım kartı (7 gün/toplam) ve Gemini isteminde neden bilgisi. |
 | 19.10.2026 | **Faz 7.4 – Özel deneme oluşturucu** | Soru Merkezi’nde “🎛️ Özel Deneme”: havuz (YDS/YÖKDİL/alan) + soru tipleri + 10/20/40 soru + süre (varsayılan 135 sn/soru) + “yalnızca çözmediklerim”. Süreli çözüm, sonuç ve inceleme; cevaplar ilerlemeye/Yanlış Defteri’ne işlenir, deneme geçmişi grafiğine yazılmaz (`CustomMock.tsx`, yol `/yds-sorular/ozel`). |
 | 19.10.2026 | **Faz 7.5 – Denemeler arası tablo + sıklık önerisi** | Deneme geçmişi kartında: son 4 denemenin tip bazlı % karşılaştırması (açılır tablo, ▲/▼ fark) ve sınava kalan güne göre deneme sıklığı önerisi (>180 gün ayda 1 … ≤14 gün haftada 2); zamanı gelince uyarı (`src/services/mockPlan.ts`). |
+| 19.10.2026 | **Faz 7.6 – Gramer konusu sınav sıklığı** | `scripts/grammarFreq.mjs` 39 sınavın dilbilgisi + cloze sorularını (900) `guessGrammarTopics` ile konulara eşler; **yalnızca sayılar** `public/data/grammar_freq.json`’a yazılır (soru metni yok). Dilbilgisi Rehberi’nde üstte “en sık sorulan 3 konu” ve her konuda “≈N soru · k/39 sınav”. Tahmin kalıp tabanlıdır (≈); Devrik Yapılar 0 çıktı — kalıpları gözden geçirilmeli (9.1 ile birlikte). |
 | 19.10.2026 | **YÖKDİL kelime etiketleri** | `scripts/tagYokdil.mjs` YÖKDİL-Çok-Sık / Sık / Ara etiketlerini YDS etiketlerinden ayrı üretir (kelime başına etiket havuzda). Ayarlar → Hedef Sınav’da “yeni kelimeler hangi sınavın sıklığına göre sıralansın” seçimi: YDS, YÖKDİL ya da ikisi birlikte. |
 | 19.10.2026 | **YÖKDİL çevirileri tamam** (yerel) | 12 sınavın tüm İngilizce segmentleri Türkçeye çevrildi (`local-data/yds/yokdil-*.tr.json`, ~6.000 segment; Türkçe olan 42-53. soru parçaları çevrilmedi). PDF metin katmanındaki kusurlar (2019 Mart Sosyal 9. soru E şıkkı, 54-59. sorularda bazı boşluklar, 2019 Kasım Sağlık 53-54. E şıkları, 68. soruya karışan okuma metni) olduğu gibi bırakıldı. |
 | 19.10.2026 | **“60 Günde YDS Kelimeleri” paketi** (yerel) | Modadil kitabından 1663 girdi (1586 benzersiz kelime): 54 günlük kelime kartları (anlam, örnek cümle + çeviri, eş/zıt anlamlı), phrasal verb ve edat tabloları, son sınavların sık kelimeleri. Telifli olduğu için PDF ve paket `local-data/paketler/` altında (gitignore + şifreli kasa); Hazır Paketler’de yalnızca `npm run dev`’de görünür. |
@@ -165,7 +166,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 7.3 | Yanlış nedeni etiketi | ✅ | Bilmiyordum · Dikkatsizlik · Süre yetmedi; “Hatalarımı analiz et” bunu kullanır; haftalık dağılım. |
 | 7.4 | Özel deneme oluşturucu | ✅ | Tip / yıl / YDS-YÖKDİL-alan / soru sayısı / süre seç → mini deneme. |
 | 7.5 | Denemeler arası tablo + sıklık önerisi | ✅ | Tip bazlı karşılaştırma tablosu; sınava kalan zamana göre deneme sıklığı (6+ ay: ayda 1 … son 2 hafta: haftada 2). |
-| 7.6 | Gramer konusu sınav sıklığı | ⏳ | 39 sınavdan sayısal istatistik (yayına girebilir); Dilbilgisi Rehberi sırası/rozeti. |
+| 7.6 | Gramer konusu sınav sıklığı | ✅ | 39 sınavdan sayısal istatistik (yayına girebilir); Dilbilgisi Rehberi sırası/rozeti. |
 | 7.7 | Çeviri atölyesi | 💡 | Kendin çevir → Gemini referansla puanlasın (37-42 / 42-53). |
 | 7.8 | Benzer özgün soru üret | 💡 | Yanlıştan sonra aynı kalıpta yeni özgün soru + açıklama; bütçe sınırına bağlı, yerelde saklanır. |
 | 7.9 | Kelime: leech yönetimi + sınav cümlesinden boşluk kartı | 💡 | Çok unutulan kelimeye farklı ipuçları; sınav yılı/alan etiketi. |

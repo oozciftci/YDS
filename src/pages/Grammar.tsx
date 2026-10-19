@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, Route, Routes, useParams } from 'react-router-dom'
 import { GRAMMAR_TOPICS, getGrammarTopic, type GrammarTopic } from '../data/grammar'
 import { useUserStore } from '../stores/user'
@@ -30,8 +30,31 @@ function saveScore(userId: string, topicId: string, score: number, total: number
   }
 }
 
+interface GrammarFreq {
+  exams: number
+  topics: Record<string, { count: number; exams: number }>
+}
+
+/** Konu başına çıkmış sorulardaki yaklaşık soru sayısı (yalnızca sayılar; scripts/grammarFreq.mjs üretir). */
+function useGrammarFreq() {
+  const [freq, setFreq] = useState<GrammarFreq | null>(null)
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}data/grammar_freq.json`)
+      .then((r) => (r.ok ? (r.json() as Promise<GrammarFreq>) : null))
+      .then(setFreq)
+      .catch(() => setFreq(null))
+  }, [])
+  return freq
+}
+
 function TopicList() {
   const userId = useUserStore((s) => s.activeUserId)
+  const freq = useGrammarFreq()
+  const top = freq
+    ? GRAMMAR_TOPICS.filter((t) => (freq.topics[t.id]?.count ?? 0) > 0)
+        .sort((a, b) => freq.topics[b.id].count - freq.topics[a.id].count)
+        .slice(0, 3)
+    : []
   const [progress] = useState(() => readProgress(userId))
   const done = GRAMMAR_TOPICS.filter((t) => {
     const p = progress[t.id]
@@ -46,6 +69,11 @@ function TopicList() {
           YDS’de sorulan {GRAMMAR_TOPICS.length} konu: kısa anlatım, örnekler, sınav ipucu ve 5 soruluk alıştırma.
           {done > 0 && ` ${done} konunun alıştırmasını eksiksiz çözdün.`}
         </p>
+        {top.length > 0 && freq && (
+          <p className="muted" style={{ margin: '0.3rem 0 0', fontSize: '0.86rem' }}>
+            {freq.exams} çıkmış sınavda en sık sorulanlar: <strong>{top.map((t) => t.title.replace(/\s*\(.*\)/, '')).join(', ')}</strong>.
+          </p>
+        )}
       </header>
       <ul className={styles.topicGrid}>
         {GRAMMAR_TOPICS.map((t) => {
@@ -58,6 +86,11 @@ function TopicList() {
                 <span className={styles.topicBody}>
                   <strong>{t.title}</strong>
                   <span>{t.summary}</span>
+                  {freq && (freq.topics[t.id]?.count ?? 0) > 0 && (
+                    <small className="muted">
+                      Çıkmış sınavlarda ≈{freq.topics[t.id].count} soru · {freq.topics[t.id].exams}/{freq.exams} sınav
+                    </small>
+                  )}
                 </span>
                 {p && (
                   <span className={`${styles.scorePill} ${perfect ? styles.scorePerfect : ''}`}>

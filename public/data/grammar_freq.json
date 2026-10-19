@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-10-19",
+  "exams": 39,
+  "questions": 900,
+  "matched": 735,
+  "topics": {
+    "zamanlar": {
+      "count": 137,
+      "exams": 39
+    },
+    "kipler": {
+      "count": 63,
+      "exams": 33
+    },
+    "edilgen": {
+      "count": 67,
+      "exams": 34
+    },
+    "kosul": {
+      "count": 76,
+      "exams": 35
+    },
+    "sifat-cumlesi": {
+      "count": 23,
+      "exams": 13
+    },
+    "isim-cumlesi": {
+      "count": 16,
+      "exams": 10
+    },
+    "baglaclar": {
+      "count": 242,
+      "exams": 39
+    },
+    "gecis-ifadeleri": {
+      "count": 71,
+      "exams": 34
+    },
+    "edatlar": {
+      "count": 226,
+      "exams": 39
+    },
+    "ing-to": {
+      "count": 50,
+      "exams": 27
+    },
+    "karsilastirma": {
+      "count": 28,
+      "exams": 19
+    },
+    "miktar": {
+      "count": 17,
+      "exams": 14
+    },
+    "cift-baglac": {
+      "count": 26,
+      "exams": 26
+    },
+    "devrik": {
+      "count": 0,
+      "exams": 0
+    }
+  }
+}
