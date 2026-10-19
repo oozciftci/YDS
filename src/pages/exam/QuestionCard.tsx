@@ -6,6 +6,7 @@ import { sectionOf } from '../../services/ydsSections'
 import styles from '../ExamStudy.module.css'
 import type { ExamBundle, Question, Seg } from './examData'
 import { SentenceView, useWordPopover } from './WordPopover'
+import { AiExplain } from './AiExplain'
 
 interface Props {
   bundle: ExamBundle
@@ -175,6 +176,8 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
             ))}
           </p>
         )}
+
+        {revealed && assist && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}
 
         {children}
       </article>

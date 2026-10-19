@@ -208,6 +208,17 @@ export interface ExamAnswer {
 }
 
 /**
+ * Yapay zekâ çıktısı önbelleği (aynı istek için yeniden ücret ödenmesin). Yalnızca bu cihazda; yedeğe girmez.
+ */
+export interface AiNote {
+  id: string // örn. explain:<sınav>#<soru no>
+  kind: string
+  text: string
+  model: string
+  createdAt: string
+}
+
+/**
  * Tamamlanan süreli deneme sınavı sonucu (yalnızca sayılar; soru metni yok).
  */
 export interface MockExamResult {

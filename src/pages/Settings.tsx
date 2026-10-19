@@ -6,6 +6,7 @@ import { exportDatabaseToJson, importDatabaseFromJson } from '../services/backup
 import { testBackendConnection, type ConnectionTestResult } from '../services/backend'
 import { logger } from '../services/logger'
 import { notificationsSupported, requestReminderPermission, showReminder } from '../services/reminder'
+import { AI_MODELS, getAiUsage, resetPaidBlock, testKey } from '../services/ai'
 import { formatBytes, useStorageInfo } from '../services/storage'
 import { useSyncStatus } from '../services/sync'
 import { isValidHttpUrl, normalizeUrl, useSettings } from '../stores/settings'
@@ -329,6 +330,8 @@ export function SettingsPage() {
 
       <ReminderCard />
 
+      <AiCard />
+
       {/* 3. SENKRONİZASYON VE SUNUCU AYARLARI */}
       <form className="card" onSubmit={onSave} noValidate>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -629,6 +632,144 @@ function ReminderCard() {
           Bildirim izni reddedilmiş. Tarayıcının site ayarlarından bu siteye bildirim izni verip sayfayı yenile.
         </p>
       )}
+    </section>
+  )
+}
+
+/** Yapay zekâ (Gemini) ayarları: ücretli + yedek ücretsiz anahtar, model, aylık üst sınır. */
+function AiCard() {
+  const ai = useSettings((s) => s.ai)
+  const setAi = useSettings((s) => s.setAi)
+  const [paidKey, setPaidKey] = useState(ai.paidKey)
+  const [freeKey, setFreeKey] = useState(ai.freeKey)
+  const [model, setModel] = useState(ai.model)
+  const [limit, setLimit] = useState(ai.monthlyLimitUsd)
+  const [showKeys, setShowKeys] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [testing, setTesting] = useState(false)
+  const [results, setResults] = useState<{ label: string; ok: boolean; message: string }[]>([])
+  const [usage, setUsage] = useState(getAiUsage)
+
+  function save(e: FormEvent) {
+    e.preventDefault()
+    setAi({ paidKey: paidKey.trim(), freeKey: freeKey.trim(), model, monthlyLimitUsd: Math.max(0, Number(limit) || 0) })
+    resetPaidBlock()
+    setUsage(getAiUsage())
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2500)
+  }
+
+  async function test() {
+    setTesting(true)
+    setResults([])
+    const out: { label: string; ok: boolean; message: string }[] = []
+    if (paidKey.trim()) out.push({ label: 'Ücretli anahtar', ...(await testKey(paidKey, model)) })
+    if (freeKey.trim()) out.push({ label: 'Ücretsiz yedek anahtar', ...(await testKey(freeKey, model)) })
+    if (!out.length) out.push({ label: 'Anahtar', ok: false, message: 'Önce en az bir anahtar gir.' })
+    setResults(out)
+    setTesting(false)
+  }
+
+  const blocked = usage.paidBlockedAt
+  return (
+    <section id="ai" className="card">
+      <h2 className={styles.cardTitle}>Yapay Zekâ (Gemini)</h2>
+      <p className="muted" style={{ margin: '0 0 1rem' }}>
+        Soru açıklamaları ve yazma geri bildirimi Google Gemini ile yapılır. Önce ücretli anahtar kullanılır; bakiye ya da
+        aşağıdaki aylık üst sınır biterse ücretsiz yedek anahtarla devam edilir. Anahtarlar yalnızca bu cihazda saklanır
+        (GitHub’a ve yedek dosyasına girmez), her cihazda ayrıca girilmelidir. Kurulum adımları:{' '}
+        <code>GEMINI_KURULUM.md</code>.
+      </p>
+      <form onSubmit={save} style={{ display: 'grid', gap: '1rem' }}>
+        <div className="field">
+          <label htmlFor="ai-paid-key">Ücretli anahtar (faturalandırması açık proje)</label>
+          <input
+            id="ai-paid-key"
+            className="input"
+            type={showKeys ? 'text' : 'password'}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="AIza…"
+            value={paidKey}
+            onChange={(e) => setPaidKey(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="ai-free-key">Ücretsiz yedek anahtar (faturalandırması kapalı ayrı proje)</label>
+          <input
+            id="ai-free-key"
+            className="input"
+            type={showKeys ? 'text' : 'password'}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="AIza…"
+            value={freeKey}
+            onChange={(e) => setFreeKey(e.target.value)}
+          />
+        </div>
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', cursor: 'pointer' }}>
+          <input type="checkbox" checked={showKeys} onChange={(e) => setShowKeys(e.target.checked)} />
+          Anahtarları göster
+        </label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div className="field">
+            <label htmlFor="ai-model">Model</label>
+            <select id="ai-model" className="input" value={model} onChange={(e) => setModel(e.target.value)}>
+              {AI_MODELS.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="ai-limit">Aylık ücretli kullanım üst sınırı ($)</label>
+            <input
+              id="ai-limit"
+              className="input"
+              type="number"
+              min={0}
+              step={1}
+              value={limit}
+              onChange={(e) => setLimit(Number(e.target.value))}
+            />
+            <small className="muted">Uygulamanın tahminidir; aşılınca ücretsiz anahtara geçilir. 0 = sınırsız.</small>
+          </div>
+        </div>
+
+        <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+          Bu ay (tahmini): <strong>{usage.paidUsd.toFixed(3)} $</strong> · {usage.paidCalls} ücretli, {usage.freeCalls}{' '}
+          ücretsiz istek.
+          {blocked && (
+            <>
+              {' '}
+              <span style={{ color: 'var(--warning)' }}>
+                Ücretli anahtar {new Date(blocked).toLocaleString('tr-TR')} itibarıyla ücretsiz yedeğe devretti (bakiye veya
+                limit). Kaydet’e basınca yeniden denenir.
+              </span>
+            </>
+          )}
+        </p>
+
+        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <button type="submit" className="btn btn-primary">
+            Kaydet
+          </button>
+          <button type="button" className="btn btn-secondary" disabled={testing} onClick={() => void test()}>
+            {testing ? 'Deneniyor…' : 'Bağlantıyı test et'}
+          </button>
+          {saved && <span style={{ color: 'var(--success)', fontWeight: 600, fontSize: '0.85rem' }}>✓ Kaydedildi</span>}
+        </div>
+        {results.length > 0 && (
+          <ul style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '0.88rem', display: 'grid', gap: '0.25rem' }}>
+            {results.map((r) => (
+              <li key={r.label} style={{ color: r.ok ? 'var(--success)' : 'var(--danger)' }}>
+                {r.ok ? '✓' : '✗'} {r.label}: {r.message}
+              </li>
+            ))}
+          </ul>
+        )}
+      </form>
     </section>
   )
 }

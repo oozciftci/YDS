@@ -26,11 +26,25 @@ export interface ReminderSettings {
   time: string
 }
 
+/**
+ * Yapay zekâ (Gemini) ayarları. Anahtarlar yalnızca bu cihazda (localStorage) tutulur; koda, GitHub'a ve
+ * JSON yedeğine girmez. Ücretli anahtar faturalı projeden, yedek anahtar faturasız (ücretsiz katman) projeden.
+ */
+export interface AiSettings {
+  paidKey: string
+  freeKey: string
+  model: string
+  /** Uygulamanın tahmini aylık ücretli harcama üst sınırı (USD). Aşılınca ücretsiz anahtara geçilir. */
+  monthlyLimitUsd: number
+}
+
 export interface SettingsState {
   backend: BackendSettings
   exam: ExamSettings
   reminder: ReminderSettings
   setReminder: (patch: Partial<ReminderSettings>) => void
+  ai: AiSettings
+  setAi: (patch: Partial<AiSettings>) => void
   setBackend: (patch: Partial<BackendSettings>) => void
   resetBackend: () => void
   setExam: (patch: Partial<ExamSettings>) => void
@@ -53,6 +67,8 @@ export const useSettings = create<SettingsState>()(
       exam: defaultExam,
       reminder: { enabled: false, time: '20:00' },
       setReminder: (patch) => set((s) => ({ reminder: { ...s.reminder, ...patch } })),
+      ai: { paidKey: '', freeKey: '', model: 'gemini-3.8-flash', monthlyLimitUsd: 10 },
+      setAi: (patch) => set((s) => ({ ai: { ...s.ai, ...patch } })),
       setBackend: (patch) => set((s) => ({ backend: { ...s.backend, ...patch } })),
       resetBackend: () => set({ backend: emptyBackend }),
       setExam: (patch) => set((s) => ({ exam: { ...s.exam, ...patch } })),
@@ -61,7 +77,7 @@ export const useSettings = create<SettingsState>()(
       name: SETTINGS_STORAGE_KEY,
       version: 2,
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => ({ backend: s.backend, exam: s.exam, reminder: s.reminder }),
+      partialize: (s) => ({ backend: s.backend, exam: s.exam, reminder: s.reminder, ai: s.ai }),
     },
   ),
 )
