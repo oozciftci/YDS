@@ -15,11 +15,17 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Sıradakiler (yakın)
 
-1. ⏳ Faz 6.2 – Yazma pratiği: İngilizce paragraf yaz, Gemini düzeltsin ve açıklasın
-2. 💡 Faz 6.5 – Yapay zekâ sohbet öğretmeni: önce yazılı görevli sohbet, sonra sesli (Gemini Live) ve konuşan karakter; ileride başka diller
-3. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase; internet yalnızca eşitleme anında gerekir)
-4. 💡 Faz 5.3 – Okuma kütüphanesi: açık lisanslı kaynaklar (ör. VOA Learning English, Wikipedia, Project Gutenberg, kamu kurumu yayınları) + özgün metinler; kelime/cümle/paragraf çevirisi ve özet
-5. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı) — sonra ele alınacak
+> Kararlar ve ayrıntılı görev tanımı: **`PROMPT_YZ_KOC_VE_TAKTIK.md`** (ayrı bir geliştirme oturumunda yürütülecek).
+
+1. ⏳ Faz 6.5a – YZ Koç sayfası + **İngilizce pratik** modu
+2. ⏳ Faz 6.6 – Otomatik öğrenci profili + **“Hafızaya kaydet”** (yalnızca kullanıcı isteyince) + “Hafızam” sayfası
+3. ⏳ Faz 6.5b – **YDS koçu** modu (profil, hafıza, uygulama içi bağlantılar)
+4. ⏳ Faz 6.7 – **Taktik Kitabı**: hoca kitapları (PDF, kullanıcı verecek) → OCR → kaynak haritası (konu → sayfa) → soru tipine göre taktik kuralları (Claude çıkaracak); soru açıklamasında ve koçta **Koç (kaynaklı) / Saf Gemini** modu. Yalnızca yerel.
+5. ⏳ Faz 6.5c – **Geliştirici danışmanı** modu
+6. 💡 “Hatalarımı analiz et”, Gemini File Search ile “kaynağa sor”
+7. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase)
+8. 💡 Faz 5.3 – Okuma kütüphanesi (açık lisanslı kaynaklar + özgün metinler)
+9. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı)
 
 ## Yapılanlar
 
@@ -132,6 +138,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — YZ yol haritası kararları alındı: Taktik Kitabı (kaynak: hoca PDF’leri, OCR + kaynak haritası + kurallar, Claude çıkarır), hafıza yalnızca “Hafızaya kaydet” ile, YZ Koç üç mod (önce İngilizce pratik, sonra YDS koçu, sonra geliştirici danışmanı). Devir prompt’u: `PROMPT_YZ_KOC_VE_TAKTIK.md`.
 
 - **19.10.2026** — Soru ekranı: `exam/answerControls.tsx` (`useQuickAnswer`, `useQuestionNav`: ← → ve kaydırma; yazı alanında, metin seçiliyken ve açık modalda çalışmaz). `AiExplain` sohbete dönüştü: `services/ai.generateChat` (Gemini çok mesajlı `contents`; her istekte geçmişin tamamı gider), `AiNote.messages` (ekranda gösterilen metin + modele giden metin ayrı tutulur). Öğrencinin özel sorusu sistem talimatına değil kullanıcı mesajına eklenir. Gemini hesabı kuruldu: Developer Program kredisi (₺489,83/ay ≈ 10 $) faturalandırma hesabında görünür; 250 TL ön ödeme ayrı bakiye.
 
