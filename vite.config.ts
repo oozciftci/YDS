@@ -30,13 +30,13 @@ function localExamData(): Plugin {
                 .map((f) => {
                   const id = f.replace(/\.json$/, '')
                   const meta = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))
-                  return { id, title: meta.title || id, hasKey: (meta.questions || []).some((q: { answer?: string | null }) => q.answer) }
+                  return { id, title: meta.title || id, kind: meta.kind || 'yds', field: meta.field, hasKey: (meta.questions || []).some((q: { answer?: string | null }) => q.answer) }
                 })
                 // Başlıktaki yıl + dönem sırasına göre (kronolojik)
                 .sort((a, b) => {
                   const key = (t: string) => {
                     const year = Number(/(20\d\d)/.exec(t)?.[1] || 0)
-                    const months: [RegExp, number][] = [[/mart/i, 3], [/nisan|ilkbahar/i, 4], [/eylül|sonbahar/i, 9], [/ekim/i, 10], [/kasım/i, 11], [/aralık/i, 12]]
+                    const months: [RegExp, number][] = [[/mart/i, 3], [/nisan|ilkbahar/i, 4], [/yaz/i, 7], [/eylül|sonbahar/i, 9], [/ekim/i, 10], [/kasım/i, 11], [/aralık/i, 12]]
                     const month = months.find(([re]) => re.test(t))?.[1] ?? 6
                     return year * 100 + month
                   }

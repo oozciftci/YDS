@@ -4,10 +4,10 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { db } from '../db'
 import { migrateLegacyExamProgress, summarizeBySection } from '../services/examProgress'
 import { EXAM_COLLECTED_TAG } from '../services/groups'
-import { YDS_SECTIONS } from '../services/ydsSections'
+import { ALL_SECTIONS, rangeIn } from '../services/ydsSections'
 import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
-import { listExams, type ExamMeta } from './exam/examData'
+import { inPool, listExams, POOLS, readPool, savePool, type ExamMeta, type Pool } from './exam/examData'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
 import { PracticeExam } from './exam/PracticeExam'
@@ -38,12 +38,13 @@ function toneOf(percent: number | null): 'ok' | 'mid' | 'bad' | undefined {
 function Hub() {
   const navigate = useNavigate()
   const userId = useUserStore((s) => s.activeUserId)
-  const [exams, setExams] = useState<ExamMeta[] | null>(null)
+  const [allExams, setAllExams] = useState<ExamMeta[] | null>(null)
+  const [pool, setPoolState] = useState<Pool>(readPool)
   const [error, setError] = useState('')
 
   useEffect(() => {
     listExams()
-      .then(setExams)
+      .then(setAllExams)
       .catch(() => setError('Sınav verisi okunamadı. Bu sayfa yalnızca yerelde (npm run dev) çalışır.'))
   }, [])
 
@@ -52,7 +53,11 @@ function Hub() {
     () => db.words.where('tags').equals(EXAM_COLLECTED_TAG).filter((w) => w.userId === userId && !w.isDeleted).count(),
     [userId],
   )
-  const sectionStats = useMemo(() => summarizeBySection(answers ?? []), [answers])
+  const exams = useMemo(() => (allExams ?? []).filter((e) => inPool(e, pool)), [allExams, pool])
+  const sectionStats = useMemo(() => {
+    const ids = new Set(exams.map((e) => e.id))
+    return summarizeBySection((answers ?? []).filter((a) => ids.has(a.examId)))
+  }, [answers, exams])
   const perExam = useMemo(() => {
     const m = new Map<string, { answered: number; correct: number }>()
     for (const a of answers ?? []) {
@@ -74,13 +79,19 @@ function Hub() {
       </section>
     )
   }
-  if (!exams || !answers) return <p className="muted">Yükleniyor…</p>
+  if (!allExams || !answers) return <p className="muted">Yükleniyor…</p>
+  const setPool = (p: Pool) => {
+    savePool(p)
+    setPoolState(p)
+  }
+  const hasYokdil = allExams.some((e) => e.kind === 'yokdil')
 
-  const wrongCount = answers.filter((a) => a.inWrongBook).length
-  const totalAnswered = answers.length
-  const totalCorrect = answers.filter((a) => a.correct).length
+  const examIds = new Set(exams.map((e) => e.id))
+  const poolAnswers = answers.filter((a) => examIds.has(a.examId))
+  const wrongCount = poolAnswers.filter((a) => a.inWrongBook).length
+  const totalAnswered = poolAnswers.length
+  const totalCorrect = poolAnswers.filter((a) => a.correct).length
   const totalQuestions = exams.length * QUESTIONS_PER_EXAM
-  const keyedExams = exams.filter((e) => e.hasKey).length
   let lastId = ''
   try {
     lastId = localStorage.getItem('yds-exam-last') || ''
@@ -97,7 +108,7 @@ function Hub() {
     <section className={styles.page}>
       <header className={styles.head}>
         <div>
-          <h1 className={styles.title}>📖 YDS Soru Merkezi</h1>
+          <h1 className={styles.title}>📖 {hasYokdil ? 'YDS / YÖKDİL Soru Merkezi' : 'YDS Soru Merkezi'}</h1>
           <p className="muted" style={{ margin: 0 }}>
             {exams.length} çıkmış sınav · {totalQuestions.toLocaleString('tr-TR')} soru · Çözülen{' '}
             {totalAnswered.toLocaleString('tr-TR')}
@@ -120,11 +131,22 @@ function Hub() {
         </div>
       </header>
 
+      {hasYokdil && (
+        <div className={styles.poolBar} role="group" aria-label="Sınav havuzu">
+          {POOLS.map((p) => (
+            <button key={p.key} type="button" className={`${styles.poolChip} ${pool === p.key ? styles.poolOn : ''}`} onClick={() => setPool(p.key)}>
+              {p.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Hızlı başlangıç: en fazla iki kart */}
       <div className={styles.quickGrid}>
         <button
           type="button"
           className={`card ${styles.quickCard} ${styles.quickPrimary}`}
+          disabled={exams.length === 0}
           onClick={() => navigate(`sinav/${last?.id ?? exams[exams.length - 1].id}`)}
         >
           <span className={styles.quickIcon}>▶</span>
@@ -133,7 +155,7 @@ function Hub() {
             <span>
               {last
                 ? `${last.title} · ${lastStat?.answered ?? 0}/${QUESTIONS_PER_EXAM} çözüldü`
-                : `${exams[exams.length - 1].title} — en yeni sınav`}
+                : exams.length ? `${exams[exams.length - 1].title} — en yeni sınav` : 'Bu havuzda sınav yok'}
             </span>
           </span>
         </button>
@@ -173,15 +195,18 @@ function Hub() {
           {weakest && (
             <>
               {' '}
-              En çok zorlandığın tip: <strong>{YDS_SECTIONS.find((s) => s.key === weakest.key)?.label}</strong>.
+              En çok zorlandığın tip: <strong>{ALL_SECTIONS.find((s) => s.key === weakest.key)?.label}</strong>.
             </>
           )}
         </p>
         <ul className={styles.sectionList}>
-          {YDS_SECTIONS.map((s) => {
+          {ALL_SECTIONS.map((s) => {
             const st = sectionStats.find((x) => x.key === s.key)!
-            const perExamCount = s.to - s.from + 1
-            const pool = perExamCount * keyedExams
+            const sectionPool = exams.reduce((n, e) => {
+              const r = e.hasKey ? rangeIn(s.key, e.kind === 'yokdil' ? 'yokdil-' : '') : null
+              return n + (r ? r[1] - r[0] + 1 : 0)
+            }, 0)
+            if (sectionPool === 0) return null
             return (
               <li key={s.key}>
                 <button type="button" className={styles.sectionRow} onClick={() => navigate(`konu/${s.key}`)} title={s.hint}>
@@ -189,7 +214,7 @@ function Hub() {
                   <span className={styles.sectionName}>
                     {s.label}
                     <small>
-                      {s.from}-{s.to}. sorular · {st.answered}/{pool} çözüldü
+                      {st.answered}/{sectionPool} çözüldü
                     </small>
                   </span>
                   <Bar value={st.percent ?? 0} tone={toneOf(st.percent)} />

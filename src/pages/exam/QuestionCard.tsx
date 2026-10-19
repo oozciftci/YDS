@@ -28,7 +28,7 @@ interface Props {
 export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = true, subtitle, children, ai = true }: Props) {
   const { exam, tr } = bundle
   const passage = q.passage ? exam.passages.find((p) => p.id === q.passage) : undefined
-  const section = sectionOf(q.no)
+  const section = sectionOf(q.no, exam.id)
   const [showAllTr, setShowAllTr] = useState(false)
   const [pdfPage, setPdfPage] = useState<number | null>(null)
   const { onWord, close, popover } = useWordPopover(exam.id + ' / Soru ' + q.no)

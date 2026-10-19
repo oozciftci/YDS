@@ -13,6 +13,7 @@ export type SectionKey =
   | 'paraphrase'
   | 'paragraph'
   | 'irrelevant'
+  | 'vocgram'
 
 export interface YdsSection {
   key: SectionKey
@@ -37,10 +38,51 @@ export const YDS_SECTIONS: YdsSection[] = [
   { key: 'irrelevant', label: 'Anlam Bütünlüğü', icon: '🚫', from: 76, to: 80, hint: 'Paragrafın akışını bozan, konudan sapan cümle bulunur.' },
 ]
 
-const BY_KEY = new Map(YDS_SECTIONS.map((s) => [s.key, s]))
+/** YÖKDİL'e özgü tip: ilk 20 soru kelime ve dilbilgisi karışık gelir. */
+export const VOCGRAM_SECTION: YdsSection = {
+  key: 'vocgram',
+  label: 'Kelime ve Dilbilgisi',
+  icon: '🔤',
+  from: 1,
+  to: 20,
+  hint: 'YÖKDİL’in ilk 20 sorusu: boşluğa anlamca ya da dilbilgisi olarak uyan seçenek bulunur.',
+}
 
-export function sectionOf(no: number): YdsSection {
+/** Tüm soru tipleri (YDS + YÖKDİL’e özgü olanlar). */
+export const ALL_SECTIONS: YdsSection[] = [...YDS_SECTIONS, VOCGRAM_SECTION]
+
+const BY_KEY = new Map(ALL_SECTIONS.map((s) => [s.key, s]))
+
+/** YÖKDİL 80 soru düzeni: soru numarası aralığı → tip (kesin sınır ÖSYM düzenine göre). */
+const YOKDIL_RANGES: [number, number, SectionKey][] = [
+  [1, 20, 'vocgram'],
+  [21, 30, 'cloze'],
+  [31, 41, 'completion'],
+  [42, 53, 'translation'],
+  [54, 59, 'paragraph'],
+  [60, 65, 'irrelevant'],
+  [66, 80, 'reading'],
+]
+
+export const isYokdil = (examId?: string | null) => Boolean(examId && examId.startsWith('yokdil-'))
+
+/** Soru numarasının tipi. YÖKDİL sınavlarında düzen farklı olduğu için sınav kimliği verilmelidir. */
+export function sectionOf(no: number, examId?: string | null): YdsSection {
+  if (isYokdil(examId)) {
+    const r = YOKDIL_RANGES.find(([a, b]) => no >= a && no <= b)
+    if (r) return getSection(r[2])
+  }
   return YDS_SECTIONS.find((s) => no >= s.from && no <= s.to) ?? YDS_SECTIONS[0]
+}
+
+/** Bir tipin, verilen sınavdaki soru numarası aralığı (YDS ve YÖKDİL farklıdır). */
+export function rangeIn(key: SectionKey, examId?: string | null): [number, number] | null {
+  if (isYokdil(examId)) {
+    const rs = YOKDIL_RANGES.filter((r) => r[2] === key)
+    return rs.length ? [rs[0][0], rs[rs.length - 1][1]] : null
+  }
+  const s = YDS_SECTIONS.find((x) => x.key === key)
+  return s ? [s.from, s.to] : null
 }
 
 export function getSection(key: SectionKey): YdsSection {

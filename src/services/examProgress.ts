@@ -1,6 +1,6 @@
 import { db } from '../db'
 import type { ExamAnswer } from '../types/database'
-import { YDS_SECTIONS, sectionOf, type SectionKey } from './ydsSections'
+import { ALL_SECTIONS, sectionOf, type SectionKey } from './ydsSections'
 
 // Çıkmış YDS sorularına verilen cevapların kaydı (Dexie). Soru metni tutulmaz.
 
@@ -28,7 +28,7 @@ export async function recordAnswer(
     userId,
     examId,
     no,
-    section: sectionOf(no).key,
+    section: sectionOf(no, examId).key,
     choice,
     correct,
     attempts: (prev?.attempts ?? 0) + 1,
@@ -61,7 +61,7 @@ export interface SectionStat {
 
 /** Son cevaplara göre tip bazlı başarı. */
 export function summarizeBySection(answers: ExamAnswer[]): SectionStat[] {
-  return YDS_SECTIONS.map((s) => {
+  return ALL_SECTIONS.map((s) => {
     const list = answers.filter((a) => a.section === s.key)
     const correct = list.filter((a) => a.correct).length
     return {
@@ -99,7 +99,7 @@ export async function migrateLegacyExamProgress(userId: string): Promise<number>
           userId,
           examId,
           no,
-          section: sectionOf(no).key,
+          section: sectionOf(no, examId).key,
           choice: p.choice,
           correct: Boolean(p.correct),
           attempts: 1,

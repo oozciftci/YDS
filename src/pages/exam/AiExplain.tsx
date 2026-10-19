@@ -43,7 +43,7 @@ function readKnowMe(): boolean {
 /** İlk mesaj: soru bağlamı + (varsa) öğrencinin özel sorusu. Öğrencinin metni sistem talimatına değil, mesaja konur. */
 function buildFirstPrompt(bundle: ExamBundle, q: Question, choice: string | null, studentQuestion: string): string {
   const passage = q.passage ? bundle.exam.passages.find((p) => p.id === q.passage) : undefined
-  const section = sectionOf(q.no)
+  const section = sectionOf(q.no, bundle.exam.id)
   const lines = [`Sınav: ${bundle.exam.title}, Soru ${q.no} (${section.label}: ${section.hint})`]
   if (passage) lines.push('', 'Paragraf:', passage.sentences.map((s) => s.en).join(' '))
   if (q.stem.length) lines.push('', 'Soru:', q.stem.map((s) => s.en).join(' '))
@@ -116,7 +116,7 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
       // "Beni tanıyarak": profil + hafıza notları sistem talimatına eklenir
       const memory = knowMe ? await memoryContext(userId, { profile: true }) : ''
       // Koç modu: bu soru tipinin (ve şıklardan tahmin edilen dilbilgisi konusunun) taktikleri + en fazla 4 sayfa alıntı
-      const section = sectionOf(q.no).key
+      const section = sectionOf(q.no, bundle.exam.id).key
       const tactics =
         source.effective === 'koc'
           ? await tacticsContext({
@@ -171,7 +171,7 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
   function transcript(): string {
     const stem = q.stem.map((s) => s.en).join(' ')
     const opts = Object.entries(q.options).map(([l, o]) => `${l}) ${o.en}`).join(' | ')
-    const head = `[${sectionOf(q.no).label} sorusu] ${stem}\nŞıklar: ${opts}\nDoğru: ${q.answer}${choice ? `, öğrencinin seçimi: ${choice}` : ''}`
+    const head = `[${sectionOf(q.no, bundle.exam.id).label} sorusu] ${stem}\nŞıklar: ${opts}\nDoğru: ${q.answer}${choice ? `, öğrencinin seçimi: ${choice}` : ''}`
     return [head, ...turns.map((t) => `${t.role === 'user' ? 'Öğrenci' : 'YZ'}: ${t.text}`)].join('\n')
   }
 

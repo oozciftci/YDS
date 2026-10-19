@@ -26,6 +26,9 @@ export interface Exam {
   pageFrom?: number
   pageTo?: number
   title: string
+  /** 'yokdil' ise YÖKDİL sınavı (yoksa YDS) */
+  kind?: 'yds' | 'yokdil'
+  field?: string
   passages: Passage[]
   questions: Question[]
 }
@@ -38,6 +41,43 @@ export interface ExamMeta {
   title: string
   /** Cevap anahtarı var mı (yoksa kontrol/deneme yapılamaz) */
   hasKey: boolean
+  kind?: 'yds' | 'yokdil'
+  /** YÖKDİL alanı: Sosyal, Sağlık, Fen */
+  field?: string
+}
+
+/** Havuz süzgeci: hepsi, yalnız YDS, yalnız YÖKDİL ya da bir YÖKDİL alanı. */
+export type Pool = 'all' | 'yds' | 'yokdil' | 'Sosyal' | 'Sağlık' | 'Fen'
+export const POOLS: { key: Pool; label: string }[] = [
+  { key: 'all', label: 'Tümü' },
+  { key: 'yds', label: 'YDS' },
+  { key: 'yokdil', label: 'YÖKDİL' },
+  { key: 'Sosyal', label: 'YÖKDİL Sosyal' },
+  { key: 'Sağlık', label: 'YÖKDİL Sağlık' },
+  { key: 'Fen', label: 'YÖKDİL Fen' },
+]
+export function inPool(e: { kind?: string; field?: string }, pool: Pool): boolean {
+  const kind = e.kind ?? 'yds'
+  if (pool === 'all') return true
+  if (pool === 'yds' || pool === 'yokdil') return kind === pool
+  return kind === 'yokdil' && e.field === pool
+}
+const POOL_KEY = 'yds-pool-filter'
+export function readPool(): Pool {
+  try {
+    const v = localStorage.getItem(POOL_KEY) as Pool | null
+    if (v && POOLS.some((p) => p.key === v)) return v
+  } catch {
+    // yoksay
+  }
+  return 'all'
+}
+export function savePool(p: Pool) {
+  try {
+    localStorage.setItem(POOL_KEY, p)
+  } catch {
+    // yoksay
+  }
 }
 
 let listCache: Promise<ExamMeta[]> | null = null

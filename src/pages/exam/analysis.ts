@@ -52,7 +52,7 @@ async function describe(items: Awaited<ReturnType<typeof wrongAnswers>>['items']
       const { exam } = await loadExam(a.examId)
       const q = exam.questions.find((x) => x.no === a.no)
       if (!q || !q.answer) continue
-      const sec = sectionOf(q.no)
+      const sec = sectionOf(q.no, a.examId)
       const stem = q.stem.map((s) => s.en).join(' ')
       const opts = Object.entries(q.options)
         .map(([l, o]) => `${l}) ${clip(o.en, 90)}`)

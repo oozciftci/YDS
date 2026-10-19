@@ -1119,3 +1119,24 @@
   background: var(--success-subtle);
   border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
 }
+
+.poolBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.poolChip {
+  border: 1px solid var(--border, #d0d5dd);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+}
+.poolOn {
+  background: var(--primary, #4f46e5);
+  border-color: var(--primary, #4f46e5);
+  color: #fff;
+}

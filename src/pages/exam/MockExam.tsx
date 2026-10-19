@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { db } from '../../db'
 import { recordAnswer } from '../../services/examProgress'
-import { sectionOf, YDS_SECTIONS, ydsScore } from '../../services/ydsSections'
+import { sectionOf, ALL_SECTIONS, ydsScore } from '../../services/ydsSections'
 import { useUserStore } from '../../stores/user'
 import type { MockExamResult } from '../../types/database'
 import styles from '../ExamStudy.module.css'
@@ -77,7 +77,7 @@ export function MockExam() {
     let correct = 0
     let wrong = 0
     for (const q of bundle.exam.questions) {
-      const sec = sectionOf(q.no).key
+      const sec = sectionOf(q.no, bundle.exam.id).key
       sections[sec] ??= [0, 0]
       sections[sec][1]++
       const c = saved.choices[q.no]
@@ -239,7 +239,7 @@ export function MockExam() {
         <article className="card">
           <h2 className={styles.blockTitle}>Soru tiplerine göre</h2>
           <ul className={styles.sectionList}>
-            {YDS_SECTIONS.map((s) => {
+            {ALL_SECTIONS.map((s) => {
               const [c, t] = result.sections[s.key] ?? [0, 0]
               const pct = t ? Math.round((c / t) * 100) : 0
               return (

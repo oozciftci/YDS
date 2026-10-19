@@ -34,7 +34,7 @@ function allSegments(): Promise<Segment[]> {
         for (const s of p.sentences) out.push({ en: s.en, tr: tr[s.id], where })
       }
       for (const q of exam.questions) {
-        const where = `${title} · Soru ${q.no} (${sectionOf(q.no).label})`
+        const where = `${title} · Soru ${q.no} (${sectionOf(q.no, exam.id).label})`
         for (const s of q.stem) out.push({ en: s.en, tr: tr[s.id], where })
       }
     }
