@@ -14,6 +14,7 @@ import { ExamQuizPage } from './pages/ExamQuiz'
 // import.meta.env.DEV false olduğundan bu satır ve sayfa pakete hiç girmez.
 // Dilbilgisi rehberi ayrı parça olarak yüklenir (uzun içerik ana paketi büyütmesin)
 const GrammarPage = lazy(() => import('./pages/Grammar'))
+const CoachPage = lazy(() => import('./pages/Coach'))
 
 const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
 
@@ -41,6 +42,14 @@ export default function App() {
             element={
               <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                 <GrammarPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="koc/*"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <CoachPage />
               </Suspense>
             }
           />

@@ -508,6 +508,24 @@ export function HomePage() {
         </div>
 
         <div className={styles.modesGrid}>
+          {/* YZ Koç */}
+          <div
+            className={styles.modeCard}
+            onClick={() => navigate('/koc')}
+            role="button"
+            tabIndex={0}
+          >
+            <div className={`${styles.modeIcon} ${styles.iconTeal}`}>🤖</div>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>YZ Koç</h3>
+                <span className={styles.modePill}>Gemini</span>
+              </div>
+              <p>Yapay zekâyla İngilizce sohbet et; hataların konuşmayı bölmeden düzeltilir.</p>
+            </div>
+            <span className={styles.modeArrow}>→</span>
+          </div>
+
           {/* Dilbilgisi Rehberi */}
           <div
             className={styles.modeCard}

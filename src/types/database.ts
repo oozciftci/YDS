@@ -220,6 +220,47 @@ export interface AiNote {
   messages?: AiNoteTurn[]
 }
 
+/** YZ Koç sohbet modu. */
+export type CoachMode = 'english' | 'yds' | 'dev'
+
+/** İngilizce pratikte bir öğrenci mesajı için düzeltme notu (Türkçe açıklamalı). */
+export interface CoachCorrection {
+  original: string
+  corrected: string
+  explanation: string
+}
+
+export interface CoachTurn {
+  role: 'user' | 'model'
+  /** Ekranda gösterilen metin */
+  text: string
+  /** Ekranda gösterilmeyen yardımcı mesaj (örn. sohbeti başlatma talimatı) */
+  hidden?: boolean
+  /** Model mesajında: bir önceki öğrenci mesajının düzeltmeleri */
+  corrections?: CoachCorrection[]
+  /** Model mesajında: öğrencinin mesajını daha doğal söyleme biçimi */
+  better?: string
+  meta?: string
+  at: string
+}
+
+/** YZ Koç sohbeti. Yalnızca bu cihazda saklanır. */
+export interface CoachChat {
+  id: string
+  userId: string
+  mode: CoachMode
+  title: string
+  /** İngilizce pratik: senaryo kimliği ve CEFR seviyesi */
+  scenario?: string
+  level?: string
+  messages: CoachTurn[]
+  /** Uzun sohbetlerde eski mesajların özeti ve özetlenen mesaj sayısı */
+  summary?: string
+  summarizedCount?: number
+  createdAt: string
+  updatedAt: string
+}
+
 export interface AiNoteTurn {
   role: 'user' | 'model'
   /** Ekranda gösterilen metin */

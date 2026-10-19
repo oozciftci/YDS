@@ -107,14 +107,21 @@ export interface ChatTurn {
   text: string
 }
 
-async function call(key: string, model: string, system: string, turns: ChatTurn[], temperature: number) {
+/** Ek istek seçenekleri. `jsonSchema` verilirse model yalnızca bu şemaya uyan JSON döndürür. */
+export interface GenerateOptions {
+  jsonSchema?: Record<string, unknown>
+}
+
+async function call(key: string, model: string, system: string, turns: ChatTurn[], temperature: number, opts: GenerateOptions = {}) {
   const res = await fetch(`${ENDPOINT}/${encodeURIComponent(model)}:generateContent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
       contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
-      generationConfig: { temperature },
+      generationConfig: opts.jsonSchema
+        ? { temperature, responseMimeType: 'application/json', responseSchema: opts.jsonSchema }
+        : { temperature },
     }),
   })
   const data = (await res.json().catch(() => ({}))) as GeminiResponse
@@ -160,7 +167,7 @@ export async function generate(system: string, prompt: string, temperature = 0.4
 }
 
 /** Çok mesajlı sohbet: `turns` kullanıcı ile başlar ve kullanıcı ile biter. */
-export async function generateChat(system: string, turns: ChatTurn[], temperature = 0.4): Promise<AiResult> {
+export async function generateChat(system: string, turns: ChatTurn[], temperature = 0.4, opts: GenerateOptions = {}): Promise<AiResult> {
   const { paidKey, freeKey, model, monthlyLimitUsd } = useSettings.getState().ai
   const usage = getAiUsage()
   const blockedRecently = usage.paidBlockedAt && Date.now() - new Date(usage.paidBlockedAt).getTime() < PAID_RETRY_MS
@@ -171,7 +178,7 @@ export async function generateChat(system: string, turns: ChatTurn[], temperatur
 
   if (tryPaid) {
     try {
-      const r = await call(paidKey.trim(), model, system, turns, temperature)
+      const r = await call(paidKey.trim(), model, system, turns, temperature, opts)
       const [pin, pout] = pricePerMillion(model)
       const usd = (r.inTokens * pin + r.outTokens * pout) / 1_000_000
       const u = getAiUsage()
@@ -191,7 +198,7 @@ export async function generateChat(system: string, turns: ChatTurn[], temperatur
     )
   }
   try {
-    const r = await call(freeKey.trim(), model, system, turns, temperature)
+    const r = await call(freeKey.trim(), model, system, turns, temperature, opts)
     const u = getAiUsage()
     saveUsage({ ...u, freeCalls: u.freeCalls + 1 })
     return { text: r.text, tier: 'free', model, usd: 0 }
