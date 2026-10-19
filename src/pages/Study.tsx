@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
-import { processCardReview } from '../services/fsrs'
+import { previewIntervals, processCardReview } from '../services/fsrs'
 import {
   buildQuestion,
   type QuestionMode,
@@ -96,6 +96,8 @@ export function StudyPage() {
   const [questions, setQuestions] = useState<StudyQuestion[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const currentQ = questions[currentIndex]
+  // Her puanın kartı ne zaman yeniden getireceği (düğmelerde gösterilir)
+  const intervals = useMemo(() => (currentQ ? previewIntervals(currentQ.cardState) : null), [currentQ])
   const [isFlipped, setIsFlipped] = useState(false)
   const [selectedOption, setSelectedOption] = useState<number | null>(null)
   const [questionStartTime, setQuestionStartTime] = useState(() => Date.now())
@@ -1304,6 +1306,7 @@ export function StudyPage() {
                           >
                             <span>❌</span>
                             <span>Öğrenmedim (1)</span>
+                            {intervals && <small className={styles.nextHint}>{intervals[1]} sonra</small>}
                           </button>
 
                           <button
@@ -1315,6 +1318,7 @@ export function StudyPage() {
                           >
                             <span>✅</span>
                             <span>Öğrendim (4)</span>
+                            {intervals && <small className={styles.nextHint}>{intervals[4]} sonra</small>}
                           </button>
                         </div>
 
@@ -1328,7 +1332,7 @@ export function StudyPage() {
                               className={`${styles.numericBtn} ${styles[`numericBtn_${score}` as keyof typeof styles]}`}
                               onClick={() => void handleScoreCard(score)}
                               id={`grade-btn-${score}`}
-                              title={`${score}: ${MASTERY_CONFIG[score].label}`}
+                              title={`${score}: ${MASTERY_CONFIG[score].label}${intervals ? ` — sonraki tekrar ${intervals[score]} sonra` : ""}`}
                             >
                               {score}
                             </button>

@@ -1063,3 +1063,10 @@
     gap: 0.5rem;
   }
 }
+
+/* Puan düğmesinde sonraki tekrar zamanı (FSRS önizlemesi) */
+.nextHint {
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.75;
+}

@@ -56,6 +56,8 @@ export interface CardState {
   difficulty: number // Zorluk (1 - 10)
   elapsedDays: number // Son tekrardan bu yana geçen gün
   scheduledDays: number // Planlanan aralık (gün)
+  /** FSRS öğrenme adımı sırası (öğrenme/yeniden öğrenme aşamasında). Eski kayıtlarda yok. */
+  learningSteps?: number
   reps: number // Toplam tekrar sayısı
   lapses: number // Unutulma / hata sayısı
   /** 1: Hiç bilmiyorum, 2: Biraz öğrendim, 3: Geliştirmeye muhtaç, 4: Baya öğrendim, 5: Tamamen öğrendim */
