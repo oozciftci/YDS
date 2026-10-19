@@ -9,7 +9,7 @@ import { notificationsSupported, requestReminderPermission, showReminder } from 
 import { AI_MODELS, getAiUsage, resetPaidBlock, testKey } from '../services/ai'
 import { formatBytes, useStorageInfo } from '../services/storage'
 import { useSyncStatus } from '../services/sync'
-import { isValidHttpUrl, normalizeUrl, useSettings } from '../stores/settings'
+import { isValidHttpUrl, normalizeUrl, useSettings, type FreqSource } from '../stores/settings'
 import { useTheme, type ThemeChoice } from '../stores/theme'
 import { useUserStore } from '../stores/user'
 import { useSwStatus } from '../pwa/registerSW'
@@ -55,6 +55,7 @@ export function SettingsPage() {
   const [examDate, setExamDate] = useState(exam?.targetExamDate || '2026-11-22')
   const [examScore, setExamScore] = useState(exam?.targetScore || 80)
   const [examDailyGoal, setExamDailyGoal] = useState(exam?.dailyGoal || 20)
+  const [freqSource, setFreqSource] = useState<FreqSource>(exam?.freqSource ?? 'yds')
   const [examSaved, setExamSaved] = useState(false)
 
   function onSaveExam(e: FormEvent) {
@@ -64,6 +65,7 @@ export function SettingsPage() {
       targetExamDate: examDate,
       targetScore: Number(examScore),
       dailyGoal: Number(examDailyGoal),
+      freqSource,
     })
     setExamSaved(true)
     setTimeout(() => setExamSaved(false), 2000)
@@ -313,6 +315,16 @@ export function SettingsPage() {
                 Günlük plan, kalan yeni kelimeleri sınava kadar eşit dağıtır ama bu sayıyı aşmaz. Tekrarlar sınırsızdır.
               </small>
             </div>
+          </div>
+
+          <div className="field">
+            <label htmlFor="exam-freq">Yeni kelimeler hangi sınavın sıklığına göre sıralansın?</label>
+            <select id="exam-freq" className="input" value={freqSource} onChange={(e) => setFreqSource(e.target.value as FreqSource)}>
+              <option value="yds">YDS (çıkmış YDS sorularında sık geçenler önce)</option>
+              <option value="yokdil">YÖKDİL (çıkmış YÖKDİL sorularında sık geçenler önce)</option>
+              <option value="both">İkisi birlikte (hangisinde çok geçiyorsa önce)</option>
+            </select>
+            <small className="muted">Kelimelerde YDS-Sık ve YÖKDİL-Sık etiketleri ayrı tutulur; filtrelemek için etiket olarak da kullanabilirsin.</small>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

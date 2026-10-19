@@ -1,4 +1,5 @@
 import { db } from '../db'
+import { useSettings } from '../stores/settings'
 import type { CardState, LevelProgress, StudySessionLog, WordGroup, WordItem } from '../types/database'
 
 export interface GroupDefinition {
@@ -161,13 +162,24 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
   },
 ]
 
-/** YDS sıklık etiketine göre öncelik (küçük = önce). Etiketler scripts/fixLevels.mjs ile üretilir. */
+function rankOf(tags: string[], prefix: 'YDS' | 'YÖKDİL'): number {
+  if (tags.includes(`${prefix}-Çok-Sık`)) return 0
+  if (tags.includes(`${prefix}-Sık`)) return 1
+  if (tags.includes(`${prefix}-Ara`)) return 2
+  return 3
+}
+
+/**
+ * Sıklık etiketine göre öncelik (küçük = önce). Hangi sınavın etiketine bakılacağı Ayarlar'dan seçilir
+ * (varsayılan YDS); "ikisi birlikte" seçilirse bir kelimenin iki sınavdaki en iyi sırası geçerlidir.
+ * YDS etiketleri scripts/fixLevels.mjs, YÖKDİL etiketleri scripts/tagYokdil.mjs ile üretilir.
+ */
 export function frequencyRank(w: WordItem): number {
   const tags = w.tags || []
-  if (tags.includes('YDS-Çok-Sık')) return 0
-  if (tags.includes('YDS-Sık')) return 1
-  if (tags.includes('YDS-Ara')) return 2
-  return 3
+  const source = useSettings.getState().exam?.freqSource ?? 'yds'
+  if (source === 'yokdil') return rankOf(tags, 'YÖKDİL')
+  if (source === 'both') return Math.min(rankOf(tags, 'YDS'), rankOf(tags, 'YÖKDİL'))
+  return rankOf(tags, 'YDS')
 }
 
 /** Soru çözerken toplanan kelimelerin etiketi. */

@@ -16,7 +16,7 @@ const ORDER = ['A1', 'A2', 'B1', 'B2', 'C1']
 const DIFFICULTY = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5 }
 const LEVEL_TAGS = new Set([
   'A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Başlangıç', 'Temel-İngilizce', 'Orta', 'Genel-İngilizce',
-  'İleri', 'YDS-Akademik', 'Seviye-Tahmini', 'YDS-Çok-Sık', 'YDS-Sık', 'YDS-Ara',
+  'İleri', 'YDS-Akademik', 'Seviye-Tahmini', 'YDS-Çok-Sık', 'YDS-Sık', 'YDS-Ara', 'YÖKDİL-Çok-Sık', 'YÖKDİL-Sık', 'YÖKDİL-Ara',
 ])
 const STOP = new Set(
   `the an and or of to in is are was were be been being it its that this these those for on with as by at from

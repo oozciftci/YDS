@@ -13,7 +13,11 @@ export interface BackendSettings {
   anonKey: string
 }
 
+/** Yeni kelime sırası hangi sınavın sıklığına göre: YDS, YÖKDİL ya da ikisi aynı potada (hangisinde çok geçiyorsa) */
+export type FreqSource = 'yds' | 'yokdil' | 'both'
+
 export interface ExamSettings {
+  freqSource?: FreqSource
   targetExamName: string
   targetExamDate: string
   targetScore: number

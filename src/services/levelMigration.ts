@@ -3,12 +3,12 @@ import { logger } from './logger'
 import { queueBulkChanges } from './sync'
 import type { WordItem } from '../types/database'
 
-const FLAG = 'yds-levels-v3'
+const FLAG = 'yds-levels-v4'
 const CEFR = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 // Havuz kelimelerinde otomatik üretilen etiketler; bunlar yeniden yazılır, kullanıcı etiketleri korunur
 const MANAGED_TAGS = new Set([
   ...CEFR, 'Başlangıç', 'Temel-İngilizce', 'Orta', 'Genel-İngilizce', 'İleri', 'YDS-Akademik',
-  'Seviye-Tahmini', 'YDS-Çok-Sık', 'YDS-Sık', 'YDS-Ara',
+  'Seviye-Tahmini', 'YDS-Çok-Sık', 'YDS-Sık', 'YDS-Ara', 'YÖKDİL-Çok-Sık', 'YÖKDİL-Sık', 'YÖKDİL-Ara',
 ])
 
 interface PoolWord {
