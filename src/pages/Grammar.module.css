@@ -1,0 +1,264 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--primary);
+}
+
+.topicGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+}
+
+.topicCard {
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--border);
+}
+
+.topicCard:hover {
+  border-color: var(--primary);
+}
+
+.topicIcon {
+  flex: none;
+  font-size: 1.5rem;
+}
+
+.topicBody {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.topicBody > span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.scorePill {
+  flex: none;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.scorePerfect {
+  background: var(--success-subtle);
+  color: var(--success);
+}
+
+.tip,
+.traps {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  line-height: 1.55;
+  font-size: 0.92rem;
+}
+
+.tip {
+  background: var(--primary-subtle);
+  border: 1px solid var(--primary);
+}
+
+.tip p {
+  margin: 0.3rem 0 0;
+}
+
+.traps {
+  background: var(--warning-subtle);
+  border: 1px solid var(--warning);
+}
+
+.traps ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.block {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.blockTitle {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.points {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+  line-height: 1.55;
+}
+
+.examples {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.examples li {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--primary);
+  background: var(--surface-strong);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+.exEn {
+  font-weight: 600;
+}
+
+.exTr {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+.exList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+  counter-reset: ex;
+}
+
+.exCard {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.exQ {
+  margin: 0;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.exQ::before {
+  counter-increment: ex;
+  content: counter(ex) '. ';
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.exOptions {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.exOpt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.exOpt:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.exOpt:disabled {
+  cursor: default;
+}
+
+.exLetter {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.optOk {
+  border-color: var(--success);
+  background: var(--success-subtle);
+}
+
+.optBad {
+  border-color: var(--danger);
+  background: var(--danger-subtle);
+}
+
+.optDim {
+  opacity: 0.55;
+}
+
+.whyOk,
+.whyBad {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.whyOk {
+  color: var(--success);
+}
+
+.whyBad {
+  color: var(--danger);
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nextCard {
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--border);
+}
+
+.nextCard:hover {
+  border-color: var(--primary);
+}

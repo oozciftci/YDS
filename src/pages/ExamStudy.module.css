@@ -793,3 +793,17 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Sorudan dilbilgisi rehberine bağlantı */
+.grammarLink {
+  margin: 0.85rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--primary-subtle);
+  font-size: 0.86rem;
+}
+
+.grammarLink a {
+  color: var(--primary);
+  font-weight: 600;
+}

@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import { guessGrammarTopics } from '../../data/grammar'
 import { cleanToken, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
 import { EXAM_COLLECTED_TAG } from '../../services/groups'
 import { createWord, updateWord } from '../../services/words'
@@ -140,6 +142,11 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
   }
 
   const letters = Object.keys(q.options)
+  // Dilbilgisi ve cloze sorularında şıklara bakıp ilgili rehber konusunu öner
+  const grammarTopics =
+    section.key === 'grammar' || section.key === 'cloze'
+      ? guessGrammarTopics(letters.map((l) => q.options[l].en))
+      : []
   const stemTr = q.stem.map((s) => tr[s.id]).filter(Boolean)
   const optionTrCount = letters.filter((l) => tr[q.options[l].id]).length
   const sv = (s: Seg) => (
@@ -216,6 +223,18 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
             )
           })}
         </ul>
+
+        {revealed && grammarTopics.length > 0 && (
+          <p className={styles.grammarLink}>
+            📘 İlgili dilbilgisi konusu:{' '}
+            {grammarTopics.map((t, i) => (
+              <span key={t.id}>
+                {i > 0 && ' · '}
+                <Link to={`/dilbilgisi/${t.id}`}>{t.title}</Link>
+              </span>
+            ))}
+          </p>
+        )}
 
         {children}
       </article>

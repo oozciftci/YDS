@@ -12,6 +12,9 @@ import { ExamQuizPage } from './pages/ExamQuiz'
 
 // YDS soru çalışma sayfası yalnızca yerel geliştirmede (npm run dev) vardır; yayın derlemesinde
 // import.meta.env.DEV false olduğundan bu satır ve sayfa pakete hiç girmez.
+// Dilbilgisi rehberi ayrı parça olarak yüklenir (uzun içerik ana paketi büyütmesin)
+const GrammarPage = lazy(() => import('./pages/Grammar'))
+
 const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
 
 export default function App() {
@@ -33,6 +36,14 @@ export default function App() {
               }
             />
           )}
+          <Route
+            path="dilbilgisi/*"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <GrammarPage />
+              </Suspense>
+            }
+          />
           <Route path="words" element={<WordsPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="settings" element={<SettingsPage />} />

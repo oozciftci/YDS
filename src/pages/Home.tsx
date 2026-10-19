@@ -508,6 +508,24 @@ export function HomePage() {
         </div>
 
         <div className={styles.modesGrid}>
+          {/* Dilbilgisi Rehberi */}
+          <div
+            className={styles.modeCard}
+            onClick={() => navigate('/dilbilgisi')}
+            role="button"
+            tabIndex={0}
+          >
+            <div className={`${styles.modeIcon} ${styles.iconIndigo}`}>📘</div>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>Dilbilgisi Rehberi</h3>
+                <span className={styles.modePill}>14 Konu</span>
+              </div>
+              <p>YDS’de sorulan konular: kısa anlatım, sınav ipucu ve alıştırma.</p>
+            </div>
+            <span className={styles.modeArrow}>→</span>
+          </div>
+
           {/* Mod 1: FSRS Akıllı Tekrar */}
           <div
             className={styles.modeCard}
