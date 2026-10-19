@@ -20,10 +20,12 @@ interface Props {
   subtitle?: ReactNode
   /** Kartın altındaki eylem satırı (kontrol et, önceki/sonraki vb.). */
   children?: ReactNode
+  /** Yapay zekâ açıklama kutusu gösterilsin mi (YDS TEST örneğinde kapalı). */
+  ai?: boolean
 }
 
 /** Bir YDS sorusunu (varsa paragrafıyla) gösterir: şıklar, çeviriler, kelime balonu, orijinal PDF sayfası. */
-export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = true, subtitle, children }: Props) {
+export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = true, subtitle, children, ai = true }: Props) {
   const { exam, tr } = bundle
   const passage = q.passage ? exam.passages.find((p) => p.id === q.passage) : undefined
   const section = sectionOf(q.no)
@@ -179,7 +181,7 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
 
         {children}
 
-        {revealed && assist && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}
+        {revealed && assist && ai && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}
       </article>
 
       {assist && (

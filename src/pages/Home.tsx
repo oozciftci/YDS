@@ -508,6 +508,19 @@ export function HomePage() {
         </div>
 
         <div className={styles.modesGrid}>
+          {/* YDS TEST: özgün örnek sorular (yayında da görünür) */}
+          <div className={styles.modeCard} onClick={() => navigate('/yds-test')} role="button" tabIndex={0}>
+            <div className={`${styles.modeIcon} ${styles.iconSky}`}>📝</div>
+            <div className={styles.modeBody}>
+              <div className={styles.modeHeadRow}>
+                <h3>YDS TEST</h3>
+                <span className={styles.modePill}>3 Örnek Soru</span>
+              </div>
+              <p>Kelime, çeviri ve paragraf: ÖSYM düzeninde örnek sorular.</p>
+            </div>
+            <span className={styles.modeArrow}>→</span>
+          </div>
+
           {/* YZ Koç */}
           <div
             className={styles.modeCard}

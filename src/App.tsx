@@ -15,6 +15,7 @@ import { ExamQuizPage } from './pages/ExamQuiz'
 // Dilbilgisi rehberi ayrı parça olarak yüklenir (uzun içerik ana paketi büyütmesin)
 const GrammarPage = lazy(() => import('./pages/Grammar'))
 const CoachPage = lazy(() => import('./pages/Coach'))
+const YdsTestPage = lazy(() => import('./pages/YdsTest'))
 
 const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
 
@@ -50,6 +51,14 @@ export default function App() {
             element={
               <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                 <CoachPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="yds-test"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <YdsTestPage />
               </Suspense>
             }
           />
