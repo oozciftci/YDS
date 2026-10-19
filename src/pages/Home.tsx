@@ -248,7 +248,7 @@ export function HomePage() {
             </Link>
             {import.meta.env.DEV && (
               <Link to="/yds-sorular" className="btn btn-ghost" title="Yalnızca yerelde görünür">
-                📖 YDS Soru Çalışması
+                📖 YDS Soru Merkezi
               </Link>
             )}
           </div>

@@ -186,6 +186,47 @@ export interface StudySessionLog {
 }
 
 /**
+ * Çıkmış YDS sorusuna verilen cevap (sorunun son durumu). Soru metni tutulmaz; yalnızca
+ * sınav kimliği + soru numarası. Telifli içerik içermediği için yedeğe dahil edilir.
+ */
+export interface ExamAnswer {
+  id: string // `${userId}_${examId}_${no}`
+  userId: string
+  examId: string
+  no: number
+  section: string // SectionKey (ydsSections.ts)
+  choice: string // Son verilen cevap (A-E)
+  correct: boolean // Son cevap doğru mu
+  attempts: number // Toplam deneme
+  wrongCount: number // Toplam yanlış
+  /** Yanlış Defteri'nde mi: yanlışta açılır, defterden doğru çözülünce kapanır. */
+  inWrongBook: boolean
+  firstAnsweredAt: string
+  answeredAt: string
+}
+
+/**
+ * Tamamlanan süreli deneme sınavı sonucu (yalnızca sayılar; soru metni yok).
+ */
+export interface MockExamResult {
+  id: string
+  userId: string
+  examId: string
+  examTitle: string
+  startedAt: string
+  finishedAt: string
+  durationSec: number
+  correct: number
+  wrong: number
+  empty: number
+  score: number // 100 üzerinden (doğru × 1,25)
+  /** Tip bazlı doğru/toplam: { grammar: [7, 10], ... } */
+  sections: Record<string, [number, number]>
+  /** Soru no -> verilen cevap (boşlar yok) */
+  choices: Record<number, string>
+}
+
+/**
  * 20'şer Kelimelik Alt Seviye (Level) İlerleme Kaydı
  */
 export interface LevelProgress {

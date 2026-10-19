@@ -3,7 +3,8 @@
 Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uygulamasının tüm mimarisini, bugüne kadar alınan kararları, mevcut durumunu ve yapılacak işleri belgeleyen **kalıcı proje hafızasıdır**.
 
 > **Son Güncelleme:** 13 Ekim 2026  
-> **Konuşma / Oturum Geçmişi:** `session-history/` klasöründe arşivlenmiştir.
+> **Konuşma / Oturum Geçmişi:** `session-history/` klasöründe arşivlenmiştir.  
+> **Yol haritası ve yapılanlar/sıradakiler listesi:** `YOL_HARITASI.md` (her adımdan sonra güncellenir).
 
 ---
 
@@ -41,6 +42,7 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 | **Kelime Kütüphanesi** | `src/pages/Words.tsx` | Kelime arama, filtreleme, telaffuz dinleme, yeni kelime ekleme/düzenleme/silme. |
 | **İstatistikler** | `src/pages/Stats.tsx` | Öğrenme kademeleri (New, Learning, Review, Mastered) ve unutma eğrisi grafikleri. |
 | **Ayarlar** | `src/pages/Settings.tsx` | Dinamik backend URL testi, PWA/SW durumu, depolama kullanımı, profil yönetimi, JSON yedekleme/yükleme. |
+| **YDS Soru Merkezi (yalnızca yerel)** | `src/pages/ExamStudy.tsx` + `src/pages/exam/` | Sınav çöz, konuya göre çalış, Yanlış Defteri, 180 dk deneme; cevaplar `examAnswers`, denemeler `mockResults` tablosunda. Soru tipleri: `src/services/ydsSections.ts`. |
 | **Etkileşimli Cümle** | `src/components/InteractiveSentence.tsx` | Örnek cümlelerdeki kelimelere tıklayarak anında anlamını görme. |
 | **Kelime Paketleri** | `src/data/wordPacks.ts` | Hazır YDS kelime paketleri (Akademik, Bağlaçlar, Fiiller vb. tek tıkla kütüphaneye aktarım). |
 

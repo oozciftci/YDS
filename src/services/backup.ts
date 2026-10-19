@@ -12,6 +12,9 @@ export interface BackupData {
   wordGroups?: unknown[]
   sessionLogs?: unknown[]
   levelProgress?: unknown[]
+  /** Çıkmış soru cevapları ve deneme sonuçları (yalnızca kimlik/sayı; soru metni yok) */
+  examAnswers?: unknown[]
+  mockResults?: unknown[]
 }
 
 /**
@@ -19,7 +22,7 @@ export interface BackupData {
  */
 export async function exportDatabaseToJson(): Promise<void> {
   try {
-    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress] =
+    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress, examAnswers, mockResults] =
       await Promise.all([
         db.users.toArray(),
         db.words.toArray(),
@@ -29,10 +32,12 @@ export async function exportDatabaseToJson(): Promise<void> {
         db.wordGroups.toArray(),
         db.sessionLogs.toArray(),
         db.levelProgress.toArray(),
+        db.examAnswers.toArray(),
+        db.mockResults.toArray(),
       ])
 
     const backup: BackupData = {
-      version: 2,
+      version: 3,
       exportedAt: new Date().toISOString(),
       users,
       words,
@@ -42,6 +47,8 @@ export async function exportDatabaseToJson(): Promise<void> {
       wordGroups,
       sessionLogs,
       levelProgress,
+      examAnswers,
+      mockResults,
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -91,6 +98,8 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         db.wordGroups,
         db.sessionLogs,
         db.levelProgress,
+        db.examAnswers,
+        db.mockResults,
       ],
       async () => {
         if (data.users && Array.isArray(data.users) && data.users.length > 0) {
@@ -113,6 +122,12 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         }
         if (data.levelProgress && Array.isArray(data.levelProgress) && data.levelProgress.length > 0) {
           await db.levelProgress.bulkPut(data.levelProgress as never)
+        }
+        if (Array.isArray(data.examAnswers) && data.examAnswers.length > 0) {
+          await db.examAnswers.bulkPut(data.examAnswers as never)
+        }
+        if (Array.isArray(data.mockResults) && data.mockResults.length > 0) {
+          await db.mockResults.bulkPut(data.mockResults as never)
         }
       },
     )

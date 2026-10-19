@@ -1,6 +1,8 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type {
   AppLog,
+  ExamAnswer,
+  MockExamResult,
   CardState,
   LevelProgress,
   ReviewLog,
@@ -21,6 +23,8 @@ export class YdsDatabase extends Dexie {
   wordGroups!: EntityTable<WordGroup, 'id'>
   sessionLogs!: EntityTable<StudySessionLog, 'id'>
   levelProgress!: EntityTable<LevelProgress, 'id'>
+  examAnswers!: EntityTable<ExamAnswer, 'id'>
+  mockResults!: EntityTable<MockExamResult, 'id'>
 
   constructor() {
     super('YdsVocabularyDb')
@@ -48,6 +52,11 @@ export class YdsDatabase extends Dexie {
     this.version(4).stores({
       levelProgress:
         'id, userId, categoryGroupId, subGroupId, status, lastStudiedAt, [userId+categoryGroupId], [userId+status]',
+    })
+
+    this.version(5).stores({
+      examAnswers: 'id, userId, examId, section, answeredAt, [userId+examId], [userId+section]',
+      mockResults: 'id, userId, examId, finishedAt, [userId+finishedAt]',
     })
   }
 }

@@ -25,7 +25,7 @@ export default function App() {
           <Route path="quiz" element={<ExamQuizPage />} />
           {ExamStudyPage && (
             <Route
-              path="yds-sorular"
+              path="yds-sorular/*"
               element={
                 <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                   <ExamStudyPage />

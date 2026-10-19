@@ -30,7 +30,7 @@ function localExamData(): Plugin {
                 .map((f) => {
                   const id = f.replace(/\.json$/, '')
                   const meta = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))
-                  return { id, title: meta.title || id }
+                  return { id, title: meta.title || id, hasKey: (meta.questions || []).some((q: { answer?: string | null }) => q.answer) }
                 })
                 // Başlıktaki yıl + dönem sırasına göre (kronolojik)
                 .sort((a, b) => {
