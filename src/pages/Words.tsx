@@ -200,7 +200,7 @@ export function WordsPage() {
             className="btn"
             onClick={() => setIsBulkModalOpen(true)}
           >
-            📥 Toplu İçe Aktar
+            ⇅ İçe / Dışa Aktar
           </button>
           {allUsers.length > 1 && (
             <button
@@ -424,6 +424,9 @@ export function WordsPage() {
           onClose={() => setIsBulkModalOpen(false)}
           onImport={handleBulkImport}
           onOpenPacks={() => setIsPacksModalOpen(true)}
+          allWords={rawWords}
+          filteredWords={filteredWords}
+          cardMap={cardMap}
         />
       )}
 

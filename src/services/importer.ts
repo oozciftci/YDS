@@ -130,84 +130,106 @@ export function parsePastedText(text: string): CreateWordInput[] {
 }
 
 /**
- * CSV / Excel dosya içeriğini ayrıştırır.
+ * Ayırıcılı metni satır ve hücrelere böler (RFC 4180): tırnak içindeki ayırıcı ve satır sonları korunur,
+ * "" bir tırnak işaretidir. Boş satırlar atlanır.
+ */
+export function parseCsvRows(text: string, delimiter: string): string[][] {
+  const rows: string[][] = []
+  let row: string[] = []
+  let cell = ''
+  let inQuotes = false
+  const src = text.replace(/^\uFEFF/, '')
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i]
+    if (inQuotes) {
+      if (ch === '"') {
+        if (src[i + 1] === '"') {
+          cell += '"'
+          i++
+        } else inQuotes = false
+      } else cell += ch
+      continue
+    }
+    if (ch === '"' && cell.trim() === '') {
+      inQuotes = true
+      cell = ''
+    } else if (ch === delimiter) {
+      row.push(cell.trim())
+      cell = ''
+    } else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && src[i + 1] === '\n') i++
+      row.push(cell.trim())
+      if (row.some((c) => c !== '')) rows.push(row)
+      row = []
+      cell = ''
+    } else cell += ch
+  }
+  row.push(cell.trim())
+  if (row.some((c) => c !== '')) rows.push(row)
+  return rows
+}
+
+/** İlk satıra bakarak ayırıcıyı tahmin eder: noktalı virgül, sekme ya da virgül. */
+function detectDelimiter(text: string): string {
+  const first = text.replace(/^\uFEFF/, '').split(/\r?\n/, 1)[0] ?? ''
+  const count = (d: string) => first.split(d).length - 1
+  const best = [';', '\t', ','].sort((a, b) => count(b) - count(a))[0]
+  return count(best) > 0 ? best : ','
+}
+
+const splitList = (v?: string) => (v ? v.split(/[,;|]/).map((s) => s.trim()).filter(Boolean) : [])
+
+/**
+ * CSV / Excel dosya içeriğini ayrıştırır. Başlık satırı varsa sütunlar adına göre, yoksa sırayla
+ * (kelime, anlam, tür, eş anlamlılar) okunur. Uygulamanın kendi CSV çıktısı da geri yüklenebilir.
  */
 export function parseCsvText(csvContent: string): CreateWordInput[] {
-  const lines = csvContent.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
-  if (lines.length === 0) return []
+  const rows = parseCsvRows(csvContent, detectDelimiter(csvContent))
+  if (rows.length === 0) return []
 
-  // Ayırıcıyı belirle (virgül, noktalı virgül veya tab)
-  const firstLine = lines[0]
-  const delimiter = firstLine.includes(';') ? ';' : firstLine.includes('\t') ? '\t' : ','
-
-  const headers = splitCsvLine(firstLine, delimiter).map((h) => h.toLowerCase().trim())
-
+  const headers = rows[0].map((h) => h.toLowerCase().trim())
+  const col = (...names: string[]) => headers.findIndex((h) => names.includes(h))
   const colIdx = {
-    term: headers.findIndex((h) => ['term', 'kelime', 'word', 'english'].includes(h)),
-    def: headers.findIndex((h) => ['definition', 'anlam', 'turkce', 'turkish', 'meaning'].includes(h)),
-    pos: headers.findIndex((h) => ['partofspeech', 'pos', 'tur', 'tür'].includes(h)),
-    syn: headers.findIndex((h) => ['synonyms', 'esanlam', 'eşanlam', 'es_anlam', 'synonym'].includes(h)),
-    colloc: headers.findIndex((h) => ['collocations', 'kalip', 'kalıplar', 'collocation'].includes(h)),
-    sentence: headers.findIndex((h) => ['sentence', 'cumle', 'cümle', 'example'].includes(h)),
-    tags: headers.findIndex((h) => ['tags', 'etiket', 'etiketler', 'category'].includes(h)),
-    diff: headers.findIndex((h) => ['difficulty', 'zorluk', 'seviye'].includes(h)),
+    term: col('term', 'kelime', 'word', 'english'),
+    def: col('definition', 'anlam', 'turkce', 'türkçe', 'turkish', 'meaning'),
+    pos: col('partofspeech', 'pos', 'tur', 'tür'),
+    syn: col('synonyms', 'esanlam', 'eşanlam', 'es_anlam', 'synonym'),
+    ant: col('antonyms', 'zitanlam', 'zıtanlam', 'antonym'),
+    colloc: col('collocations', 'kalip', 'kalıplar', 'collocation'),
+    sentence: col('sentence', 'cumle', 'cümle', 'example'),
+    sentenceTr: col('sentence_tr', 'cumle_tr', 'cümle_tr', 'example_tr'),
+    tags: col('tags', 'etiket', 'etiketler', 'category'),
+    diff: col('difficulty', 'zorluk', 'seviye'),
+    notes: col('notes', 'not', 'notlar'),
   }
 
   // Başlık satırı eşleştiyse 1. satırdan başla, eşleşmediyse 0. satırdan başla
   const hasHeader = colIdx.term !== -1 || colIdx.def !== -1
-  const startIndex = hasHeader ? 1 : 0
-
+  const get = (row: string[], idx: number, fallback?: number) => row[idx !== -1 ? idx : (fallback ?? -1)]
   const results: CreateWordInput[] = []
 
-  for (let i = startIndex; i < lines.length; i++) {
-    const row = splitCsvLine(lines[i], delimiter)
-    if (row.length === 0) continue
-
-    const term = row[colIdx.term !== -1 ? colIdx.term : 0]
-    const def = row[colIdx.def !== -1 ? colIdx.def : 1]
-
+  for (const row of rows.slice(hasHeader ? 1 : 0)) {
+    const term = get(row, colIdx.term, 0)
+    const def = get(row, colIdx.def, 1)
     if (!term || !def) continue
 
-    const posRaw = colIdx.pos !== -1 ? row[colIdx.pos] : row[2]
-    const synRaw = colIdx.syn !== -1 ? row[colIdx.syn] : row[3]
-    const collocRaw = colIdx.colloc !== -1 ? row[colIdx.colloc] : undefined
-    const sentenceRaw = colIdx.sentence !== -1 ? row[colIdx.sentence] : undefined
-    const tagsRaw = colIdx.tags !== -1 ? row[colIdx.tags] : undefined
-    const diffRaw = colIdx.diff !== -1 ? Number(row[colIdx.diff]) : 2
-
+    const sentence = get(row, colIdx.sentence)
+    const diffRaw = Number(get(row, colIdx.diff))
     results.push({
       term: term.trim(),
       definition: def.trim(),
-      partOfSpeech: normalizePartOfSpeech(posRaw),
-      synonyms: synRaw ? synRaw.split(/[,;|]/).map((s) => s.trim()).filter(Boolean) : [],
-      collocations: collocRaw ? collocRaw.split(/[,;|]/).map((s) => s.trim()).filter(Boolean) : [],
-      sentences: sentenceRaw ? [{ en: sentenceRaw.trim() }] : [],
-      tags: tagsRaw ? tagsRaw.split(/[,;|]/).map((s) => s.trim()).filter(Boolean) : [],
-      difficulty: isNaN(diffRaw) ? 2 : Math.min(3, Math.max(1, diffRaw)),
+      partOfSpeech: normalizePartOfSpeech(get(row, colIdx.pos, hasHeader ? -1 : 2)),
+      synonyms: splitList(get(row, colIdx.syn, hasHeader ? -1 : 3)),
+      antonyms: splitList(get(row, colIdx.ant)),
+      collocations: splitList(get(row, colIdx.colloc)),
+      sentences: sentence ? [{ en: sentence.trim(), tr: get(row, colIdx.sentenceTr)?.trim() || undefined }] : [],
+      tags: splitList(get(row, colIdx.tags)),
+      difficulty: Number.isFinite(diffRaw) && diffRaw > 0 ? Math.min(5, Math.max(1, Math.round(diffRaw))) : 2,
+      notes: get(row, colIdx.notes)?.trim() || undefined,
     })
   }
 
   return results
-}
-
-function splitCsvLine(line: string, delimiter: string): string[] {
-  const result: string[] = []
-  let current = ''
-  let inQuotes = false
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i]
-    if (char === '"') {
-      inQuotes = !inQuotes
-    } else if (char === delimiter && !inQuotes) {
-      result.push(current.replace(/^"|"$/g, '').trim())
-      current = ''
-    } else {
-      current += char
-    }
-  }
-  result.push(current.replace(/^"|"$/g, '').trim())
-  return result
 }
 
 /**

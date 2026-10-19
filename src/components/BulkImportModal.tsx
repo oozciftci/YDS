@@ -5,16 +5,24 @@ import {
   parsePastedText,
 } from '../services/importer'
 import type { CreateWordInput } from '../services/words'
+import { downloadText, isAnkiText, parseAnkiText, wordsToAnki, wordsToCsv } from '../services/exchange'
+import type { CardState, WordItem } from '../types/database'
 import styles from '../pages/Words.module.css'
 
 interface BulkImportModalProps {
   onClose: () => void
   onImport: (items: CreateWordInput[]) => Promise<{ addedCount: number; skippedCount: number }>
   onOpenPacks?: () => void
+  /** Dışa aktarma için: tüm havuz, şu anki filtrenin sonucu ve kart durumları. */
+  allWords?: WordItem[]
+  filteredWords?: WordItem[]
+  cardMap?: Map<string, CardState>
 }
 
-export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportModalProps) {
-  const [activeTab, setActiveTab] = useState<'paste' | 'csv' | 'prompt'>('paste')
+export function BulkImportModal({ onClose, onImport, onOpenPacks, allWords, filteredWords, cardMap }: BulkImportModalProps) {
+  const [activeTab, setActiveTab] = useState<'paste' | 'csv' | 'prompt' | 'export'>('paste')
+  const [swapOverride, setSwapOverride] = useState<boolean | undefined>(undefined)
+  const [exportScope, setExportScope] = useState<'all' | 'filtered'>('all')
   const [pastedText, setPastedText] = useState('')
   const [csvContent, setCsvContent] = useState('')
   const [csvFileName, setCsvFileName] = useState('')
@@ -27,10 +35,12 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
     return parsePastedText(pastedText)
   }, [pastedText])
 
-  // CSV sekmesinde ayrıştırılan kelimeler
+  // Dosya sekmesi: Anki "Notes in Plain Text" dosyası kendiliğinden tanınır, değilse CSV okunur
+  const isAnki = useMemo(() => isAnkiText(csvContent), [csvContent])
+  const ankiResult = useMemo(() => (isAnki ? parseAnkiText(csvContent, swapOverride) : null), [isAnki, csvContent, swapOverride])
   const parsedFromCsv = useMemo(() => {
-    return parseCsvText(csvContent)
-  }, [csvContent])
+    return ankiResult ? ankiResult.items : parseCsvText(csvContent)
+  }, [ankiResult, csvContent])
 
   const currentParsed = activeTab === 'paste' ? parsedFromText : parsedFromCsv
 
@@ -38,6 +48,7 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
     const file = e.target.files?.[0]
     if (!file) return
     setCsvFileName(file.name)
+    setSwapOverride(undefined)
     const text = await file.text()
     setCsvContent(text)
   }
@@ -59,6 +70,18 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
     }
   }
 
+  const exportList = (exportScope === 'filtered' ? filteredWords : allWords) ?? []
+
+  function handleExport(kind: 'csv' | 'anki') {
+    if (exportList.length === 0) return
+    const stamp = new Date().toISOString().slice(0, 10)
+    if (kind === 'csv') {
+      downloadText(wordsToCsv(exportList, cardMap ?? new Map()), `yds_kelimeler_${stamp}.csv`, 'text/csv;charset=utf-8')
+    } else {
+      downloadText(wordsToAnki(exportList), `yds_kelimeler_anki_${stamp}.txt`, 'text/plain;charset=utf-8')
+    }
+  }
+
   function handleCopyPrompt() {
     void navigator.clipboard.writeText(AI_PROMPT_TEMPLATE)
     setCopiedPrompt(true)
@@ -69,7 +92,7 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
     <div className={styles.modalBackdrop} onClick={onClose} role="dialog" aria-modal="true">
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHead}>
-          <h2>Toplu Kelime İçe Aktarma</h2>
+          <h2>Kelime İçe / Dışa Aktarma</h2>
           <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Kapat">
             &times;
           </button>
@@ -89,7 +112,7 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
             className={`${styles.tabBtn} ${activeTab === 'csv' ? styles.tabBtnActive : ''}`}
             onClick={() => setActiveTab('csv')}
           >
-            📁 CSV / Excel Dosyası
+            📁 Dosya (CSV / Anki)
           </button>
           <button
             type="button"
@@ -98,6 +121,15 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
           >
             🤖 Yapay Zeka (AI) İstem Şablonu
           </button>
+          {allWords && (
+            <button
+              type="button"
+              className={`${styles.tabBtn} ${activeTab === 'export' ? styles.tabBtnActive : ''}`}
+              onClick={() => setActiveTab('export')}
+            >
+              📤 Dışa Aktar
+            </button>
+          )}
           {onOpenPacks && (
             <button
               type="button"
@@ -140,10 +172,12 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
         {activeTab === 'csv' && (
           <div style={{ display: 'grid', gap: '0.8rem' }}>
             <p className="muted" style={{ fontSize: '0.82rem', margin: 0 }}>
-              Sütunlarında <code>term, definition, partOfSpeech, synonyms</code> başlıkları olan bir CSV dosyası seçin:
+              <strong>CSV / Excel:</strong> sütunlarında <code>term, definition, partOfSpeech, synonyms</code> başlıkları
+              olan (ya da ilk iki sütunu kelime ve anlam olan) bir dosya. <strong>Anki:</strong> Anki’de Dosya &gt; Dışa
+              Aktar &gt; “Notes in Plain Text” ile alınan .txt dosyası; kendiliğinden tanınır.
             </p>
             <label className="btn" style={{ cursor: 'pointer', textAlign: 'center' }}>
-              📁 CSV Dosyası Seç {csvFileName && `(${csvFileName})`}
+              📁 Dosya Seç {csvFileName && `(${csvFileName})`}
               <input
                 type="file"
                 accept=".csv,.tsv,.txt"
@@ -152,9 +186,42 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
               />
             </label>
 
+            {ankiResult && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', fontSize: '0.85rem' }}>
+                <span>
+                  🗂️ Anki dosyası ·{' '}
+                  {ankiResult.swapped
+                    ? 'ön yüz Türkçe görünüyor, kelime arka yüzden alındı'
+                    : 'ön yüz kelime, arka yüz anlam olarak alındı'}
+                </span>
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={ankiResult.swapped}
+                    onChange={(e) => setSwapOverride(e.target.checked)}
+                  />
+                  Ön ve arka yüzü değiştir
+                </label>
+              </div>
+            )}
+
             {parsedFromCsv.length > 0 && (
-              <div style={{ fontSize: '0.85rem', color: 'var(--success)', fontWeight: 600 }}>
-                ✓ Dosyadan {parsedFromCsv.length} kelime başarıyla ayrıştırıldı.
+              <>
+                <div style={{ fontSize: '0.85rem', color: 'var(--success)', fontWeight: 600 }}>
+                  ✓ Dosyadan {parsedFromCsv.length} kelime ayrıştırıldı. İlk birkaçı:
+                </div>
+                <ul style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '0.85rem', display: 'grid', gap: '0.2rem' }}>
+                  {parsedFromCsv.slice(0, 5).map((w, i) => (
+                    <li key={i}>
+                      <strong>{w.term}</strong> — {w.definition}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {csvContent && parsedFromCsv.length === 0 && (
+              <div style={{ fontSize: '0.85rem', color: 'var(--danger)' }}>
+                Dosyada kelime bulunamadı. İlk iki sütunun kelime ve anlam olduğundan emin ol.
               </div>
             )}
           </div>
@@ -171,6 +238,41 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
             <button type="button" className="btn btn-primary" onClick={handleCopyPrompt}>
               {copiedPrompt ? '✓ İstem Kopyalandı!' : '📋 İstemi Kopyala'}
             </button>
+          </div>
+        )}
+
+        {/* TAB 4: DIŞA AKTAR */}
+        {activeTab === 'export' && allWords && (
+          <div style={{ display: 'grid', gap: '0.9rem' }}>
+            <p className="muted" style={{ fontSize: '0.82rem', margin: 0 }}>
+              Kelimelerini yedeklemek, Excel’de düzenlemek ya da Anki’de çalışmak için indir. CSV dosyası bu pencereden geri
+              yüklenebilir.
+            </p>
+            {filteredWords && filteredWords.length !== allWords.length && (
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', fontSize: '0.88rem' }}>
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
+                  <input type="radio" checked={exportScope === 'all'} onChange={() => setExportScope('all')} />
+                  Tüm havuz ({allWords.length})
+                </label>
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer' }}>
+                  <input type="radio" checked={exportScope === 'filtered'} onChange={() => setExportScope('filtered')} />
+                  Yalnızca şu anki filtre ({filteredWords.length})
+                </label>
+              </div>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
+              <button type="button" className="btn btn-primary" disabled={!exportList.length} onClick={() => handleExport('csv')}>
+                📊 CSV (Excel) indir · {exportList.length} kelime
+              </button>
+              <button type="button" className="btn btn-secondary" disabled={!exportList.length} onClick={() => handleExport('anki')}>
+                🗂️ Anki dosyası indir
+              </button>
+            </div>
+            <ul className="muted" style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '0.8rem', display: 'grid', gap: '0.25rem' }}>
+              <li>CSV: anlam, tür, eş/zıt anlamlılar, örnek cümle, etiketler, not ve öğrenme puanı sütunları; Türkçe Excel’de doğrudan açılır.</li>
+              <li>Anki: Anki’de Dosya &gt; İçe Aktar ile seç, not türü “Basic” olsun. Ön yüz kelime; arka yüz anlam, eş anlamlılar ve örnek cümle.</li>
+              <li>Öğrenme geçmişi (FSRS) Anki’ye aktarılmaz; Anki kartları yeni olarak başlar.</li>
+            </ul>
           </div>
         )}
 
@@ -195,7 +297,7 @@ export function BulkImportModal({ onClose, onImport, onOpenPacks }: BulkImportMo
         )}
 
         {/* Alt Butonlar */}
-        {activeTab !== 'prompt' && (
+        {activeTab !== 'prompt' && activeTab !== 'export' && (
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
             <button type="button" className="btn btn-ghost" onClick={onClose}>
               İptal
