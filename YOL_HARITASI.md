@@ -20,7 +20,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 **Bu sırayla yürütülür (Faz 7–10 aşağıda ayrıntılı):**
 
-1. ✅ 7.1 Hedef puan planlayıcı · ✅ 7.2 Deneme zaman analizi → 7.3 Yanlış nedeni etiketi → 7.4 Özel deneme oluşturucu → 7.5 Denemeler arası tablo + deneme sıklığı önerisi → 7.6 Gramer konusu sınav sıklığı
+1. ✅ 7.1 Hedef puan planlayıcı · ✅ 7.2 Deneme zaman analizi → 7.3 Yanlış nedeni etiketi ✅ → 7.4 Özel deneme oluşturucu → 7.5 Denemeler arası tablo + deneme sıklığı önerisi → 7.6 Gramer konusu sınav sıklığı
 2. ⏳ 8.1 Özgün soru bankası (yayına girebilir) ve Alıştırma Merkezi · 8.2 Gramer mikro-alıştırma genişletme · 8.3 Özgün okuma metinleri · 8.4 YÖKDİL alan terimi paketleri · 8.5 Çeviri cümleleri
 3. ⏳ 9.1 Soru etiket veritabanı (yerel) · 9.2 Kelime–soru eşleme (YÖKDİL dâhil) · 9.3 Doğrulama notları (2018 Aralık cevap farkı)
 4. ⏳ 10.1 Yayın güvenlik denetimi · 10.2 Birim testleri · 10.3 Temizlik
@@ -47,6 +47,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **YDS metinleri PDF ile karşılaştırıldı** | 16 YDS sınavı (2013-2019) `cikmis2.pdf` metniyle parça parça karşılaştırıldı; OCR kaynaklı ~330 Türkçe yazım hatası düzeltildi (İngilizce metinde PDF’in kendi OCR hataları olduğu için yalnızca belirgin hatalar). Cevap anahtarı yalnızca 2018 Aralık ve 2019 Eylül için PDF’te var: 2019 Eylül aynı; 2018 Aralık’ta 6 soruda fark (29, 65, 67, 68, 69, 70) — elle bakılmalı. |
 | 19.10.2026 | **Faz 7.1 – Hedef puan planlayıcı** | Soru Merkezi’nde “Hedef puan planı” kartı: hedef puan → gereken doğru, tahmini doğru, eksiğin hangi tiplerden kapatılacağı (`src/services/targetPlan.ts`). Bugünkü Plan ipucu en çok kazandıran tipi önerir. |
 | 19.10.2026 | **Faz 7.2 – Deneme zaman analizi** | Denemede her soruda geçen süre kaydedilir (`mockResults.times`, eski kayıtlarda yok); sonuç ekranında tip başına süre + soru başı ortalama, yavaş tipler işaretli (`src/services/mockTime.ts`). |
+| 19.10.2026 | **Faz 7.3 – Yanlış nedeni etiketi** | Yanlış cevabın altında tek dokunuşluk “Bilmiyordum / Dikkatsizlik / Süre yetmedi” (alıştırma, Yanlış Defteri, deneme incelemesi). `examAnswers.wrongReason` (isteğe bağlı alan; Dexie sürümü gerekmedi, JSON yedeğe kendiliğinden girer). “Hatalarımı analiz et” sayfasında dağılım kartı (7 gün/toplam) ve Gemini isteminde neden bilgisi. |
 | 19.10.2026 | **YÖKDİL kelime etiketleri** | `scripts/tagYokdil.mjs` YÖKDİL-Çok-Sık / Sık / Ara etiketlerini YDS etiketlerinden ayrı üretir (kelime başına etiket havuzda). Ayarlar → Hedef Sınav’da “yeni kelimeler hangi sınavın sıklığına göre sıralansın” seçimi: YDS, YÖKDİL ya da ikisi birlikte. |
 | 19.10.2026 | **YÖKDİL çevirileri tamam** (yerel) | 12 sınavın tüm İngilizce segmentleri Türkçeye çevrildi (`local-data/yds/yokdil-*.tr.json`, ~6.000 segment; Türkçe olan 42-53. soru parçaları çevrilmedi). PDF metin katmanındaki kusurlar (2019 Mart Sosyal 9. soru E şıkkı, 54-59. sorularda bazı boşluklar, 2019 Kasım Sağlık 53-54. E şıkları, 68. soruya karışan okuma metni) olduğu gibi bırakıldı. |
 | 19.10.2026 | **“60 Günde YDS Kelimeleri” paketi** (yerel) | Modadil kitabından 1663 girdi (1586 benzersiz kelime): 54 günlük kelime kartları (anlam, örnek cümle + çeviri, eş/zıt anlamlı), phrasal verb ve edat tabloları, son sınavların sık kelimeleri. Telifli olduğu için PDF ve paket `local-data/paketler/` altında (gitignore + şifreli kasa); Hazır Paketler’de yalnızca `npm run dev`’de görünür. |
@@ -159,7 +160,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | :--- | :--- | :---: | :--- |
 | 7.1 | Hedef puan planlayıcı | ✅ | Hedef puan → gereken doğru sayısı; güncel tip başarısına göre “şu tiplerden şu kadar daha”; Bugünkü Plan’a bağlanır. |
 | 7.2 | Deneme zaman analizi | ✅ | Soru başına / tip başına süre, yavaş tipler, süre hedefi; sonuç ekranında tablo. |
-| 7.3 | Yanlış nedeni etiketi | ⏳ | Bilmiyordum · Dikkatsizlik · Süre yetmedi; “Hatalarımı analiz et” bunu kullanır; haftalık dağılım. |
+| 7.3 | Yanlış nedeni etiketi | ✅ | Bilmiyordum · Dikkatsizlik · Süre yetmedi; “Hatalarımı analiz et” bunu kullanır; haftalık dağılım. |
 | 7.4 | Özel deneme oluşturucu | ⏳ | Tip / yıl / YDS-YÖKDİL-alan / soru sayısı / süre seç → mini deneme. |
 | 7.5 | Denemeler arası tablo + sıklık önerisi | ⏳ | Tip bazlı karşılaştırma tablosu; sınava kalan zamana göre deneme sıklığı (6+ ay: ayda 1 … son 2 hafta: haftada 2). |
 | 7.6 | Gramer konusu sınav sıklığı | ⏳ | 39 sınavdan sayısal istatistik (yayına girebilir); Dilbilgisi Rehberi sırası/rozeti. |

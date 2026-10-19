@@ -1,5 +1,5 @@
 import { db } from '../db'
-import type { ExamAnswer } from '../types/database'
+import type { ExamAnswer, WrongReason } from '../types/database'
 import { ALL_SECTIONS, sectionOf, type SectionKey } from './ydsSections'
 
 // Çıkmış YDS sorularına verilen cevapların kaydı (Dexie). Soru metni tutulmaz.
@@ -34,11 +34,17 @@ export async function recordAnswer(
     attempts: (prev?.attempts ?? 0) + 1,
     wrongCount: (prev?.wrongCount ?? 0) + (correct ? 0 : 1),
     inWrongBook: correct ? Boolean(prev?.inWrongBook) && !opts.fromWrongBook : true,
+    wrongReason: correct ? prev?.wrongReason : undefined,
     firstAnsweredAt: prev?.firstAnsweredAt ?? now,
     answeredAt: now,
   }
   await db.examAnswers.put(next)
   return next
+}
+
+/** Yanlışın nedenini kaydeder (undefined = işareti kaldır). */
+export async function setWrongReason(id: string, reason: WrongReason | undefined): Promise<void> {
+  await db.examAnswers.update(id, { wrongReason: reason })
 }
 
 /** Soruyu Yanlış Defteri'nden elle çıkarır. */

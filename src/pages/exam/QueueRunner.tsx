@@ -5,6 +5,7 @@ import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { shortTitle, type ExamBundle, type Question } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { ReasonPicker } from './ReasonPicker'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
 
 export interface QueueItem {
@@ -157,6 +158,7 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
             {result === null ? 'Atla →' : 'Sonraki →'}
           </button>
         </div>
+        {result === false && <ReasonPicker answerId={answerId(userId, bundle.exam.id, q.no)} />}
         <QuickAnswerToggle value={quick} onChange={setQuick} />
       </QuestionCard>
     </section>

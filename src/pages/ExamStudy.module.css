@@ -1140,3 +1140,28 @@
   border-color: var(--primary, #4f46e5);
   color: #fff;
 }
+
+.reasonRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.reasonChip {
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.reasonOn {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}

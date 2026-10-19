@@ -5,6 +5,7 @@ import { appMapText, isKnownRoute } from '../../services/appMap'
 import { summarizeBySection } from '../../services/examProgress'
 import { listNotes, type NoteSuggestion } from '../../services/memory'
 import { COACH_MODE_RULES, tacticsContext } from '../../services/tactics'
+import { reasonCounts, reasonLabel } from '../../services/wrongReasons'
 import { getSection, sectionOf, type SectionKey } from '../../services/ydsSections'
 import type { MemoryCategory } from '../../types/database'
 import { loadExam, shortTitle } from './examData'
@@ -65,7 +66,7 @@ async function describe(items: Awaited<ReturnType<typeof wrongAnswers>>['items']
           `Şıklar: ${opts}`,
           a.correct
             ? `Doğru: ${q.answer}. Önce ${a.wrongCount} kez yanlış yaptı, sonra düzeltti.`
-            : `Doğru: ${q.answer}. Öğrencinin cevabı: ${a.choice} (yanlış${a.wrongCount > 1 ? `, ${a.wrongCount}. kez` : ''}).`,
+            : `Doğru: ${q.answer}. Öğrencinin cevabı: ${a.choice} (yanlış${a.wrongCount > 1 ? `, ${a.wrongCount}. kez` : ''}${a.wrongReason ? `; öğrencinin kendi nedeni: ${reasonLabel(a.wrongReason)}` : ''}).`,
         ].join('\n'),
       )
     } catch {
@@ -125,12 +126,17 @@ export async function runAnalysis(userId: string, opts: { koc: boolean }): Promi
     .filter((s) => s.answered > 0)
     .map((s) => `${getSection(s.key).label} %${s.percent} (${s.answered} soru)`)
     .join(', ')
+  const rc = reasonCounts(all)
+  const reasonLine = rc.tagged
+    ? `Öğrencinin işaretlediği yanlış nedenleri: ${(['bilmiyordum', 'dikkatsizlik', 'sure'] as const).map((k) => `${reasonLabel(k)} ${rc.counts[k]}`).join(', ')}. Dikkatsizlik/süre baskınsa bilgi eksiğinden çok teknik hata vardır; tavsiyeni buna göre ver.`
+    : ''
   const sections = [...new Set(items.map((a) => a.section as SectionKey))]
   const tactics = opts.koc ? await tacticsContext({ sections }) : ''
 
   const system = [SYSTEM, '', 'UYGULAMA HARİTASI:', appMapText(), ...(tactics ? ['', COACH_MODE_RULES, tactics] : [])].join('\n')
   const prompt = [
     `Soru tiplerine göre genel başarı: ${stats || 'veri yok'}.`,
+    reasonLine,
     '',
     'MEVCUT HAFIZA NOTLARI:',
     notes.length ? notes.map((n) => `- ${n.text}`).join('\n') : '(yok)',

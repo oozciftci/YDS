@@ -203,9 +203,13 @@ export interface ExamAnswer {
   wrongCount: number // Toplam yanlış
   /** Yanlış Defteri'nde mi: yanlışta açılır, defterden doğru çözülünce kapanır. */
   inWrongBook: boolean
+  /** Son yanlışın nedeni (kullanıcı işaretler; isteğe bağlı). Yeni yanlışta sıfırlanır. */
+  wrongReason?: WrongReason
   firstAnsweredAt: string
   answeredAt: string
 }
+
+export type WrongReason = 'bilmiyordum' | 'dikkatsizlik' | 'sure'
 
 /**
  * Yapay zekâ çıktısı önbelleği (aynı istek için yeniden ücret ödenmesin). Yalnızca bu cihazda; yedeğe girmez.

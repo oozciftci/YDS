@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { SourceModeToggle, useSourceMode } from '../../components/SourceModeToggle'
 import { aiConfigured } from '../../services/ai'
 import { addNotes, listNotes, MEMORY_CATEGORIES } from '../../services/memory'
+import { reasonCounts, WRONG_REASONS } from '../../services/wrongReasons'
 import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { lastAnalysis, MAX_ITEMS, MIN_ITEMS, runAnalysis, wrongAnswers, type AnalysisResult } from './analysis'
@@ -14,6 +15,7 @@ export function MistakeAnalysis() {
   const userId = useUserStore((s) => s.activeUserId)
   const source = useSourceMode()
   const [counts, setCounts] = useState<{ current: number; fixed: number; used: number } | null>(null)
+  const [reasons, setReasons] = useState<{ week: ReturnType<typeof reasonCounts>; all: ReturnType<typeof reasonCounts> } | null>(null)
   const [result, setResult] = useState<AnalysisResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -33,6 +35,7 @@ export function MistakeAnalysis() {
     void Promise.all([wrongAnswers(userId), lastAnalysis()]).then(([w, last]) => {
       if (!alive) return
       setCounts({ current: w.currentCount, fixed: w.fixedCount, used: w.items.length })
+      setReasons({ week: reasonCounts(w.all, 7), all: reasonCounts(w.all) })
       if (last) {
         setResult(last)
         void refreshExisting(last.notes)
@@ -115,6 +118,24 @@ export function MistakeAnalysis() {
         </div>
         {error && <p className={styles.aiError}>{error}</p>}
       </article>
+
+      {reasons && reasons.all.tagged > 0 && (
+        <article className="card">
+          <h2 className={styles.blockTitle}>Yanlışların nedeni</h2>
+          <p className={styles.blockDesc}>Soruyu yanlış yapınca işaretlediğin nedenler (son 7 gün / toplam).</p>
+          <ul className={styles.sectionList}>
+            {WRONG_REASONS.map((r) => (
+              <li key={r.key} className={styles.sectionRowStatic}>
+                <span className={styles.sectionName}>{r.label}</span>
+                <span className="muted">{r.hint}</span>
+                <span className={styles.sectionPct}>
+                  {reasons.week.counts[r.key]} / {reasons.all.counts[r.key]}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      )}
 
       {result && (
         <>

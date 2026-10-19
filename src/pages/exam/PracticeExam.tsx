@@ -7,6 +7,7 @@ import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { loadExam, type ExamBundle } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { ReasonPicker } from './ReasonPicker'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
 
 /** Bir sınavı sırayla çözme: her sorudan sonra cevap kontrol edilir. */
@@ -150,6 +151,7 @@ export function PracticeExam() {
             Sonraki →
           </button>
         </div>
+        {revealed && saved && !saved.correct && <ReasonPicker answerId={saved.id} />}
         {!noKey && <QuickAnswerToggle value={quick} onChange={setQuick} />}
       </QuestionCard>
     </section>

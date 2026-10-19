@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { db } from '../../db'
-import { recordAnswer } from '../../services/examProgress'
+import { answerId, recordAnswer } from '../../services/examProgress'
 import { summarizeTimes, TARGET_SEC_PER_QUESTION } from '../../services/mockTime'
 import { sectionOf, ALL_SECTIONS, ydsScore } from '../../services/ydsSections'
 import { useUserStore } from '../../stores/user'
@@ -9,6 +9,7 @@ import type { MockExamResult } from '../../types/database'
 import styles from '../ExamStudy.module.css'
 import { loadExam, type ExamBundle } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { ReasonPicker } from './ReasonPicker'
 import { useQuestionNav } from './answerControls'
 
 const DURATION_SEC = 180 * 60
@@ -409,6 +410,7 @@ export function MockExam() {
             Sonraki →
           </button>
         </div>
+        {review && choice && q.answer && choice !== q.answer && <ReasonPicker answerId={answerId(userId, examId, q.no)} />}
       </QuestionCard>
     </section>
   )
