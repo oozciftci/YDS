@@ -9,7 +9,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 6.7 altyapısı tamamlandı (veri biçimi, yerel API, Koç / Saf Gemini seçimi, Taktik Kitabı ekranı, `kaynakTools.mjs`). **Hoca PDF’leri bekleniyor:** `local-data/kaynaklar/` klasörüne konunca OCR → harita → kurallar çıkarılacak. Faz 6.5c (Geliştirici danışmanı + Öneriler) de tamamlandı; YZ Koç’un üç modu hazır.
+- ⏸️ Faz 6.7 altyapısı tamamlandı (veri biçimi, yerel API, Koç / Saf Gemini seçimi, Taktik Kitabı ekranı, `kaynakTools.mjs`). **Hoca PDF’leri bekleniyor:** `local-data/kaynaklar/` klasörüne konunca OCR → harita → kurallar çıkarılacak. Faz 6.5c (Geliştirici danışmanı + Öneriler) ve “Hatalarımı analiz et” de tamamlandı.
 
 **Alınan kararlar (19.10.2026):** Sağlayıcı Gemini; önce ücretli Tier 1 (ön ödemeli, otomatik yükleme kapalı, 10 $ harcama sınırı), bakiye/sınır bitince ücretsiz katman anahtarına otomatik geçiş; çıkmış soru metinlerinin Gemini’ye gönderilmesine izin var (yalnızca başka kullanıcılara açılmamalı); varsayılan model gemini-3.8-flash, Ayarlar’dan değiştirilebilir; anahtarlar yalnızca cihazda.
 
@@ -18,7 +18,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 > Kararlar ve ayrıntılı görev tanımı: **`PROMPT_YZ_KOC_VE_TAKTIK.md`** (bu sırayla yürütülüyor).
 
 1. ⏳ Faz 6.7b – **Taktik Kitabı içeriği**: hoca PDF’leri gelince OCR (`C:\Projeler\OCR`) → `kaynakTools.mjs ocr-al / ekle` → kaynak haritası (konu → sayfa) → soru tipine göre kurallar (Claude çıkarır) → `kaynakTools.mjs kontrol`.
-2. 💡 “Hatalarımı analiz et”, Gemini File Search ile “kaynağa sor”
+2. 💡 Gemini File Search ile “kaynağa sor” (NotebookLM benzeri, sayfa atıflı)
 3. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase)
 4. 💡 Faz 5.3 – Okuma kütüphanesi (açık lisanslı kaynaklar + özgün metinler)
 5. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı)
@@ -38,6 +38,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Hatalarımı analiz et** (yerel) | Soru Merkezi > 🔍: son 40 yanlıştan tekrar eden kök hatalar (açıklama, örnek sorular, çalışma önerisi, uygulama bağlantıları), Koç / Saf Gemini seçimi, onaylı hafıza notu önerileri (zaten hafızada olanlar ikinci kez eklenmez), son analiz cihazda saklanır. |
 | 19.10.2026 | **Faz 6.5c – Geliştirici danışmanı** | YZ Koç’ta üçüncü mod: teknik yapıyı, kuralları, uygulama haritasını, yol haritası özetini ve kullanım sayılarını bilerek öneri verir; öneriler kart olarak gelir, “＋ Önerilere ekle” ile `/koc/oneriler` listesine düşer (durum takibi, “Claude için kopyala”). |
 | 19.10.2026 | **Faz 6.7a – Taktik Kitabı altyapısı** (yerel) | `local-data/kaynaklar/` biçimi (harita.json, taktik-kitabi.json, sayfa-NNNN.md), dev-only `/local-api/kaynak`, soru açıklamasında ve YDS koçunda **📒 Koç (kaynaklı) / ✨ Saf Gemini** seçimi (kitap boşken Koç pasif, her yanıtta mod etiketi), `/yds-sorular/taktik` görüntüleme/düzenleme ekranı (kaynak sayfasını açma), `scripts/kaynakTools.mjs`. |
 | 19.10.2026 | **Faz 6.5b – YDS koçu** | YZ Koç’ta yeni mod: profil + hafıza notları + bugünkü plan ile durum değerlendirmesi, plan, motivasyon; uygulamadaki alıştırmalara tıklanabilir bağlantılar (yalnızca uygulama haritasındaki adresler); hızlı sorular (“Durumumu değerlendir”, “Bu hafta için plan yap” …). |
@@ -134,13 +135,15 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 6.2 | Yazma pratiği geri bildirimi | ⏳ | Gemini ile; konu önerisi, düzeltilmiş metin, hata açıklamaları, kelime önerileri. |
 | 6.3 | Cihazlar arası ilerleme senkronu | 💤 | Supabase altyapısı mevcut; yalnızca ilerleme verisi, soru metni asla. |
 | 6.5 | Yapay zekâ sohbet öğretmeni | ✅ | 6.5a İngilizce pratik ✅ · 6.5b YDS koçu ✅ · 6.5c Geliştirici danışmanı ✅. Sesli (Gemini Live) ve konuşan karakter sonra (💡). |
-| 6.6 | Hafıza (“beni tanısın”) | ✅ | Otomatik profil, “Hafızaya kaydet” (onaylı), Hafızam sayfası. |
+| 6.6 | Hafıza (“beni tanısın”) | ✅ | Otomatik profil, “Hafızaya kaydet” (onaylı), Hafızam sayfası, “Hatalarımı analiz et”. |
 | 6.7 | Taktik Kitabı (yerel) | 🔄 | 6.7a altyapı ✅ · 6.7b içerik (hoca PDF’leri → OCR → harita → kurallar) ⏳ |
 | 6.4 | Anki / CSV içe-dışa aktarma | ✅ | Dışa: CSV (BOM + `;`, öğrenme puanı ve sonraki tekrar dahil) ve Anki "Notes in Plain Text" (Basic not türü, etiketler). İçe: Anki .txt kendiliğinden tanınır (HTML/ses/cloze temizlenir, TR→EN destede yön otomatik çevrilir, elle değiştirilebilir); CSV ayrıştırıcı artık tırnaklı ayırıcı/satır sonu ve "" kaçışını destekliyor. FSRS geçmişi Anki'ye aktarılmaz. |
 
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — “Hatalarımı analiz et”: `exam/analysis.ts` (yanlışlar kısa satırlara dönüşür, okuma paragrafları gönderilmez; JSON şeması: özet, en fazla 5 kök hata, bağlantılar `isKnownRoute` ile süzülür, hafıza önerileri), `exam/MistakeAnalysis.tsx` (`/yds-sorular/analiz`), son analiz `aiNotes` içinde `analysis:last`. Analiz ≈ 0,006-0,01 $. Taklit edilmiş Gemini ile doğrulandı.
 
 - **19.10.2026** — Faz 6.5c: `coach.sendDev` (JSON şeması: yanıt + en fazla 4 öneri), `services/roadmapDigest.ts` (YOL_HARITASI.md `?raw` ile paketlenir, ~1k token özet; değişiklikler bir sonraki derlemede yansır), `pages/Suggestions.tsx` (`/koc/oneriler`), Dexie v9 `suggestions`, yedek v5. Faz 6 tablosuna 6.6 ve 6.7 satırları eklendi.
 
