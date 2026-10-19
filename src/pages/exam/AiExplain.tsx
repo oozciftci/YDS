@@ -2,6 +2,9 @@ import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { AiText } from '../../components/AiText'
 import { SaveToMemory } from '../../components/SaveToMemory'
+import { SOURCE_MODE_LABEL, SourceModeToggle, useSourceMode } from '../../components/SourceModeToggle'
+import { guessGrammarTopics } from '../../data/grammar'
+import { COACH_MODE_RULES, tacticsContext } from '../../services/tactics'
 import { db } from '../../db'
 import { aiConfigured, generateChat } from '../../services/ai'
 import { memoryContext } from '../../services/memory'
@@ -66,6 +69,7 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
   const id = `explain:${bundle.exam.id}#${q.no}`
   const userId = useUserStore((s) => s.activeUserId)
   const [knowMe, setKnowMe] = useState(readKnowMe)
+  const source = useSourceMode()
   const [turns, setTurns] = useState<AiNoteTurn[]>([])
   const [loaded, setLoaded] = useState(false)
   const [input, setInput] = useState('')
@@ -111,15 +115,25 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
     try {
       // "Beni tanıyarak": profil + hafıza notları sistem talimatına eklenir
       const memory = knowMe ? await memoryContext(userId, { profile: true }) : ''
-      const system = memory
-        ? `${SYSTEM}\n\nÖĞRENCİYİ TANI (açıklamayı buna göre kişiselleştir; tekrar eden hatasıyla ilgiliyse bunu nazikçe belirt):\n${memory}`
-        : SYSTEM
+      // Koç modu: bu soru tipinin (ve şıklardan tahmin edilen dilbilgisi konusunun) taktikleri + en fazla 4 sayfa alıntı
+      const section = sectionOf(q.no).key
+      const tactics =
+        source.effective === 'koc'
+          ? await tacticsContext({
+              sections: [section],
+              grammar: guessGrammarTopics(Object.values(q.options).map((o) => o.en)).map((t) => t.id),
+              withPages: true,
+            })
+          : ''
+      let system = SYSTEM
+      if (tactics) system += `\n\n${COACH_MODE_RULES}\n\n${tactics}`
+      if (memory) system += `\n\nÖĞRENCİYİ TANI (açıklamayı buna göre kişiselleştir; tekrar eden hatasıyla ilgiliyse bunu nazikçe belirt):\n${memory}`
       const r = await generateChat(
         system,
         history.map((t) => ({ role: t.role, text: t.prompt ?? t.text })),
         first ? 0.3 : 0.5,
       )
-      const meta = `${r.model} · ${r.tier === 'paid' ? `ücretli (~${r.usd.toFixed(4)} $)` : 'ücretsiz katman'}${memory ? ' · seni tanıyarak' : ''}`
+      const meta = `${r.model} · ${r.tier === 'paid' ? `ücretli (~${r.usd.toFixed(4)} $)` : 'ücretsiz katman'}${import.meta.env.DEV ? ` · ${SOURCE_MODE_LABEL[tactics ? 'koc' : 'saf']}` : ''}${memory ? ' · seni tanıyarak' : ''}`
       const next = [...history, { role: 'model' as const, text: r.text, meta, at: new Date().toISOString() }]
       setTurns(next)
       const firstModel = next.find((t) => t.role === 'model')
@@ -233,6 +247,7 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
         <button type="button" className="btn btn-secondary" disabled={loading || (started && !input.trim())} onClick={() => void send()}>
           {loading ? '🤖 Yanıt hazırlanıyor…' : started ? 'Gönder' : '🤖 Yapay zekâ ile açıkla'}
         </button>
+        <SourceModeToggle mode={source.mode} available={source.available} onChange={source.setMode} />
         <label className={styles.knowMe} title="Profilin ve hafıza notların açıklamaya eklenir">
           <input type="checkbox" checked={knowMe} onChange={(e) => toggleKnowMe(e.target.checked)} />
           beni tanıyarak açıkla

@@ -116,6 +116,74 @@ function localExamData(): Plugin {
   }
 }
 
+// Hoca kitapları ve Taktik Kitabı (local-data/kaynaklar): telifli, YALNIZCA geliştirme sunucusunda ve localhost'tan.
+//   GET  /local-api/kaynak/harita              -> harita.json (kitaplar + konu -> sayfa aralıkları)
+//   GET  /local-api/kaynak/taktik              -> taktik-kitabi.json (soru tipine göre kurallar)
+//   PUT  /local-api/kaynak/taktik              -> taktik-kitabi.json'ı kaydeder (öncekini .bak.json olarak saklar)
+//   GET  /local-api/kaynak/sayfa/<kitap>/<n>   -> <kitap>/sayfa-000n.md (OCR çıktısı)
+function localSources(): Plugin {
+  const dir = path.resolve(import.meta.dirname, 'local-data/kaynaklar')
+  return {
+    name: 'local-sources',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/local-api/kaynak', (req, res, next) => {
+        const remote = req.socket.remoteAddress || ''
+        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        res.setHeader('Cache-Control', 'no-store')
+        const url = decodeURIComponent((req.url || '/').replace(/[?#].*$/, ''))
+        const sendJson = (file: string, empty: unknown) => {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          const full = path.join(dir, file)
+          res.end(fs.existsSync(full) ? fs.readFileSync(full, 'utf8') : JSON.stringify(empty))
+        }
+
+        if (req.method === 'GET' && url === '/harita') return sendJson('harita.json', { books: [], entries: [] })
+        if (req.method === 'GET' && url === '/taktik') return sendJson('taktik-kitabi.json', { updatedAt: null, rules: [] })
+
+        if (req.method === 'PUT' && url === '/taktik') {
+          let body = ''
+          req.on('data', (c) => (body += c))
+          req.on('end', () => {
+            try {
+              const data = JSON.parse(body)
+              if (!data || !Array.isArray(data.rules)) throw new Error('rules dizisi yok')
+              fs.mkdirSync(dir, { recursive: true })
+              const file = path.join(dir, 'taktik-kitabi.json')
+              if (fs.existsSync(file)) fs.copyFileSync(file, path.join(dir, 'taktik-kitabi.bak.json'))
+              fs.writeFileSync(file, JSON.stringify({ ...data, updatedAt: new Date().toISOString() }, null, 2))
+              res.setHeader('Content-Type', 'application/json; charset=utf-8')
+              res.end('{"ok":true}')
+            } catch (e) {
+              res.statusCode = 400
+              res.end(String(e))
+            }
+          })
+          return
+        }
+
+        const m = /^\/sayfa\/([a-z0-9-]+)\/(\d{1,4})$/i.exec(url)
+        if (req.method === 'GET' && m) {
+          const file = path.join(dir, m[1], `sayfa-${m[2].padStart(4, '0')}.md`)
+          if (!fs.existsSync(file)) {
+            res.statusCode = 404
+            res.end('')
+            return
+          }
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+          fs.createReadStream(file).pipe(res)
+          return
+        }
+        next()
+      })
+    },
+  }
+}
+
 // GitHub Pages alt dizinde yayınlanır (/YDS/); yerelde '/' kalır.
 const base = process.env.BASE_PATH || '/'
 
@@ -125,6 +193,7 @@ export default defineConfig({
   plugins: [
     react(),
     localExamData(),
+    localSources(),
     VitePWA({
       // 'prompt' modunda yeni SW bekler; ne zaman devreye gireceğine biz karar veririz
       // (src/pwa/registerSW.ts). Kullanıcıya hiçbir şey sorulmaz -> sessiz güncelleme,

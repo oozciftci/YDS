@@ -5,7 +5,9 @@ import { memoryContext } from './memory'
 import { appMapText } from './appMap'
 import { buildDailyPlan } from './dailyPlan'
 import { daysUntil } from './dates'
-import { YDS_SECTIONS } from './ydsSections'
+import { YDS_SECTIONS, type SectionKey } from './ydsSections'
+import { summarizeBySection } from './examProgress'
+import { COACH_MODE_RULES, getSourceMode, tacticsAvailable, tacticsContext } from './tactics'
 import { useSettings } from '../stores/settings'
 
 // YZ Koç: sohbetlerin oluşturulması, mesaj gönderme ve uzun sohbetlerin özetlenmesi.
@@ -249,11 +251,30 @@ async function todayPlanText(userId: string): Promise<string> {
   return 'Bugünkü plan: ' + plan.map((t) => `${t.label} ${t.done}/${t.target}`).join(', ') + '.'
 }
 
-async function ydsSystem(chat: CoachChat): Promise<string> {
-  const [memory, plan] = await Promise.all([memoryContext(chat.userId, { profile: true }), todayPlanText(chat.userId)])
-  const lines = [...YDS_RULES, '', 'UYGULAMA HARİTASI:', appMapText(), '', 'ÖĞRENCİ VERİLERİ:', memory, plan]
+/** Koç modunda: öğrencinin en zayıf iki soru tipinin taktikleri (sayfa alıntısı olmadan, kısa). */
+async function coachTactics(userId: string): Promise<string> {
+  if (getSourceMode() !== 'koc' || !(await tacticsAvailable())) return ''
+  const answers = await db.examAnswers.where('userId').equals(userId).toArray()
+  const weakest = summarizeBySection(answers)
+    .filter((s) => s.answered >= 5 && s.percent !== null)
+    .sort((a, b) => (a.percent ?? 0) - (b.percent ?? 0))
+    .slice(0, 2)
+    .map((s) => s.key)
+  const sections: SectionKey[] = weakest.length ? weakest : YDS_SECTIONS.map((s) => s.key)
+  return tacticsContext({ sections })
+}
+
+async function ydsSystem(chat: CoachChat): Promise<{ system: string; koc: boolean }> {
+  const [memory, plan, tactics] = await Promise.all([
+    memoryContext(chat.userId, { profile: true }),
+    todayPlanText(chat.userId),
+    coachTactics(chat.userId),
+  ])
+  const lines = [...YDS_RULES, '', 'UYGULAMA HARİTASI:', appMapText()]
+  if (tactics) lines.push('', COACH_MODE_RULES, tactics)
+  lines.push('', 'ÖĞRENCİ VERİLERİ:', memory, plan)
   if (chat.summary) lines.push('', `Önceki konuşmanın özeti: ${chat.summary}`)
-  return lines.join('\n')
+  return { system: lines.join('\n'), koc: Boolean(tactics) }
 }
 
 export async function createYdsChat(userId: string): Promise<CoachChat> {
@@ -284,8 +305,10 @@ export async function sendYds(chat: CoachChat, text: string): Promise<CoachChat>
       }
   let next: CoachChat = { ...chat, messages: [...chat.messages, userTurn] }
   next = await maybeSummarize(next)
-  const r = await generateChat(await ydsSystem(next), historyFor(next), 0.5)
-  const modelTurn: CoachTurn = { role: 'model', text: r.text.trim(), meta: metaOf(r), at: new Date().toISOString() }
+  const { system, koc } = await ydsSystem(next)
+  const r = await generateChat(system, historyFor(next), 0.5)
+  const modeLabel = import.meta.env.DEV ? (koc ? ' · 📒 Koç (kaynaklı)' : ' · ✨ Saf Gemini') : ''
+  const modelTurn: CoachTurn = { role: 'model', text: r.text.trim(), meta: metaOf(r) + modeLabel, at: new Date().toISOString() }
   next = { ...next, messages: [...next.messages, modelTurn], updatedAt: modelTurn.at }
   await db.coachChats.put(next)
   return next

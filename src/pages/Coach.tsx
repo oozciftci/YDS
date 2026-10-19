@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import { AiText } from '../components/AiText'
 import { SaveToMemory } from '../components/SaveToMemory'
+import { SourceModeToggle, useSourceMode } from '../components/SourceModeToggle'
 import { db } from '../db'
 import { aiConfigured } from '../services/ai'
 import {
@@ -203,6 +204,7 @@ function ChatView() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [speaking, setSpeaking] = useState<number | null>(null)
+  const source = useSourceMode()
   const started = useRef(false)
   const endRef = useRef<HTMLDivElement>(null)
 
@@ -276,6 +278,7 @@ function ChatView() {
             ← Sohbetler
           </Link>
           <h1 className={styles.title}>{chat.title}</h1>
+          {chat.mode === 'yds' && <SourceModeToggle mode={source.mode} available={source.available} onChange={source.setMode} />}
           <p className="muted" style={{ margin: 0, fontSize: '0.86rem' }}>
             {chat.mode === 'yds'
               ? 'Koç; profilini, hafıza notlarını ve bugünkü planını görerek konuşur ve seni uygulamadaki alıştırmalara yönlendirir.'

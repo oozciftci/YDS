@@ -35,6 +35,7 @@ export function appLinks(): AppLink[] {
       ...YDS_SECTIONS.map((s) => ({ href: `/yds-sorular/konu/${s.key}`, label: `${s.label} soruları`, desc: `tüm sınavlardan ${s.label.toLowerCase()} soruları (${s.from}-${s.to}. sorular)` })),
       { href: '/yds-sorular/yanlislar', label: 'Yanlış Defteri', desc: 'yanlış yapılan soruları doğru çözene kadar tekrar' },
       { href: '/yds-sorular/okuma', label: 'Okuma modu', desc: 'okuma paragrafları, okuma hızı, dinleme' },
+      { href: '/yds-sorular/taktik', label: 'Taktik Kitabı', desc: 'hocaların kitaplarından soru tipine göre taktikler' },
     )
   }
   return links

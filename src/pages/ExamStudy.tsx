@@ -11,6 +11,7 @@ import { listExams, type ExamMeta } from './exam/examData'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
 import { PracticeExam } from './exam/PracticeExam'
+import { TacticsBookPage } from './exam/TacticsBookPage'
 import { ReadingList, ReadingPassage, ReadingQuestions } from './exam/ReadingMode'
 import { TopicPractice } from './exam/TopicPractice'
 import { WrongBook } from './exam/WrongBook'
@@ -101,6 +102,9 @@ function Hub() {
             {totalAnswered.toLocaleString('tr-TR')}
             {totalAnswered > 0 && ` · Başarı %${Math.round((totalCorrect / totalAnswered) * 100)}`}
           </p>
+          <Link to="taktik" className={styles.collectedLink} style={{ marginRight: '1rem' }}>
+            📒 Taktik Kitabı
+          </Link>
           {Boolean(collectedCount) && (
             <Link to="/study?group=yds_collected" className={styles.collectedLink}>
               📥 Sorulardan topladığın {collectedCount} kelimeyi çalış →
@@ -253,6 +257,7 @@ export function ExamStudyPage() {
       <Route path="konu/:section" element={<TopicPractice />} />
       <Route path="yanlislar" element={<WrongBook />} />
       <Route path="deneme/:examId" element={<MockExam />} />
+      <Route path="taktik" element={<TacticsBookPage />} />
       <Route path="okuma" element={<ReadingList />} />
       <Route path="okuma/:examId/:passageId" element={<ReadingPassage />} />
       <Route path="okuma/:examId/:passageId/sorular" element={<ReadingQuestions />} />
