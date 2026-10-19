@@ -89,7 +89,8 @@ const answers = {}
 }
 
 // ---- cümlelere bölme ----
-const ABBR = /\b(?:Mr|Mrs|Ms|Dr|Prof|St|vs|etc|e\.g|i\.e|U\.S|U\.K|No|Fig|approx|Jr|Sr|Inc|Ltd|Co|p\.m|a\.m)\.$/i
+// Tek harfli baş harfler (E. M. Forster, J. K. Rowling) cümle sonu sayılmaz
+const ABBR = /(?:\b(?:Mr|Mrs|Ms|Dr|Prof|St|vs|etc|e\.g|i\.e|U\.S|U\.K|No|Fig|approx|Jr|Sr|Inc|Ltd|Co|p\.m|a\.m)\.|^[A-Z]\.|\b[A-Z]\.)$/i
 const ROMAN_MARK = / (?=\((?:I|II|III|IV|V)\) )/
 
 function splitSentences(text) {
