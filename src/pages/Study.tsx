@@ -122,7 +122,9 @@ export function StudyPage() {
   // TÜM KATEGORİLER (Yerleşik + Kullanıcı Özel)
   // ==========================================================
   const allCategories = useMemo(() => {
-    const builtIn = BUILT_IN_GROUPS.map((g) => {
+    const builtIn = BUILT_IN_GROUPS.filter(
+      (g) => !g.hideWhenEmpty || getWordsForGroup(g.id, allWords, cardMap, null, nowIso).length > 0,
+    ).map((g) => {
       const words = getWordsForGroup(g.id, allWords, cardMap, null, nowIso)
       const stats = calculateGroupStats(words, cardMap, nowIso)
       return {
@@ -362,6 +364,18 @@ export function StudyPage() {
       }
     }
   }, [searchParams, allWords.length, allCategories, levelProgressMap, startLevelSession])
+
+  // ?group=<id> (auto olmadan): o desteyi seçili aç (Ana Sayfa ve Soru Merkezi bağlantıları)
+  const groupParamAppliedRef = useRef(false)
+  useEffect(() => {
+    const groupId = searchParams.get('group')
+    if (!groupId || searchParams.get('auto') === '1' || groupParamAppliedRef.current) return
+    const cat = allCategories.find((c) => c.id === groupId)
+    if (!cat) return
+    groupParamAppliedRef.current = true
+    setActiveCategoryId(cat.id)
+    setActiveCategoryName(cat.name)
+  }, [searchParams, allCategories])
 
   // ==========================================================
   // PUANLAMA (Kullanıcı Talebi: Öğrendim / Öğrenmedim veya 1-5)
@@ -822,6 +836,11 @@ export function StudyPage() {
                   <p className="muted" style={{ margin: 0, fontSize: '0.82rem' }}>
                     {activeCategoryObj.words.length} kelime • 20'şer kelimelik {categorySubLevels.length} seviyeye ayrıldı.
                   </p>
+                  {activeCategoryObj.description && (
+                    <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.8rem' }}>
+                      {activeCategoryObj.description}
+                    </p>
+                  )}
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center', flexWrap: 'wrap' }}>

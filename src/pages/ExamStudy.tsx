@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { db } from '../db'
 import { migrateLegacyExamProgress, summarizeBySection } from '../services/examProgress'
+import { EXAM_COLLECTED_TAG } from '../services/groups'
 import { YDS_SECTIONS } from '../services/ydsSections'
 import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
@@ -43,6 +44,10 @@ function Hub() {
   }, [])
 
   const answers = useLiveQuery(() => db.examAnswers.where('userId').equals(userId).toArray(), [userId])
+  const collectedCount = useLiveQuery(
+    () => db.words.where('tags').equals(EXAM_COLLECTED_TAG).filter((w) => w.userId === userId && !w.isDeleted).count(),
+    [userId],
+  )
   const sectionStats = useMemo(() => summarizeBySection(answers ?? []), [answers])
   const perExam = useMemo(() => {
     const m = new Map<string, { answered: number; correct: number }>()
@@ -94,6 +99,11 @@ function Hub() {
             {totalAnswered.toLocaleString('tr-TR')}
             {totalAnswered > 0 && ` · Başarı %${Math.round((totalCorrect / totalAnswered) * 100)}`}
           </p>
+          {Boolean(collectedCount) && (
+            <Link to="/study?group=yds_collected" className={styles.collectedLink}>
+              📥 Sorulardan topladığın {collectedCount} kelimeyi çalış →
+            </Link>
+          )}
         </div>
       </header>
 

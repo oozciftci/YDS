@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
 import { cleanToken, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
-import { createWord } from '../../services/words'
+import { EXAM_COLLECTED_TAG } from '../../services/groups'
+import { createWord, updateWord } from '../../services/words'
 import { speakWord } from '../../services/tts'
 import { sectionOf } from '../../services/ydsSections'
 import { useUserStore } from '../../stores/user'
@@ -124,9 +125,17 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
       term: lookup.term,
       definition: lookup.meaning,
       partOfSpeech: 'noun',
-      tags: ['YDS-Sınav-Sorusu'],
+      tags: [EXAM_COLLECTED_TAG],
       notes: exam.id + ' / Soru ' + q.no,
     })
+    setAdded(true)
+  }
+
+  /** Havuzda zaten olan kelimeyi "Sınavdan Topladıklarım" destesine alır (etiket ekler). */
+  async function collectExisting() {
+    const w = lookup?.existingWord
+    if (!w) return
+    await updateWord(w.id, activeUserId, { tags: [...(w.tags || []), EXAM_COLLECTED_TAG] })
     setAdded(true)
   }
 
@@ -275,15 +284,25 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
             <p className={styles.popMeaning}>
               {lookingUp ? 'Anlam aranıyor…' : lookup?.meaning || 'Anlam bulunamadı.'}
             </p>
-            {lookup?.existingWord && (
-              <p className="muted" style={{ margin: 0, fontSize: '0.78rem' }}>
-                Havuzunuzda mevcut
-              </p>
-            )}
+            {lookup?.existingWord &&
+              (added || (lookup.existingWord.tags || []).includes(EXAM_COLLECTED_TAG) ? (
+                <p className="muted" style={{ margin: 0, fontSize: '0.78rem' }}>
+                  ✓ Havuzunda ve "Sınavdan Topladıklarım" destesinde
+                </p>
+              ) : (
+                <button type="button" className="btn btn-secondary" onClick={() => void collectExisting()}>
+                  📥 Topladıklarıma ekle
+                </button>
+              ))}
             {lookup?.isNewWord && lookup.meaning && (
               <button type="button" className="btn btn-secondary" disabled={added} onClick={() => void addToDeck()}>
                 {added ? '✓ Eklendi' : '➕ Havuzuma ekle'}
               </button>
+            )}
+            {(lookup?.isNewWord || lookup?.existingWord) && (
+              <p className="muted" style={{ margin: 0, fontSize: '0.74rem' }}>
+                Toplanan kelimeler Çalış ekranında "📥 Sınavdan Topladıklarım" destesinde çıkar.
+              </p>
             )}
           </div>
         </>

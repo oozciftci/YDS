@@ -10,6 +10,8 @@ export interface GroupDefinition {
   color: string
   badge: string
   isBuiltIn: boolean
+  /** Kelimesi yoksa çalışma ekranındaki deste sekmelerinde gösterilmez (kalabalık yapmasın). */
+  hideWhenEmpty?: boolean
   matcher: (word: WordItem, card?: CardState, nowIso?: string) => boolean
 }
 
@@ -117,7 +119,41 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
       return Boolean(card.due && nowIso && card.due <= nowIso)
     },
   },
+  {
+    id: 'weak_words',
+    name: 'Zorlandıklarım (Sık Yanıldığın Kelimeler)',
+    shortName: 'Zorlandıklarım',
+    description: 'Son puanı 1-2 olan ya da en az iki kez unuttuğun kelimeler. 4-5 puan verdiğinde desteden kendiliğinden çıkar.',
+    icon: '🎯',
+    color: '#ef4444',
+    badge: 'Zor',
+    isBuiltIn: true,
+    hideWhenEmpty: true,
+    matcher: (_w, card) => isWeakCard(card),
+  },
+  {
+    id: 'yds_collected',
+    name: 'Sınavdan Topladıklarım',
+    shortName: 'Sınavdan Topladıklarım',
+    description: 'YDS sorularını çözerken bir kelimeye dokunup "Havuzuma ekle" ya da "Topladıklarıma ekle" dediğin kelimeler.',
+    icon: '📥',
+    color: '#14b8a6',
+    badge: 'Sınav',
+    isBuiltIn: true,
+    hideWhenEmpty: true,
+    matcher: (w) => (w.tags || []).includes(EXAM_COLLECTED_TAG),
+  },
 ]
+
+/** Soru çözerken toplanan kelimelerin etiketi. */
+export const EXAM_COLLECTED_TAG = 'YDS-Sınav-Sorusu'
+
+/** Zorlanılan kart: çalışılmış ve son puanı düşük, ya da sık unutulmuş ve henüz iyi bilinmiyor. */
+export function isWeakCard(card?: CardState): boolean {
+  if (!card || !card.reps) return false
+  const score = card.masteryScore ?? 1
+  return score <= 2 || (card.lapses >= 2 && score < 4)
+}
 
 /**
  * Belirli bir grup (yerleşik veya özel) için kelimeleri filtreler.
@@ -400,6 +436,10 @@ export function getCategoryBadgeOrName(categoryGroupId: string): string {
       return 'Bağlaçlar & Edatlar'
     case 'fsrs_due':
       return 'Günün Tekrarları'
+    case 'weak_words':
+      return 'Zorlandıklarım'
+    case 'yds_collected':
+      return 'Sınavdan Topladıklarım'
     default:
       return categoryGroupId.startsWith('grp_') ? 'Özel Deste' : categoryGroupId
   }
