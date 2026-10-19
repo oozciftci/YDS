@@ -20,9 +20,17 @@ export interface ExamSettings {
   dailyGoal: number
 }
 
+export interface ReminderSettings {
+  enabled: boolean
+  /** "HH:MM" yerel saat */
+  time: string
+}
+
 export interface SettingsState {
   backend: BackendSettings
   exam: ExamSettings
+  reminder: ReminderSettings
+  setReminder: (patch: Partial<ReminderSettings>) => void
   setBackend: (patch: Partial<BackendSettings>) => void
   resetBackend: () => void
   setExam: (patch: Partial<ExamSettings>) => void
@@ -43,6 +51,8 @@ export const useSettings = create<SettingsState>()(
     (set) => ({
       backend: emptyBackend,
       exam: defaultExam,
+      reminder: { enabled: false, time: '20:00' },
+      setReminder: (patch) => set((s) => ({ reminder: { ...s.reminder, ...patch } })),
       setBackend: (patch) => set((s) => ({ backend: { ...s.backend, ...patch } })),
       resetBackend: () => set({ backend: emptyBackend }),
       setExam: (patch) => set((s) => ({ exam: { ...s.exam, ...patch } })),
@@ -51,7 +61,7 @@ export const useSettings = create<SettingsState>()(
       name: SETTINGS_STORAGE_KEY,
       version: 2,
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => ({ backend: s.backend, exam: s.exam }),
+      partialize: (s) => ({ backend: s.backend, exam: s.exam, reminder: s.reminder }),
     },
   ),
 )

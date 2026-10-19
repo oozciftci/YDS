@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { initServiceWorker } from './pwa/registerSW'
 import { logger } from './services/logger'
 import { migrateWordLevels } from './services/levelMigration'
+import { startReminderLoop } from './services/reminder'
 import { initAutoSync } from './services/sync'
 import { initTheme } from './stores/theme'
 import { useUserStore } from './stores/user'
@@ -14,6 +15,7 @@ initTheme()
 logger.init()
 initServiceWorker()
 initAutoSync()
+startReminderLoop()
 void useUserStore
   .getState()
   .loadUsers()

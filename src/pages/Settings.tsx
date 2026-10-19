@@ -5,6 +5,7 @@ import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { exportDatabaseToJson, importDatabaseFromJson } from '../services/backup'
 import { testBackendConnection, type ConnectionTestResult } from '../services/backend'
 import { logger } from '../services/logger'
+import { notificationsSupported, requestReminderPermission, showReminder } from '../services/reminder'
 import { formatBytes, useStorageInfo } from '../services/storage'
 import { useSyncStatus } from '../services/sync'
 import { isValidHttpUrl, normalizeUrl, useSettings } from '../stores/settings'
@@ -326,6 +327,8 @@ export function SettingsPage() {
         </form>
       </section>
 
+      <ReminderCard />
+
       {/* 3. SENKRONİZASYON VE SUNUCU AYARLARI */}
       <form className="card" onSubmit={onSave} noValidate>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -560,6 +563,72 @@ export function SettingsPage() {
           <span style={{ width: `${usagePct}%` }} />
         </div>
       </div>
+    </section>
+  )
+}
+
+/** Günlük hatırlatma: seçilen saatte, o gün hiç çalışılmadıysa bildirim. */
+function ReminderCard() {
+  const reminder = useSettings((s) => s.reminder)
+  const setReminder = useSettings((s) => s.setReminder)
+  const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>(() =>
+    notificationsSupported() ? Notification.permission : 'unsupported',
+  )
+
+  async function toggle(enabled: boolean) {
+    if (enabled) {
+      const p = await requestReminderPermission()
+      setPermission(p)
+      if (p !== 'granted') return
+    }
+    setReminder({ enabled })
+  }
+
+  return (
+    <section id="reminder" className="card">
+      <h2 className={styles.cardTitle}>Günlük Hatırlatma</h2>
+      <p className="muted" style={{ margin: '0 0 1rem' }}>
+        Seçtiğin saatte o gün hiç çalışmadıysan bir bildirim gelir. Uygulama ya da sekmesi açıkken çalışır; tamamen
+        kapalıyken bildirim gönderilemez.
+      </p>
+      {permission === 'unsupported' ? (
+        <p className="muted">Bu tarayıcı bildirimleri desteklemiyor.</p>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={reminder.enabled && permission === 'granted'}
+              onChange={(e) => void toggle(e.target.checked)}
+            />
+            Hatırlatmayı aç
+          </label>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            Saat
+            <input
+              type="time"
+              className="input"
+              value={reminder.time}
+              onChange={(e) => setReminder({ time: e.target.value || '20:00' })}
+              style={{ width: 'auto' }}
+            />
+          </label>
+          {reminder.enabled && permission === 'granted' && (
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => showReminder('YDS çalışma zamanı 📚', 'Deneme bildirimi: hatırlatmalar böyle görünecek.')}
+            >
+              Deneme bildirimi gönder
+            </button>
+          )}
+        </div>
+      )}
+      {permission === 'denied' && (
+        <p style={{ color: 'var(--danger)', fontSize: '0.85rem', margin: '0.75rem 0 0' }}>
+          Bildirim izni reddedilmiş. Tarayıcının site ayarlarından bu siteye bildirim izni verip sayfayı yenile.
+        </p>
+      )}
     </section>
   )
 }
