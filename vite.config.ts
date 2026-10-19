@@ -93,6 +93,25 @@ function localExamData(): Plugin {
           fs.createReadStream(full).pipe(res)
         }
       })
+
+      // "Yeni YDS Kelimeleri" paketine eklenecek gerçek sınav cümleleri (scripts/analyzeYdsCorpus.mjs üretir)
+      const examplesFile = path.resolve(import.meta.dirname, 'local-data/analiz/kelime_ornekleri.json')
+      server.middlewares.use('/local-api/kelime-ornekleri', (req, res) => {
+        const remote = req.socket.remoteAddress || ''
+        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store')
+        if (!fs.existsSync(examplesFile)) {
+          res.statusCode = 404
+          res.end('{}')
+          return
+        }
+        fs.createReadStream(examplesFile).pipe(res)
+      })
     },
   }
 }

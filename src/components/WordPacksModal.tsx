@@ -108,6 +108,50 @@ export function WordPacksModal({
     }
   }
 
+  // 2b. Yeni YDS Kelimeleri: 27 çıkmış sınavın tam analizinden (scripts/analyzeYdsCorpus.mjs). Yayın
+  // sürümünde anlam + sıklık/şık istatistiği gelir; dev sunucusunda (yalnızca bu bilgisayar) kelimelere
+  // gerçek sınav cümleleri ve Türkçe çevirileri de eklenir (telifli içerik yayına girmez).
+  async function handleLoadNewYdsPack() {
+    setLoadingAction('new_yds_pack')
+    setResultMsg(null)
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}data/yeni_yds_kelimeleri.json`)
+      if (!res.ok) throw new Error('Paket dosyası yüklenemedi: ' + res.status)
+      const words: CreateWordInput[] = await res.json()
+      let withExamples = 0
+      if (import.meta.env.DEV) {
+        try {
+          const ex = await fetch('/local-api/kelime-ornekleri')
+          if (ex.ok) {
+            const map: Record<string, CreateWordInput['sentences']> = await ex.json()
+            for (const w of words) {
+              const s = map[w.term.toLowerCase()]
+              if (s?.length) {
+                w.sentences = s
+                withExamples++
+              }
+            }
+          }
+        } catch {
+          // Sınav cümleleri isteğe bağlı; yoksa paket yine yüklenir
+        }
+      }
+      const added = await bulkCreateWords(activeUserId, words)
+      setResultMsg({
+        type: 'success',
+        text: `✓ Yeni YDS Kelimeleri paketinden ${added.addedCount} yeni kelime ${activeUserName} havuzuna eklendi! (${added.skippedCount} mükerrer atlandı${withExamples ? `; ${withExamples} kelimeye çıkmış sınav cümlesi eklendi` : ''})`,
+      })
+      onSuccess()
+    } catch (err) {
+      setResultMsg({
+        type: 'error',
+        text: `Hata: ${err instanceof Error ? err.message : String(err)}`,
+      })
+    } finally {
+      setLoadingAction(null)
+    }
+  }
+
   // 3. Yerleşik özel YDS paketlerini yükleme
   async function handleLoadPack(pack: WordPack) {
     setLoadingAction(pack.id)
@@ -450,6 +494,41 @@ export function WordPacksModal({
               disabled={loadingAction !== null}
             >
               {loadingAction === 'yds_exam_pack' ? '⏳ Yükleniyor…' : '📥 YDS Sınav Kelimelerini Yükle'}
+            </button>
+          </div>
+
+          {/* Yeni YDS Kelimeleri: 2013-2026 (27 sınav) tam analizi */}
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--primary)',
+              background: 'var(--primary-subtle)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '0.75rem',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🆕 Yeni YDS Kelimeleri</span>
+                <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                  B1-C1 • 821 Kelime
+                </span>
+              </div>
+              <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                2013-2026 arası 27 çıkmış sınavın tamamı tarandı: en az 4 sınavda geçen ya da kelime sorularında şık olarak çıkan, havuzunuzda olmayan kelimeler. Her kartta kaç sınavda/kaç kez geçtiği ve şıklarda kaç kez çıktığı yazar.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => void handleLoadNewYdsPack()}
+              disabled={loadingAction !== null}
+            >
+              {loadingAction === 'new_yds_pack' ? '⏳ Yükleniyor…' : '📥 Yeni YDS Kelimelerini Yükle'}
             </button>
           </div>
 

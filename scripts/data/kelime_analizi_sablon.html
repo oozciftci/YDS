@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YDS Kelime Analizi</title>
+<style>
+:root {
+  --bg: #f6f6f4; --surface: #fcfcfb; --surface-2: #f0efec; --line: #e2e1dd;
+  --ink: #1d1d1b; --ink-2: #4a4a46; --muted: #76756f;
+  --accent: #2a78d6; --accent-ink: #1f5fae; --mark: #fff2b3;
+  --good: #1e7a3c; --bad: #b3261e; --chip: #e8eefa;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121211; --surface: #1a1a19; --surface-2: #242422; --line: #33332f;
+    --ink: #ecebe7; --ink-2: #c4c3be; --muted: #95948e;
+    --accent: #3987e5; --accent-ink: #8fbcf3; --mark: #5a4b12;
+    --good: #6cc68a; --bad: #f08b84; --chip: #1f2b3d;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { padding: 20px 16px 8px; max-width: 1280px; margin: 0 auto; }
+h1 { margin: 0 0 4px; font-size: 22px; }
+.warn { color: var(--muted); font-size: 12.5px; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; min-width: 120px; }
+.stat b { display: block; font-size: 20px; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 12px; }
+nav { display: flex; gap: 4px; max-width: 1280px; margin: 8px auto 0; padding: 0 16px; flex-wrap: wrap; }
+nav button { border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); padding: 7px 14px; border-radius: 8px 8px 0 0; cursor: pointer; font: inherit; }
+nav button.on { background: var(--surface-2); color: var(--ink); font-weight: 600; border-bottom-color: var(--surface-2); }
+main { max-width: 1280px; margin: 0 auto; padding: 0 16px 40px; }
+.panel { background: var(--surface-2); border: 1px solid var(--line); border-radius: 0 10px 10px 10px; padding: 12px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.filters input, .filters select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+.filters input[type=search] { min-width: 200px; flex: 1; }
+.filters label { color: var(--ink-2); font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.count { color: var(--muted); font-size: 13px; margin-left: auto; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; max-height: 78vh; overflow-y: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { position: sticky; top: 0; background: var(--surface); cursor: pointer; font-size: 12px; color: var(--ink-2); user-select: none; z-index: 1; }
+th.num, td.num { text-align: right; }
+th .arr { color: var(--accent-ink); }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--surface-2); }
+tbody tr.sel { background: var(--chip); }
+.tag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 99px; background: var(--chip); color: var(--accent-ink); }
+.tag.pool { background: var(--surface-2); color: var(--muted); }
+.more { display: block; margin: 8px auto; font: inherit; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.detail { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; position: sticky; top: 8px; max-height: 92vh; overflow-y: auto; }
+.detail h2 { margin: 0; font-size: 22px; }
+.detail .sub { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; margin: 10px 0; }
+.kv div { background: var(--surface-2); border-radius: 6px; padding: 6px 8px; }
+.kv b { display: block; font-size: 17px; font-variant-numeric: tabular-nums; }
+.kv span { font-size: 12px; color: var(--muted); }
+h3 { font-size: 14px; margin: 16px 0 6px; color: var(--ink-2); }
+.chart { position: relative; }
+.chart svg { width: 100%; height: 150px; display: block; overflow: visible; }
+.chart .tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 12px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -110%); display: none; }
+.sents { list-style: none; padding: 0; margin: 0; }
+.sents li { border-top: 1px solid var(--line); padding: 8px 0; }
+.src { font-size: 12px; color: var(--muted); }
+.src .ok { color: var(--good); font-weight: 600; }
+.src .no { color: var(--bad); }
+.en { margin: 2px 0; }
+.tr { color: var(--ink-2); font-size: 13px; margin: 2px 0 0; padding-left: 10px; border-left: 2px solid var(--line); }
+mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+.hint { color: var(--muted); padding: 30px 10px; text-align: center; }
+.secbars { display: grid; grid-template-columns: max-content 1fr max-content; gap: 3px 8px; align-items: center; font-size: 12.5px; }
+.secbars .bar { height: 10px; background: var(--accent); border-radius: 0 4px 4px 0; min-width: 2px; }
+.secbars .v { font-variant-numeric: tabular-nums; color: var(--ink-2); text-align: right; }
+.forms { font-size: 13px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<header>
+  <h1>YDS Kelime Analizi</h1>
+  <div class="warn">Yalnızca bu bilgisayarda kullanım içindir: telifli ÖSYM sınav cümleleri içerir, paylaşmayın veya yayınlamayın. Üretim: <code>node scripts/analyzeYdsCorpus.mjs</code> · <span id="gen"></span></div>
+  <div class="stats" id="stats"></div>
+</header>
+<nav id="tabs">
+  <button data-tab="words" class="on">Tüm kelimeler</button>
+  <button data-tab="vocab">Kelime sorusu şıkları (1–6)</button>
+  <button data-tab="exams">Sınavlar</button>
+</nav>
+<main>
+  <section class="panel" id="tab-words">
+    <div class="filters">
+      <input type="search" id="q" placeholder="Kelime ara (ör. hinder, -tion)">
+      <label>Durum <select id="fStatus">
+        <option value="all">Tümü</option>
+        <option value="pack">Yeni YDS Kelimeleri paketinde</option>
+        <option value="pool">Havuzda zaten var</option>
+        <option value="none">Hiçbir pakette yok</option>
+      </select></label>
+      <label>Seviye <select id="fLevel">
+        <option value="all">Tümü</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option value="-">Oxford dışı</option>
+      </select></label>
+      <label>Bölüm <select id="fSection"><option value="all">Tümü</option></select></label>
+      <label>En az <input type="number" id="fMin" value="2" min="1" style="width:60px"> sınavda</label>
+      <label><input type="checkbox" id="fVocab"> Kelime sorusunda şık olanlar</label>
+      <span class="count" id="wcount"></span>
+    </div>
+    <div class="layout">
+      <div>
+        <div class="tablewrap"><table id="wtable"><thead></thead><tbody></tbody></table></div>
+        <button class="more" id="wmore">Daha fazla göster</button>
+      </div>
+      <div class="detail" id="wdetail"><div class="hint">Ayrıntı için soldan bir kelime seçin: geçtiği cümleler, Türkçe çevirileri, yıllara ve bölümlere göre dağılımı.</div></div>
+    </div>
+  </section>
+  <section class="panel" id="tab-vocab" hidden>
+    <div class="filters">
+      <input type="search" id="vq" placeholder="Şık ara (ör. carry out)">
+      <label><input type="checkbox" id="vCorrect"> Yalnızca en az bir kez doğru cevap olanlar</label>
+      <span class="count" id="vcount"></span>
+    </div>
+    <div class="layout">
+      <div>
+        <div class="tablewrap"><table id="vtable"><thead></thead><tbody></tbody></table></div>
+        <button class="more" id="vmore">Daha fazla göster</button>
+      </div>
+      <div class="detail" id="vdetail"><div class="hint">Kelime sorularında (1–6) şık olarak çıkan her kelime/phrasal verb. Seçince hangi sınavın hangi sorusunda, doğru cevap mı çeldirici mi olduğu ve soru cümlesi görünür.</div></div>
+    </div>
+  </section>
+  <section class="panel" id="tab-exams" hidden>
+    <div class="tablewrap"><table id="etable"><thead></thead><tbody></tbody></table></div>
+  </section>
+</main>
+<script>
+const DATA = /*__DATA__*/null
+const $ = (s) => document.querySelector(s)
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
+const fmt = (n) => n.toLocaleString('tr-TR')
+const SECT = Object.fromEntries(DATA.sections.map((s) => [s.k, s.label]))
+SECT.other = 'Diğer'
+const KIND = { passage: 'paragraf', stem: 'soru kökü', option: 'şık' }
+const examCount = DATA.exams.length
+const yearExams = {}
+for (const e of DATA.exams) yearExams[e.year] = (yearExams[e.year] || 0) + 1
+const years = []
+for (let y = Math.min(...DATA.summary.years); y <= Math.max(...DATA.summary.years); y++) years.push(y)
+const stemIndex = new Map()
+DATA.segments.forEach((s, i) => { if (s.k === 'stem') { const k = s.e + '|' + s.no; if (!stemIndex.has(k)) stemIndex.set(k, []); stemIndex.get(k).push(i) } })
+
+// ---- Özet ----
+$('#gen').textContent = 'oluşturma: ' + new Date(DATA.summary.generatedAt).toLocaleString('tr-TR')
+const inPack = DATA.words.filter((w) => w.inPack).length
+const stats = [
+  [examCount, 'çıkmış sınav'],
+  [DATA.summary.years[0] + '–' + DATA.summary.years.at(-1), 'yıl aralığı (' + DATA.summary.years.length + ' farklı yıl)'],
+  [fmt(DATA.summary.segments), 'İngilizce cümle/şık'],
+  [fmt(DATA.summary.tokens), 'sayılan kelime (işlev sözcükleri hariç)'],
+  [fmt(DATA.summary.lemmas), 'farklı kök'],
+  [fmt(DATA.vocab.length), 'kelime sorusu şık maddesi'],
+  [fmt(inPack), 'Yeni YDS Kelimeleri paketinde'],
+]
+$('#stats').innerHTML = stats.map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('')
+for (const s of DATA.sections) $('#fSection').insertAdjacentHTML('beforeend', `<option value="${s.k}">${esc(s.label)}</option>`)
+
+// ---- Sekmeler ----
+for (const b of document.querySelectorAll('#tabs button')) {
+  b.onclick = () => {
+    for (const x of document.querySelectorAll('#tabs button')) x.classList.toggle('on', x === b)
+    for (const t of ['words', 'vocab', 'exams']) $('#tab-' + t).hidden = t !== b.dataset.tab
+  }
+}
+
+// ---- Ortak: cümle listesi ----
+function highlight(text, forms) {
+  const safe = esc(text)
+  if (!forms.length) return safe
+  const re = new RegExp('\\b(' + forms.map((f) => f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).sort((a, b) => b.length - a.length).join('|') + ')\\b', 'gi')
+  return safe.replace(re, '<mark>$1</mark>')
+}
+function segSource(s) {
+  const ex = DATA.exams[s.e]
+  let kind = KIND[s.k]
+  if (s.k === 'option') kind += ' ' + s.l + (s.c === true ? ' <span class="ok">✓ doğru cevap</span>' : s.c === false ? ' <span class="no">✗ çeldirici</span>' : ' (anahtar yok)')
+  return `${esc(ex.title)} · ${s.no ? s.no + '. soru' : ''} · ${esc(SECT[s.sec] || '')} · ${kind}`
+}
+function sentenceList(idxs, forms, withStem) {
+  return '<ul class="sents">' + idxs.map((i) => {
+    const s = DATA.segments[i]
+    let stem = ''
+    if (withStem) {
+      for (const j of stemIndex.get(s.e + '|' + s.no) || []) {
+        const st = DATA.segments[j]
+        stem += `<p class="en">${esc(st.en)}</p>${st.tr ? `<p class="tr">${esc(st.tr)}</p>` : ''}`
+      }
+    }
+    return `<li><div class="src">${segSource(s)}</div>${stem}<p class="en">${highlight(s.en, forms)}</p>${s.tr && !withStem ? `<p class="tr">${esc(s.tr)}</p>` : ''}</li>`
+  }).join('') + '</ul>'
+}
+
+// ---- Yıllara göre sütun grafiği (tek seri, mavi) ----
+function yearChart(byYear) {
+  const W = 560, H = 150, pad = { l: 28, r: 6, t: 16, b: 22 }
+  const max = Math.max(1, ...years.map((y) => byYear[y] || 0))
+  const step = (W - pad.l - pad.r) / years.length
+  const bw = Math.min(24, step - 4)
+  const yScale = (v) => H - pad.b - (v / max) * (H - pad.t - pad.b)
+  let g = ''
+  const ticks = [0, Math.round(max / 2), max].filter((v, i, a) => a.indexOf(v) === i)
+  for (const t of ticks) g += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="var(--line)" stroke-width="1"/><text x="${pad.l - 6}" y="${yScale(t) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${t}</text>`
+  years.forEach((y, i) => {
+    const v = byYear[y] || 0
+    const x = pad.l + i * step + (step - bw) / 2
+    const top = yScale(v), base = H - pad.b
+    const h = base - top
+    const label = yearExams[y] ? `${y}: ${v} kez · ${yearExams[y]} sınav` : `${y}: bu yıldan sınav yok`
+    if (v > 0) {
+      const r = Math.min(4, h)
+      g += `<path d="M${x},${base} V${top + r} Q${x},${top} ${x + r},${top} H${x + bw - r} Q${x + bw},${top} ${x + bw},${top + r} V${base} Z" fill="var(--accent)"/>`
+      g += `<text x="${x + bw / 2}" y="${top - 4}" text-anchor="middle" font-size="10" fill="var(--ink-2)">${v}</text>`
+    } else if (!yearExams[y]) {
+      g += `<text x="${x + bw / 2}" y="${base - 4}" text-anchor="middle" font-size="10" fill="var(--muted)">–</text>`
+    }
+    g += `<rect x="${pad.l + i * step}" y="${pad.t}" width="${step}" height="${H - pad.t}" fill="transparent" data-tip="${label}"/>`
+    g += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${String(y).slice(2)}</text>`
+  })
+  return `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Yıllara göre geçiş sayısı">${g}</svg><div class="tip"></div></div>`
+}
+function bindTips(root) {
+  for (const c of root.querySelectorAll('.chart')) {
+    const tip = c.querySelector('.tip')
+    c.querySelector('svg').addEventListener('mousemove', (ev) => {
+      const t = ev.target.getAttribute && ev.target.getAttribute('data-tip')
+      if (!t) { tip.style.display = 'none'; return }
+      const r = c.getBoundingClientRect()
+      tip.textContent = t
+      tip.style.left = ev.clientX - r.left + 'px'
+      tip.style.top = ev.clientY - r.top + 'px'
+      tip.style.display = 'block'
+    })
+    c.querySelector('svg').addEventListener('mouseleave', () => (tip.style.display = 'none'))
+  }
+}
+
+// ---- Tüm kelimeler ----
+const wcols = [
+  ['w', 'Kelime'], ['level', 'Seviye'], ['total', 'Toplam', 1], ['exams', 'Sınav', 1], ['ny', 'Yıl', 1],
+  ['optionSegs', 'Şıkta', 1], ['correctSegs', 'Doğru şıkta', 1], ['vocabOffered', 'Kelime sor. şık', 1], ['vocabCorrect', 'Kelime sor. cevap', 1], ['st', 'Durum'],
+]
+for (const w of DATA.words) { w.ny = Object.keys(w.years).length; w.st = w.inPack ? 2 : w.inPool ? 1 : 0 }
+let wsort = { k: 'total', dir: -1 }, wlimit = 200, wsel = null, wrows = []
+function wfilter() {
+  const q = $('#q').value.trim().toLowerCase()
+  const st = $('#fStatus').value, lv = $('#fLevel').value, sec = $('#fSection').value
+  const min = Number($('#fMin').value) || 1, voc = $('#fVocab').checked
+  wrows = DATA.words.filter((w) => {
+    if (w.exams < min) return false
+    if (q && !(q.startsWith('-') ? w.w.endsWith(q.slice(1)) : w.w.includes(q) || Object.keys(w.forms).some((f) => f.includes(q)))) return false
+    if (st === 'pack' && !w.inPack) return false
+    if (st === 'pool' && !w.inPool) return false
+    if (st === 'none' && (w.inPool || w.inPack)) return false
+    if (lv === '-' ? w.level : lv !== 'all' && w.level !== lv) return false
+    if (sec !== 'all' && !w.sections[sec]) return false
+    if (voc && !w.vocabOffered) return false
+    return true
+  })
+  const k = wsort.k
+  wrows.sort((a, b) => (typeof a[k] === 'string' || k === 'level' ? String(a[k] ?? 'Z').localeCompare(String(b[k] ?? 'Z')) : (a[k] ?? 0) - (b[k] ?? 0)) * wsort.dir || b.total - a.total)
+  wlimit = 200
+  wrender()
+}
+function wrender() {
+  $('#wtable thead').innerHTML = '<tr>' + wcols.map(([k, l, n]) => `<th data-k="${k}" class="${n ? 'num' : ''}">${l}${wsort.k === k ? ` <span class="arr">${wsort.dir < 0 ? '▼' : '▲'}</span>` : ''}</th>`).join('') + '</tr>'
+  $('#wtable tbody').innerHTML = wrows.slice(0, wlimit).map((w) => `<tr data-w="${esc(w.w)}" class="${w.w === wsel ? 'sel' : ''}">
+    <td><b>${esc(w.w)}</b></td><td>${w.level || '—'}</td><td class="num">${w.total}</td><td class="num">${w.exams}/${examCount}</td><td class="num">${w.ny}</td>
+    <td class="num">${w.optionSegs || ''}</td><td class="num">${w.correctSegs || ''}</td><td class="num">${w.vocabOffered || ''}</td><td class="num">${w.vocabCorrect || ''}</td>
+    <td>${w.inPack ? '<span class="tag">Yeni paket</span>' : w.inPool ? '<span class="tag pool">Havuzda</span>' : ''}</td></tr>`).join('')
+  $('#wcount').textContent = fmt(wrows.length) + ' kelime'
+  $('#wmore').hidden = wrows.length <= wlimit
+}
+$('#wtable thead').onclick = (e) => {
+  const k = e.target.closest('th')?.dataset.k
+  if (!k) return
+  wsort = { k, dir: wsort.k === k ? -wsort.dir : (k === 'w' || k === 'level' ? 1 : -1) }
+  wfilter()
+}
+$('#wtable tbody').onclick = (e) => {
+  const tr = e.target.closest('tr')
+  if (!tr) return
+  wsel = tr.dataset.w
+  for (const x of document.querySelectorAll('#wtable tbody tr')) x.classList.toggle('sel', x === tr)
+  wdetail(DATA.words.find((w) => w.w === wsel))
+}
+$('#wmore').onclick = () => { wlimit += 300; wrender() }
+for (const id of ['q', 'fStatus', 'fLevel', 'fSection', 'fMin', 'fVocab']) $('#' + id).addEventListener('input', wfilter)
+
+function wdetail(w) {
+  const forms = Object.keys(w.forms)
+  const secMax = Math.max(...Object.values(w.sections))
+  const secRows = DATA.sections.filter((s) => w.sections[s.k]).map((s) => `<span>${esc(s.label)}</span><div class="bar" style="width:${(w.sections[s.k] / secMax) * 100}%"></div><span class="v">${w.sections[s.k]}</span>`).join('')
+  const vocabItems = DATA.vocab.filter((v) => v.item.split(' ')[0] === w.w)
+  const sentsByExam = [...w.refs].sort((a, b) => DATA.segments[b].e - DATA.segments[a].e || a - b)
+  $('#wdetail').innerHTML = `
+    <h2>${esc(w.w)}</h2>
+    <div class="sub">${w.level ? 'Oxford ' + w.level : 'Oxford 5000 dışında'} · ${w.inPack ? 'Yeni YDS Kelimeleri paketinde' : w.inPool ? 'Kelime havuzunda zaten var' : 'Hiçbir pakette yok'}</div>
+    <div class="forms">Geçen biçimler: ${forms.map((f) => `${esc(f)} (${w.forms[f]})`).join(', ')}</div>
+    <div class="kv">
+      <div><b>${w.total}</b><span>toplam geçiş</span></div>
+      <div><b>${w.exams}/${examCount}</b><span>sınavda geçti</span></div>
+      <div><b>${w.ny}</b><span>farklı yılda</span></div>
+      <div><b>${w.kinds.passage}</b><span>paragraf cümlesinde</span></div>
+      <div><b>${w.kinds.stem}</b><span>soru kökünde</span></div>
+      <div><b>${w.optionSegs}</b><span>şıkta (${w.correctSegs} doğru şık)</span></div>
+      <div><b>${w.vocabOffered}</b><span>kelime sorusunda şık</span></div>
+      <div><b>${w.vocabCorrect}</b><span>kelime sorusunda doğru cevap</span></div>
+    </div>
+    <h3>Yıllara göre geçiş sayısı</h3>${yearChart(w.years)}
+    <h3>Soru bölümlerine göre</h3><div class="secbars">${secRows}</div>
+    ${vocabItems.length ? `<h3>Kelime sorusu şıkkı olarak</h3><div class="forms">${vocabItems.map((v) => `${esc(v.item)}: ${v.offered} kez şık, ${v.correct} kez doğru`).join(' · ')}</div>` : ''}
+    <h3>Geçtiği cümleler (${w.refs.length}) — yeniden eskiye</h3>${sentenceList(sentsByExam, forms, false)}`
+  bindTips($('#wdetail'))
+  $('#wdetail').scrollTop = 0
+}
+
+// ---- Kelime sorusu şıkları ----
+let vlimit = 200, vrows = [], vsel = null
+function vfilter() {
+  const q = $('#vq').value.trim().toLowerCase()
+  const c = $('#vCorrect').checked
+  vrows = DATA.vocab.filter((v) => (!q || v.item.includes(q) || v.forms.some((f) => f.includes(q))) && (!c || v.correct > 0))
+  vlimit = 200
+  vrender()
+}
+function vrender() {
+  $('#vtable thead').innerHTML = '<tr><th>Şık</th><th class="num">Şık olma</th><th class="num">Doğru cevap</th><th class="num">Çeldirici</th><th>Biçimler</th></tr>'
+  $('#vtable tbody').innerHTML = vrows.slice(0, vlimit).map((v, i) => `<tr data-i="${DATA.vocab.indexOf(v)}" class="${v.item === vsel ? 'sel' : ''}"><td><b>${esc(v.item)}</b></td><td class="num">${v.offered}</td><td class="num">${v.correct || ''}</td><td class="num">${v.offered - v.correct}</td><td>${esc(v.forms.join(', '))}</td></tr>`).join('')
+  $('#vcount').textContent = fmt(vrows.length) + ' madde'
+  $('#vmore').hidden = vrows.length <= vlimit
+}
+$('#vtable tbody').onclick = (e) => {
+  const tr = e.target.closest('tr')
+  if (!tr) return
+  const v = DATA.vocab[Number(tr.dataset.i)]
+  vsel = v.item
+  for (const x of document.querySelectorAll('#vtable tbody tr')) x.classList.toggle('sel', x === tr)
+  const refs = [...v.refs].sort((a, b) => DATA.segments[b].e - DATA.segments[a].e)
+  $('#vdetail').innerHTML = `<h2>${esc(v.item)}</h2><div class="sub">${v.offered} kez şık · ${v.correct} kez doğru cevap · ${v.offered - v.correct} kez çeldirici</div>
+    <h3>Çıktığı sorular</h3>${sentenceList(refs, [], true)}`
+}
+$('#vmore').onclick = () => { vlimit += 300; vrender() }
+for (const id of ['vq', 'vCorrect']) $('#' + id).addEventListener('input', vfilter)
+
+// ---- Sınavlar ----
+const perExam = DATA.exams.map(() => ({ seg: 0 }))
+for (const s of DATA.segments) perExam[s.e].seg++
+$('#etable thead').innerHTML = '<tr><th>Sınav</th><th class="num">Yıl</th><th class="num">İngilizce segment</th><th>Cevap anahtarı</th></tr>'
+$('#etable tbody').innerHTML = DATA.exams.map((e, i) => `<tr><td>${esc(e.title)}</td><td class="num">${e.year}</td><td class="num">${perExam[i].seg}</td><td>${e.keyed ? 'var' : '<b>yok</b>'}</td></tr>`).join('')
+
+wfilter()
+vfilter()
+</script>
+</body>
+</html>

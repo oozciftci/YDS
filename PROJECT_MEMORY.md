@@ -106,6 +106,13 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 - 2013-2023 derlemesi (OCR'lı, 22 sınav) ayrıştırıldı: sayfalar `scratchpad/all/tum_sNNN.md` altında birleştirilip `parseYdsExam.mjs <id> <klasör> --prefix tum --range a-b --pdf 2013-2023-tum-ydsler.pdf --title ...` ile işlendi. Cevap anahtarı, her kitapçığın "SINAVDA UYULACAK KURALLAR" sayfasından sonraki sayfadadır (3 biçim: "1. A" satırları, iki sütun, `<th>1.C</th>`). Yapısal denetim: `node scripts/qcExams.mjs`. `yds-2022-a-anahtarsiz` (518-542) için cevap anahtarı derlemede YOK; `yds-2021-nisan` 65. cevap OCR'da okunamadı, `scripts/data/answer_overrides.json` ile D olarak düzeltildi.
 - Sıklık etiketleri 2013-2023 derlemesi + 5 OCR'lı sınavla yeniden hesaplandı (eşikler 70/25/10); `levelMigration` bayrağı `yds-levels-v3`.
 
+### Kelime Analizi ve "Yeni YDS Kelimeleri" Paketi (19 Ekim 2026)
+- `node scripts/analyzeYdsCorpus.mjs`: 27 ayrıştırılmış sınavın (2013-2026, 13 farklı yıl) tüm İngilizce cümle/şıklarını kök bazında sayar (Oxford 5000 + havuz sözlüğüyle kural tabanlı kök bulma, İngiliz yazımı Amerikan'a eşlenir, özel isimler ve işlev sözcükleri atlanır). Her kök için: toplam geçiş, kaç sınavda/yılda, bölüm dağılımı (ÖSYM 80 soru düzeni), paragraf/kök/şık ayrımı, şıkta ve doğru şıkta kaç kez, kelime sorularında (1-6) şık/doğru cevap sayısı.
+- YEREL çıktılar (`local-data/analiz/`, git'te yok, telifli): `yds_kelime_analizi.html` (çift tıkla açılan rapor: arama/filtre, kelime ayrıntısı, yıllık grafik, geçtiği tüm cümleler + Türkçe çevirileri, kelime sorusu şıkları sekmesi), `kelime_analizi.json`, `kelime_ornekleri.json`.
+- YAYINA GİREN paket `public/data/yeni_yds_kelimeleri.json` (821 kelime): havuzda olmayan, en az 4 sınavda geçen ya da kelime sorusunda şık olan kökler. Türkçe anlamlar `scripts/data/yeni_yds_kelimeleri.txt` (elle yazıldı; "-" olanlar alınmaz). Sınav cümlesi içermez; notlarda yalnızca sayısal istatistik, etiketler `Yeni-YDS-Kelimeleri`, `YDS-Şıkta-Çıktı`, `YDS-Doğru-Cevap`, sıklık (`YDS-Çok-Sık` >=15 sınav, `YDS-Sık` >=8, `YDS-Ara` >=4).
+- Paketler penceresinde "🆕 Yeni YDS Kelimeleri" kartı. Dev sunucusunda yüklenirse kelimelere en fazla 3 gerçek sınav cümlesi + çeviri eklenir (dev-only `/local-api/kelime-ornekleri`, yalnızca 127.0.0.1).
+- Not: okuma sorusu kalıpları ("according to the passage", "underlined word") bazı kelimelerin sayısını şişirir; ayrıntıda paragraf/kök/şık ayrımı görülür.
+
 ### Sıradaki Önerilen Adımlar:
 1. **GitHub Güncellemesi:** Yapılan tüm geliştirmelerin GitHub'a push edilmesi.
 2. **Ev Bilgisayarı Kurulumu:** `KURULUM_VE_GELISTIRME_REHBERI.md` adımları takip edilerek ev bilgisayarında projenin çalıştırılması ve JSON yedeğinin aktarılması.
