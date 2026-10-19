@@ -939,3 +939,92 @@
   color: var(--danger);
   font-size: 0.85rem;
 }
+
+/* Hızlı cevap modu anahtarı */
+.quickToggle {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.45rem;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.quickToggle input {
+  align-self: center;
+}
+
+.quickToggle small {
+  font-weight: 400;
+  font-size: 0.74rem;
+  color: var(--text-subtle);
+}
+
+/* Yapay zekâ sohbeti */
+.chat {
+  display: grid;
+  gap: 0.6rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.msg {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.4rem;
+  align-items: start;
+}
+
+.msgWho {
+  padding-top: 0.45rem;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.msgUser .msgWho {
+  color: var(--primary);
+}
+
+.msgAi .msgWho {
+  color: var(--success);
+}
+
+.msgBody {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  min-width: 0;
+}
+
+.msgUser .msgBody {
+  background: var(--primary-subtle);
+  border-color: transparent;
+}
+
+.msgAi .msgBody {
+  background: var(--surface);
+}
+
+.aiInput {
+  width: 100%;
+  resize: vertical;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.aiInput:focus {
+  outline: none;
+  border-color: var(--primary);
+}

@@ -5,6 +5,7 @@ import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { shortTitle, type ExamBundle, type Question } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
 
 export interface QueueItem {
   bundle: ExamBundle
@@ -24,16 +25,21 @@ interface Props {
 /** Farklı sınavlardan gelen soruları tek tek çözdürür (konuya göre çalışma, Yanlış Defteri). */
 export function QueueRunner({ title, description, items, wrongBook, empty }: Props) {
   const userId = useUserStore((s) => s.activeUserId)
-  const [pos, setPosRaw] = useState(0)
-  const [choice, setChoice] = useState<string | null>(null)
-  const [result, setResult] = useState<boolean | null>(null)
-  const [score, setScore] = useState({ correct: 0, wrong: 0 })
-
-  function setPos(n: number) {
-    setPosRaw(n)
-    setChoice(null)
-    setResult(null)
-  }
+  const [pos, setPos] = useState(0)
+  // Bu turda verilen cevaplar (sıra -> seçim/sonuç): geri dönülen soru cevabıyla görünür
+  const [done, setDone] = useState<Record<number, { choice: string; ok: boolean }>>({})
+  const [picked, setPicked] = useState<{ pos: number; letter: string } | null>(null)
+  const [quick, setQuick] = useQuickAnswer()
+  const swipe = useQuestionNav(
+    () => setPos((p) => Math.max(0, p - 1)),
+    () => setPos((p) => Math.min(items.length, p + 1)),
+  )
+  const score = Object.values(done).reduce(
+    (s, d) => (d.ok ? { ...s, correct: s.correct + 1 } : { ...s, wrong: s.wrong + 1 }),
+    { correct: 0, wrong: 0 },
+  )
+  const result = done[pos]?.ok ?? null
+  const choice = done[pos]?.choice ?? (picked?.pos === pos ? picked.letter : null)
 
   const head = (
     <header className={styles.head}>
@@ -81,12 +87,17 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
 
   const { bundle, q } = items[pos]
 
-  async function check() {
-    if (!choice || !q.answer) return
-    const ok = choice === q.answer
-    await recordAnswer(userId, bundle.exam.id, q.no, choice, ok, { fromWrongBook: wrongBook })
-    setResult(ok)
-    setScore((s) => (ok ? { ...s, correct: s.correct + 1 } : { ...s, wrong: s.wrong + 1 }))
+  async function check(letter = choice) {
+    if (!letter || !q.answer || done[pos]) return
+    const ok = letter === q.answer
+    await recordAnswer(userId, bundle.exam.id, q.no, letter, ok, { fromWrongBook: wrongBook })
+    setDone((d) => ({ ...d, [pos]: { choice: letter, ok } }))
+  }
+
+  // Hızlı cevap modunda şıkka dokunmak doğrudan kontrol eder
+  function choose(letter: string) {
+    setPicked({ pos, letter })
+    if (quick) void check(letter)
   }
 
   async function dropFromBook() {
@@ -95,7 +106,7 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
   }
 
   return (
-    <section className={styles.page}>
+    <section className={styles.page} {...swipe}>
       {head}
       <div className={styles.progressLine}>
         <span>
@@ -114,14 +125,16 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
         q={q}
         choice={choice}
         revealed={result !== null}
-        onChoose={setChoice}
+        onChoose={choose}
         subtitle={shortTitle(bundle.exam.title)}
       >
         <div className={styles.actions}>
           {result === null ? (
-            <button type="button" className="btn btn-primary" disabled={!choice} onClick={() => void check()}>
-              Cevabı kontrol et
-            </button>
+            !quick && (
+              <button type="button" className="btn btn-primary" disabled={!choice} onClick={() => void check()}>
+                Cevabı kontrol et
+              </button>
+            )
           ) : (
             <span className={result ? styles.okText : styles.badText}>
               {result
@@ -137,10 +150,14 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
               Defterden çıkar
             </button>
           )}
+          <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => setPos(pos - 1)}>
+            ← Önceki
+          </button>
           <button type="button" className="btn btn-secondary" onClick={() => setPos(pos + 1)}>
             {result === null ? 'Atla →' : 'Sonraki →'}
           </button>
         </div>
+        <QuickAnswerToggle value={quick} onChange={setQuick} />
       </QuestionCard>
     </section>
   )

@@ -7,6 +7,7 @@ import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { loadExam, type ExamBundle } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
 
 /** Bir sınavı sırayla çözme: her sorudan sonra cevap kontrol edilir. */
 export function PracticeExam() {
@@ -16,6 +17,12 @@ export function PracticeExam() {
   const [error, setError] = useState('')
   const [idx, setIdx] = useState<number | null>(null)
   const [choice, setChoice] = useState<string | null>(null)
+  const [quick, setQuick] = useQuickAnswer()
+  const count = bundle?.exam.questions.length ?? 0
+  const swipe = useQuestionNav(
+    () => setIdx((i) => (i !== null && i > 0 ? i - 1 : i)),
+    () => setIdx((i) => (i !== null && i < count - 1 ? i + 1 : i)),
+  )
 
   const answers = useLiveQuery(
     () => db.examAnswers.where('[userId+examId]').equals([userId, examId]).toArray(),
@@ -60,9 +67,15 @@ export function PracticeExam() {
   const correct = answers.filter((a) => a.correct).length
   const noKey = !q.answer
 
-  async function check() {
-    if (!q || !choice || !q.answer) return
-    await recordAnswer(userId, examId, q.no, choice, choice === q.answer)
+  async function check(letter = choice) {
+    if (!q || !letter || !q.answer) return
+    await recordAnswer(userId, examId, q.no, letter, letter === q.answer)
+  }
+
+  // Hızlı cevap modunda şıkka dokunmak doğrudan kontrol eder
+  function choose(letter: string) {
+    setChoice(letter)
+    if (quick && !noKey) void check(letter)
   }
 
   async function reset() {
@@ -72,7 +85,7 @@ export function PracticeExam() {
   }
 
   return (
-    <section className={styles.page}>
+    <section className={styles.page} {...swipe}>
       <header className={styles.head}>
         <div>
           <Link to="/yds-sorular" className={styles.backLink}>
@@ -109,14 +122,16 @@ export function PracticeExam() {
         })}
       </div>
 
-      <QuestionCard bundle={bundle} q={q} choice={choice} revealed={revealed} onChoose={setChoice}>
+      <QuestionCard bundle={bundle} q={q} choice={choice} revealed={revealed} onChoose={choose}>
         <div className={styles.actions}>
           {noKey ? (
             <span className="muted">Cevap anahtarı olmadığı için kontrol edilemiyor.</span>
           ) : !revealed ? (
-            <button type="button" className="btn btn-primary" disabled={!choice} onClick={() => void check()}>
-              Cevabı kontrol et
-            </button>
+            !quick && (
+              <button type="button" className="btn btn-primary" disabled={!choice} onClick={() => void check()}>
+                Cevabı kontrol et
+              </button>
+            )
           ) : (
             <span className={saved?.correct ? styles.okText : styles.badText}>
               {saved?.correct ? '✓ Doğru' : `✗ Yanlış — doğru cevap: ${q.answer}. Soru Yanlış Defteri’ne eklendi.`}
@@ -135,6 +150,7 @@ export function PracticeExam() {
             Sonraki →
           </button>
         </div>
+        {!noKey && <QuickAnswerToggle value={quick} onChange={setQuick} />}
       </QuestionCard>
     </section>
   )

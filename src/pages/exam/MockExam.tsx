@@ -8,6 +8,7 @@ import type { MockExamResult } from '../../types/database'
 import styles from '../ExamStudy.module.css'
 import { loadExam, type ExamBundle } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { useQuestionNav } from './answerControls'
 
 const DURATION_SEC = 180 * 60
 
@@ -54,6 +55,12 @@ export function MockExam() {
   const [idx, setIdx] = useState(0)
   const [now, setNow] = useState(() => Date.now())
   const [result, setResult] = useState<MockExamResult | null>(null)
+  const inQuestions = phase === 'running' || phase === 'review'
+  const qCount = bundle?.exam.questions.length ?? 0
+  const swipe = useQuestionNav(
+    inQuestions ? () => setIdx((i) => Math.max(0, i - 1)) : undefined,
+    inQuestions ? () => setIdx((i) => Math.min(qCount - 1, i + 1)) : undefined,
+  )
 
   useEffect(() => {
     loadExam(examId)
@@ -271,7 +278,7 @@ export function MockExam() {
   const choice = choices[q.no] ?? null
 
   return (
-    <section className={styles.page}>
+    <section className={styles.page} {...swipe}>
       <div className={styles.mockBar}>
         {review ? (
           <>

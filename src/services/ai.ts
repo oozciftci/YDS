@@ -101,13 +101,19 @@ interface GeminiResponse {
   error?: { code?: number; message?: string; status?: string }
 }
 
-async function call(key: string, model: string, system: string, prompt: string, temperature: number) {
+/** Sohbetteki bir mesaj. Gemini hafızasız olduğundan her istekte konuşmanın tamamı gönderilir. */
+export interface ChatTurn {
+  role: 'user' | 'model'
+  text: string
+}
+
+async function call(key: string, model: string, system: string, turns: ChatTurn[], temperature: number) {
   const res = await fetch(`${ENDPOINT}/${encodeURIComponent(model)}:generateContent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
       generationConfig: { temperature },
     }),
   })
@@ -150,6 +156,11 @@ export function aiConfigured(): boolean {
  * Hata mesajları Türkçe ve kullanıcıya gösterilebilir.
  */
 export async function generate(system: string, prompt: string, temperature = 0.4): Promise<AiResult> {
+  return generateChat(system, [{ role: 'user', text: prompt }], temperature)
+}
+
+/** Çok mesajlı sohbet: `turns` kullanıcı ile başlar ve kullanıcı ile biter. */
+export async function generateChat(system: string, turns: ChatTurn[], temperature = 0.4): Promise<AiResult> {
   const { paidKey, freeKey, model, monthlyLimitUsd } = useSettings.getState().ai
   const usage = getAiUsage()
   const blockedRecently = usage.paidBlockedAt && Date.now() - new Date(usage.paidBlockedAt).getTime() < PAID_RETRY_MS
@@ -160,7 +171,7 @@ export async function generate(system: string, prompt: string, temperature = 0.4
 
   if (tryPaid) {
     try {
-      const r = await call(paidKey.trim(), model, system, prompt, temperature)
+      const r = await call(paidKey.trim(), model, system, turns, temperature)
       const [pin, pout] = pricePerMillion(model)
       const usd = (r.inTokens * pin + r.outTokens * pout) / 1_000_000
       const u = getAiUsage()
@@ -180,7 +191,7 @@ export async function generate(system: string, prompt: string, temperature = 0.4
     )
   }
   try {
-    const r = await call(freeKey.trim(), model, system, prompt, temperature)
+    const r = await call(freeKey.trim(), model, system, turns, temperature)
     const u = getAiUsage()
     saveUsage({ ...u, freeCalls: u.freeCalls + 1 })
     return { text: r.text, tier: 'free', model, usd: 0 }
@@ -192,7 +203,7 @@ export async function generate(system: string, prompt: string, temperature = 0.4
 /** Tek bir anahtarı küçük bir istekle dener (Ayarlar > Bağlantıyı test et). */
 export async function testKey(key: string, model: string): Promise<{ ok: boolean; message: string }> {
   try {
-    const r = await call(key.trim(), model, 'Answer with one word.', 'Say OK.', 0)
+    const r = await call(key.trim(), model, 'Answer with one word.', [{ role: 'user', text: 'Say OK.' }], 0)
     return { ok: true, message: `Çalışıyor (yanıt: "${r.text.slice(0, 20)}")` }
   } catch (e) {
     if (e instanceof AiError && e.status === 402) return { ok: false, message: 'Bakiye yok (402). AI Studio’da kredi yükle.' }

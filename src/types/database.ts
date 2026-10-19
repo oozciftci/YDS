@@ -213,9 +213,22 @@ export interface ExamAnswer {
 export interface AiNote {
   id: string // örn. explain:<sınav>#<soru no>
   kind: string
-  text: string
+  text: string // ilk yapay zekâ yanıtı
   model: string
   createdAt: string
+  /** Sohbet geçmişi (ilk açıklama + devam soruları). Eski kayıtlarda yok. */
+  messages?: AiNoteTurn[]
+}
+
+export interface AiNoteTurn {
+  role: 'user' | 'model'
+  /** Ekranda gösterilen metin */
+  text: string
+  /** Modele gönderilen metin (ilk mesajda soru bağlamı burada); yoksa text gönderilir */
+  prompt?: string
+  /** Yanıtı üreten model ve katman, örn. "gemini-3.8-flash · ücretli" */
+  meta?: string
+  at: string
 }
 
 /**

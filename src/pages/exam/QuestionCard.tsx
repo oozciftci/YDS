@@ -177,9 +177,9 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
           </p>
         )}
 
-        {revealed && assist && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}
-
         {children}
+
+        {revealed && assist && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}
       </article>
 
       {assist && (
