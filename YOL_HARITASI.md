@@ -9,14 +9,15 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 1 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
+- ⏸️ Faz 2 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
 
 ## Sıradakiler (yakın)
 
-1. ⏳ Faz 2.1 – FSRS'in doğru kullanımı (öğrenme adımları, 4 puandaki elle uzatmanın kaldırılması)
-2. ⏳ Faz 2.5 – Soru çözerken bilinmeyen kelimeleri tek dokunuşla "Sınavdan Topladıklarım" destesine alma
-3. ⏳ Faz 2.2 – Zayıf kelimeler destesi
-4. ⏳ Faz 3.1 – Sınav tarihine göre günlük plan kartı (kelime + soru; en zayıf soru tipi önerisi)
+1. ⏳ Faz 3.1 – Sınav tarihine göre günlük plan kartı (tekrar + yeni kelime + soru; en zayıf soru tipi önerisi)
+2. ⏳ Faz 3.2 – Çalışma takvimi (ısı haritası)
+3. ⏳ Faz 3.5 – Deneme sonuçları grafiği
+4. ⏳ Faz 3.3 – Rozetler / kilometre taşları
+5. ⏳ Faz 3.4 – Hatırlatma bildirimi
 
 ## Yapılanlar
 
@@ -24,6 +25,10 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | :--- | :--- | :--- |
 | 19.10.2026 | Yol haritası oluşturuldu | Mevcut özellikler envanteri çıkarıldı |
 | 19.10.2026 | **Faz 1 – Soru Merkezi** (1.1–1.6) | Soru tipleri, cevaplar veritabanında, giriş ekranı, konuya göre çalışma, Yanlış Defteri, 180 dk deneme + sonuç raporu, tip bazlı başarı çubukları |
+| 19.10.2026 | **Faz 2.1 – FSRS hataları giderildi** | 3 puanlı kartlar 10 dk döngüsünde, "Öğrendim (4)" kartları her gün takılı kalıyordu; yeni kartlarda ilk aralıklar kısaydı. Düğmelerde "sonraki tekrar" önizlemesi. |
+| 19.10.2026 | **Faz 2.2 + 2.5 – Akıllı desteler** | "🎯 Zorlandıklarım" ve "📥 Sınavdan Topladıklarım" (boşken gizli); Ana Sayfa deste kısayolları artık desteyi açıyor. |
+| 19.10.2026 | **Faz 2.3 – Dinleme modu** | Sesi duy, anlamını seç; karışık modda da ara sıra gelir. |
+| 19.10.2026 | **Faz 2.4 – Soru bağlamı** (yerel) | Kart arkasında "Çıkmış YDS sorularında N kez geçti" + çevirili örnekler. |
 
 ---
 
@@ -42,7 +47,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 Zaten var olanlar — yeniden yapılmayacak, gerekirse iyileştirilecek:
 
 - FSRS aralıklı tekrar (`ts-fsrs`), 1-5 puanlı kart değerlendirme
-- Çalışma modları: flaş kart, çoktan seçmeli, eş anlamlı, cümle içi boşluk, karışık
+- Çalışma modları: flaş kart, çoktan seçmeli, eş anlamlı, cümle içi boşluk, dinleme, karışık
 - Seviye/grup desteleri (A1-A2, B1-B2, C1-C2, Phrasal, Bağlaçlar) + özel gruplar
 - Eş anlamlı eşleştirme oyunu, mini kelime denemesi
 - Ana sayfada sınav geri sayımı, günlük hedef, seri (streak)
@@ -70,11 +75,11 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
-| 2.1 | FSRS'in doğru kullanımı | ⏳ | Öğrenme adımları (`learning_steps`) kaydedilmiyor; 4 puandaki elle uzatma kaldırılıp FSRS'e bırakılacak. |
-| 2.2 | Zayıf kelimeler destesi | ⏳ | Sık yanılınan kelimelerden otomatik deste, tek dokunuşla çalışma. |
-| 2.3 | Dinleme kartı | ⏳ | Kelime seslendirilir, kullanıcı anlamını seçer/yazar. |
-| 2.4 | Soru bağlamında kelime | ⏳ | *Yerel:* kelimenin çıkmış sorularda geçtiği cümleler kartın arkasında. |
-| 2.5 | Sorudan kelime toplama | ⏳ | Soru çözerken bilinmeyen kelimeler tek dokunuşla "Sınavdan Topladıklarım" destesine. |
+| 2.1 | FSRS'in doğru kullanımı | ✅ | `learningSteps` artık kaydediliyor (eski takılı kartlar bir sonraki "3/4" puanında kurtulur); yeni kartlara sahte başlangıç değeri verilmiyor; 4 puan öğrenme adımlarını atlar, ×1,3 bonus yalnızca tekrar aşamasında. Puan düğmelerinde "X sonra" önizlemesi. Not: Supabase senkronunda `learningSteps` sütunu yok (6.3'te eklenecek). |
+| 2.2 | Zayıf kelimeler destesi | ✅ | "🎯 Zorlandıklarım": son puanı 1-2 ya da 2+ kez unutulmuş ve henüz 4-5 almamış kelimeler; öğrenilince kendiliğinden çıkar. |
+| 2.3 | Dinleme kartı | ✅ | "🎧 Dinleme" modu: kelime seslendirilir, yazılışı cevaptan sonra görünür, anlamı seçilir. Ses desteği yoksa gizli. |
+| 2.4 | Soru bağlamında kelime | ✅ | *Yerel:* kart arkasında açılır kutu; en fazla 3 örnek, Türkçesi ve kaynağı (sınav · soru · tip). Veritabanına kopyalanmaz. |
+| 2.5 | Sorudan kelime toplama | ✅ | Kelime balonunda "Havuzuma ekle" / havuzdakiler için "Topladıklarıma ekle"; Soru Merkezi'nde "topladığın N kelimeyi çalış" bağlantısı. |
 
 ## Faz 3 — Plan ve motivasyon
 
@@ -114,5 +119,6 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 ## Değişiklik günlüğü
 
+- **19.10.2026** — Faz 2 tamamlandı. FSRS'te üç hata bulundu ve giderildi (öğrenme adımı her tekrarda sıfırlanıyordu → 3 puanlı kartlar 10 dk'da, 4 puanlı kartlar 1 günde takılıyordu; yeni kartlara sahte stability/difficulty veriliyordu). Yeni yerleşik desteler `weak_words`, `yds_collected` (`hideWhenEmpty`). `/study?group=<id>` artık `auto` olmadan da desteyi açıyor. Dinleme modu (`listen`). Yerel `ExamContext` bileşeni yayın derlemesinde yok (dist kontrol edildi).
 - **19.10.2026** — Faz 1 tamamlandı: `/yds-sorular` artık Soru Merkezi (alt sayfalar: `sinav/:id`, `konu/:tip`, `yanlislar`, `deneme/:id`). Cevaplar Dexie `examAnswers`, deneme sonuçları `mockResults` tablosunda (DB v5); eski tarayıcı kayıtları otomatik taşındı; JSON yedek v3 bu tabloları içerir. Yayın derlemesinde modül yok (dist kontrol edildi).
 - **19.10.2026** — Yol haritası oluşturuldu. Faz 1.1'e başlandı.
