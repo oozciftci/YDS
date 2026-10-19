@@ -38,6 +38,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **“60 Günde YDS Kelimeleri” paketi** (yerel) | Modadil kitabından 1663 girdi (1586 benzersiz kelime): 54 günlük kelime kartları (anlam, örnek cümle + çeviri, eş/zıt anlamlı), phrasal verb ve edat tabloları, son sınavların sık kelimeleri. Telifli olduğu için PDF ve paket `local-data/paketler/` altında (gitignore + şifreli kasa); Hazır Paketler’de yalnızca `npm run dev`’de görünür. |
 | 19.10.2026 | **Hatalarımı analiz et** (yerel) | Soru Merkezi > 🔍: son 40 yanlıştan tekrar eden kök hatalar (açıklama, örnek sorular, çalışma önerisi, uygulama bağlantıları), Koç / Saf Gemini seçimi, onaylı hafıza notu önerileri (zaten hafızada olanlar ikinci kez eklenmez), son analiz cihazda saklanır. |
 | 19.10.2026 | **Faz 6.5c – Geliştirici danışmanı** | YZ Koç’ta üçüncü mod: teknik yapıyı, kuralları, uygulama haritasını, yol haritası özetini ve kullanım sayılarını bilerek öneri verir; öneriler kart olarak gelir, “＋ Önerilere ekle” ile `/koc/oneriler` listesine düşer (durum takibi, “Claude için kopyala”). |
 | 19.10.2026 | **Faz 6.7a – Taktik Kitabı altyapısı** (yerel) | `local-data/kaynaklar/` biçimi (harita.json, taktik-kitabi.json, sayfa-NNNN.md), dev-only `/local-api/kaynak`, soru açıklamasında ve YDS koçunda **📒 Koç (kaynaklı) / ✨ Saf Gemini** seçimi (kitap boşken Koç pasif, her yanıtta mod etiketi), `/yds-sorular/taktik` görüntüleme/düzenleme ekranı (kaynak sayfasını açma), `scripts/kaynakTools.mjs`. |
@@ -142,6 +143,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Modadil paketi: `scripts/parseModadil.mjs` (`pdftotext -raw` + `-layout` çıktılarından), `vite.config.ts` `localPacks()` (`/local-api/paket`), `WordPacksModal` yerel kart. PDF kök klasörde takipsiz ve gitignore dışındaydı; `local-data/paketler/` altına taşındı. Not: `local-data` değişti, başka bilgisayara aktarmak için `npm run vault:lock` ve YDS-data’yı push etmek gerekir.
 
 - **19.10.2026** — “Hatalarımı analiz et”: `exam/analysis.ts` (yanlışlar kısa satırlara dönüşür, okuma paragrafları gönderilmez; JSON şeması: özet, en fazla 5 kök hata, bağlantılar `isKnownRoute` ile süzülür, hafıza önerileri), `exam/MistakeAnalysis.tsx` (`/yds-sorular/analiz`), son analiz `aiNotes` içinde `analysis:last`. Analiz ≈ 0,006-0,01 $. Taklit edilmiş Gemini ile doğrulandı.
 
