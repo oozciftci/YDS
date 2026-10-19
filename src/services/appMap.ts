@@ -36,6 +36,7 @@ export function appLinks(): AppLink[] {
       { href: '/yds-sorular/yanlislar', label: 'Yanlış Defteri', desc: 'yanlış yapılan soruları doğru çözene kadar tekrar' },
       { href: '/yds-sorular/okuma', label: 'Okuma modu', desc: 'okuma paragrafları, okuma hızı, dinleme' },
       { href: '/yds-sorular/taktik', label: 'Taktik Kitabı', desc: 'hocaların kitaplarından soru tipine göre taktikler' },
+      { href: '/yds-sorular/analiz', label: 'Hatalarımı analiz et', desc: 'son yanlışlardaki tekrar eden kök hatalar ve çalışma önerisi' },
     )
   }
   return links

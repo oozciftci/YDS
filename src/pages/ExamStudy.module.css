@@ -1101,3 +1101,21 @@
   font-size: 0.9rem;
   line-height: 1.55;
 }
+
+/* Hata analizi */
+.pattern {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.pattern p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.patternAdvice {
+  padding: 0.45rem 0.65rem;
+  border-left: 3px solid var(--success);
+  background: var(--success-subtle);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
