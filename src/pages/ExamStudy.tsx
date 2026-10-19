@@ -8,6 +8,7 @@ import { ALL_SECTIONS, rangeIn } from '../services/ydsSections'
 import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
 import { inPool, listExams, POOLS, readPool, savePool, type ExamMeta, type Pool } from './exam/examData'
+import { CustomMock } from './exam/CustomMock'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
 import { TargetPlanner } from './exam/TargetPlanner'
@@ -177,6 +178,13 @@ function Hub() {
             </span>
           </span>
         </button>
+        <button type="button" className={`card ${styles.quickCard}`} onClick={() => navigate('ozel')}>
+          <span className={styles.quickIcon}>🎛️</span>
+          <span className={styles.quickBody}>
+            <strong>Özel Deneme</strong>
+            <span>İstediğin soru tipleri ve sayıda, süreli mini deneme kur.</span>
+          </span>
+        </button>
         <button type="button" className={`card ${styles.quickCard}`} onClick={() => navigate('okuma')}>
           <span className={styles.quickIcon}>📚</span>
           <span className={styles.quickBody}>
@@ -291,6 +299,7 @@ export function ExamStudyPage() {
       <Route path="konu/:section" element={<TopicPractice />} />
       <Route path="yanlislar" element={<WrongBook />} />
       <Route path="deneme/:examId" element={<MockExam />} />
+      <Route path="ozel" element={<CustomMock />} />
       <Route path="taktik" element={<TacticsBookPage />} />
       <Route path="analiz" element={<MistakeAnalysis />} />
       <Route path="okuma" element={<ReadingList />} />
