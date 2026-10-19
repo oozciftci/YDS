@@ -105,7 +105,9 @@ function parseExam([id, title, field, from, to]) {
   range.forEach((text, i) => {
     if (i === keyIdx) return
     for (const raw of text.split('\n')) {
-      const l = raw.trim()
+      let l = raw.trim()
+      // Sayfa üstbilgisi bazen önceki satırın sonuna yapışır ("... Texas YÖKDİL İLKBAHAR 2018 SAĞLIK SORULARI")
+      l = l.replace(/\s*YÖKDİL\s.{0,40}?SORULARI\s*$/, '').trim()
       if (!l || /^YÖKDİL .*SORULARI$/.test(l) || /^\d{1,2}$/.test(l)) continue
       stream.push([l, from + i])
     }
