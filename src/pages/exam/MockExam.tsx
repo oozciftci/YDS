@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { db } from '../../db'
 import { recordAnswer } from '../../services/examProgress'
+import { summarizeTimes, TARGET_SEC_PER_QUESTION } from '../../services/mockTime'
 import { sectionOf, ALL_SECTIONS, ydsScore } from '../../services/ydsSections'
 import { useUserStore } from '../../stores/user'
 import type { MockExamResult } from '../../types/database'
@@ -15,6 +16,8 @@ const DURATION_SEC = 180 * 60
 interface Saved {
   startedAt: string
   choices: Record<number, string>
+  /** Soru no -> geçirilen saniye */
+  times?: Record<number, number>
 }
 
 function storageKey(userId: string, examId: string) {
@@ -43,6 +46,40 @@ function fmt(sec: number) {
   return `${h}:${String(m).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
 }
 
+function fmtMin(sec: number) {
+  return `${Math.floor(sec / 60)} dk ${String(Math.round(sec % 60)).padStart(2, '0')} sn`
+}
+
+/** Tip başına harcanan süre ve soru başı ortalama; yavaş tipler işaretlenir. */
+function TimeTable({ result }: { result: MockExamResult }) {
+  const rows = summarizeTimes(result.times ?? {}, result.examId)
+  const slow = rows.filter((r) => r.slow)
+  return (
+    <article className="card">
+      <h2 className={styles.blockTitle}>Süre analizi</h2>
+      <p className={styles.blockDesc}>
+        Sınav temposu soru başına ortalama {Math.round(TARGET_SEC_PER_QUESTION)} sn. Okuma gibi uzun tipler daha çok zaman alır.
+      </p>
+      <ul className={styles.sectionList}>
+        {rows.map((r) => (
+          <li key={r.key} className={styles.sectionRowStatic}>
+            <span className={styles.sectionName}>{r.label}</span>
+            <span className="muted">{fmtMin(r.totalSec)}</span>
+            <span className={`${styles.sectionPct} ${r.slow ? styles.badText : ''}`}>
+              {Math.round(r.avgSec)} sn/soru{r.slow ? ' · yavaş' : ''}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {slow.length > 0 && (
+        <p style={{ margin: '0.6rem 0 0' }}>
+          Yavaş kaldığın tip: <strong>{slow.map((r) => r.label).join(', ')}</strong>. Bu tipleri süre tutarak çalış.
+        </p>
+      )}
+    </article>
+  )
+}
+
 /** Süreli deneme: 80 soru / 180 dk; yardım kapalı, cevaplar sonda açıklanır. */
 export function MockExam() {
   const { examId = '' } = useParams()
@@ -55,6 +92,9 @@ export function MockExam() {
   const [idx, setIdx] = useState(0)
   const [now, setNow] = useState(() => Date.now())
   const [result, setResult] = useState<MockExamResult | null>(null)
+  // Soru başına süre: sayaç her saniye o an açık sorunun süresini artırır
+  const timesRef = useRef<Record<number, number>>(readSaved(key)?.times ?? {})
+  const curNoRef = useRef(0)
   const inQuestions = phase === 'running' || phase === 'review'
   const qCount = bundle?.exam.questions.length ?? 0
   const swipe = useQuestionNav(
@@ -101,6 +141,7 @@ export function MockExam() {
       score: ydsScore(correct),
       sections,
       choices: saved.choices,
+      times: { ...timesRef.current },
     }
     await db.mockResults.add(res)
     // Cevaplar genel ilerlemeye ve Yanlış Defteri'ne de işlenir
@@ -117,14 +158,29 @@ export function MockExam() {
   // Sayaç
   useEffect(() => {
     if (phase !== 'running') return
-    const t = setInterval(() => setNow(Date.now()), 1000)
+    let tick = 0
+    const t = setInterval(() => {
+      setNow(Date.now())
+      const no = curNoRef.current
+      if (no) timesRef.current[no] = (timesRef.current[no] ?? 0) + 1
+      // Sayfa yenilenirse süreler kaybolmasın: 5 sn'de bir kaydet
+      if (++tick % 5 === 0) {
+        const cur = readSaved(key)
+        if (cur) writeSaved(key, { ...cur, times: { ...timesRef.current } })
+      }
+    }, 1000)
     return () => clearInterval(t)
-  }, [phase])
+  }, [phase, key])
 
   // Süre bitince otomatik bitir
   useEffect(() => {
     if (phase === 'running' && remaining <= 0) void finish()
   }, [phase, remaining, finish])
+
+  const qNo = bundle?.exam.questions[idx]?.no ?? 0
+  useEffect(() => {
+    curNoRef.current = phase === 'running' ? qNo : 0
+  }, [phase, qNo])
 
   const choices = useMemo(() => (phase === 'review' ? (result?.choices ?? {}) : (saved?.choices ?? {})), [phase, result, saved])
 
@@ -136,6 +192,7 @@ export function MockExam() {
 
   function start(fresh: boolean) {
     const s: Saved = fresh || !saved ? { startedAt: new Date().toISOString(), choices: {} } : saved
+    timesRef.current = fresh || !saved ? {} : (saved.times ?? {})
     writeSaved(key, s)
     setSaved(s)
     setNow(Date.now())
@@ -147,7 +204,7 @@ export function MockExam() {
     const next = { ...saved.choices }
     if (next[no] === letter) delete next[no]
     else next[no] = letter
-    const s = { ...saved, choices: next }
+    const s = { ...saved, choices: next, times: { ...timesRef.current } }
     setSaved(s)
     writeSaved(key, s)
   }
@@ -260,6 +317,7 @@ export function MockExam() {
             })}
           </ul>
         </article>
+        {result.times && Object.keys(result.times).length > 0 && <TimeTable result={result} />}
         <div className={styles.actions}>
           <button type="button" className="btn btn-primary" onClick={() => setPhase('review')}>
             Çözümleri incele

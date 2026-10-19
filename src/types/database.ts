@@ -332,6 +332,8 @@ export interface MockExamResult {
   sections: Record<string, [number, number]>
   /** Soru no -> verilen cevap (boşlar yok) */
   choices: Record<number, string>
+  /** Soru no -> o soruda geçirilen saniye (eski denemelerde yok) */
+  times?: Record<number, number>
 }
 
 /**
