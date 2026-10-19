@@ -41,7 +41,7 @@ const STOP = new Set(
   too very can could may might must shall should will would do does did done doing be am is are was were been being have has had
   having i me my myself we us our ours you your yours he him his she her hers it its itself they them their theirs one also just
   s t don isn aren wasn weren hasn haven hadn doesn didn won wouldn shouldn couldn mustn mightn shan ll ve re d m o x e g i ii iii
-  iv v vi etc per via up out off over under again further once non pre anti mid co re un multi inter sub semi`.split(/\s+/),
+  iv v vi etc per via up out off over under again further once non pre anti mid co re un multi inter sub semi th st nd rd`.split(/\s+/),
 )
 const IRREGULAR = {
   went: 'go', gone: 'go', saw: 'see', seen: 'see', took: 'take', taken: 'take', made: 'make', gave: 'give', given: 'give',
