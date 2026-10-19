@@ -9,13 +9,15 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 6.4 tamamlandı — Faz 6'nın kalan maddeleri kullanıcı kararı bekliyor.
+- 🔄 Yapay zekâ desteği (Faz 6.1 / 6.2) için kararlar netleştiriliyor. Sağlayıcı: **Gemini** (kullanıcı tercihi; Claude kodlama için ayrılıyor).
 
 ## Sıradakiler (yakın)
 
-1. ❓ Faz 6.1 / 6.2 – Yapay zekâ açıklaması ve yazma geri bildirimi: API anahtarı ve maliyet kararı kullanıcıda
-2. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu: Supabase projesinin kurulup kurulmayacağı kararı kullanıcıda
-3. 💡 Yayın sürümü için özgün okuma metinleri (okuma modu şu an yalnızca yerel sınav paragraflarıyla çalışıyor)
+1. ❓ Faz 6.1 / 6.2 – Gemini ile "Neden yanlış?" açıklaması ve yazma geri bildirimi (kararlar: ücretli/ücretsiz katman, model, sınav metninin gönderilmesi)
+2. 💡 Faz 6.5 – Yapay zekâ sohbet öğretmeni: önce yazılı görevli sohbet, sonra sesli (Gemini Live) ve konuşan karakter; ileride başka diller
+3. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase; internet yalnızca eşitleme anında gerekir)
+4. 💡 Faz 5.3 – Okuma kütüphanesi: açık lisanslı kaynaklar (ör. VOA Learning English, Wikipedia, Project Gutenberg, kamu kurumu yayınları) + özgün metinler; kelime/cümle/paragraf çevirisi ve özet
+5. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı) — sonra ele alınacak
 
 ## Yapılanlar
 
@@ -110,6 +112,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
 | 5.1 | Okuma modu | ✅ | *Yerel:* `/yds-sorular/okuma`. Paragraf listesi (okundu / kelime/dk), okuyucu (sayaç, kelimeye dokun → anlam ve topla, çeviri anahtarı), "bitirdim" → kelime/dk + 5 paragrafı okuma süresi tahmini + baktığın kelimeler; 400 k/dk üstü göz gezdirme sayılır, kaydedilmez. Sonra "Bu paragrafın sorularını çöz". |
+| 5.3 | Okuma kütüphanesi (yayında da) | 💡 | Açık lisanslı / kamu malı metinler ve özgün metinler; seviye, konu, uzunluk; kelime-cümle-paragraf çevirisi ve Türkçe özet. Lisans koşulları (atıf, değişiklik yasağı) metin başına tutulur. |
 | 5.2 | Cümle seslendirme | ✅ | Cümle cümle okuma, okunan cümle vurgulu, durdur, hız 0,75–1,15× (tarayıcıda hatırlanır; kelime telaffuzu da bu hızı kullanır). |
 
 ## Faz 6 — Yapay zekâ ve platform
@@ -119,6 +122,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 6.1 | "Neden yanlış?" açıklaması | 💤 | API anahtarı / maliyet kararı gerektirir. |
 | 6.2 | Yazma pratiği geri bildirimi | 💤 | Aynı karar. |
 | 6.3 | Cihazlar arası ilerleme senkronu | 💤 | Supabase altyapısı mevcut; yalnızca ilerleme verisi, soru metni asla. |
+| 6.5 | Yapay zekâ sohbet öğretmeni | 💡 | Görev tabanlı İngilizce sohbetler (restoranda sipariş, iş görüşmesi, YDS paragrafı tartışma); önce yazılı, sonra sesli (Gemini Live API) ve dudak hareketli karakter. Ses maliyeti yazılıdan belirgin yüksek. |
 | 6.4 | Anki / CSV içe-dışa aktarma | ✅ | Dışa: CSV (BOM + `;`, öğrenme puanı ve sonraki tekrar dahil) ve Anki "Notes in Plain Text" (Basic not türü, etiketler). İçe: Anki .txt kendiliğinden tanınır (HTML/ses/cloze temizlenir, TR→EN destede yön otomatik çevrilir, elle değiştirilebilir); CSV ayrıştırıcı artık tırnaklı ayırıcı/satır sonu ve "" kaçışını destekliyor. FSRS geçmişi Anki'ye aktarılmaz. |
 
 ---
