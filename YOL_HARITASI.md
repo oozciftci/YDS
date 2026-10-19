@@ -9,7 +9,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 6.6 (hafıza) tamamlandı. Sıradaki: Faz 6.5b YDS koçu. Karar: hafıza notları ve koç sohbetleri JSON yedeğine girer, senkrona girmez.
+- ⏸️ Faz 6.5b (YDS koçu) tamamlandı. Sıradaki: Faz 6.7 Taktik Kitabı (PDF’ler gelene kadar veri biçimi + Koç / Saf Gemini mod seçimi altyapısı).
 
 **Alınan kararlar (19.10.2026):** Sağlayıcı Gemini; önce ücretli Tier 1 (ön ödemeli, otomatik yükleme kapalı, 10 $ harcama sınırı), bakiye/sınır bitince ücretsiz katman anahtarına otomatik geçiş; çıkmış soru metinlerinin Gemini’ye gönderilmesine izin var (yalnızca başka kullanıcılara açılmamalı); varsayılan model gemini-3.8-flash, Ayarlar’dan değiştirilebilir; anahtarlar yalnızca cihazda.
 
@@ -17,13 +17,12 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 > Kararlar ve ayrıntılı görev tanımı: **`PROMPT_YZ_KOC_VE_TAKTIK.md`** (bu sırayla yürütülüyor).
 
-1. ⏳ Faz 6.5b – **YDS koçu** modu (profil, hafıza, uygulama içi bağlantılar)
-2. ⏳ Faz 6.7 – **Taktik Kitabı**: hoca kitapları (PDF, kullanıcı verecek) → OCR → kaynak haritası (konu → sayfa) → soru tipine göre taktik kuralları (Claude çıkaracak); soru açıklamasında ve koçta **Koç (kaynaklı) / Saf Gemini** modu. Yalnızca yerel.
-3. ⏳ Faz 6.5c – **Geliştirici danışmanı** modu
-4. 💡 “Hatalarımı analiz et”, Gemini File Search ile “kaynağa sor”
-5. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase)
-6. 💡 Faz 5.3 – Okuma kütüphanesi (açık lisanslı kaynaklar + özgün metinler)
-7. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı)
+1. ⏳ Faz 6.7 – **Taktik Kitabı**: hoca kitapları (PDF, kullanıcı verecek) → OCR → kaynak haritası (konu → sayfa) → soru tipine göre taktik kuralları (Claude çıkaracak); soru açıklamasında ve koçta **Koç (kaynaklı) / Saf Gemini** modu. Yalnızca yerel.
+2. ⏳ Faz 6.5c – **Geliştirici danışmanı** modu
+3. 💡 “Hatalarımı analiz et”, Gemini File Search ile “kaynağa sor”
+4. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase)
+5. 💡 Faz 5.3 – Okuma kütüphanesi (açık lisanslı kaynaklar + özgün metinler)
+6. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı)
 
 ## Yapılanlar
 
@@ -40,6 +39,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Faz 6.5b – YDS koçu** | YZ Koç’ta yeni mod: profil + hafıza notları + bugünkü plan ile durum değerlendirmesi, plan, motivasyon; uygulamadaki alıştırmalara tıklanabilir bağlantılar (yalnızca uygulama haritasındaki adresler); hızlı sorular (“Durumumu değerlendir”, “Bu hafta için plan yap” …). |
 | 19.10.2026 | **Faz 6.6 – Hafıza (“beni tanısın”)** | Otomatik profil (uygulama verisinden), “🧠 Hafızaya kaydet” (YZ önerir, sen seçip düzeltip kaydedersin), `/koc/hafiza` (profil + notlar: düzenle/sil/elle ekle), İngilizce pratikte notlar bağlam olarak, soru açıklamasında “beni tanıyarak açıkla”. Notlar ve koç sohbetleri JSON yedeğinde. |
 | 19.10.2026 | **Faz 6.5a – YZ Koç: İngilizce pratik** | `/koc`: sohbet listesi, 6 senaryo (serbest, iş görüşmesi, restoran, seyahat, doktor, akademik tartışma) + CEFR seviyesi; YZ sohbeti başlatır, rolde kalır; düzeltmeler (yanlış → doğru + Türkçe açıklama) ve “daha doğal” söyleyiş öğrenci mesajının altında; 🔊 dinleme; uzun sohbet özetleme. Ana Sayfa’da “YZ Koç” kartı. |
 | 19.10.2026 | **Soru ekranı iyileştirmeleri** (yerel) | Hızlı cevap modu (şıkka dokununca kontrol), ← → tuşları ve sola/sağa kaydırma ile gezinme, soru başına YZ sohbeti ("Ben:" / "YZ:" geçmişi, takıldığın noktayı önceden yazma kutusu, devam soruları). |
@@ -132,12 +132,14 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 6.1 | "Neden yanlış?" açıklaması ve soru sohbeti | ✅ | *Yerel:* cevaptan sonra "🤖 Yapay zekâ ile açıkla": doğru cevabın gerekçesi, her şık, sınav ipucu, önemli kelimeler. Soru başına bir kez ücretlenir (Dexie `aiNotes`). Ayarlar > Yapay Zekâ: iki anahtar, model, aylık üst sınır, test. Kurulum: `GEMINI_KURULUM.md`. |
 | 6.2 | Yazma pratiği geri bildirimi | ⏳ | Gemini ile; konu önerisi, düzeltilmiş metin, hata açıklamaları, kelime önerileri. |
 | 6.3 | Cihazlar arası ilerleme senkronu | 💤 | Supabase altyapısı mevcut; yalnızca ilerleme verisi, soru metni asla. |
-| 6.5 | Yapay zekâ sohbet öğretmeni | 🔄 | 6.5a İngilizce pratik ✅ · 6.5b YDS koçu ⏳ · 6.5c Geliştirici danışmanı ⏳. Sesli (Gemini Live) ve konuşan karakter sonra. |
+| 6.5 | Yapay zekâ sohbet öğretmeni | 🔄 | 6.5a İngilizce pratik ✅ · 6.5b YDS koçu ✅ · 6.5c Geliştirici danışmanı ⏳. Sesli (Gemini Live) ve konuşan karakter sonra. |
 | 6.4 | Anki / CSV içe-dışa aktarma | ✅ | Dışa: CSV (BOM + `;`, öğrenme puanı ve sonraki tekrar dahil) ve Anki "Notes in Plain Text" (Basic not türü, etiketler). İçe: Anki .txt kendiliğinden tanınır (HTML/ses/cloze temizlenir, TR→EN destede yön otomatik çevrilir, elle değiştirilebilir); CSV ayrıştırıcı artık tırnaklı ayırıcı/satır sonu ve "" kaçışını destekliyor. FSRS geçmişi Anki'ye aktarılmaz. |
 
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Faz 6.5b: `services/appMap.ts` (koçun bağlantı verebileceği sayfalar; çıkmış soru sayfaları yalnızca dev derlemesinde), `AiText` güvenli uygulama içi bağlantı (`isAllowedLink`), `coach.sendYds` / `sendMessage`; sistem talimatında sabit kısım (rol, kurallar, harita) önce, değişen kısım (profil, hafıza, plan) sonra. Taklit edilmiş Gemini ile doğrulandı; dış ve bilinmeyen bağlantıların düz metin kaldığı test edildi.
 
 - **19.10.2026** — Faz 6.6: `services/memory.ts` (`buildProfile`, not CRUD, `memoryContext`, `suggestNotes` JSON şemalı), `components/SaveToMemory.tsx`, `pages/Memory.tsx` (`/koc/hafiza`), Dexie v8 `memoryNotes`, yedek v4 (`memoryNotes`, `coachChats`). Taklit edilmiş Gemini ile doğrulandı.
 
