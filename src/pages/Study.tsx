@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
+import { useState, useMemo, useEffect, useCallback, useRef, lazy, Suspense } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
@@ -23,7 +23,7 @@ import {
   saveStudySessionLog,
   type SubLevel,
 } from '../services/groups'
-import { speakWord } from '../services/tts'
+import { canSpeak, speakWord } from '../services/tts'
 import { useUserStore } from '../stores/user'
 import {
   MASTERY_CONFIG,
@@ -32,6 +32,9 @@ import {
 } from '../types/database'
 import { InteractiveSentence } from '../components/InteractiveSentence'
 import styles from './Study.module.css'
+
+// Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
+const ExamContext = import.meta.env.DEV ? lazy(() => import('./exam/ExamContext')) : null
 
 export function StudyPage() {
   const navigate = useNavigate()
@@ -98,6 +101,11 @@ export function StudyPage() {
   const currentQ = questions[currentIndex]
   // Her puanın kartı ne zaman yeniden getireceği (düğmelerde gösterilir)
   const intervals = useMemo(() => (currentQ ? previewIntervals(currentQ.cardState) : null), [currentQ])
+
+  // Dinleme sorusu açılınca kelimeyi kendiliğinden seslendir
+  useEffect(() => {
+    if (currentQ?.type === 'listen') speakWord(currentQ.word.term)
+  }, [currentQ])
   const [isFlipped, setIsFlipped] = useState(false)
   const [selectedOption, setSelectedOption] = useState<number | null>(null)
   const [questionStartTime, setQuestionStartTime] = useState(() => Date.now())
@@ -661,6 +669,7 @@ export function StudyPage() {
                   <option value="multiple_choice">🔠 Çoktan Seçmeli Test</option>
                   <option value="synonym">🔗 YDS Eş Anlamlı</option>
                   <option value="cloze">📝 Cümle İçi Boşluk</option>
+                  {canSpeak() && <option value="listen">🎧 Dinleme (sesi duy, anlamını seç)</option>}
                 </select>
               </div>
 
@@ -1310,6 +1319,12 @@ export function StudyPage() {
                             />
                           </div>
                         )}
+
+                        {ExamContext && (
+                          <Suspense fallback={null}>
+                            <ExamContext key={currentQ.word.term} term={currentQ.word.term} />
+                          </Suspense>
+                        )}
                       </div>
 
                       {/* YENİLENMİŞ PUANLAMA BÖLÜMÜ (ÖĞRENDİM / ÖĞRENMEDİM + SADE 1-5 BARI) */}
@@ -1366,9 +1381,30 @@ export function StudyPage() {
               {/* 2. ÇOKTAN SEÇMELİ MOD */}
               {currentQ.type !== 'flashcard' && currentQ.options && (
                 <div style={{ margin: 'auto 0' }}>
-                  <h2 className={styles.promptMainWord} style={{ fontSize: '1.8rem', marginBottom: '1.25rem' }}>
-                    {currentQ.prompt}
-                  </h2>
+                  {currentQ.type === 'listen' ? (
+                    <div className={styles.listenPrompt}>
+                      <button
+                        type="button"
+                        className={styles.listenBtn}
+                        onClick={() => speakWord(currentQ.word.term)}
+                        aria-label="Kelimeyi yeniden dinle"
+                        title="Yeniden dinle"
+                      >
+                        🔊
+                      </button>
+                      <p className="muted" style={{ margin: 0 }}>
+                        {selectedOption !== null ? (
+                          <strong className={styles.listenWord}>{currentQ.word.term}</strong>
+                        ) : (
+                          currentQ.subPrompt
+                        )}
+                      </p>
+                    </div>
+                  ) : (
+                    <h2 className={styles.promptMainWord} style={{ fontSize: '1.8rem', marginBottom: '1.25rem' }}>
+                      {currentQ.prompt}
+                    </h2>
+                  )}
 
                   <div className={styles.optionsGrid}>
                     {currentQ.options.map((opt, idx) => {

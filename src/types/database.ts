@@ -175,7 +175,7 @@ export interface StudySessionLog {
   groupId: string
   subGroupId?: string
   groupName: string
-  mode: 'flashcard' | 'mixed' | 'multiple_choice' | 'synonym' | 'cloze'
+  mode: 'flashcard' | 'mixed' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
   startedAt: string
   completedAt: string
   totalQuestions: number
@@ -238,7 +238,7 @@ export interface LevelProgress {
   subGroupId: string // 'level_c1_c2_lvl_1'
   levelNumber: number
   title: string
-  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed'
+  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed' | 'listen'
   status: 'completed' | 'in_progress' | 'not_started'
   completedQuestions: number
   totalQuestions: number

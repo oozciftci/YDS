@@ -1070,3 +1070,31 @@
   font-weight: 500;
   opacity: 0.75;
 }
+
+/* Dinleme sorusu */
+.listenPrompt {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.listenBtn {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  background: var(--primary-subtle);
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.listenBtn:hover {
+  transform: scale(1.06);
+}
+
+.listenWord {
+  font-size: 1.5rem;
+  color: var(--text);
+}

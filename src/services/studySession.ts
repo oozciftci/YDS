@@ -1,12 +1,13 @@
 import type { CardState, PartOfSpeech, WordItem } from '../types/database'
+import { canSpeak } from './tts'
 
-export type QuestionMode = 'mixed' | 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze'
+export type QuestionMode = 'mixed' | 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
 
 export interface StudyQuestion {
   id: string
   word: WordItem
   cardState: CardState
-  type: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze'
+  type: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
   prompt: string
   subPrompt?: string
   options?: string[] // Çoktan seçmeli seçenekler
@@ -127,6 +128,8 @@ export function buildQuestion(
     resolvedType = 'flashcard'
   } else if (mode === 'multiple_choice') {
     resolvedType = 'multiple_choice'
+  } else if (mode === 'listen') {
+    resolvedType = canSpeak() ? 'listen' : 'multiple_choice'
   } else if (mode === 'synonym') {
     resolvedType = word.synonyms && word.synonyms.length > 0 ? 'synonym' : 'multiple_choice'
   } else if (mode === 'cloze') {
@@ -139,8 +142,10 @@ export function buildQuestion(
     const rand = Math.random()
     if (canSynonym && rand < 0.35) {
       resolvedType = 'synonym'
-    } else if (canCloze && rand < 0.65) {
+    } else if (canCloze && rand < 0.6) {
       resolvedType = 'cloze'
+    } else if (rand < 0.7 && canSpeak()) {
+      resolvedType = 'listen'
     } else if (rand < 0.85) {
       resolvedType = 'multiple_choice'
     } else {
@@ -197,7 +202,29 @@ export function buildQuestion(
     }
   }
 
-  // 3. ÇOKTAN SEÇMELİ TEST (İNGİLİZCE -> TÜRKÇE)
+  // 3. DİNLEME: kelime seslendirilir, yazılışı cevaptan sonra görünür
+  if (resolvedType === 'listen') {
+    const distractors = pickDistractors(
+      allWords.filter((w) => w.id !== word.id).map((w) => w.definition),
+      word.definition,
+      3,
+    )
+    const { options, correctIdx } = shuffleOptions(word.definition, distractors)
+
+    return {
+      id: crypto.randomUUID(),
+      word,
+      cardState,
+      type: 'listen',
+      prompt: word.term,
+      subPrompt: 'Dinlediğin kelimenin anlamı hangisi?',
+      options,
+      correctOptionIndex: correctIdx,
+      explanation: `Kelime: ${word.term} — ${word.definition}`,
+    }
+  }
+
+  // 4. ÇOKTAN SEÇMELİ TEST (İNGİLİZCE -> TÜRKÇE)
   if (resolvedType === 'multiple_choice') {
     const distractors = pickDistractors(
       allWords.filter((w) => w.id !== word.id).map((w) => w.definition),
@@ -219,7 +246,7 @@ export function buildQuestion(
     }
   }
 
-  // 4. KLASİK FLAŞKART
+  // 5. KLASİK FLAŞKART
   return {
     id: crypto.randomUUID(),
     word,

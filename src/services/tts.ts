@@ -1,3 +1,8 @@
+/** Tarayıcıda seslendirme var mı (yoksa dinleme modu gizlenir). */
+export function canSpeak(): boolean {
+  return typeof window !== 'undefined' && 'speechSynthesis' in window
+}
+
 /**
  * Web Speech API (Metin Seslendirme / Pronunciation)
  */

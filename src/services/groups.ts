@@ -458,6 +458,8 @@ export function getModeLabel(mode?: string): string {
       return 'Cümle İçi Boşluk'
     case 'mixed':
       return 'Karışık Mod'
+    case 'listen':
+      return 'Dinleme'
     case 'flashcard':
     default:
       return 'Flaşkart Modu'
@@ -491,7 +493,7 @@ export async function markLevelInProgress(
   totalQuestions: number,
   correctCount: number,
   wrongCount: number,
-  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed',
+  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed' | 'listen',
 ): Promise<LevelProgress> {
   const id = `${userId}_${subGroupId}`
   const accuracyPercent =
@@ -528,7 +530,7 @@ export async function markLevelCompleted(
   totalQuestions: number,
   correctCount: number,
   wrongCount: number,
-  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed',
+  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed' | 'listen',
 ): Promise<LevelProgress> {
   const id = `${userId}_${subGroupId}`
   const accuracyPercent =
