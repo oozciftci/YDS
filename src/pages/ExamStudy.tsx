@@ -11,6 +11,7 @@ import { listExams, type ExamMeta } from './exam/examData'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
 import { PracticeExam } from './exam/PracticeExam'
+import { ReadingList, ReadingPassage, ReadingQuestions } from './exam/ReadingMode'
 import { TopicPractice } from './exam/TopicPractice'
 import { WrongBook } from './exam/WrongBook'
 
@@ -142,6 +143,13 @@ function Hub() {
             </span>
           </span>
         </button>
+        <button type="button" className={`card ${styles.quickCard}`} onClick={() => navigate('okuma')}>
+          <span className={styles.quickIcon}>📚</span>
+          <span className={styles.quickBody}>
+            <strong>Okuma Modu</strong>
+            <span>Paragrafları soru baskısı olmadan oku ya da dinle, okuma hızını ölç, sonra sorularını çöz.</span>
+          </span>
+        </button>
       </div>
 
       <MockHistory />
@@ -245,6 +253,9 @@ export function ExamStudyPage() {
       <Route path="konu/:section" element={<TopicPractice />} />
       <Route path="yanlislar" element={<WrongBook />} />
       <Route path="deneme/:examId" element={<MockExam />} />
+      <Route path="okuma" element={<ReadingList />} />
+      <Route path="okuma/:examId/:passageId" element={<ReadingPassage />} />
+      <Route path="okuma/:examId/:passageId/sorular" element={<ReadingQuestions />} />
     </Routes>
   )
 }

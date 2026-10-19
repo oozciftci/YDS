@@ -807,3 +807,110 @@
   color: var(--primary);
   font-weight: 600;
 }
+
+/* Seslendirme sırasında okunan cümle */
+.sentenceActive {
+  background: var(--warning-subtle);
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px var(--warning-subtle);
+}
+
+/* Okuma modu */
+.readBar {
+  position: sticky;
+  top: calc(4.4rem + env(safe-area-inset-top));
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.rateSelect {
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.readText {
+  margin: 0;
+  line-height: 2.05;
+  font-size: 1.08rem;
+}
+
+.readStats {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.readBig {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.chip {
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+}
+
+.passageGroup {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.passageGroup h3 {
+  margin: 0.4rem 0 0.1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.passageRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.passageRow:hover {
+  border-color: var(--primary);
+}
+
+.passageRow small {
+  display: block;
+  color: var(--text-subtle);
+  font-size: 0.76rem;
+}
+
+.passagePreview {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}

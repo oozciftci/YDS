@@ -1,70 +1,11 @@
-import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { guessGrammarTopics } from '../../data/grammar'
-import { cleanToken, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
-import { EXAM_COLLECTED_TAG } from '../../services/groups'
-import { createWord, updateWord } from '../../services/words'
-import { speakWord } from '../../services/tts'
+import { speakSentences } from '../../services/tts'
 import { sectionOf } from '../../services/ydsSections'
-import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import type { ExamBundle, Question, Seg } from './examData'
-
-const WORD_RE = /([A-Za-zÇĞİÖŞÜçğıöşü0-9]+(?:['’][A-Za-z]+)?|[^\sA-Za-zÇĞİÖŞÜçğıöşü0-9]+|\s+)/g
-
-interface PopoverState {
-  word: string
-  top: number
-  left: number
-}
-
-/** Bir cümleyi tıklanabilir kelimelere böler; başındaki rozet cümle çevirisini açar/kapatır. */
-function SentenceView({
-  seg,
-  tr,
-  forceShow,
-  onWord,
-  assist,
-}: {
-  seg: Seg
-  tr?: string
-  forceShow: boolean
-  onWord: (word: string, e: MouseEvent<HTMLButtonElement>) => void
-  assist: boolean
-}) {
-  const [open, setOpen] = useState(false)
-  const show = assist && (open || forceShow)
-  const tokens = useMemo(() => seg.en.match(WORD_RE) || [seg.en], [seg.en])
-  // Çeviri sorularında Türkçe cümleler olur; yardım kapalıyken (deneme) düz metin gösterilir
-  if (!assist || (seg.en.match(/[çğıöşüÇĞİÖŞÜ]/g) || []).length >= 2) {
-    return <span className={styles.sentence}>{seg.en} </span>
-  }
-  return (
-    <span className={styles.sentence}>
-      <button
-        type="button"
-        className={`${styles.badge} ${show ? styles.badgeOn : ''}`}
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={show}
-        title="Cümlenin Türkçesini göster/gizle"
-      >
-        🌐
-      </button>
-      {tokens.map((t, i) =>
-        /^[A-Za-zÇĞİÖŞÜçğıöşü0-9]/.test(t) ? (
-          <button key={i} type="button" className={styles.word} onClick={(e) => onWord(t, e)}>
-            {t}
-          </button>
-        ) : (
-          <span key={i}>{t}</span>
-        ),
-      )}
-      {show && (
-        <span className={styles.trLine}>{tr || <em className={styles.noTr}>Çeviri henüz eklenmedi</em>}</span>
-      )}
-    </span>
-  )
-}
+import { SentenceView, useWordPopover } from './WordPopover'
 
 interface Props {
   bundle: ExamBundle
@@ -82,63 +23,49 @@ interface Props {
 
 /** Bir YDS sorusunu (varsa paragrafıyla) gösterir: şıklar, çeviriler, kelime balonu, orijinal PDF sayfası. */
 export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = true, subtitle, children }: Props) {
-  const activeUserId = useUserStore((s) => s.activeUserId)
   const { exam, tr } = bundle
   const passage = q.passage ? exam.passages.find((p) => p.id === q.passage) : undefined
   const section = sectionOf(q.no)
   const [showAllTr, setShowAllTr] = useState(false)
-  const [pop, setPop] = useState<PopoverState | null>(null)
-  const [lookup, setLookup] = useState<WordLookupResult | null>(null)
-  const [lookingUp, setLookingUp] = useState(false)
-  const [added, setAdded] = useState(false)
   const [pdfPage, setPdfPage] = useState<number | null>(null)
+  const { onWord, close, popover } = useWordPopover(exam.id + ' / Soru ' + q.no)
+  // Paragraf seslendirme: o an okunan cümlenin sırası (null = okunmuyor)
+  const [speaking, setSpeaking] = useState<number | null>(null)
+  const stopRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      setPop(null)
-      setPdfPage(null)
-    }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPdfPage(null)
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  useEffect(() => setPop(null), [q.no, exam.id])
-
-  async function onWord(word: string, e: MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation()
-    const rect = e.currentTarget.getBoundingClientRect()
-    const width = Math.min(300, window.innerWidth - 16)
-    const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))
-    setPop({ word, top: rect.bottom + 6, left })
-    setLookup(null)
-    setAdded(false)
-    setLookingUp(true)
-    try {
-      setLookup(await lookupWordInSentence(cleanToken(word) || word, undefined, activeUserId))
-    } finally {
-      setLookingUp(false)
+  // Soru değişince balonu kapat ve seslendirmeyi durdur
+  useEffect(() => {
+    close()
+    return () => {
+      stopRef.current?.()
+      stopRef.current = null
     }
-  }
+  }, [q.no, exam.id, close])
 
-  async function addToDeck() {
-    if (!lookup) return
-    await createWord(activeUserId, {
-      term: lookup.term,
-      definition: lookup.meaning,
-      partOfSpeech: 'noun',
-      tags: [EXAM_COLLECTED_TAG],
-      notes: exam.id + ' / Soru ' + q.no,
-    })
-    setAdded(true)
-  }
-
-  /** Havuzda zaten olan kelimeyi "Sınavdan Topladıklarım" destesine alır (etiket ekler). */
-  async function collectExisting() {
-    const w = lookup?.existingWord
-    if (!w) return
-    await updateWord(w.id, activeUserId, { tags: [...(w.tags || []), EXAM_COLLECTED_TAG] })
-    setAdded(true)
+  function toggleListen(sentences: Seg[]) {
+    if (stopRef.current) {
+      stopRef.current()
+      stopRef.current = null
+      setSpeaking(null)
+      return
+    }
+    setSpeaking(0)
+    stopRef.current = speakSentences(
+      sentences.map((x) => x.en),
+      {
+        onSentence: setSpeaking,
+        onDone: () => {
+          stopRef.current = null
+          setSpeaking(null)
+        },
+      },
+    )
   }
 
   const letters = Object.keys(q.options)
@@ -149,8 +76,16 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
       : []
   const stemTr = q.stem.map((s) => tr[s.id]).filter(Boolean)
   const optionTrCount = letters.filter((l) => tr[q.options[l].id]).length
-  const sv = (s: Seg) => (
-    <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showAllTr} onWord={onWord} assist={assist} />
+  const sv = (s: Seg, i = -1) => (
+    <SentenceView
+      key={s.id}
+      seg={s}
+      tr={tr[s.id]}
+      forceShow={showAllTr}
+      onWord={onWord}
+      assist={assist}
+      active={speaking === i}
+    />
   )
 
   return (
@@ -173,8 +108,13 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
                 📄 Orijinal sayfa {passage.page}
               </button>
             ) : null}
+            {assist && passage.kind === 'reading' && (
+              <button type="button" className={styles.pdfBtn} onClick={() => toggleListen(passage.sentences)}>
+                {speaking !== null ? '⏹ Durdur' : '🔊 Dinle'}
+              </button>
+            )}
           </h2>
-          <p className={styles.text}>{passage.sentences.map(sv)}</p>
+          <p className={styles.text}>{passage.sentences.map((s, i) => sv(s, i))}</p>
         </article>
       )}
 
@@ -191,7 +131,7 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
             </button>
           ) : null}
         </h2>
-        {q.stem.length > 0 && <p className={styles.text}>{q.stem.map(sv)}</p>}
+        {q.stem.length > 0 && <p className={styles.text}>{q.stem.map((s) => sv(s))}</p>}
         {passage?.kind === 'cloze' && q.stem.length === 0 && (
           <p className="muted">Paragraftaki ({q.no})---- boşluğu için doğru seçeneği işaretleyin.</p>
         )}
@@ -282,50 +222,7 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
         </article>
       )}
 
-      {pop && (
-        <>
-          <div className={styles.popBackdrop} onClick={() => setPop(null)} aria-hidden="true" />
-          <div className={styles.pop} style={{ top: pop.top, left: pop.left }} role="dialog">
-            <div className={styles.popHead}>
-              <strong>{lookup?.term || cleanToken(pop.word)}</strong>
-              <button
-                type="button"
-                className={styles.popIcon}
-                onClick={() => speakWord(lookup?.term || pop.word)}
-                aria-label="Dinle"
-              >
-                🔊
-              </button>
-              <button type="button" className={styles.popIcon} onClick={() => setPop(null)} aria-label="Kapat">
-                ×
-              </button>
-            </div>
-            <p className={styles.popMeaning}>
-              {lookingUp ? 'Anlam aranıyor…' : lookup?.meaning || 'Anlam bulunamadı.'}
-            </p>
-            {lookup?.existingWord &&
-              (added || (lookup.existingWord.tags || []).includes(EXAM_COLLECTED_TAG) ? (
-                <p className="muted" style={{ margin: 0, fontSize: '0.78rem' }}>
-                  ✓ Havuzunda ve "Sınavdan Topladıklarım" destesinde
-                </p>
-              ) : (
-                <button type="button" className="btn btn-secondary" onClick={() => void collectExisting()}>
-                  📥 Topladıklarıma ekle
-                </button>
-              ))}
-            {lookup?.isNewWord && lookup.meaning && (
-              <button type="button" className="btn btn-secondary" disabled={added} onClick={() => void addToDeck()}>
-                {added ? '✓ Eklendi' : '➕ Havuzuma ekle'}
-              </button>
-            )}
-            {(lookup?.isNewWord || lookup?.existingWord) && (
-              <p className="muted" style={{ margin: 0, fontSize: '0.74rem' }}>
-                Toplanan kelimeler Çalış ekranında "📥 Sınavdan Topladıklarım" destesinde çıkar.
-              </p>
-            )}
-          </div>
-        </>
-      )}
+      {popover}
 
       {pdfPage !== null && exam.pdf && (
         <div className={styles.pdfBackdrop} onClick={() => setPdfPage(null)} role="dialog" aria-modal="true">
