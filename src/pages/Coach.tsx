@@ -5,7 +5,18 @@ import { AiText } from '../components/AiText'
 import { SaveToMemory } from '../components/SaveToMemory'
 import { db } from '../db'
 import { aiConfigured } from '../services/ai'
-import { COACH_MODES, ENGLISH_SCENARIOS, LEVELS, coachTranscript, createEnglishChat, deleteChat, sendEnglish } from '../services/coach'
+import {
+  COACH_MODES,
+  ENGLISH_SCENARIOS,
+  LEVELS,
+  YDS_QUICK_PROMPTS,
+  coachTranscript,
+  createEnglishChat,
+  createYdsChat,
+  deleteChat,
+  sendMessage,
+} from '../services/coach'
+import { isKnownRoute } from '../services/appMap'
 import { canSpeak, speakSentences, stopSpeaking } from '../services/tts'
 import { useUserStore } from '../stores/user'
 import type { CoachChat, CoachTurn } from '../types/database'
@@ -75,7 +86,10 @@ function ChatList() {
               type="button"
               className={`${styles.modeCard} ${m.mode === 'english' && setup ? styles.modeActive : ''}`}
               disabled={!m.ready}
-              onClick={() => m.mode === 'english' && setSetup(true)}
+              onClick={() => {
+                if (m.mode === 'english') setSetup(true)
+                else if (m.mode === 'yds' && aiConfigured()) void createYdsChat(userId).then((c) => navigate(c.id))
+              }}
             >
               <span className={styles.modeIcon}>{m.icon}</span>
               <span className={styles.modeBody}>
@@ -196,7 +210,7 @@ function ChatView() {
     setLoading(true)
     setError('')
     try {
-      await sendEnglish(current, text)
+      await sendMessage(current, text)
     } catch (e) {
       setInput(text)
       setError(e instanceof Error ? e.message : String(e))
@@ -263,7 +277,9 @@ function ChatView() {
           </Link>
           <h1 className={styles.title}>{chat.title}</h1>
           <p className="muted" style={{ margin: 0, fontSize: '0.86rem' }}>
-            İngilizce yaz; YZ rolünde kalır, hataların mesajının altında kısaca düzeltilir. Türkçe yazarsan İngilizcesini gösterir.
+            {chat.mode === 'yds'
+              ? 'Koç; profilini, hafıza notlarını ve bugünkü planını görerek konuşur ve seni uygulamadaki alıştırmalara yönlendirir.'
+              : 'İngilizce yaz; YZ rolünde kalır, hataların mesajının altında kısaca düzeltilir. Türkçe yazarsan İngilizcesini gösterir.'}
           </p>
         </div>
       </header>
@@ -277,9 +293,13 @@ function ChatView() {
             <span className={styles.who}>{m.role === 'user' ? 'Ben:' : 'YZ:'}</span>
             <div className={styles.bubbleWrap}>
               <div className={styles.bubble}>
-                {m.role === 'model' ? <AiText text={m.text} /> : <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{m.text}</p>}
+                {m.role === 'model' ? (
+                  <AiText text={m.text} isAllowedLink={chat.mode === 'yds' ? isKnownRoute : undefined} />
+                ) : (
+                  <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{m.text}</p>
+                )}
               </div>
-              {m.role === 'user' && <Feedback next={chat.messages[i + 1]} />}
+              {m.role === 'user' && chat.mode === 'english' && <Feedback next={chat.messages[i + 1]} />}
               {m.role === 'model' && (
                 <div className={styles.msgMeta}>
                   {canSpeak() && (
@@ -315,6 +335,16 @@ function ChatView() {
         </p>
       )}
 
+      {chat.mode === 'yds' && !loading && chat.messages.length > 0 && (
+        <div className={styles.chips}>
+          {YDS_QUICK_PROMPTS.map((p) => (
+            <button key={p} type="button" className={styles.chip} onClick={() => void send(p, chat)}>
+              {p}
+            </button>
+          ))}
+        </div>
+      )}
+
       <SaveToMemory
         source={`coach:${chat.id}`}
         getTranscript={() => coachTranscript(chat)}
@@ -329,7 +359,11 @@ function ChatView() {
           disabled={loading || !aiConfigured()}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Write in English… (Enter: gönder, Shift+Enter: yeni satır)"
+          placeholder={
+            chat.mode === 'yds'
+              ? 'Koçuna yaz… (Enter: gönder, Shift+Enter: yeni satır)'
+              : 'Write in English… (Enter: gönder, Shift+Enter: yeni satır)'
+          }
         />
         <button type="button" className="btn btn-primary" disabled={loading || !input.trim()} onClick={submit}>
           Gönder

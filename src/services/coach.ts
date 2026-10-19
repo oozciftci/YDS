@@ -2,6 +2,11 @@ import { db } from '../db'
 import type { CoachChat, CoachCorrection, CoachMode, CoachTurn } from '../types/database'
 import { generate, generateChat, type AiResult, type ChatTurn } from './ai'
 import { memoryContext } from './memory'
+import { appMapText } from './appMap'
+import { buildDailyPlan } from './dailyPlan'
+import { daysUntil } from './dates'
+import { YDS_SECTIONS } from './ydsSections'
+import { useSettings } from '../stores/settings'
 
 // YZ Koç: sohbetlerin oluşturulması, mesaj gönderme ve uzun sohbetlerin özetlenmesi.
 // Sohbetler yalnızca bu cihazda (Dexie) saklanır; yalnızca istek anında Gemini'ye gider.
@@ -16,7 +21,7 @@ export interface CoachModeInfo {
 
 export const COACH_MODES: CoachModeInfo[] = [
   { mode: 'english', icon: '💬', title: 'İngilizce pratik', desc: 'Serbest sohbet ya da rol yapma; hataların konuşmayı bölmeden altta düzeltilir.', ready: true },
-  { mode: 'yds', icon: '🎯', title: 'YDS koçu', desc: 'Durumunu değerlendirir, plan önerir, seni uygulamadaki alıştırmalara yönlendirir.', ready: false },
+  { mode: 'yds', icon: '🎯', title: 'YDS koçu', desc: 'Durumunu değerlendirir, plan önerir, seni uygulamadaki alıştırmalara yönlendirir.', ready: true },
   { mode: 'dev', icon: '🛠️', title: 'Geliştirici danışmanı', desc: 'Uygulamayı bilerek iyileştirme ve yeni özellik önerir.', ready: false },
 ]
 
@@ -139,7 +144,7 @@ async function maybeSummarize(chat: CoachChat): Promise<CoachChat> {
     .join('\n')
   const r = await generate(
     'Summarise conversations briefly and factually.',
-    `${chat.summary ? `Earlier summary: ${chat.summary}\n\n` : ''}Conversation:\n${older}\n\nWrite a summary of at most 120 words in English: topics covered, facts the learner shared about themselves, the role-play situation so far.`,
+    `${chat.summary ? `Earlier summary: ${chat.summary}\n\n` : ''}Conversation:\n${older}\n\nWrite a summary of at most 120 words in the same language as the conversation: topics covered, facts the learner shared about themselves, advice or plans agreed, the role-play situation so far.`,
     0.2,
   )
   return { ...chat, summary: r.text.trim(), summarizedCount: cut }
@@ -202,6 +207,93 @@ export function coachTranscript(chat: CoachChat): string {
     }
   })
   return lines.join('\n')
+}
+
+// ---------------------------------------------------------------------------
+// YDS koçu
+// ---------------------------------------------------------------------------
+
+/** YDS koçunun hızlı soruları (sohbet ekranında tek dokunuşla gönderilir). */
+export const YDS_QUICK_PROMPTS = [
+  'Durumumu değerlendir',
+  'Bu hafta için plan yap',
+  'En zayıf olduğum konuda ne yapmalıyım?',
+  'Bugün sadece 30 dakikam var, neye odaklanayım?',
+  'Motivasyonum düştü',
+]
+
+const YDS_RULES = [
+  'Sen deneyimli, samimi ve dürüst bir YDS (Yabancı Dil Seviye Tespit Sınavı) koçusun. Öğrenci Türk; Türkçe konuş.',
+  'Görevin: öğrencinin durumunu verilerine dayanarak değerlendirmek, gerçekçi bir plan yapmak, motive etmek ve onu uygulamadaki doğru alıştırmalara yönlendirmek.',
+  '',
+  'Kurallar:',
+  '- Kısa ve somut ol (çoğunlukla 120-200 kelime); maddeler kullan.',
+  '- Verilere dayan. Bir konuda veri yoksa uydurma; "henüz veri yok" de ve verinin nasıl oluşacağını söyle (örn. birkaç deneme çözmek).',
+  '- Uygulamadaki sayfalara YALNIZCA aşağıdaki UYGULAMA HARİTASI’ndaki adreslerle, Markdown bağlantısı olarak yönlendir: [Ad](/adres). Haritada olmayan adres yazma; bir yanıtta en fazla 3 bağlantı.',
+  '- Gerçekçi ol: sınava kalan gün, hedef puan ve mevcut başarıyı karşılaştır; abartılı vaat verme, ama cesaret kır de değil.',
+  '- Hafıza notlarındaki tekrar eden hatalara ve tercihlerine göre kişiselleştir.',
+  '',
+  'YDS bilgisi: 80 soru, 180 dakika; her doğru 1,25 puan, yanlış doğruyu götürmez (boş bırakmak yerine tahmin avantajlıdır).',
+  'Soru tipleri: ' + YDS_SECTIONS.map((x) => `${x.label} (${x.from}-${x.to})`).join(', ') + '.',
+]
+
+/** Bugünkü plan özeti (Ana Sayfa’daki kartla aynı hesap; soru görevi yalnızca yerelde bilinir, burada yok). */
+async function todayPlanText(userId: string): Promise<string> {
+  const [cards, logs, answers] = await Promise.all([
+    db.cardStates.where('userId').equals(userId).toArray(),
+    db.reviewLogs.where('userId').equals(userId).toArray(),
+    db.examAnswers.where('userId').equals(userId).toArray(),
+  ])
+  const { exam } = useSettings.getState()
+  const plan = buildDailyPlan({ cards, logs, answers, daysLeft: daysUntil(exam.targetExamDate), newWordCap: exam.dailyGoal || 20 })
+  return 'Bugünkü plan: ' + plan.map((t) => `${t.label} ${t.done}/${t.target}`).join(', ') + '.'
+}
+
+async function ydsSystem(chat: CoachChat): Promise<string> {
+  const [memory, plan] = await Promise.all([memoryContext(chat.userId, { profile: true }), todayPlanText(chat.userId)])
+  const lines = [...YDS_RULES, '', 'UYGULAMA HARİTASI:', appMapText(), '', 'ÖĞRENCİ VERİLERİ:', memory, plan]
+  if (chat.summary) lines.push('', `Önceki konuşmanın özeti: ${chat.summary}`)
+  return lines.join('\n')
+}
+
+export async function createYdsChat(userId: string): Promise<CoachChat> {
+  const now = new Date().toISOString()
+  const chat: CoachChat = {
+    id: crypto.randomUUID(),
+    userId,
+    mode: 'yds',
+    title: `🎯 YDS koçu · ${new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}`,
+    messages: [],
+    createdAt: now,
+    updatedAt: now,
+  }
+  await db.coachChats.put(chat)
+  return chat
+}
+
+/** YDS koçu: mesajı (boşsa açılış isteğini) gönderir; yanıt serbest Markdown (uygulama içi bağlantılı). */
+export async function sendYds(chat: CoachChat, text: string): Promise<CoachChat> {
+  const now = new Date().toISOString()
+  const userTurn: CoachTurn = text.trim()
+    ? { role: 'user', text: text.trim(), at: now }
+    : {
+        role: 'user',
+        text: '(Sohbeti başlat: kendini bir cümleyle tanıt, verilerime göre durumumu kısaca değerlendir ve bugün için 2-3 somut öneri ver.)',
+        hidden: true,
+        at: now,
+      }
+  let next: CoachChat = { ...chat, messages: [...chat.messages, userTurn] }
+  next = await maybeSummarize(next)
+  const r = await generateChat(await ydsSystem(next), historyFor(next), 0.5)
+  const modelTurn: CoachTurn = { role: 'model', text: r.text.trim(), meta: metaOf(r), at: new Date().toISOString() }
+  next = { ...next, messages: [...next.messages, modelTurn], updatedAt: modelTurn.at }
+  await db.coachChats.put(next)
+  return next
+}
+
+/** Sohbetin moduna göre gönderir. */
+export function sendMessage(chat: CoachChat, text: string): Promise<CoachChat> {
+  return chat.mode === 'yds' ? sendYds(chat, text) : sendEnglish(chat, text)
 }
 
 export async function deleteChat(id: string): Promise<void> {

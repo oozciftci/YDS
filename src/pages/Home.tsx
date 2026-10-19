@@ -521,7 +521,7 @@ export function HomePage() {
                 <h3>YZ Koç</h3>
                 <span className={styles.modePill}>Gemini</span>
               </div>
-              <p>Yapay zekâyla İngilizce sohbet et; hataların konuşmayı bölmeden düzeltilir.</p>
+              <p>İngilizce sohbet pratiği yap ya da YDS koçunla durumunu ve planını konuş.</p>
             </div>
             <span className={styles.modeArrow}>→</span>
           </div>

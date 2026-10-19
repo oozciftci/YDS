@@ -1,14 +1,45 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 
-// Yapay zekâ yanıtındaki sade Markdown'ı (başlık, madde, **kalın**) güvenli biçimde gösterir; HTML yorumlanmaz.
+// Yapay zekâ yanıtındaki sade Markdown'ı (başlık, madde, **kalın**, [bağlantı](/adres)) güvenli biçimde gösterir;
+// HTML yorumlanmaz. Bağlantılar yalnızca `isAllowedLink` izin verirse ve uygulama içi adresse tıklanabilir olur.
 
-function inline(text: string): ReactNode[] {
+type LinkCheck = (href: string) => boolean
+
+function bold(text: string, keyBase: string): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-    part.startsWith('**') && part.endsWith('**') ? <strong key={i}>{part.slice(2, -2)}</strong> : part,
+    part.startsWith('**') && part.endsWith('**') ? <strong key={`${keyBase}-b${i}`}>{part.slice(2, -2)}</strong> : part,
   )
 }
 
-export function AiText({ text }: { text: string }) {
+function inline(text: string, isAllowedLink?: LinkCheck): ReactNode[] {
+  if (!isAllowedLink) return bold(text, 't')
+  const out: ReactNode[] = []
+  const re = /\[([^\]]+)\]\(([^)\s]+)\)/g
+  let last = 0
+  let m: RegExpExecArray | null
+  let k = 0
+  while ((m = re.exec(text))) {
+    out.push(...bold(text.slice(last, m.index), `s${k}`))
+    const [, label, href] = m
+    // Yalnızca "/" ile başlayan ve haritada olan adresler; dış bağlantı asla tıklanabilir olmaz
+    out.push(
+      href.startsWith('/') && isAllowedLink(href) ? (
+        <Link key={`l${k}`} to={href} style={{ color: 'var(--primary)', fontWeight: 600 }}>
+          {label} →
+        </Link>
+      ) : (
+        <span key={`l${k}`}>{label}</span>
+      ),
+    )
+    last = m.index + m[0].length
+    k++
+  }
+  out.push(...bold(text.slice(last), `e${k}`))
+  return out
+}
+
+export function AiText({ text, isAllowedLink }: { text: string; isAllowedLink?: LinkCheck }) {
   const blocks: ReactNode[] = []
   let list: string[] = []
   const flush = () => {
@@ -16,7 +47,7 @@ export function AiText({ text }: { text: string }) {
     blocks.push(
       <ul key={blocks.length} style={{ margin: '0.25rem 0', paddingLeft: '1.2rem', display: 'grid', gap: '0.2rem' }}>
         {list.map((l, i) => (
-          <li key={i}>{inline(l)}</li>
+          <li key={i}>{inline(l, isAllowedLink)}</li>
         ))}
       </ul>,
     )
@@ -38,11 +69,11 @@ export function AiText({ text }: { text: string }) {
     blocks.push(
       heading ? (
         <p key={blocks.length} style={{ margin: '0.5rem 0 0.15rem', fontWeight: 700 }}>
-          {inline(heading[1])}
+          {inline(heading[1], isAllowedLink)}
         </p>
       ) : (
         <p key={blocks.length} style={{ margin: '0.25rem 0' }}>
-          {inline(line)}
+          {inline(line, isAllowedLink)}
         </p>
       ),
     )
