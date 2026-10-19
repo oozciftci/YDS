@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
@@ -9,7 +9,15 @@ import { formatLevelStudyTitle } from '../services/groups'
 import { useUserStore } from '../stores/user'
 import { useSyncStatus } from '../services/sync'
 import { useSettings } from '../stores/settings'
+import { buildDailyPlan, planPercent } from '../services/dailyPlan'
+import { dayKey, daysUntil, streakFromDays } from '../services/dates'
+import { summarizeBySection } from '../services/examProgress'
+import { getSection } from '../services/ydsSections'
+import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
+
+const NO_CARDS: CardState[] = []
+const NO_LOGS: ReviewLog[] = []
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -22,13 +30,10 @@ export function HomePage() {
   const [nowTimestamp] = useState(() => Date.now())
 
   // Sınava kalan gün
-  const daysToExam = useMemo(() => {
-    if (!exam?.targetExamDate) return null
-    const target = new Date(exam.targetExamDate).getTime()
-    const now = new Date(nowTimestamp).getTime()
-    const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24))
-    return Math.max(0, diff)
-  }, [exam?.targetExamDate, nowTimestamp])
+  const daysToExam = useMemo(
+    () => daysUntil(exam?.targetExamDate ?? '', nowTimestamp),
+    [exam?.targetExamDate, nowTimestamp],
+  )
 
   // Kullanıcının kayıtlı aktif kelimeleri
   const words = useLiveQuery(
@@ -37,23 +42,28 @@ export function HomePage() {
     [],
   )
 
-  // Kart durumları
-  const cardStates = useLiveQuery(
-    () => db.cardStates.where('userId').equals(activeUserId).toArray(),
+  // Kart durumları ve tekrar kayıtları tek sorguda: yüklenene kadar undefined kalır, böylece
+  // plan boş listeyle bir an "tamamlandı" görünmez
+  const studyData = useLiveQuery(
+    async () => ({
+      cards: await db.cardStates.where('userId').equals(activeUserId).toArray(),
+      logs: await db.reviewLogs.where('userId').equals(activeUserId).toArray(),
+    }),
     [activeUserId],
-    [],
   )
-
-  // Tekrar kayıtları (Bugünkü tekrarlar & seri için)
-  const reviewLogs = useLiveQuery(
-    () => db.reviewLogs.where('userId').equals(activeUserId).toArray(),
-    [activeUserId],
-    [],
-  )
+  const cardStates = studyData?.cards ?? NO_CARDS
+  const reviewLogs = studyData?.logs ?? NO_LOGS
 
   // Oturum logları (Grup bazlı çalışma geçmişi)
   const sessionLogs = useLiveQuery(
     () => db.sessionLogs.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  // Çıkmış soru cevapları (yalnızca soru kimliği; plan ve seri için)
+  const examAnswers = useLiveQuery(
+    () => db.examAnswers.where('userId').equals(activeUserId).toArray(),
     [activeUserId],
     [],
   )
@@ -72,46 +82,23 @@ export function HomePage() {
   }, [levelProgressList])
 
   const todayCompletedLevels = useMemo(() => {
-    const todayPrefix = new Date(nowTimestamp).toISOString().slice(0, 10)
+    const today = dayKey(nowTimestamp)
     return levelProgressList
-      .filter((p) => p.status === 'completed' && p.lastStudiedAt.startsWith(todayPrefix))
+      .filter((p) => p.status === 'completed' && dayKey(p.lastStudiedAt) === today)
       .sort((a, b) => b.lastStudiedAt.localeCompare(a.lastStudiedAt))
   }, [levelProgressList, nowTimestamp])
 
   const todaySessions = useMemo(() => {
-    const todayPrefix = new Date(nowTimestamp).toISOString().slice(0, 10)
+    const today = dayKey(nowTimestamp)
     return sessionLogs
-      .filter((s) => s.startedAt.startsWith(todayPrefix))
+      .filter((s) => dayKey(s.startedAt) === today)
       .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
   }, [sessionLogs, nowTimestamp])
 
   // Metrikler
-  const { dueCount, todayReviewsCount, streakDays, masteryCounts, dailyGoal } = useMemo(() => {
-    const nowIso = new Date(nowTimestamp).toISOString()
-    const todayPrefix = nowIso.slice(0, 10)
-
-    // Tekrarı gelen kart sayısı
-    const due = cardStates.filter((c) => c.due <= nowIso).length
-
-    // Bugünkü yapılan tekrar sayısı
-    const todayReviews = reviewLogs.filter((r) => r.reviewedAt.startsWith(todayPrefix)).length
-
-    // Seri (Streak) hesaplama: ardışık gün sayısı
-    const daysWithReview = new Set<string>()
-    for (const r of reviewLogs) {
-      daysWithReview.add(r.reviewedAt.slice(0, 10))
-    }
-
-    let streak = 0
-    const cursor = new Date(nowTimestamp)
-    if (!daysWithReview.has(cursor.toISOString().slice(0, 10))) {
-      cursor.setDate(cursor.getDate() - 1)
-    }
-
-    while (daysWithReview.has(cursor.toISOString().slice(0, 10))) {
-      streak++
-      cursor.setDate(cursor.getDate() - 1)
-    }
+  const { streakDays, masteryCounts } = useMemo(() => {
+    const days = new Set(reviewLogs.map((r) => dayKey(r.reviewedAt)))
+    for (const a of examAnswers) days.add(dayKey(a.answeredAt))
 
     // Hakimiyet dağılımı (1-5)
     const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
@@ -121,14 +108,41 @@ export function HomePage() {
       else counts[1]++
     }
 
-    return {
-      dueCount: due,
-      todayReviewsCount: todayReviews,
-      streakDays: streak,
-      masteryCounts: counts,
-      dailyGoal: exam?.dailyGoal || 20,
-    }
-  }, [cardStates, reviewLogs, nowTimestamp, exam?.dailyGoal])
+    return { streakDays: streakFromDays(days, nowTimestamp), masteryCounts: counts }
+  }, [cardStates, reviewLogs, examAnswers, nowTimestamp])
+
+  // Çıkmış soru havuzu yalnızca yerelde bilinir (telifli veri yayına girmez)
+  const [questionPool, setQuestionPool] = useState<number | undefined>(undefined)
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    import('./exam/examData')
+      .then((m) => m.listExams())
+      .then((list) => setQuestionPool(list.filter((e) => e.hasKey).length * 80))
+      .catch(() => setQuestionPool(undefined))
+  }, [])
+
+  const plan = useMemo(
+    () =>
+      buildDailyPlan({
+        cards: cardStates,
+        logs: reviewLogs,
+        answers: examAnswers,
+        daysLeft: daysToExam,
+        newWordCap: exam?.dailyGoal || 20,
+        unansweredQuestions: questionPool === undefined ? undefined : Math.max(0, questionPool - examAnswers.length),
+        now: nowTimestamp,
+      }),
+    [cardStates, reviewLogs, examAnswers, daysToExam, exam?.dailyGoal, questionPool, nowTimestamp],
+  )
+  const planPct = planPercent(plan)
+  const nextTask = plan.find((t) => t.target > 0 && t.done < t.target)
+  const weakest = useMemo(() => {
+    if (examAnswers.length < 20) return null
+    const s = summarizeBySection(examAnswers)
+      .filter((x) => x.answered >= 5 && x.percent !== null)
+      .sort((a, b) => (a.percent ?? 0) - (b.percent ?? 0))[0]
+    return s && (s.percent ?? 100) < 75 ? s : null
+  }, [examAnswers])
 
   // Günün YDS Kelimesi
   const wordOfTheDay = useMemo(() => {
@@ -156,7 +170,6 @@ export function HomePage() {
     setAddedWotd(true)
   }
 
-  const goalPercent = Math.min(100, Math.round((todayReviewsCount / dailyGoal) * 100))
   const totalCards = words.length
   const totalPending = sync.pendingOutboxCount + sync.pendingLogsCount
 
@@ -174,9 +187,9 @@ export function HomePage() {
           <div className={styles.userMeta}>
             <h1 className={styles.title}>Merhaba, {activeUser?.displayName || 'Öğrenci'} 👋</h1>
             <p className={styles.subtitle}>
-              {dueCount > 0
-                ? `Bugün ${dueCount} kelime tekrar edilmeyi bekliyor.`
-                : 'Tebrikler! Bugünkü tekrarlarını tamamladın.'}
+              {nextTask
+                ? `Bugünkü planının %${planPct}'i tamam. Sıradaki: ${nextTask.label.toLowerCase()}.`
+                : 'Tebrikler! Bugünkü planını tamamladın.'}
             </p>
           </div>
         </div>
@@ -202,73 +215,70 @@ export function HomePage() {
         </div>
       </header>
 
-      {/* 2. GÜNLÜK KOMUTA & ODAK KARTI */}
-      <section className={styles.heroCard}>
-        <div className={styles.heroLeft}>
-          <span className={styles.heroBadge}>
-            {dueCount > 0 ? '⚡ FSRS Aralıklı Tekrar' : '✨ Günlük Görev Tamam'}
-          </span>
-          <h2 className={styles.heroHeading}>
-            {dueCount > 0
-              ? `${dueCount} Kelime Hafızanı Tazelemeyi Bekliyor`
-              : 'Bugünkü Tekrarlarını Tamamladın!'}
-          </h2>
-          <p className={styles.heroParagraph}>
-            {dueCount > 0
-              ? 'Aralıklı tekrar algoritması, kelimeleri unutulma eşiğinde önüne getirir. 5 dakikanı ayır ve pekiştir.'
-              : 'Disiplinini koruyorsun! Yeni kelimeler keşfedebilir veya mini sınavla kendini test edebilirsin.'}
-          </p>
-
-          <div className={styles.heroActions}>
-            {dueCount > 0 ? (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => navigate('/study?preset=due&auto=1')}
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4">
-                  <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
-                </svg>
-                Tekrarları Başlat ({dueCount} Kelime)
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => navigate('/study?preset=learning&auto=1')}
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4">
-                  <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" />
-                </svg>
-                Öğrenilenleri Pekiştir
-              </button>
-            )}
-            <Link to="/words" className="btn btn-secondary">
-              Kelime Havuzu ({totalCards}) →
-            </Link>
-            {import.meta.env.DEV && (
-              <Link to="/yds-sorular" className="btn btn-ghost" title="Yalnızca yerelde görünür">
-                📖 YDS Soru Merkezi
-              </Link>
-            )}
+      {/* 2. BUGÜNKÜ PLAN: tekrar + yeni kelime + (yerelde) soru */}
+      {studyData === undefined ? (
+        <section className={styles.planCard} aria-busy="true">
+          <p className="muted" style={{ margin: 0 }}>Plan hazırlanıyor…</p>
+        </section>
+      ) : (
+      <section className={styles.planCard}>
+        <div className={styles.planHead}>
+          <div>
+            <span className={styles.heroBadge}>📅 Bugünkü Planın · %{planPct}</span>
+            <h2 className={styles.heroHeading}>
+              {nextTask ? `Sıradaki: ${nextTask.label} (${nextTask.target - nextTask.done} kaldı)` : 'Bugünkü planı tamamladın! 🎉'}
+            </h2>
+            <p className={styles.heroParagraph}>
+              {daysToExam !== null
+                ? `Sınava ${daysToExam} gün var; yeni kelime${questionPool !== undefined ? ' ve soru' : ''} hedefleri kalan güne göre eşit dağıtıldı.`
+                : 'Ayarlar’dan sınav tarihini girersen hedefler kalan güne göre dağıtılır.'}
+            </p>
+          </div>
+          <div className={styles.planRing} style={{ ['--pct' as string]: `${planPct}%` }} aria-label={`Plan %${planPct} tamam`}>
+            <span>%{planPct}</span>
           </div>
         </div>
 
-        <div className={styles.heroRight}>
-          <div className={styles.goalCard}>
-            <div className={styles.goalTop}>
-              <span className={styles.goalLabel}>Günlük Tekrar Hedefi</span>
-              <span className={styles.goalRatio}>
-                <strong>{todayReviewsCount}</strong> / {dailyGoal}
-              </span>
-            </div>
-            <div className={styles.progressTrack}>
-              <div className={styles.progressThumb} style={{ width: `${goalPercent}%` }} />
-            </div>
-            <span className={styles.goalPercent}>%{goalPercent} tamamlandı</span>
-          </div>
-        </div>
+        <ul className={styles.planList}>
+          {plan.map((t) => {
+            const finished = t.target === 0 || t.done >= t.target
+            const pct = t.target ? Math.min(100, Math.round((t.done / t.target) * 100)) : 100
+            return (
+              <li key={t.key} className={`${styles.planRow} ${finished ? styles.planDone : ''}`}>
+                <span className={styles.planIcon}>{finished ? '✅' : t.icon}</span>
+                <span className={styles.planBody}>
+                  <span className={styles.planTop}>
+                    <strong>{t.label}</strong>
+                    <span className={styles.planCount}>
+                      {t.done} / {t.target}
+                    </span>
+                  </span>
+                  <span className={styles.progressTrack}>
+                    <span className={styles.progressThumb} style={{ width: `${pct}%`, display: 'block' }} />
+                  </span>
+                  <small className={styles.planHint}>{t.hint}</small>
+                </span>
+                {!finished && (
+                  <button
+                    type="button"
+                    className={`btn ${t === nextTask ? 'btn-primary' : 'btn-secondary'}`}
+                    onClick={() => navigate(t.to)}
+                  >
+                    Başla
+                  </button>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+
+        {weakest && (
+          <Link to={`/yds-sorular/konu/${weakest.key}`} className={styles.planTip}>
+            💡 En zayıf soru tipin: <strong>{getSection(weakest.key).label}</strong> (%{weakest.percent}). Bu tipten çalış →
+          </Link>
+        )}
       </section>
+      )}
 
       {/* 2.5. YARIDA BIRAKILANLAR, BUGÜN ÇALIŞILAN SEVİYELER & HIZLI ERİŞİM */}
       <section className={styles.sectionBlock}>

@@ -297,7 +297,7 @@ export function SettingsPage() {
             </div>
 
             <div className="field">
-              <label htmlFor="exam-daily-goal">Günlük Kelime Tekrar Kotası</label>
+              <label htmlFor="exam-daily-goal">Günlük Yeni Kelime Üst Sınırı</label>
               <input
                 id="exam-daily-goal"
                 className="input"
@@ -307,6 +307,9 @@ export function SettingsPage() {
                 value={examDailyGoal}
                 onChange={(e) => setExamDailyGoal(Number(e.target.value))}
               />
+              <small className="muted">
+                Günlük plan, kalan yeni kelimeleri sınava kadar eşit dağıtır ama bu sayıyı aşmaz. Tekrarlar sınırsızdır.
+              </small>
             </div>
           </div>
 

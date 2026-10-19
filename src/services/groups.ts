@@ -12,6 +12,8 @@ export interface GroupDefinition {
   isBuiltIn: boolean
   /** Kelimesi yoksa çalışma ekranındaki deste sekmelerinde gösterilmez (kalabalık yapmasın). */
   hideWhenEmpty?: boolean
+  /** Destedeki kelime sırası (verilmezse havuz sırası). */
+  order?: (a: WordItem, b: WordItem) => number
   matcher: (word: WordItem, card?: CardState, nowIso?: string) => boolean
 }
 
@@ -114,10 +116,24 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
     color: '#ec4899',
     badge: 'FSRS',
     isBuiltIn: true,
+    // Yalnızca daha önce çalışılmış kartlar; hiç görülmemiş kelimeler "Yeni Kelimeler" destesindedir
     matcher: (_w, card, nowIso) => {
-      if (!card) return false
+      if (!card || !card.state) return false
       return Boolean(card.due && nowIso && card.due <= nowIso)
     },
+  },
+  {
+    id: 'new_words',
+    name: 'Yeni Kelimeler (YDS Sıklığına Göre)',
+    shortName: 'Yeni Kelimeler',
+    description: 'Henüz hiç çalışmadığın kelimeler; çıkmış YDS’lerde en sık geçenler önce gelir. Günlük plan buradan beslenir.',
+    icon: '🌱',
+    color: '#22c55e',
+    badge: 'Yeni',
+    isBuiltIn: true,
+    hideWhenEmpty: true,
+    matcher: (_w, card) => !card || !card.state,
+    order: (a, b) => frequencyRank(a) - frequencyRank(b),
   },
   {
     id: 'weak_words',
@@ -145,6 +161,15 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
   },
 ]
 
+/** YDS sıklık etiketine göre öncelik (küçük = önce). Etiketler scripts/fixLevels.mjs ile üretilir. */
+export function frequencyRank(w: WordItem): number {
+  const tags = w.tags || []
+  if (tags.includes('YDS-Çok-Sık')) return 0
+  if (tags.includes('YDS-Sık')) return 1
+  if (tags.includes('YDS-Ara')) return 2
+  return 3
+}
+
 /** Soru çözerken toplanan kelimelerin etiketi. */
 export const EXAM_COLLECTED_TAG = 'YDS-Sınav-Sorusu'
 
@@ -168,10 +193,11 @@ export function getWordsForGroup(
   // 1. Yerleşik grup kontrolü
   const builtIn = BUILT_IN_GROUPS.find((g) => g.id === groupId)
   if (builtIn) {
-    return allWords.filter((w) => {
+    const list = allWords.filter((w) => {
       const card = cardMap.get(w.id)
       return builtIn.matcher(w, card, nowIso)
     })
+    return builtIn.order ? list.sort(builtIn.order) : list
   }
 
   // 2. Özel kullanıcı grubu kontrolü
@@ -436,6 +462,8 @@ export function getCategoryBadgeOrName(categoryGroupId: string): string {
       return 'Bağlaçlar & Edatlar'
     case 'fsrs_due':
       return 'Günün Tekrarları'
+    case 'new_words':
+      return 'Yeni Kelimeler'
     case 'weak_words':
       return 'Zorlandıklarım'
     case 'yds_collected':

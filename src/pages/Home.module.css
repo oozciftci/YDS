@@ -766,3 +766,122 @@
   color: var(--text);
   text-decoration: underline;
 }
+
+/* 2. Bugünkü Plan kartı */
+.planCard {
+  background: var(--gradient-hero);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 1rem;
+}
+
+.planHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.planHead .heroParagraph {
+  margin-bottom: 0;
+}
+
+.planRing {
+  flex: none;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--primary) var(--pct), var(--border-subtle) 0);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.planRing span {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.planList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.planRow {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.planDone {
+  opacity: 0.7;
+}
+
+.planIcon {
+  font-size: 1.35rem;
+  text-align: center;
+}
+
+.planBody {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.planTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+}
+
+.planCount {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.planHint {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.planTip {
+  font-size: 0.86rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.planTip:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 560px) {
+  .planRing {
+    display: none;
+  }
+
+  .planRow {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .planRow > button {
+    grid-column: 1 / -1;
+  }
+}
