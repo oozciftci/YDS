@@ -9,13 +9,14 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 4 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
+- ⏸️ Faz 5 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
 
 ## Sıradakiler (yakın)
 
-1. ⏳ Faz 5.1 – Okuma modu (paragraf odaklı okuma, bilinmeyen kelime işaretleme, okuma süresi)
-2. ⏳ Faz 5.2 – Cümle ve paragraf seslendirme (hız ayarı)
-3. ⏳ Faz 6.4 – Anki / CSV içe-dışa aktarma
+1. ⏳ Faz 6.4 – Anki / CSV içe-dışa aktarma
+2. ❓ Faz 6.1 / 6.2 – Yapay zekâ açıklaması ve yazma geri bildirimi: API anahtarı ve maliyet kararı kullanıcıda
+3. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu: Supabase projesinin kurulup kurulmayacağı kararı kullanıcıda
+4. 💡 Yayın sürümü için özgün okuma metinleri (okuma modu şu an yalnızca yerel sınav paragraflarıyla çalışıyor)
 
 ## Yapılanlar
 
@@ -32,6 +33,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Faz 5 – Okuma ve dinleme** (yerel) | Soru Merkezi > Okuma Modu: 130 paragraf, süre ve kelime/dk, dinleme + cümle vurgusu, hız ayarı, baktığın kelimeler, ardından paragrafın soruları. Soru kartlarındaki paragraflarda da "🔊 Dinle". |
 | 19.10.2026 | **Faz 4 – Dilbilgisi Rehberi** | 14 konu, 70 alıştırma (özgün içerik); Ana Sayfa'dan giriş; çıkmış dilbilgisi/cloze sorusundan ilgili konuya bağlantı. |
 
 ---
@@ -107,8 +109,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
-| 5.1 | Okuma modu | ⏳ | Paragraf odaklı okuma, bilinmeyen kelime işaretleme, okuma süresi. |
-| 5.2 | Cümle seslendirme | ⏳ | Paragraf ve cümleleri TTS ile dinleme, hız ayarı. |
+| 5.1 | Okuma modu | ✅ | *Yerel:* `/yds-sorular/okuma`. Paragraf listesi (okundu / kelime/dk), okuyucu (sayaç, kelimeye dokun → anlam ve topla, çeviri anahtarı), "bitirdim" → kelime/dk + 5 paragrafı okuma süresi tahmini + baktığın kelimeler; 400 k/dk üstü göz gezdirme sayılır, kaydedilmez. Sonra "Bu paragrafın sorularını çöz". |
+| 5.2 | Cümle seslendirme | ✅ | Cümle cümle okuma, okunan cümle vurgulu, durdur, hız 0,75–1,15× (tarayıcıda hatırlanır; kelime telaffuzu da bu hızı kullanır). |
 
 ## Faz 6 — Yapay zekâ ve platform
 
@@ -122,6 +124,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Faz 5 tamamlandı. Kelime balonu ve tıklanabilir cümle `exam/WordPopover.tsx` içine ayrıldı (soru kartı ve okuyucu ortak kullanır). `tts.ts`: `speakSentences`, `stopSpeaking`, `getSpeechRate/setSpeechRate`. Okuma kayıtları `yds-reading:<kullanıcı>` (tarayıcı deposu). Okuma modu yayın derlemesinde yok (dist kontrol edildi).
 
 - **19.10.2026** — Faz 4 tamamlandı. Dilbilgisi rehberi ayrı parça olarak yüklenir (gzip ~18 KB). Alıştırma skorları `yds-grammar:<kullanıcı>` anahtarında (tarayıcı deposu; yedeğe dahil değil).
 
