@@ -9,6 +9,7 @@ import {
   type MasteryLevel,
   type PartOfSpeech,
 } from '../types/database'
+import { ActivityHeatmap } from '../components/ActivityHeatmap'
 import styles from './Stats.module.css'
 
 const POS_LABELS: Record<PartOfSpeech, string> = {
@@ -48,6 +49,12 @@ export function StatsPage() {
 
   const sessionLogs = useLiveQuery(
     () => db.sessionLogs.where('userId').equals(activeUserId).toArray(),
+    [activeUserId],
+    [],
+  )
+
+  const examAnswers = useLiveQuery(
+    () => db.examAnswers.where('userId').equals(activeUserId).toArray(),
     [activeUserId],
     [],
   )
@@ -185,6 +192,17 @@ export function StatsPage() {
           <span className={styles.metricSub}>Aktif pratik zamanı</span>
         </div>
       </div>
+
+      {/* 1.5. ÇALIŞMA TAKVİMİ (ISI HARİTASI) */}
+      <section className={styles.sectionCard}>
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>Çalışma Takvimi</h2>
+          <span className="muted" style={{ fontSize: '0.85rem' }}>
+            Son 12 hafta · koyu kare = o gün daha çok çalıştın
+          </span>
+        </div>
+        <ActivityHeatmap logs={reviewLogs} answers={examAnswers} now={nowTimestamp} />
+      </section>
 
       {/* 2. ÖĞRENME SEVİYESİ DAĞILIMI (1-5 PUAN ÇUBUĞU) */}
       <section className={styles.sectionCard}>
