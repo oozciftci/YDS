@@ -9,14 +9,13 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 5 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
+- ⏸️ Faz 6.4 tamamlandı — Faz 6'nın kalan maddeleri kullanıcı kararı bekliyor.
 
 ## Sıradakiler (yakın)
 
-1. ⏳ Faz 6.4 – Anki / CSV içe-dışa aktarma
-2. ❓ Faz 6.1 / 6.2 – Yapay zekâ açıklaması ve yazma geri bildirimi: API anahtarı ve maliyet kararı kullanıcıda
-3. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu: Supabase projesinin kurulup kurulmayacağı kararı kullanıcıda
-4. 💡 Yayın sürümü için özgün okuma metinleri (okuma modu şu an yalnızca yerel sınav paragraflarıyla çalışıyor)
+1. ❓ Faz 6.1 / 6.2 – Yapay zekâ açıklaması ve yazma geri bildirimi: API anahtarı ve maliyet kararı kullanıcıda
+2. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu: Supabase projesinin kurulup kurulmayacağı kararı kullanıcıda
+3. 💡 Yayın sürümü için özgün okuma metinleri (okuma modu şu an yalnızca yerel sınav paragraflarıyla çalışıyor)
 
 ## Yapılanlar
 
@@ -33,6 +32,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Faz 6.4 – CSV / Anki içe-dışa aktarma** | Kelimeler > ⇅ İçe / Dışa Aktar: CSV (Türkçe Excel uyumlu, geri yüklenebilir) ve Anki dosyası indirme; Anki dosyasını otomatik tanıyan, yönü çeviren, önizlemeli içe aktarma. |
 | 19.10.2026 | **Faz 5 – Okuma ve dinleme** (yerel) | Soru Merkezi > Okuma Modu: 130 paragraf, süre ve kelime/dk, dinleme + cümle vurgusu, hız ayarı, baktığın kelimeler, ardından paragrafın soruları. Soru kartlarındaki paragraflarda da "🔊 Dinle". |
 | 19.10.2026 | **Faz 4 – Dilbilgisi Rehberi** | 14 konu, 70 alıştırma (özgün içerik); Ana Sayfa'dan giriş; çıkmış dilbilgisi/cloze sorusundan ilgili konuya bağlantı. |
 
@@ -119,11 +119,13 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 6.1 | "Neden yanlış?" açıklaması | 💤 | API anahtarı / maliyet kararı gerektirir. |
 | 6.2 | Yazma pratiği geri bildirimi | 💤 | Aynı karar. |
 | 6.3 | Cihazlar arası ilerleme senkronu | 💤 | Supabase altyapısı mevcut; yalnızca ilerleme verisi, soru metni asla. |
-| 6.4 | Anki / CSV içe-dışa aktarma | ⏳ | |
+| 6.4 | Anki / CSV içe-dışa aktarma | ✅ | Dışa: CSV (BOM + `;`, öğrenme puanı ve sonraki tekrar dahil) ve Anki "Notes in Plain Text" (Basic not türü, etiketler). İçe: Anki .txt kendiliğinden tanınır (HTML/ses/cloze temizlenir, TR→EN destede yön otomatik çevrilir, elle değiştirilebilir); CSV ayrıştırıcı artık tırnaklı ayırıcı/satır sonu ve "" kaçışını destekliyor. FSRS geçmişi Anki'ye aktarılmaz. |
 
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Faz 6.4 tamamlandı: `services/exchange.ts` (dışa aktarma + Anki okuma), `importer.parseCsvRows` (RFC 4180). İçe/dışa aktarma tek pencerede (yeni üst düğme eklenmedi).
 
 - **19.10.2026** — Faz 5 tamamlandı. Kelime balonu ve tıklanabilir cümle `exam/WordPopover.tsx` içine ayrıldı (soru kartı ve okuyucu ortak kullanır). `tts.ts`: `speakSentences`, `stopSpeaking`, `getSpeechRate/setSpeechRate`. Okuma kayıtları `yds-reading:<kullanıcı>` (tarayıcı deposu). Okuma modu yayın derlemesinde yok (dist kontrol edildi).
 
