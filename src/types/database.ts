@@ -245,6 +245,30 @@ export interface CoachCorrection {
   explanation: string
 }
 
+/** Geliştirici danışmanının yapılandırılmış önerisi. */
+export interface CoachSuggestion {
+  title: string
+  /** Ne, neden (öğrenme faydası), nasıl (teknik yaklaşım) */
+  detail: string
+  /** Tahmini efor: S (saatler), M (1-2 gün), L (daha uzun) */
+  effort: 'S' | 'M' | 'L'
+  /** İlgili alan, örn. "Soru Merkezi", "Kelime motoru", "YZ" */
+  area: string
+}
+
+export type SuggestionStatus = 'yeni' | 'planlandi' | 'yapildi' | 'vazgecildi'
+
+/** "Öneriler" listesine eklenmiş öneri. Yalnızca cihazda (JSON yedeğine girer). */
+export interface Suggestion extends CoachSuggestion {
+  id: string
+  userId: string
+  status: SuggestionStatus
+  /** Önerinin geldiği sohbet */
+  chatId?: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface CoachTurn {
   role: 'user' | 'model'
   /** Ekranda gösterilen metin */
@@ -255,6 +279,8 @@ export interface CoachTurn {
   corrections?: CoachCorrection[]
   /** Model mesajında: öğrencinin mesajını daha doğal söyleme biçimi */
   better?: string
+  /** Geliştirici danışmanı: bu yanıttaki öneriler */
+  suggestions?: CoachSuggestion[]
   meta?: string
   at: string
 }

@@ -1,5 +1,5 @@
 import { db } from '../db'
-import type { CoachChat, CoachCorrection, CoachMode, CoachTurn } from '../types/database'
+import type { CoachChat, CoachCorrection, CoachMode, CoachSuggestion, CoachTurn } from '../types/database'
 import { generate, generateChat, type AiResult, type ChatTurn } from './ai'
 import { memoryContext } from './memory'
 import { appMapText } from './appMap'
@@ -9,6 +9,7 @@ import { YDS_SECTIONS, type SectionKey } from './ydsSections'
 import { summarizeBySection } from './examProgress'
 import { COACH_MODE_RULES, getSourceMode, tacticsAvailable, tacticsContext } from './tactics'
 import { useSettings } from '../stores/settings'
+import { roadmapDigest } from './roadmapDigest'
 
 // YZ Koç: sohbetlerin oluşturulması, mesaj gönderme ve uzun sohbetlerin özetlenmesi.
 // Sohbetler yalnızca bu cihazda (Dexie) saklanır; yalnızca istek anında Gemini'ye gider.
@@ -24,7 +25,7 @@ export interface CoachModeInfo {
 export const COACH_MODES: CoachModeInfo[] = [
   { mode: 'english', icon: '💬', title: 'İngilizce pratik', desc: 'Serbest sohbet ya da rol yapma; hataların konuşmayı bölmeden altta düzeltilir.', ready: true },
   { mode: 'yds', icon: '🎯', title: 'YDS koçu', desc: 'Durumunu değerlendirir, plan önerir, seni uygulamadaki alıştırmalara yönlendirir.', ready: true },
-  { mode: 'dev', icon: '🛠️', title: 'Geliştirici danışmanı', desc: 'Uygulamayı bilerek iyileştirme ve yeni özellik önerir.', ready: false },
+  { mode: 'dev', icon: '🛠️', title: 'Geliştirici danışmanı', desc: 'Uygulamayı ve yol haritasını bilerek iyileştirme ve yeni özellik önerir.', ready: true },
 ]
 
 export interface Scenario {
@@ -314,9 +315,160 @@ export async function sendYds(chat: CoachChat, text: string): Promise<CoachChat>
   return next
 }
 
+// ---------------------------------------------------------------------------
+// Geliştirici danışmanı
+// ---------------------------------------------------------------------------
+
+export const DEV_QUICK_PROMPTS = [
+  'Uygulamayı genel olarak değerlendir',
+  'Öğrenme açısından en etkili 3 iyileştirme?',
+  'Arayüzü sadeleştirmek için ne önerirsin?',
+  'Yol haritasındaki sıradaki işi nasıl yapmalıyım?',
+  'Teknik borç ve riskler neler?',
+]
+
+const DEV_RULES = [
+  'Sen bu uygulamanın (YDS Kelime: YDS sınavına hazırlık ve İngilizce öğrenme PWA’sı) kıdemli ürün ve yazılım danışmanısın. Kullanıcı hem öğrenci hem de uygulamanın geliştiricisi; React/TypeScript biliyor. Türkçe konuş.',
+  '',
+  'Teknik yapı: React 19 + TypeScript + Vite + Dexie (IndexedDB) PWA, çevrimdışı önce; Zustand ayarlar; FSRS (ts-fsrs) aralıklı tekrar; yapay zekâ Google Gemini (tarayıcıdan, anahtar cihazda; ücretli → ücretsiz katman geçişi; aylık ≈10 $ bütçe); Supabase senkron altyapısı var ama kullanılmıyor; GitHub Pages’te yayın.',
+  'Kurallar: çıkmış YDS soruları ve hoca kitapları telifli, yalnızca yerelde (npm run dev) kullanılır, yayına girmez. Arayüz sade olmalı; yeni menü kalabalığı yok; her ekranda bir cümlelik açıklama.',
+  '',
+  'Nasıl yanıt vereceksin:',
+  '- "reply": sohbet yanıtın (Markdown, kısa ve somut; çoğunlukla 150-250 kelime). Uygulama sayfalarına yalnızca aşağıdaki haritadaki adreslerle [Ad](/adres) biçiminde bağlantı ver.',
+  '- "suggestions": yanıtında somut, uygulanabilir öneri varsa her birini ayrıca listele (en fazla 4). Her öneri: kısa "title"; "detail" = ne, neden (öğrenme ya da kullanım faydası), nasıl (hangi ekran/servis, teknik yaklaşım) 2-4 cümle; "effort" = S (birkaç saat) / M (1-2 gün) / L (daha uzun); "area" = ilgili alan. Öneri yoksa boş liste.',
+  '- Yol haritasında zaten yapılmış ya da planlanmış şeyleri yeni öneri gibi sunma; ilgiliyse ona atıf yap ve nasıl daha iyi olabileceğini söyle.',
+  '- Gerçekçi ol: bütçeyi, tek kişilik geliştirmeyi ve sadelik ilkesini göz önünde tut. Emin olmadığın teknik ayrıntıyı uydurma.',
+]
+
+const DEV_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    reply: { type: 'STRING' },
+    suggestions: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          title: { type: 'STRING' },
+          detail: { type: 'STRING' },
+          effort: { type: 'STRING', enum: ['S', 'M', 'L'] },
+          area: { type: 'STRING' },
+        },
+        required: ['title', 'detail', 'effort', 'area'],
+      },
+    },
+  },
+  required: ['reply', 'suggestions'],
+}
+
+/** Kullanım özeti: hangi özellikler ne kadar kullanılıyor (danışmanın önceliklendirmesi için). */
+async function usageText(userId: string): Promise<string> {
+  const [words, reviews, answers, mocks, chats, notes, suggestions] = await Promise.all([
+    db.words.where('userId').equals(userId).count(),
+    db.reviewLogs.where('userId').equals(userId).count(),
+    db.examAnswers.where('userId').equals(userId).count(),
+    db.mockResults.where('userId').equals(userId).count(),
+    db.coachChats.where('userId').equals(userId).count(),
+    db.memoryNotes.where('userId').equals(userId).count(),
+    db.suggestions.where('userId').equals(userId).toArray(),
+  ])
+  const lines = [
+    `Kullanım: ${words} kelime, ${reviews} kelime tekrarı, ${answers} çıkmış soru cevabı, ${mocks} deneme, ${chats} YZ sohbeti, ${notes} hafıza notu.`,
+  ]
+  if (suggestions.length) {
+    lines.push('Öneriler listesindekiler (tekrar önerme):', ...suggestions.slice(0, 20).map((x) => `- ${x.title} [${x.status}]`))
+  }
+  return lines.join('\n')
+}
+
+async function devSystem(chat: CoachChat): Promise<string> {
+  const lines = [
+    ...DEV_RULES,
+    '',
+    'UYGULAMA HARİTASI:',
+    appMapText(),
+    '',
+    'YOL HARİTASI ÖZETİ (YOL_HARITASI.md):',
+    roadmapDigest(),
+    '',
+    await usageText(chat.userId),
+  ]
+  if (chat.summary) lines.push('', `Önceki konuşmanın özeti: ${chat.summary}`)
+  return lines.join('\n')
+}
+
+export async function createDevChat(userId: string): Promise<CoachChat> {
+  const now = new Date().toISOString()
+  const chat: CoachChat = {
+    id: crypto.randomUUID(),
+    userId,
+    mode: 'dev',
+    title: `🛠️ Geliştirici danışmanı · ${new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}`,
+    messages: [],
+    createdAt: now,
+    updatedAt: now,
+  }
+  await db.coachChats.put(chat)
+  return chat
+}
+
+function parseDev(text: string): { reply: string; suggestions: CoachSuggestion[] } {
+  try {
+    const o = JSON.parse(text) as { reply?: string; suggestions?: CoachSuggestion[] }
+    if (typeof o.reply === 'string' && o.reply.trim()) {
+      const effort = (e: string): CoachSuggestion['effort'] => (e === 'S' || e === 'L' ? e : 'M')
+      return {
+        reply: o.reply.trim(),
+        suggestions: (o.suggestions ?? [])
+          .filter((x) => x && x.title && x.detail)
+          .slice(0, 4)
+          .map((x) => ({ title: x.title.trim(), detail: x.detail.trim(), effort: effort(x.effort), area: (x.area || 'Genel').trim() })),
+      }
+    }
+  } catch {
+    // Şemaya uymadıysa metni olduğu gibi göster
+  }
+  return { reply: text.trim(), suggestions: [] }
+}
+
+/** Geliştirici danışmanı: yanıt + (varsa) yapılandırılmış öneriler. */
+export async function sendDev(chat: CoachChat, text: string): Promise<CoachChat> {
+  const now = new Date().toISOString()
+  const userTurn: CoachTurn = text.trim()
+    ? { role: 'user', text: text.trim(), at: now }
+    : {
+        role: 'user',
+        text: '(Sohbeti başlat: kendini bir cümleyle tanıt, yol haritası ve kullanım verisine bakarak uygulamanın şu anki durumunu kısaca değerlendir ve en değerli 2-3 öneriyi ver.)',
+        hidden: true,
+        at: now,
+      }
+  let next: CoachChat = { ...chat, messages: [...chat.messages, userTurn] }
+  next = await maybeSummarize(next)
+  const r = await generateChat(await devSystem(next), historyFor(next), 0.6, { jsonSchema: DEV_SCHEMA })
+  const out = parseDev(r.text)
+  const modelTurn: CoachTurn = {
+    role: 'model',
+    text: out.reply,
+    suggestions: out.suggestions.length ? out.suggestions : undefined,
+    meta: metaOf(r),
+    at: new Date().toISOString(),
+  }
+  next = { ...next, messages: [...next.messages, modelTurn], updatedAt: modelTurn.at }
+  await db.coachChats.put(next)
+  return next
+}
+
+/** Öneriyi "Öneriler" listesine ekler. */
+export async function addSuggestion(userId: string, s: CoachSuggestion, chatId?: string): Promise<void> {
+  const now = new Date().toISOString()
+  await db.suggestions.put({ ...s, id: crypto.randomUUID(), userId, status: 'yeni', chatId, createdAt: now, updatedAt: now })
+}
+
 /** Sohbetin moduna göre gönderir. */
 export function sendMessage(chat: CoachChat, text: string): Promise<CoachChat> {
-  return chat.mode === 'yds' ? sendYds(chat, text) : sendEnglish(chat, text)
+  if (chat.mode === 'yds') return sendYds(chat, text)
+  if (chat.mode === 'dev') return sendDev(chat, text)
+  return sendEnglish(chat, text)
 }
 
 export async function deleteChat(id: string): Promise<void> {

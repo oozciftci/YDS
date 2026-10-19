@@ -391,3 +391,77 @@
   text-decoration: none;
   font-weight: 600;
 }
+
+/* Geliştirici danışmanı önerileri */
+.suggestions {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.suggestion {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px dashed var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 0.88rem;
+}
+
+.suggestion p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.suggestion button {
+  justify-self: start;
+}
+
+.suggestionHead {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.effort {
+  padding: 0 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* Öneriler sayfası */
+.statusTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.suggestionRow {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.7rem 0.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.suggestionRow:last-child {
+  border-bottom: 0;
+}
+
+.suggestionRow p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}

@@ -18,6 +18,8 @@ export interface BackupData {
   /** Hafıza notları ve YZ Koç sohbetleri (yalnızca cihazda; senkrona girmez) */
   memoryNotes?: unknown[]
   coachChats?: unknown[]
+  /** Geliştirici danışmanından eklenen öneriler */
+  suggestions?: unknown[]
 }
 
 /**
@@ -25,7 +27,7 @@ export interface BackupData {
  */
 export async function exportDatabaseToJson(): Promise<void> {
   try {
-    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress, examAnswers, mockResults, memoryNotes, coachChats] =
+    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress, examAnswers, mockResults, memoryNotes, coachChats, suggestions] =
       await Promise.all([
         db.users.toArray(),
         db.words.toArray(),
@@ -39,10 +41,11 @@ export async function exportDatabaseToJson(): Promise<void> {
         db.mockResults.toArray(),
         db.memoryNotes.toArray(),
         db.coachChats.toArray(),
+        db.suggestions.toArray(),
       ])
 
     const backup: BackupData = {
-      version: 4,
+      version: 5,
       exportedAt: new Date().toISOString(),
       users,
       words,
@@ -56,6 +59,7 @@ export async function exportDatabaseToJson(): Promise<void> {
       mockResults,
       memoryNotes,
       coachChats,
+      suggestions,
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -109,6 +113,7 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         db.mockResults,
         db.memoryNotes,
         db.coachChats,
+        db.suggestions,
       ],
       async () => {
         if (data.users && Array.isArray(data.users) && data.users.length > 0) {
@@ -143,6 +148,9 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         }
         if (Array.isArray(data.coachChats) && data.coachChats.length > 0) {
           await db.coachChats.bulkPut(data.coachChats as never)
+        }
+        if (Array.isArray(data.suggestions) && data.suggestions.length > 0) {
+          await db.suggestions.bulkPut(data.suggestions as never)
         }
       },
     )

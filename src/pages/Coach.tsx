@@ -11,7 +11,10 @@ import {
   ENGLISH_SCENARIOS,
   LEVELS,
   YDS_QUICK_PROMPTS,
+  DEV_QUICK_PROMPTS,
+  addSuggestion,
   coachTranscript,
+  createDevChat,
   createEnglishChat,
   createYdsChat,
   deleteChat,
@@ -20,9 +23,10 @@ import {
 import { isKnownRoute } from '../services/appMap'
 import { canSpeak, speakSentences, stopSpeaking } from '../services/tts'
 import { useUserStore } from '../stores/user'
-import type { CoachChat, CoachTurn } from '../types/database'
+import type { CoachChat, CoachSuggestion, CoachTurn } from '../types/database'
 import styles from './Coach.module.css'
 import { MemoryPage } from './Memory'
+import { SuggestionsPage } from './Suggestions'
 
 // YZ Koç: sohbet listesi (/koc) ve sohbet ekranı (/koc/:chatId).
 
@@ -44,6 +48,7 @@ function ChatList() {
     [userId],
   )
   const noteCount = useLiveQuery(() => db.memoryNotes.where('userId').equals(userId).count(), [userId])
+  const suggestionCount = useLiveQuery(() => db.suggestions.where('userId').equals(userId).count(), [userId])
   const [setup, setSetup] = useState(false)
   const [scenario, setScenario] = useState(ENGLISH_SCENARIOS[0].id)
   const [level, setLevel] = useState(() => {
@@ -73,6 +78,7 @@ function ChatList() {
         </p>
         <div className={styles.headLinks}>
           <Link to="hafiza">🧠 Hafızam{noteCount ? ` (${noteCount} not)` : ''}</Link>
+          <Link to="oneriler">💡 Öneriler{suggestionCount ? ` (${suggestionCount})` : ''}</Link>
         </div>
       </header>
 
@@ -90,6 +96,7 @@ function ChatList() {
               onClick={() => {
                 if (m.mode === 'english') setSetup(true)
                 else if (m.mode === 'yds' && aiConfigured()) void createYdsChat(userId).then((c) => navigate(c.id))
+                else if (m.mode === 'dev' && aiConfigured()) void createDevChat(userId).then((c) => navigate(c.id))
               }}
             >
               <span className={styles.modeIcon}>{m.icon}</span>
@@ -174,6 +181,32 @@ function ChatList() {
   )
 }
 
+/** Geliştirici danışmanı yanıtındaki öneriler; her biri tek dokunuşla "Öneriler" listesine eklenir. */
+function SuggestionCards({ items, chatId, added }: { items: CoachSuggestion[]; chatId: string; added: Set<string> }) {
+  const userId = useUserStore((s) => s.activeUserId)
+  return (
+    <div className={styles.suggestions}>
+      {items.map((x) => {
+        const done = added.has(x.title)
+        return (
+          <div key={x.title} className={styles.suggestion}>
+            <div className={styles.suggestionHead}>
+              <strong>💡 {x.title}</strong>
+              <span className={styles.effort} title="Tahmini efor: S birkaç saat, M 1-2 gün, L daha uzun">
+                {x.area} · {x.effort}
+              </span>
+            </div>
+            <p>{x.detail}</p>
+            <button type="button" className="btn btn-ghost" disabled={done} onClick={() => void addSuggestion(userId, x, chatId)}>
+              {done ? '✓ Önerilere eklendi' : '＋ Önerilere ekle'}
+            </button>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 /** Öğrenci mesajının altında: düzeltmeler ve daha doğal söyleyiş (bir sonraki YZ mesajından gelir). */
 function Feedback({ next }: { next?: CoachTurn }) {
   if (!next || next.role !== 'model') return null
@@ -200,6 +233,10 @@ function Feedback({ next }: { next?: CoachTurn }) {
 function ChatView() {
   const { chatId = '' } = useParams()
   const chat = useLiveQuery(() => db.coachChats.get(chatId), [chatId])
+  const addedTitles = useLiveQuery(
+    async () => new Set((await db.suggestions.where('chatId').equals(chatId).toArray()).map((x) => x.title)),
+    [chatId],
+  )
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -282,7 +319,9 @@ function ChatView() {
           <p className="muted" style={{ margin: 0, fontSize: '0.86rem' }}>
             {chat.mode === 'yds'
               ? 'Koç; profilini, hafıza notlarını ve bugünkü planını görerek konuşur ve seni uygulamadaki alıştırmalara yönlendirir.'
-              : 'İngilizce yaz; YZ rolünde kalır, hataların mesajının altında kısaca düzeltilir. Türkçe yazarsan İngilizcesini gösterir.'}
+              : chat.mode === 'dev'
+                ? 'Danışman; uygulamanın özelliklerini, yol haritasını ve kullanımını bilerek öneri verir. Beğendiğin öneriyi “Öneriler” listesine ekle.'
+                : 'İngilizce yaz; YZ rolünde kalır, hataların mesajının altında kısaca düzeltilir. Türkçe yazarsan İngilizcesini gösterir.'}
           </p>
         </div>
       </header>
@@ -297,12 +336,15 @@ function ChatView() {
             <div className={styles.bubbleWrap}>
               <div className={styles.bubble}>
                 {m.role === 'model' ? (
-                  <AiText text={m.text} isAllowedLink={chat.mode === 'yds' ? isKnownRoute : undefined} />
+                  <AiText text={m.text} isAllowedLink={chat.mode !== 'english' ? isKnownRoute : undefined} />
                 ) : (
                   <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{m.text}</p>
                 )}
               </div>
               {m.role === 'user' && chat.mode === 'english' && <Feedback next={chat.messages[i + 1]} />}
+              {m.role === 'model' && m.suggestions?.length ? (
+                <SuggestionCards items={m.suggestions} chatId={chat.id} added={addedTitles ?? new Set()} />
+              ) : null}
               {m.role === 'model' && (
                 <div className={styles.msgMeta}>
                   {canSpeak() && (
@@ -338,9 +380,9 @@ function ChatView() {
         </p>
       )}
 
-      {chat.mode === 'yds' && !loading && chat.messages.length > 0 && (
+      {chat.mode !== 'english' && !loading && chat.messages.length > 0 && (
         <div className={styles.chips}>
-          {YDS_QUICK_PROMPTS.map((p) => (
+          {(chat.mode === 'dev' ? DEV_QUICK_PROMPTS : YDS_QUICK_PROMPTS).map((p) => (
             <button key={p} type="button" className={styles.chip} onClick={() => void send(p, chat)}>
               {p}
             </button>
@@ -365,6 +407,8 @@ function ChatView() {
           placeholder={
             chat.mode === 'yds'
               ? 'Koçuna yaz… (Enter: gönder, Shift+Enter: yeni satır)'
+              : chat.mode === 'dev'
+                ? 'Danışmana sor… (Enter: gönder, Shift+Enter: yeni satır)'
               : 'Write in English… (Enter: gönder, Shift+Enter: yeni satır)'
           }
         />
@@ -381,6 +425,7 @@ export default function CoachPage() {
     <Routes>
       <Route index element={<ChatList />} />
       <Route path="hafiza" element={<MemoryPage />} />
+      <Route path="oneriler" element={<SuggestionsPage />} />
       <Route path=":chatId" element={<ChatView />} />
     </Routes>
   )
