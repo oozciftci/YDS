@@ -10,6 +10,8 @@ import {
   type PartOfSpeech,
 } from '../types/database'
 import { ActivityHeatmap } from '../components/ActivityHeatmap'
+import { computeMilestones } from '../services/milestones'
+import { useSettings } from '../stores/settings'
 import styles from './Stats.module.css'
 
 const POS_LABELS: Record<PartOfSpeech, string> = {
@@ -59,7 +61,24 @@ export function StatsPage() {
     [],
   )
 
+  const mockResults = useLiveQuery(() => db.mockResults.where('userId').equals(activeUserId).toArray(), [activeUserId], [])
+  const targetScore = useSettings((s) => s.exam.targetScore)
+
   const [nowTimestamp] = useState(() => Date.now())
+
+  const milestones = useMemo(
+    () =>
+      computeMilestones({
+        cards: cardStates,
+        logs: reviewLogs,
+        answers: examAnswers,
+        mocks: mockResults,
+        targetScore,
+        showQuestions: import.meta.env.DEV,
+      }),
+    [cardStates, reviewLogs, examAnswers, mockResults, targetScore],
+  )
+  const earnedCount = milestones.filter((m) => m.earned).length
 
   // Metrik Hesaplamaları
   const stats = useMemo(() => {
@@ -202,6 +221,35 @@ export function StatsPage() {
           </span>
         </div>
         <ActivityHeatmap logs={reviewLogs} answers={examAnswers} now={nowTimestamp} />
+      </section>
+
+      {/* 1.6. KİLOMETRE TAŞLARI */}
+      <section className={styles.sectionCard}>
+        <div className={styles.sectionHead}>
+          <h2 className={styles.sectionTitle}>Kilometre Taşları</h2>
+          <span className="muted" style={{ fontSize: '0.85rem' }}>
+            {earnedCount} / {milestones.length} kazanıldı
+          </span>
+        </div>
+        <ul className={styles.milestoneGrid}>
+          {milestones.map((m) => (
+            <li key={m.id} className={`${styles.milestone} ${m.earned ? styles.milestoneEarned : ''}`} title={m.desc}>
+              <span className={styles.milestoneIcon}>{m.icon}</span>
+              <strong>{m.title}</strong>
+              <small className="muted">{m.earned ? 'Kazanıldı ✓' : m.desc}</small>
+              {!m.earned && m.goal > 1 && (
+                <span className={styles.milestoneBar} aria-label={`${m.current} / ${m.goal}`}>
+                  <span style={{ width: `${(m.current / m.goal) * 100}%` }} />
+                </span>
+              )}
+              {!m.earned && m.goal > 1 && (
+                <small className={styles.milestoneCount}>
+                  {m.current} / {m.goal}
+                </small>
+              )}
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* 2. ÖĞRENME SEVİYESİ DAĞILIMI (1-5 PUAN ÇUBUĞU) */}
