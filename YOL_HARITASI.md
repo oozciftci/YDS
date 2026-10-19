@@ -9,7 +9,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 6.5b (YDS koçu) tamamlandı. Sıradaki: Faz 6.7 Taktik Kitabı (PDF’ler gelene kadar veri biçimi + Koç / Saf Gemini mod seçimi altyapısı).
+- ⏸️ Faz 6.7 altyapısı tamamlandı (veri biçimi, yerel API, Koç / Saf Gemini seçimi, Taktik Kitabı ekranı, `kaynakTools.mjs`). **Hoca PDF’leri bekleniyor:** `local-data/kaynaklar/` klasörüne konunca OCR → harita → kurallar çıkarılacak. Bu arada sıradaki iş: Faz 6.5c Geliştirici danışmanı.
 
 **Alınan kararlar (19.10.2026):** Sağlayıcı Gemini; önce ücretli Tier 1 (ön ödemeli, otomatik yükleme kapalı, 10 $ harcama sınırı), bakiye/sınır bitince ücretsiz katman anahtarına otomatik geçiş; çıkmış soru metinlerinin Gemini’ye gönderilmesine izin var (yalnızca başka kullanıcılara açılmamalı); varsayılan model gemini-3.8-flash, Ayarlar’dan değiştirilebilir; anahtarlar yalnızca cihazda.
 
@@ -17,7 +17,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 > Kararlar ve ayrıntılı görev tanımı: **`PROMPT_YZ_KOC_VE_TAKTIK.md`** (bu sırayla yürütülüyor).
 
-1. ⏳ Faz 6.7 – **Taktik Kitabı**: hoca kitapları (PDF, kullanıcı verecek) → OCR → kaynak haritası (konu → sayfa) → soru tipine göre taktik kuralları (Claude çıkaracak); soru açıklamasında ve koçta **Koç (kaynaklı) / Saf Gemini** modu. Yalnızca yerel.
+1. ⏳ Faz 6.7b – **Taktik Kitabı içeriği**: hoca PDF’leri gelince OCR (`C:\Projeler\OCR`) → `kaynakTools.mjs ocr-al / ekle` → kaynak haritası (konu → sayfa) → soru tipine göre kurallar (Claude çıkarır) → `kaynakTools.mjs kontrol`.
 2. ⏳ Faz 6.5c – **Geliştirici danışmanı** modu
 3. 💡 “Hatalarımı analiz et”, Gemini File Search ile “kaynağa sor”
 4. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase)
@@ -39,6 +39,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Faz 6.7a – Taktik Kitabı altyapısı** (yerel) | `local-data/kaynaklar/` biçimi (harita.json, taktik-kitabi.json, sayfa-NNNN.md), dev-only `/local-api/kaynak`, soru açıklamasında ve YDS koçunda **📒 Koç (kaynaklı) / ✨ Saf Gemini** seçimi (kitap boşken Koç pasif, her yanıtta mod etiketi), `/yds-sorular/taktik` görüntüleme/düzenleme ekranı (kaynak sayfasını açma), `scripts/kaynakTools.mjs`. |
 | 19.10.2026 | **Faz 6.5b – YDS koçu** | YZ Koç’ta yeni mod: profil + hafıza notları + bugünkü plan ile durum değerlendirmesi, plan, motivasyon; uygulamadaki alıştırmalara tıklanabilir bağlantılar (yalnızca uygulama haritasındaki adresler); hızlı sorular (“Durumumu değerlendir”, “Bu hafta için plan yap” …). |
 | 19.10.2026 | **Faz 6.6 – Hafıza (“beni tanısın”)** | Otomatik profil (uygulama verisinden), “🧠 Hafızaya kaydet” (YZ önerir, sen seçip düzeltip kaydedersin), `/koc/hafiza` (profil + notlar: düzenle/sil/elle ekle), İngilizce pratikte notlar bağlam olarak, soru açıklamasında “beni tanıyarak açıkla”. Notlar ve koç sohbetleri JSON yedeğinde. |
 | 19.10.2026 | **Faz 6.5a – YZ Koç: İngilizce pratik** | `/koc`: sohbet listesi, 6 senaryo (serbest, iş görüşmesi, restoran, seyahat, doktor, akademik tartışma) + CEFR seviyesi; YZ sohbeti başlatır, rolde kalır; düzeltmeler (yanlış → doğru + Türkçe açıklama) ve “daha doğal” söyleyiş öğrenci mesajının altında; 🔊 dinleme; uzun sohbet özetleme. Ana Sayfa’da “YZ Koç” kartı. |
@@ -138,6 +139,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Faz 6.7a: `services/tactics.ts` (yükleyiciler yayında boş döner; Koç modunda soru tipinin ve şıklardan tahmin edilen dilbilgisi konusunun kuralları + haritadan en fazla 4 sayfa alıntı; YDS koçunda en zayıf 2 soru tipinin kuralları, alıntısız), `components/SourceModeToggle.tsx`, `exam/TacticsBookPage.tsx`, vite `localSources()` eklentisi (yalnızca 127.0.0.1; kaydetmede `.bak.json`), `scripts/kaynakTools.mjs` (`ekle`, `ocr-al`, `sayfa`, `ara`, `kontrol`). Geçici test kitabıyla uçtan uca doğrulandı (yol aşma denemeleri reddedildi), test verisi silindi.
 
 - **19.10.2026** — Faz 6.5b: `services/appMap.ts` (koçun bağlantı verebileceği sayfalar; çıkmış soru sayfaları yalnızca dev derlemesinde), `AiText` güvenli uygulama içi bağlantı (`isAllowedLink`), `coach.sendYds` / `sendMessage`; sistem talimatında sabit kısım (rol, kurallar, harita) önce, değişen kısım (profil, hafıza, plan) sonra. Taklit edilmiş Gemini ile doğrulandı; dış ve bilinmeyen bağlantıların düz metin kaldığı test edildi.
 
