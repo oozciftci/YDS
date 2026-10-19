@@ -1,5 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../../db'
+import { daysUntil } from '../../services/dates'
+import { compareMocks, mockAdvice } from '../../services/mockPlan'
 import { useSettings } from '../../stores/settings'
 import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
@@ -13,6 +15,7 @@ const PAD = { l: 34, r: 12, t: 12, b: 22 }
 export function MockHistory() {
   const userId = useUserStore((s) => s.activeUserId)
   const target = useSettings((s) => s.exam.targetScore)
+  const examDate = useSettings((s) => s.exam.targetExamDate)
   const results = useLiveQuery(
     () => db.mockResults.where('[userId+finishedAt]').between([userId, ''], [userId, '￿']).toArray(),
     [userId],
@@ -25,6 +28,8 @@ export function MockHistory() {
   const path = results.map((r, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(r.score).toFixed(1)}`).join(' ')
   const last = results[results.length - 1]
   const best = Math.max(...results.map((r) => r.score))
+  const advice = mockAdvice(results, daysUntil(examDate))
+  const compare = results.length > 1 ? compareMocks(results) : []
   const diff = results.length > 1 ? last.score - results[results.length - 2].score : null
 
   return (
@@ -77,6 +82,38 @@ export function MockHistory() {
             </li>
           ))}
       </ul>
+      <p className={advice.due ? styles.badText : 'muted'} style={{ margin: '0.6rem 0 0', fontSize: '0.86rem' }}>
+        Sınava göre öneri: deneme {advice.cadence.label}.{' '}
+        {advice.sinceLast === null
+          ? 'Henüz deneme çözmedin.'
+          : advice.due
+            ? `Son denemenin üstünden ${advice.sinceLast} gün geçti; yeni deneme zamanı.`
+            : `Son denemenin üstünden ${advice.sinceLast} gün geçti.`}
+      </p>
+      {compare.length > 0 && (
+        <details style={{ marginTop: '0.6rem' }}>
+          <summary>Denemeler arası karşılaştırma (tip bazlı %)</summary>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem', marginTop: '0.4rem' }}>
+              <tbody>
+                {compare.map((r) => (
+                  <tr key={r.key}>
+                    <td style={{ padding: '0.2rem 0.4rem 0.2rem 0' }}>{r.label}</td>
+                    {r.pcts.map((p, i) => (
+                      <td key={i} style={{ textAlign: 'right', padding: '0.2rem 0.4rem' }}>
+                        {p === null ? '–' : `%${p}`}
+                      </td>
+                    ))}
+                    <td className={r.delta === null ? 'muted' : r.delta >= 0 ? styles.okText : styles.badText} style={{ textAlign: 'right', padding: '0.2rem 0 0.2rem 0.4rem' }}>
+                      {r.delta === null ? '' : r.delta === 0 ? '=' : `${r.delta > 0 ? '▲' : '▼'} ${Math.abs(r.delta)}`}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      )}
     </article>
   )
 }
