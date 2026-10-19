@@ -15,6 +15,7 @@ import path from 'node:path'
 //   --prefix <ön ek>  OCR sayfa dosyalarının ön eki; varsayılan <sınav-adı>
 //   --offset <n>      OCR sayfa numarasına eklenip PDF sayfa numarası bulunur (bölünmüş PDF'ler için)
 //   --range a-b       yalnızca bu PDF sayfa aralığı (büyük derlemeden tek sınav ayırmak için)
+//   --answers f.json  cevap anahtarı (no -> harf); verilirse OCR'dan okunanın üzerine yazar
 const argv = process.argv.slice(2)
 const flags = {}
 const positional = []
@@ -83,6 +84,8 @@ const answers = {}
   // Resmî ÖSYM kitapçığı biçimi: <td>20-A</td> çiftleri
   for (const m of keyHtml.matchAll(/<td>\s*(\d{1,2})-([A-E])\s*<\/td>/g)) answers[Number(m[1])] = m[2]
   for (const [k, v] of Object.entries(extraAnswers)) if (!answers[k]) answers[k] = v
+  // --answers <dosya.json>: { "1": "A", ... } (PDF metninden okunan resmî anahtar; OCR gerekmeyen kaynaklar için)
+  if (flags.answers) Object.assign(answers, JSON.parse(fs.readFileSync(flags.answers, 'utf8')))
   // OCR'ın okuyamadığı (filigranlı) cevaplar elle düzeltilir: scripts/data/answer_overrides.json
   const ovFile = 'scripts/data/answer_overrides.json'
   if (fs.existsSync(ovFile)) Object.assign(answers, JSON.parse(fs.readFileSync(ovFile, 'utf8'))[name] || {})
