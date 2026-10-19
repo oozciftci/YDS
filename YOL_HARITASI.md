@@ -9,15 +9,13 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 2 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
+- ⏸️ Faz 3 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
 
 ## Sıradakiler (yakın)
 
-1. ⏳ Faz 3.1 – Sınav tarihine göre günlük plan kartı (tekrar + yeni kelime + soru; en zayıf soru tipi önerisi)
-2. ⏳ Faz 3.2 – Çalışma takvimi (ısı haritası)
-3. ⏳ Faz 3.5 – Deneme sonuçları grafiği
-4. ⏳ Faz 3.3 – Rozetler / kilometre taşları
-5. ⏳ Faz 3.4 – Hatırlatma bildirimi
+1. ⏳ Faz 4.1 – YDS dilbilgisi konu anlatımları (özgün, kısa, örnekli)
+2. ⏳ Faz 4.2 – Konu başına mikro alıştırmalar
+3. ⏳ Faz 4.3 – Yanlış yapılan dilbilgisi sorusundan ilgili konuya bağlantı
 
 ## Yapılanlar
 
@@ -29,6 +27,11 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 2.2 + 2.5 – Akıllı desteler** | "🎯 Zorlandıklarım" ve "📥 Sınavdan Topladıklarım" (boşken gizli); Ana Sayfa deste kısayolları artık desteyi açıyor. |
 | 19.10.2026 | **Faz 2.3 – Dinleme modu** | Sesi duy, anlamını seç; karışık modda da ara sıra gelir. |
 | 19.10.2026 | **Faz 2.4 – Soru bağlamı** (yerel) | Kart arkasında "Çıkmış YDS sorularında N kez geçti" + çevirili örnekler. |
+| 19.10.2026 | **Faz 3.1 – Bugünkü Planın** | Ana sayfada tekrar + yeni kelime + soru görevleri; hedefler sınava kalan güne göre; en zayıf soru tipi önerisi. "Günün Tekrarları" artık yalnızca çalışılmış kartlar; yeni "🌱 Yeni Kelimeler" destesi YDS sıklığına göre. |
+| 19.10.2026 | **Faz 3.2 – Çalışma Takvimi** | İstatistik'te 12 haftalık ısı haritası, 30 günde çalışılan gün, şu anki/en uzun seri. |
+| 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
+| 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
+| 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
 
 ---
 
@@ -85,11 +88,11 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
-| 3.1 | Sınav tarihine göre günlük plan | ⏳ | "Bugün: 25 tekrar + 10 yeni kelime + 15 soru" — tek kart, ilerledikçe dolar. |
-| 3.2 | Çalışma takvimi (ısı haritası) | ⏳ | İstatistikte son 12 haftalık çalışma yoğunluğu. |
-| 3.3 | Rozetler / kilometre taşları | ⏳ | Az sayıda, anlamlı: ilk deneme, 7/30 gün seri, 500 kelime vb. |
-| 3.4 | Hatırlatma bildirimi | ⏳ | PWA bildirimi, kullanıcı saat seçer. |
-| 3.5 | Deneme sonuçları grafiği | ⏳ | Zaman içinde puan gelişimi. |
+| 3.1 | Sınav tarihine göre günlük plan | ✅ | Ana sayfadaki "Bugünkü Planın" kartı: tekrar (zamanı gelenlerin hepsi), yeni kelime (kalan / gün, Ayarlar'daki üst sınırı aşmaz), soru (yerel; kalan / gün, 10-40). Halka ile toplam ilerleme, sıradaki görev vurgulu. |
+| 3.2 | Çalışma takvimi (ısı haritası) | ✅ | İstatistik'te son 12 hafta; kelime tekrarı + çözülen soru; seri bilgileri. |
+| 3.3 | Rozetler / kilometre taşları | ✅ | İstatistik'te 11 kilometre taşı; kazanılmayanlarda ilerleme çubuğu. |
+| 3.4 | Hatırlatma bildirimi | ✅ | Ayarlar > Günlük Hatırlatma. Sınır: push sunucusu olmadığından uygulama tamamen kapalıyken çalışmaz (6.3 ile çözülebilir). |
+| 3.5 | Deneme sonuçları grafiği | ✅ | Soru Merkezi'nde, ilk denemeden sonra görünür. |
 
 ## Faz 4 — Dilbilgisi rehberi
 
@@ -118,6 +121,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Faz 3 tamamlandı. Yeni servisler: `dailyPlan.ts`, `dates.ts` (yerel gün anahtarı — önceki kod UTC kullanıyordu, gece 00-03 arası önceki güne yazılıyordu), `milestones.ts`, `reminder.ts`. `fsrs_due` artık yeni kartları içermiyor; `new_words` destesi eklendi (`order` desteği). Ayarlar'daki "günlük kota" = günlük yeni kelime üst sınırı.
 
 - **19.10.2026** — Faz 2 tamamlandı. FSRS'te üç hata bulundu ve giderildi (öğrenme adımı her tekrarda sıfırlanıyordu → 3 puanlı kartlar 10 dk'da, 4 puanlı kartlar 1 günde takılıyordu; yeni kartlara sahte stability/difficulty veriliyordu). Yeni yerleşik desteler `weak_words`, `yds_collected` (`hideWhenEmpty`). `/study?group=<id>` artık `auto` olmadan da desteyi açıyor. Dinleme modu (`listen`). Yerel `ExamContext` bileşeni yayın derlemesinde yok (dist kontrol edildi).
 - **19.10.2026** — Faz 1 tamamlandı: `/yds-sorular` artık Soru Merkezi (alt sayfalar: `sinav/:id`, `konu/:tip`, `yanlislar`, `deneme/:id`). Cevaplar Dexie `examAnswers`, deneme sonuçları `mockResults` tablosunda (DB v5); eski tarayıcı kayıtları otomatik taşındı; JSON yedek v3 bu tabloları içerir. Yayın derlemesinde modül yok (dist kontrol edildi).
