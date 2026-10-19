@@ -9,7 +9,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 6.1 tamamlandı — kullanıcının `GEMINI_KURULUM.md` ile anahtarları girip gerçek bağlantıyı test etmesi bekleniyor.
+- ⏸️ Gemini kuruldu (ücretli Tier 1 + Developer Program aylık kredisi + ücretsiz yedek anahtar). Soru ekranı iyileştirmeleri (hızlı cevap, ← → / kaydırma, YZ sohbeti) tamamlandı — kullanıcı denemesi bekleniyor.
 
 **Alınan kararlar (19.10.2026):** Sağlayıcı Gemini; önce ücretli Tier 1 (ön ödemeli, otomatik yükleme kapalı, 10 $ harcama sınırı), bakiye/sınır bitince ücretsiz katman anahtarına otomatik geçiş; çıkmış soru metinlerinin Gemini’ye gönderilmesine izin var (yalnızca başka kullanıcılara açılmamalı); varsayılan model gemini-3.8-flash, Ayarlar’dan değiştirilebilir; anahtarlar yalnızca cihazda.
 
@@ -36,6 +36,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Soru ekranı iyileştirmeleri** (yerel) | Hızlı cevap modu (şıkka dokununca kontrol), ← → tuşları ve sola/sağa kaydırma ile gezinme, soru başına YZ sohbeti ("Ben:" / "YZ:" geçmişi, takıldığın noktayı önceden yazma kutusu, devam soruları). |
 | 19.10.2026 | **Faz 6.1 – Gemini entegrasyonu** | Ücretli → ücretsiz otomatik geçiş, tahmini aylık maliyet ve üst sınır, soru açıklaması, adım adım kurulum rehberi. |
 | 19.10.2026 | **Faz 6.4 – CSV / Anki içe-dışa aktarma** | Kelimeler > ⇅ İçe / Dışa Aktar: CSV (Türkçe Excel uyumlu, geri yüklenebilir) ve Anki dosyası indirme; Anki dosyasını otomatik tanıyan, yönü çeviren, önizlemeli içe aktarma. |
 | 19.10.2026 | **Faz 5 – Okuma ve dinleme** (yerel) | Soru Merkezi > Okuma Modu: 130 paragraf, süre ve kelime/dk, dinleme + cümle vurgusu, hız ayarı, baktığın kelimeler, ardından paragrafın soruları. Soru kartlarındaki paragraflarda da "🔊 Dinle". |
@@ -122,7 +123,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
-| 6.1 | "Neden yanlış?" açıklaması | ✅ | *Yerel:* cevaptan sonra "🤖 Yapay zekâ ile açıkla": doğru cevabın gerekçesi, her şık, sınav ipucu, önemli kelimeler. Soru başına bir kez ücretlenir (Dexie `aiNotes`). Ayarlar > Yapay Zekâ: iki anahtar, model, aylık üst sınır, test. Kurulum: `GEMINI_KURULUM.md`. |
+| 6.1 | "Neden yanlış?" açıklaması ve soru sohbeti | ✅ | *Yerel:* cevaptan sonra "🤖 Yapay zekâ ile açıkla": doğru cevabın gerekçesi, her şık, sınav ipucu, önemli kelimeler. Soru başına bir kez ücretlenir (Dexie `aiNotes`). Ayarlar > Yapay Zekâ: iki anahtar, model, aylık üst sınır, test. Kurulum: `GEMINI_KURULUM.md`. |
 | 6.2 | Yazma pratiği geri bildirimi | ⏳ | Gemini ile; konu önerisi, düzeltilmiş metin, hata açıklamaları, kelime önerileri. |
 | 6.3 | Cihazlar arası ilerleme senkronu | 💤 | Supabase altyapısı mevcut; yalnızca ilerleme verisi, soru metni asla. |
 | 6.5 | Yapay zekâ sohbet öğretmeni | 💡 | Görev tabanlı İngilizce sohbetler (restoranda sipariş, iş görüşmesi, YDS paragrafı tartışma); önce yazılı, sonra sesli (Gemini Live API) ve dudak hareketli karakter. Ses maliyeti yazılıdan belirgin yüksek. |
@@ -131,6 +132,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Soru ekranı: `exam/answerControls.tsx` (`useQuickAnswer`, `useQuestionNav`: ← → ve kaydırma; yazı alanında, metin seçiliyken ve açık modalda çalışmaz). `AiExplain` sohbete dönüştü: `services/ai.generateChat` (Gemini çok mesajlı `contents`; her istekte geçmişin tamamı gider), `AiNote.messages` (ekranda gösterilen metin + modele giden metin ayrı tutulur). Öğrencinin özel sorusu sistem talimatına değil kullanıcı mesajına eklenir. Gemini hesabı kuruldu: Developer Program kredisi (₺489,83/ay ≈ 10 $) faturalandırma hesabında görünür; 250 TL ön ödeme ayrı bakiye.
 
 - **19.10.2026** — Faz 6.1: `services/ai.ts` (Gemini REST, `x-goog-api-key`; 402/429/403 → ücretsiz anahtar; ücretli 6 saat sonra ya da Kaydet ile yeniden denenir), Ayarlar’da `AiCard`, `exam/AiExplain.tsx`, `components/AiText.tsx` (güvenli sade Markdown), DB v6 `aiNotes`. Ücretli/ücretsiz geçiş ve maliyet hesabı taklit edilmiş API ile doğrulandı; gerçek anahtarla test kullanıcıda.
 
