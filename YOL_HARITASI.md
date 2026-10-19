@@ -9,19 +9,24 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
+- ✅ YÖKDİL (12 sınav) havuza girdi, çevrildi, YDS metinleri PDF ile doğrulandı, kelime etiketleri ayrıldı. Piyasa araştırması yapıldı (`docs/PIYASA_ARASTIRMASI.md`); Faz 7–10 eklendi.
 - ⏸️ Faz 6.7 altyapısı tamamlandı (veri biçimi, yerel API, Koç / Saf Gemini seçimi, Taktik Kitabı ekranı, `kaynakTools.mjs`). **Hoca PDF’leri bekleniyor:** `local-data/kaynaklar/` klasörüne konunca OCR → harita → kurallar çıkarılacak. Faz 6.5c (Geliştirici danışmanı + Öneriler) ve “Hatalarımı analiz et” de tamamlandı.
 
 **Alınan kararlar (19.10.2026):** Sağlayıcı Gemini; önce ücretli Tier 1 (ön ödemeli, otomatik yükleme kapalı, 10 $ harcama sınırı), bakiye/sınır bitince ücretsiz katman anahtarına otomatik geçiş; çıkmış soru metinlerinin Gemini’ye gönderilmesine izin var (yalnızca başka kullanıcılara açılmamalı); varsayılan model gemini-3.8-flash, Ayarlar’dan değiştirilebilir; anahtarlar yalnızca cihazda.
 
 ## Sıradakiler (yakın)
 
-> Kararlar ve ayrıntılı görev tanımı: **`PROMPT_YZ_KOC_VE_TAKTIK.md`** (bu sırayla yürütülüyor).
+> Piyasa araştırması ve gerekçeler: **`docs/PIYASA_ARASTIRMASI.md`**. Gece/otonom çalışma yönergesi: **`PROMPT_GECE_OTONOM.md`**. Eski kararlar: `PROMPT_YZ_KOC_VE_TAKTIK.md`.
 
-1. ⏳ Faz 6.7b – **Taktik Kitabı içeriği**: hoca PDF’leri gelince OCR (`C:\Projeler\OCR`) → `kaynakTools.mjs ocr-al / ekle` → kaynak haritası (konu → sayfa) → soru tipine göre kurallar (Claude çıkarır) → `kaynakTools.mjs kontrol`.
-2. 💡 Gemini File Search ile “kaynağa sor” (NotebookLM benzeri, sayfa atıflı)
-3. ❓ Faz 6.3 – Cihazlar arası ilerleme senkronu (Supabase)
-4. 💡 Faz 5.3 – Okuma kütüphanesi (açık lisanslı kaynaklar + özgün metinler)
-5. 💡 Telefonda çıkmış sorulara erişim (özel depodan şifreli veri aktarımı)
+**Bu sırayla yürütülür (Faz 7–10 aşağıda ayrıntılı):**
+
+1. ⏳ 7.1 Hedef puan planlayıcı → 7.2 Deneme zaman analizi → 7.3 Yanlış nedeni etiketi → 7.4 Özel deneme oluşturucu → 7.5 Denemeler arası tablo + deneme sıklığı önerisi → 7.6 Gramer konusu sınav sıklığı
+2. ⏳ 8.1 Özgün soru bankası (yayına girebilir) ve Alıştırma Merkezi · 8.2 Gramer mikro-alıştırma genişletme · 8.3 Özgün okuma metinleri · 8.4 YÖKDİL alan terimi paketleri · 8.5 Çeviri cümleleri
+3. ⏳ 9.1 Soru etiket veritabanı (yerel) · 9.2 Kelime–soru eşleme (YÖKDİL dâhil) · 9.3 Doğrulama notları (2018 Aralık cevap farkı)
+4. ⏳ 10.1 Yayın güvenlik denetimi · 10.2 Birim testleri · 10.3 Temizlik
+5. 💡 Faz 7.7–7.10: Çeviri atölyesi, benzer özgün soru üretimi, leech yönetimi, metinden kelime çıkar, haftalık koç raporu
+6. ⏳ Faz 6.7b Taktik Kitabı içeriği (**hoca PDF’lerini bekliyor**)
+7. 💡 Gemini File Search “kaynağa sor” · ❓ Faz 6.3 senkron · 💡 Faz 5.3 okuma kütüphanesi · 💡 Telefonda çıkmış sorulara erişim
 
 ## Yapılanlar
 
@@ -143,6 +148,49 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 6.6 | Hafıza (“beni tanısın”) | ✅ | Otomatik profil, “Hafızaya kaydet” (onaylı), Hafızam sayfası, “Hatalarımı analiz et”. |
 | 6.7 | Taktik Kitabı (yerel) | 🔄 | 6.7a altyapı ✅ · 6.7b içerik (hoca PDF’leri → OCR → harita → kurallar) ⏳ |
 | 6.4 | Anki / CSV içe-dışa aktarma | ✅ | Dışa: CSV (BOM + `;`, öğrenme puanı ve sonraki tekrar dahil) ve Anki "Notes in Plain Text" (Basic not türü, etiketler). İçe: Anki .txt kendiliğinden tanınır (HTML/ses/cloze temizlenir, TR→EN destede yön otomatik çevrilir, elle değiştirilebilir); CSV ayrıştırıcı artık tırnaklı ayırıcı/satır sonu ve "" kaçışını destekliyor. FSRS geçmişi Anki'ye aktarılmaz. |
+
+---
+
+## Faz 7 — Piyasa araştırmasından çıkan özellikler (kullanıcı tarafı)
+
+| # | İş | Durum | Açıklama |
+| :--- | :--- | :---: | :--- |
+| 7.1 | Hedef puan planlayıcı | ⏳ | Hedef puan → gereken doğru sayısı; güncel tip başarısına göre “şu tiplerden şu kadar daha”; Bugünkü Plan’a bağlanır. |
+| 7.2 | Deneme zaman analizi | ⏳ | Soru başına / tip başına süre, yavaş tipler, süre hedefi; sonuç ekranında tablo. |
+| 7.3 | Yanlış nedeni etiketi | ⏳ | Bilmiyordum · Dikkatsizlik · Süre yetmedi; “Hatalarımı analiz et” bunu kullanır; haftalık dağılım. |
+| 7.4 | Özel deneme oluşturucu | ⏳ | Tip / yıl / YDS-YÖKDİL-alan / soru sayısı / süre seç → mini deneme. |
+| 7.5 | Denemeler arası tablo + sıklık önerisi | ⏳ | Tip bazlı karşılaştırma tablosu; sınava kalan zamana göre deneme sıklığı (6+ ay: ayda 1 … son 2 hafta: haftada 2). |
+| 7.6 | Gramer konusu sınav sıklığı | ⏳ | 39 sınavdan sayısal istatistik (yayına girebilir); Dilbilgisi Rehberi sırası/rozeti. |
+| 7.7 | Çeviri atölyesi | 💡 | Kendin çevir → Gemini referansla puanlasın (37-42 / 42-53). |
+| 7.8 | Benzer özgün soru üret | 💡 | Yanlıştan sonra aynı kalıpta yeni özgün soru + açıklama; bütçe sınırına bağlı, yerelde saklanır. |
+| 7.9 | Kelime: leech yönetimi + sınav cümlesinden boşluk kartı | 💡 | Çok unutulan kelimeye farklı ipuçları; sınav yılı/alan etiketi. |
+| 7.10 | Metinden kelime çıkar + haftalık koç raporu | 💡 | Paragraf yapıştır → bilinmeyenleri toplu ekle; Gemini ile haftalık özet. |
+
+## Faz 8 — Özgün içerik (yayına girebilir, telifsiz)
+
+| # | İş | Durum | Açıklama |
+| :--- | :--- | :---: | :--- |
+| 8.1 | Özgün soru bankası + Alıştırma Merkezi | ⏳ | 300+ özgün soru (kelime, gramer, cloze, cümle tamamlama, çeviri, paragraf), Türkçe çeldirici açıklamalı; YDS TEST sayfası genişler. |
+| 8.2 | Gramer mikro-alıştırma genişletme | ⏳ | Konu başına 5 → 10 özgün soru. |
+| 8.3 | Özgün okuma metinleri | ⏳ | Seviyeli kısa metinler + sorular. |
+| 8.4 | YÖKDİL alan terimi paketleri | ⏳ | Fen / Sağlık / Sosyal en sık terimler (kelime + anlam + sayısal sıklık). |
+| 8.5 | Çeviri cümleleri | ⏳ | Özgün EN→TR / TR→EN cümleler (çeviri atölyesi için). |
+
+## Faz 9 — Veri hazırlama (yerel)
+
+| # | İş | Durum | Açıklama |
+| :--- | :--- | :---: | :--- |
+| 9.1 | Soru etiket veritabanı | ⏳ | 39 sınavın her sorusu için konu / alt konu → hedefli çalışma, konu bazlı Yanlış Defteri. |
+| 9.2 | Kelime–soru eşleme | ⏳ | `kelime_ornekleri` YÖKDİL’i de kapsasın. |
+| 9.3 | Doğrulama notları | ⏳ | 2018 Aralık cevap farkı (29, 65, 67, 68, 69, 70) ve PDF’te eksik 5 yer için gerekçeli not. |
+
+## Faz 10 — Kalite ve güvenlik
+
+| # | İş | Durum | Açıklama |
+| :--- | :--- | :---: | :--- |
+| 10.1 | Yayın güvenlik denetimi | ⏳ | `dist` içinde telifli metin sızıntısı taraması (komut dosyası). |
+| 10.2 | Birim testleri | ⏳ | FSRS sarmalayıcı, `sectionOf`, `ydsScore`, havuz süzgeci, normalleştirme. |
+| 10.3 | Temizlik | ⏳ | `oxlint` uyarıları, erişilebilirlik, bundle boyutu. |
 
 ---
 
