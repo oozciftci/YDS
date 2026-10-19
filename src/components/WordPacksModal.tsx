@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ALL_WORD_PACKS, type WordPack } from '../data/wordPacks'
 import { bulkCreateWords, type CreateWordInput } from '../services/words'
 import styles from '../pages/Words.module.css'
@@ -26,6 +26,37 @@ export function WordPacksModal({
   const [importProgress, setImportProgress] = useState<ImportProgress | null>(null)
   const [resultMsg, setResultMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [showArchGuide, setShowArchGuide] = useState(false)
+  // Yalnızca yerelde (npm run dev): telifli kitaplardan çıkarılan kelime paketleri, yayın derlemesinde yoktur
+  const [localPack, setLocalPack] = useState<{ id: string; count: number } | null>(null)
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    fetch('/local-api/paket')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list: { id: string; count: number }[]) => setLocalPack(list.find((p) => p.id === 'modadil-60-gun') ?? null))
+      .catch(() => setLocalPack(null))
+  }, [])
+
+  async function handleLoadLocalPack() {
+    if (!localPack) return
+    setLoadingAction('local_pack')
+    setResultMsg(null)
+    try {
+      const res = await fetch(`/local-api/paket/${localPack.id}`)
+      if (!res.ok) throw new Error('Paket dosyası okunamadı: ' + res.status)
+      const words: CreateWordInput[] = await res.json()
+      const added = await bulkCreateWords(activeUserId, words)
+      setResultMsg({
+        type: 'success',
+        text: `✓ "60 Günde YDS Kelimeleri" paketinden ${added.addedCount} yeni kelime ${activeUserName} havuzuna eklendi! (${added.skippedCount} mükerrer atlandı)`,
+      })
+      onSuccess()
+    } catch (err) {
+      setResultMsg({ type: 'error', text: `Hata: ${err instanceof Error ? err.message : String(err)}` })
+    } finally {
+      setLoadingAction(null)
+    }
+  }
 
   // 1. Oxford 3000 JSON verisini çekip parçalı yükleme fonksiyonu
   async function handleLoadBigDataset(levelFilter?: 'all' | 'a1_a2' | 'b1_b2' | 'c1_c2', actionId = 'full_oxford') {
@@ -531,6 +562,42 @@ export function WordPacksModal({
               {loadingAction === 'new_yds_pack' ? '⏳ Yükleniyor…' : '📥 Yeni YDS Kelimelerini Yükle'}
             </button>
           </div>
+
+          {/* 60 Günde YDS Kelimeleri (Modadil): telifli kitap, yalnızca yerelde */}
+          {import.meta.env.DEV && localPack && (
+            <div
+              style={{
+                padding: '1rem',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--primary)',
+                background: 'var(--primary-subtle)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '0.75rem',
+              }}
+            >
+              <div style={{ flex: 1, minWidth: '240px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>📘 60 Günde YDS Kelimeleri</span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                    {localPack.count} Kelime
+                  </span>
+                  <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.45rem', borderRadius: '4px', background: 'var(--input-bg)', fontWeight: 600 }}>
+                    🔒 yalnızca bu bilgisayar
+                  </span>
+                </div>
+                <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                  Modadil (Suat Gürcan &amp; Dirvan Gürbüz) kitabından: 54 günlük kelime kartları (anlam, örnek cümle ve çevirisi, eş/zıt anlamlılar), phrasal
+                  verb ve edat kalıpları, son sınavların sık kelimeleri. Telifli olduğu için yayındaki sürümde görünmez.
+                </p>
+              </div>
+              <button type="button" className="btn btn-primary" onClick={() => void handleLoadLocalPack()} disabled={loadingAction !== null}>
+                {loadingAction === 'local_pack' ? '⏳ Yükleniyor…' : '📥 Paketi Yükle'}
+              </button>
+            </div>
+          )}
 
           {/* Özel YDS Akademik Çekirdek, Phrasal Verbs & Bağlaçlar */}
           {ALL_WORD_PACKS.slice(0, 3).map((pack) => (

@@ -116,6 +116,47 @@ function localExamData(): Plugin {
   }
 }
 
+// Yerel kelime paketleri (local-data/paketler/<id>.json): telifli kitaplardan çıkarılan paketler, YALNIZCA geliştirme
+// sunucusunda ve localhost'tan. GET /local-api/paket -> [{id, count}], GET /local-api/paket/<id> -> kelime dizisi.
+function localPacks(): Plugin {
+  const dir = path.resolve(import.meta.dirname, 'local-data/paketler')
+  return {
+    name: 'local-packs',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/local-api/paket', (req, res, next) => {
+        const remote = req.socket.remoteAddress || ''
+        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store')
+        const id = decodeURIComponent((req.url || '/').replace(/^\//, '').replace(/[?#].*$/, ''))
+        if (!id) {
+          const list = fs.existsSync(dir)
+            ? fs
+                .readdirSync(dir)
+                .filter((f) => f.endsWith('.json'))
+                .map((f) => ({ id: f.replace(/\.json$/, ''), count: (JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) as unknown[]).length }))
+            : []
+          res.end(JSON.stringify(list))
+          return
+        }
+        if (!/^[a-z0-9-]+$/i.test(id)) return next()
+        const file = path.join(dir, id + '.json')
+        if (!fs.existsSync(file)) {
+          res.statusCode = 404
+          res.end('[]')
+          return
+        }
+        fs.createReadStream(file).pipe(res)
+      })
+    },
+  }
+}
+
 // Hoca kitapları ve Taktik Kitabı (local-data/kaynaklar): telifli, YALNIZCA geliştirme sunucusunda ve localhost'tan.
 //   GET  /local-api/kaynak/harita              -> harita.json (kitaplar + konu -> sayfa aralıkları)
 //   GET  /local-api/kaynak/taktik              -> taktik-kitabi.json (soru tipine göre kurallar)
@@ -194,6 +235,7 @@ export default defineConfig({
     react(),
     localExamData(),
     localSources(),
+    localPacks(),
     VitePWA({
       // 'prompt' modunda yeni SW bekler; ne zaman devreye gireceğine biz karar veririz
       // (src/pwa/registerSW.ts). Kullanıcıya hiçbir şey sorulmaz -> sessiz güncelleme,
