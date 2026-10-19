@@ -9,6 +9,7 @@ import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
 import { listExams, type ExamMeta } from './exam/examData'
 import { MockExam } from './exam/MockExam'
+import { MockHistory } from './exam/MockHistory'
 import { PracticeExam } from './exam/PracticeExam'
 import { TopicPractice } from './exam/TopicPractice'
 import { WrongBook } from './exam/WrongBook'
@@ -142,6 +143,8 @@ function Hub() {
           </span>
         </button>
       </div>
+
+      <MockHistory />
 
       {/* Konuya göre çalış + tip bazlı başarı */}
       <article className="card">
