@@ -9,13 +9,13 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 
 ## Şu an
 
-- ⏸️ Faz 3 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
+- ⏸️ Faz 4 tamamlandı — kullanıcı denemesi ve geri bildirim bekleniyor.
 
 ## Sıradakiler (yakın)
 
-1. ⏳ Faz 4.1 – YDS dilbilgisi konu anlatımları (özgün, kısa, örnekli)
-2. ⏳ Faz 4.2 – Konu başına mikro alıştırmalar
-3. ⏳ Faz 4.3 – Yanlış yapılan dilbilgisi sorusundan ilgili konuya bağlantı
+1. ⏳ Faz 5.1 – Okuma modu (paragraf odaklı okuma, bilinmeyen kelime işaretleme, okuma süresi)
+2. ⏳ Faz 5.2 – Cümle ve paragraf seslendirme (hız ayarı)
+3. ⏳ Faz 6.4 – Anki / CSV içe-dışa aktarma
 
 ## Yapılanlar
 
@@ -32,6 +32,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 19.10.2026 | **Faz 3.5 – Deneme geçmişi** (yerel) | Soru Merkezi'nde puan grafiği + hedef çizgisi + son 5 deneme. |
 | 19.10.2026 | **Faz 3.3 – Kilometre Taşları** | 11 rozet (seri, kelime, soru, Yanlış Defteri, deneme); veriden hesaplanır, ayrıca saklanmaz. |
 | 19.10.2026 | **Faz 3.4 – Günlük hatırlatma** | Ayarlar'da saat seçimi; o gün çalışılmadıysa bildirim (uygulama açıkken). |
+| 19.10.2026 | **Faz 4 – Dilbilgisi Rehberi** | 14 konu, 70 alıştırma (özgün içerik); Ana Sayfa'dan giriş; çıkmış dilbilgisi/cloze sorusundan ilgili konuya bağlantı. |
 
 ---
 
@@ -98,9 +99,9 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
-| 4.1 | YDS gramer konu anlatımları | ⏳ | Özgün içerik: zamanlar, edilgen, koşul, bağlaçlar, edatlar, sıfat cümlesi, isim cümlesi, kipler vb. Kısa ve örnekli. |
-| 4.2 | Konu başına mikro alıştırma | ⏳ | Özgün 5-10 soruluk alıştırmalar. |
-| 4.3 | Sorudan konuya bağlantı | ⏳ | Yanlış yapılan dilbilgisi sorusunda "İlgili konu: …" bağlantısı. |
+| 4.1 | YDS gramer konu anlatımları | ✅ | `/dilbilgisi`: Zamanlar, Kipler, Edilgen, Koşul, Sıfat cümleleri, İsim cümleleri, Zarf cümleleri/bağlaçlar, Geçiş ifadeleri, Edatlar, -ing/to, Karşılaştırma, Miktar ifadeleri, Çift bağlaçlar, Devrik yapılar. Her konuda "Sınavda nasıl tanırsın?", örnekler (TR'li), sık hatalar. İçerik `src/data/grammar.ts`. |
+| 4.2 | Konu başına mikro alıştırma | ✅ | Konu başına 5 özgün YDS tarzı soru, anında açıklama; en iyi skor listede rozet olarak görünür (tarayıcı deposu). |
+| 4.3 | Sorudan konuya bağlantı | ✅ | Dilbilgisi ve cloze sorularında cevaptan sonra "📘 İlgili dilbilgisi konusu" (şıklardan tahmin; 540 sorunun %87'sinde konu bulunur, kalanlar kelime boşluğu). |
 
 ## Faz 5 — Okuma ve dinleme
 
@@ -121,6 +122,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 ---
 
 ## Değişiklik günlüğü
+
+- **19.10.2026** — Faz 4 tamamlandı. Dilbilgisi rehberi ayrı parça olarak yüklenir (gzip ~18 KB). Alıştırma skorları `yds-grammar:<kullanıcı>` anahtarında (tarayıcı deposu; yedeğe dahil değil).
 
 - **19.10.2026** — Faz 3 tamamlandı. Yeni servisler: `dailyPlan.ts`, `dates.ts` (yerel gün anahtarı — önceki kod UTC kullanıyordu, gece 00-03 arası önceki güne yazılıyordu), `milestones.ts`, `reminder.ts`. `fsrs_due` artık yeni kartları içermiyor; `new_words` destesi eklendi (`order` desteği). Ayarlar'daki "günlük kota" = günlük yeni kelime üst sınırı.
 
