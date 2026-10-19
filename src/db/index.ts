@@ -2,6 +2,7 @@ import Dexie, { type EntityTable } from 'dexie'
 import type {
   AiNote,
   CoachChat,
+  MemoryNote,
   AppLog,
   ExamAnswer,
   MockExamResult,
@@ -29,6 +30,7 @@ export class YdsDatabase extends Dexie {
   mockResults!: EntityTable<MockExamResult, 'id'>
   aiNotes!: EntityTable<AiNote, 'id'>
   coachChats!: EntityTable<CoachChat, 'id'>
+  memoryNotes!: EntityTable<MemoryNote, 'id'>
 
   constructor() {
     super('YdsVocabularyDb')
@@ -69,6 +71,10 @@ export class YdsDatabase extends Dexie {
 
     this.version(7).stores({
       coachChats: 'id, userId, mode, updatedAt, [userId+updatedAt]',
+    })
+
+    this.version(8).stores({
+      memoryNotes: 'id, userId, category, updatedAt, [userId+updatedAt]',
     })
   }
 }

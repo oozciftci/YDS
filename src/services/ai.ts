@@ -162,8 +162,8 @@ export function aiConfigured(): boolean {
  * Gemini'ye bir istek gönderir; ücretli → ücretsiz geçişini kendisi yönetir.
  * Hata mesajları Türkçe ve kullanıcıya gösterilebilir.
  */
-export async function generate(system: string, prompt: string, temperature = 0.4): Promise<AiResult> {
-  return generateChat(system, [{ role: 'user', text: prompt }], temperature)
+export async function generate(system: string, prompt: string, temperature = 0.4, opts: GenerateOptions = {}): Promise<AiResult> {
+  return generateChat(system, [{ role: 'user', text: prompt }], temperature, opts)
 }
 
 /** Çok mesajlı sohbet: `turns` kullanıcı ile başlar ve kullanıcı ile biter. */

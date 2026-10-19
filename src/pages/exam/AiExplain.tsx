@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { AiText } from '../../components/AiText'
+import { SaveToMemory } from '../../components/SaveToMemory'
 import { db } from '../../db'
 import { aiConfigured, generateChat } from '../../services/ai'
+import { memoryContext } from '../../services/memory'
+import { useUserStore } from '../../stores/user'
 import { sectionOf } from '../../services/ydsSections'
 import type { AiNoteTurn } from '../../types/database'
 import styles from '../ExamStudy.module.css'
@@ -24,6 +27,15 @@ Bu ilk açıklama 250 kelimeyi geçmesin.
 Verilen cevap anahtarı esastır. Emin olmadığın bir şeyi uydurma; emin değilsen bunu söyle.`
 
 const DEFAULT_ASK = 'Bu soruyu açıklar mısın?'
+const KNOW_ME_KEY = 'yds-ai-know-me'
+
+function readKnowMe(): boolean {
+  try {
+    return localStorage.getItem(KNOW_ME_KEY) === '1'
+  } catch {
+    return false
+  }
+}
 
 /** İlk mesaj: soru bağlamı + (varsa) öğrencinin özel sorusu. Öğrencinin metni sistem talimatına değil, mesaja konur. */
 function buildFirstPrompt(bundle: ExamBundle, q: Question, choice: string | null, studentQuestion: string): string {
@@ -52,6 +64,8 @@ function buildFirstPrompt(bundle: ExamBundle, q: Question, choice: string | null
 
 export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Question; choice: string | null }) {
   const id = `explain:${bundle.exam.id}#${q.no}`
+  const userId = useUserStore((s) => s.activeUserId)
+  const [knowMe, setKnowMe] = useState(readKnowMe)
   const [turns, setTurns] = useState<AiNoteTurn[]>([])
   const [loaded, setLoaded] = useState(false)
   const [input, setInput] = useState('')
@@ -95,12 +109,17 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
     setLoading(true)
     setError('')
     try {
+      // "Beni tanıyarak": profil + hafıza notları sistem talimatına eklenir
+      const memory = knowMe ? await memoryContext(userId, { profile: true }) : ''
+      const system = memory
+        ? `${SYSTEM}\n\nÖĞRENCİYİ TANI (açıklamayı buna göre kişiselleştir; tekrar eden hatasıyla ilgiliyse bunu nazikçe belirt):\n${memory}`
+        : SYSTEM
       const r = await generateChat(
-        SYSTEM,
+        system,
         history.map((t) => ({ role: t.role, text: t.prompt ?? t.text })),
         first ? 0.3 : 0.5,
       )
-      const meta = `${r.model} · ${r.tier === 'paid' ? `ücretli (~${r.usd.toFixed(4)} $)` : 'ücretsiz katman'}`
+      const meta = `${r.model} · ${r.tier === 'paid' ? `ücretli (~${r.usd.toFixed(4)} $)` : 'ücretsiz katman'}${memory ? ' · seni tanıyarak' : ''}`
       const next = [...history, { role: 'model' as const, text: r.text, meta, at: new Date().toISOString() }]
       setTurns(next)
       const firstModel = next.find((t) => t.role === 'model')
@@ -123,6 +142,23 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
     if (!confirm('Bu sorunun yapay zekâ sohbeti silinsin mi?')) return
     await db.aiNotes.delete(id)
     setTurns([])
+  }
+
+  function toggleKnowMe(v: boolean) {
+    setKnowMe(v)
+    try {
+      localStorage.setItem(KNOW_ME_KEY, v ? '1' : '0')
+    } catch {
+      // yoksay
+    }
+  }
+
+  /** "Hafızaya kaydet" için: sorunun kısa bağlamı + sohbet */
+  function transcript(): string {
+    const stem = q.stem.map((s) => s.en).join(' ')
+    const opts = Object.entries(q.options).map(([l, o]) => `${l}) ${o.en}`).join(' | ')
+    const head = `[${sectionOf(q.no).label} sorusu] ${stem}\nŞıklar: ${opts}\nDoğru: ${q.answer}${choice ? `, öğrencinin seçimi: ${choice}` : ''}`
+    return [head, ...turns.map((t) => `${t.role === 'user' ? 'Öğrenci' : 'YZ'}: ${t.text}`)].join('\n')
   }
 
   function onKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
@@ -197,8 +233,15 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
         <button type="button" className="btn btn-secondary" disabled={loading || (started && !input.trim())} onClick={() => void send()}>
           {loading ? '🤖 Yanıt hazırlanıyor…' : started ? 'Gönder' : '🤖 Yapay zekâ ile açıkla'}
         </button>
+        <label className={styles.knowMe} title="Profilin ve hafıza notların açıklamaya eklenir">
+          <input type="checkbox" checked={knowMe} onChange={(e) => toggleKnowMe(e.target.checked)} />
+          beni tanıyarak açıkla
+        </label>
         <small className="muted">Yapay zekâ hata yapabilir; resmi cevap anahtarı esastır.</small>
       </div>
+      {started && (
+        <SaveToMemory source={id} getTranscript={transcript} disabled={loading || !turns.some((t) => t.role === 'model')} />
+      )}
       {error && <p className={styles.aiError}>{error}</p>}
     </div>
   )

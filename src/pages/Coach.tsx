@@ -2,13 +2,15 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import { AiText } from '../components/AiText'
+import { SaveToMemory } from '../components/SaveToMemory'
 import { db } from '../db'
 import { aiConfigured } from '../services/ai'
-import { COACH_MODES, ENGLISH_SCENARIOS, LEVELS, createEnglishChat, deleteChat, sendEnglish } from '../services/coach'
+import { COACH_MODES, ENGLISH_SCENARIOS, LEVELS, coachTranscript, createEnglishChat, deleteChat, sendEnglish } from '../services/coach'
 import { canSpeak, speakSentences, stopSpeaking } from '../services/tts'
 import { useUserStore } from '../stores/user'
 import type { CoachChat, CoachTurn } from '../types/database'
 import styles from './Coach.module.css'
+import { MemoryPage } from './Memory'
 
 // YZ Koç: sohbet listesi (/koc) ve sohbet ekranı (/koc/:chatId).
 
@@ -29,6 +31,7 @@ function ChatList() {
     () => db.coachChats.where('[userId+updatedAt]').between([userId, ''], [userId, '￿']).reverse().toArray(),
     [userId],
   )
+  const noteCount = useLiveQuery(() => db.memoryNotes.where('userId').equals(userId).count(), [userId])
   const [setup, setSetup] = useState(false)
   const [scenario, setScenario] = useState(ENGLISH_SCENARIOS[0].id)
   const [level, setLevel] = useState(() => {
@@ -56,6 +59,9 @@ function ChatList() {
         <p className="muted" style={{ margin: 0 }}>
           Gemini ile İngilizce pratik yap ya da YDS sürecini konuş. Sohbetler yalnızca bu cihazda saklanır.
         </p>
+        <div className={styles.headLinks}>
+          <Link to="hafiza">🧠 Hafızam{noteCount ? ` (${noteCount} not)` : ''}</Link>
+        </div>
       </header>
 
       {!aiConfigured() && <NotConfigured />}
@@ -309,6 +315,12 @@ function ChatView() {
         </p>
       )}
 
+      <SaveToMemory
+        source={`coach:${chat.id}`}
+        getTranscript={() => coachTranscript(chat)}
+        disabled={loading || chat.messages.filter((m) => m.role === 'user' && !m.hidden).length === 0}
+      />
+
       <div className={styles.composer}>
         <textarea
           className={styles.input}
@@ -331,6 +343,7 @@ export default function CoachPage() {
   return (
     <Routes>
       <Route index element={<ChatList />} />
+      <Route path="hafiza" element={<MemoryPage />} />
       <Route path=":chatId" element={<ChatView />} />
     </Routes>
   )

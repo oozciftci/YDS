@@ -1028,3 +1028,12 @@
   outline: none;
   border-color: var(--primary);
 }
+
+.knowMe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}

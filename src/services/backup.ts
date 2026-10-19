@@ -15,6 +15,9 @@ export interface BackupData {
   /** Çıkmış soru cevapları ve deneme sonuçları (yalnızca kimlik/sayı; soru metni yok) */
   examAnswers?: unknown[]
   mockResults?: unknown[]
+  /** Hafıza notları ve YZ Koç sohbetleri (yalnızca cihazda; senkrona girmez) */
+  memoryNotes?: unknown[]
+  coachChats?: unknown[]
 }
 
 /**
@@ -22,7 +25,7 @@ export interface BackupData {
  */
 export async function exportDatabaseToJson(): Promise<void> {
   try {
-    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress, examAnswers, mockResults] =
+    const [users, words, cardStates, reviewLogs, logs, wordGroups, sessionLogs, levelProgress, examAnswers, mockResults, memoryNotes, coachChats] =
       await Promise.all([
         db.users.toArray(),
         db.words.toArray(),
@@ -34,10 +37,12 @@ export async function exportDatabaseToJson(): Promise<void> {
         db.levelProgress.toArray(),
         db.examAnswers.toArray(),
         db.mockResults.toArray(),
+        db.memoryNotes.toArray(),
+        db.coachChats.toArray(),
       ])
 
     const backup: BackupData = {
-      version: 3,
+      version: 4,
       exportedAt: new Date().toISOString(),
       users,
       words,
@@ -49,6 +54,8 @@ export async function exportDatabaseToJson(): Promise<void> {
       levelProgress,
       examAnswers,
       mockResults,
+      memoryNotes,
+      coachChats,
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -100,6 +107,8 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         db.levelProgress,
         db.examAnswers,
         db.mockResults,
+        db.memoryNotes,
+        db.coachChats,
       ],
       async () => {
         if (data.users && Array.isArray(data.users) && data.users.length > 0) {
@@ -128,6 +137,12 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         }
         if (Array.isArray(data.mockResults) && data.mockResults.length > 0) {
           await db.mockResults.bulkPut(data.mockResults as never)
+        }
+        if (Array.isArray(data.memoryNotes) && data.memoryNotes.length > 0) {
+          await db.memoryNotes.bulkPut(data.memoryNotes as never)
+        }
+        if (Array.isArray(data.coachChats) && data.coachChats.length > 0) {
+          await db.coachChats.bulkPut(data.coachChats as never)
         }
       },
     )

@@ -1,0 +1,66 @@
+.panel {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--primary-subtle);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.item input[type='checkbox'] {
+  margin-top: 0.6rem;
+}
+
+.fields {
+  flex: 1;
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.text,
+.select {
+  width: 100%;
+  padding: 0.4rem 0.55rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.text {
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.select {
+  width: auto;
+  justify-self: start;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.error {
+  color: var(--danger);
+}

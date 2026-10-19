@@ -1,6 +1,7 @@
 import { db } from '../db'
 import type { CoachChat, CoachCorrection, CoachMode, CoachTurn } from '../types/database'
 import { generate, generateChat, type AiResult, type ChatTurn } from './ai'
+import { memoryContext } from './memory'
 
 // YZ Koç: sohbetlerin oluşturulması, mesaj gönderme ve uzun sohbetlerin özetlenmesi.
 // Sohbetler yalnızca bu cihazda (Dexie) saklanır; yalnızca istek anında Gemini'ye gider.
@@ -47,7 +48,7 @@ export const LEVELS = [
 const SUMMARIZE_AFTER = 24
 const RECENT_TURNS = 12
 
-function englishSystem(chat: CoachChat): string {
+function englishSystem(chat: CoachChat, memory: string): string {
   const scenario = ENGLISH_SCENARIOS.find((s) => s.id === chat.scenario) ?? ENGLISH_SCENARIOS[0]
   const lines = [
     'You are a friendly English conversation partner for a Turkish adult learner who is also preparing for the YDS exam.',
@@ -62,6 +63,13 @@ function englishSystem(chat: CoachChat): string {
     '- If the learner writes in Turkish, reply in simple English and give an English version of their message in "better".',
     '- If there is no learner message yet, open the conversation: "corrections" empty, "better" empty.',
   ]
+  if (memory) {
+    lines.push(
+      '',
+      'What you know about this learner (notes in Turkish, confirmed by the learner). Use them naturally: pick topics they care about and watch for the mistakes they tend to make; do not mention the notes explicitly.',
+      memory,
+    )
+  }
   if (chat.summary) lines.push('', `Summary of the earlier conversation: ${chat.summary}`)
   return lines.join('\n')
 }
@@ -166,7 +174,8 @@ export async function sendEnglish(chat: CoachChat, text: string): Promise<CoachC
     : { role: 'user', text: '(Start the conversation now with a short opening line for the scenario.)', hidden: true, at: now }
   let next: CoachChat = { ...chat, messages: [...chat.messages, userTurn] }
   next = await maybeSummarize(next)
-  const r = await generateChat(englishSystem(next), historyFor(next), 0.7, { jsonSchema: ENGLISH_SCHEMA })
+  const memory = await memoryContext(chat.userId, { profile: false })
+  const r = await generateChat(englishSystem(next, memory), historyFor(next), 0.7, { jsonSchema: ENGLISH_SCHEMA })
   const out = parseEnglish(r.text)
   const modelTurn: CoachTurn = {
     role: 'model',
@@ -179,6 +188,20 @@ export async function sendEnglish(chat: CoachChat, text: string): Promise<CoachC
   next = { ...next, messages: [...next.messages, modelTurn], updatedAt: modelTurn.at }
   await db.coachChats.put(next)
   return next
+}
+
+/** "Hafızaya kaydet" için sohbet dökümü: görünen mesajlar ve düzeltmeler. */
+export function coachTranscript(chat: CoachChat): string {
+  const lines: string[] = []
+  chat.messages.forEach((m, i) => {
+    if (m.hidden) return
+    lines.push(`${m.role === 'user' ? 'Öğrenci' : 'YZ'}: ${m.text}`)
+    const next = chat.messages[i + 1]
+    if (m.role === 'user' && next?.role === 'model') {
+      for (const c of next.corrections ?? []) lines.push(`  (düzeltme: "${c.original}" → "${c.corrected}" — ${c.explanation})`)
+    }
+  })
+  return lines.join('\n')
 }
 
 export async function deleteChat(id: string): Promise<void> {

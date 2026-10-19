@@ -220,6 +220,21 @@ export interface AiNote {
   messages?: AiNoteTurn[]
 }
 
+/** Hafıza notu türü: tekrar eden hata, konu durumu, öğrenme tercihi, kişisel bağlam. */
+export type MemoryCategory = 'hata' | 'konu' | 'tercih' | 'kisisel'
+
+/** "Beni tanısın": kullanıcının onayladığı kalıcı gözlem. Yapay zekâ isteklerine bağlam olarak eklenir. */
+export interface MemoryNote {
+  id: string
+  userId: string
+  text: string
+  category: MemoryCategory
+  /** Notun çıkarıldığı yer, örn. "coach:<sohbet>" ya da "explain:<sınav>#<soru>"; elle eklenende "manual" */
+  source: string
+  createdAt: string
+  updatedAt: string
+}
+
 /** YZ Koç sohbet modu. */
 export type CoachMode = 'english' | 'yds' | 'dev'
 
