@@ -1,0 +1,804 @@
+{
+  "type": "translation",
+  "sets": [
+    {
+      "id": "translation-01",
+      "title": "Çeviri Seti 1",
+      "qs": [
+        {
+          "s": "Despite the warnings of environmental groups, the company went ahead with the construction of the dam.",
+          "o": [
+            "Şirketin uyarıları üzerine çevre grupları baraj yapımına karşı çıktı.",
+            "Çevre grupları uyardığı için şirket barajın yapımını durdurdu.",
+            "Şirket, çevre gruplarının uyarılarına rağmen barajın yapımına devam etti.",
+            "Çevre grupları, şirketin barajı yapacağı konusunda uyarılarda bulundu.",
+            "Baraj yapımı sürerken çevre grupları şirketi uyardı ve çalışmalar durdu."
+          ],
+          "a": 2,
+          "x": [
+            "Uyaranlar ve karşı çıkanlar karışmış.",
+            "'Durdurdu' anlamı ters.",
+            "Doğru: 'Despite' = -e rağmen; şirket devam etti.",
+            "Uyarının konusu yanlış aktarılmış.",
+            "Çalışmaların durması metinde yok."
+          ]
+        },
+        {
+          "s": "Had it not been for the quick response of the emergency services, the fire would have spread to neighbouring houses.",
+          "o": [
+            "Acil servisler hızlı müdahale ettiği için yangın komşu evlere yayıldı.",
+            "Yangın komşu evlere yayılırken acil servisler hızlıca yanıt verdi.",
+            "Acil servisler yetişseydi yangın komşu evlere yayılmazdı.",
+            "Acil servisler hızlı müdahale etmeseydi yangın yayılmazdı.",
+            "Acil servislerin hızlı müdahalesi olmasaydı yangın komşu evlere yayılacaktı."
+          ],
+          "a": 4,
+          "x": [
+            "Gerçekleşmeyen bir durum anlatılıyor; 'yayıldı' demek yanlış.",
+            "Koşul yapısı kaybolmuş.",
+            "Koşul yanlış aktarılmış (yetişseydi).",
+            "Mantık tersine çevrilmiş.",
+            "Doğru: 'Had it not been for' = ...olmasaydı; yayılma gerçekleşmedi."
+          ]
+        },
+        {
+          "s": "The more a language is used in public life, the more likely it is to survive.",
+          "o": [
+            "Bir dil toplumsal yaşamda ne kadar az kullanılırsa o kadar kolay yaşar.",
+            "Bir dil kamusal hayatta ne kadar çok kullanılırsa hayatta kalma olasılığı o kadar artar.",
+            "Bir dil hayatta kaldığı sürece toplumda daha çok kullanılır.",
+            "Toplum hayatta kalmak için bir dili daha çok kullanmalıdır.",
+            "Dilin kullanılması, toplumun hayatta kalma olasılığını artırır."
+          ],
+          "a": 1,
+          "x": [
+            "Anlam ters çevrilmiş.",
+            "Doğru: 'the more..., the more...' = ne kadar ..., o kadar ...",
+            "Neden-sonuç yönü ters.",
+            "Zorunluluk anlamı eklenmiş.",
+            "Özne yanlış: dil, toplum değil."
+          ]
+        },
+        {
+          "s": "Geçen yıl tamamlanması planlanan proje, finansman sorunları nedeniyle hâlâ bitmedi.",
+          "o": [
+            "The project that is still unfinished will be completed next year.",
+            "The project planned last year has been completed despite financing problems.",
+            "Financing problems were solved when the project was completed last year.",
+            "The project, which was planned to be completed last year, is still unfinished because of financing problems.",
+            "Because of financing, they plan to complete the project last year."
+          ],
+          "a": 3,
+          "x": [
+            "Gelecek yıl bilgisi metinde yok.",
+            "'Tamamlandı' anlamı ters.",
+            "Sorunun çözüldüğü yanlış aktarılmış.",
+            "Doğru: planlanan, hâlâ bitmedi, finansman nedeniyle.",
+            "Zaman ve nedensellik bozuk."
+          ]
+        },
+        {
+          "s": "Bilim insanları, bu keşfin tıp alanında devrim yaratabileceğini düşünüyor.",
+          "o": [
+            "Scientists believe this discovery could bring about a revolution in medicine.",
+            "Scientists think that this discovery has revolutionised medicine.",
+            "Medicine is thought to have discovered a revolution among scientists.",
+            "Scientists were thinking of making a discovery in medicine.",
+            "This discovery must have been revolutionary for scientists."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'yaratabileceğini düşünüyor' = could bring about a revolution.",
+            "'Devrim yarattı' kesin sonuç; metinde olasılık var.",
+            "Özne-nesne karışmış.",
+            "Metinle ilgisiz.",
+            "Çıkarım anlamı eklenmiş."
+          ]
+        },
+        {
+          "s": "Ne kadar çok çalışırsan çalış, bu kadar kısa sürede projeyi bitirmen mümkün değil.",
+          "o": [
+            "However short the time is, you should work harder.",
+            "If you work hard, you can finish the project in a short time.",
+            "You work so hard that the project is finished early.",
+            "No matter how hard you work, it is impossible to finish the project in such a short time.",
+            "It is not possible for the project to need so much work."
+          ],
+          "a": 3,
+          "x": [
+            "Zorunluluk eklenmiş.",
+            "Olumlu anlam; metin olumsuz.",
+            "Sonuç yanlış.",
+            "Doğru: 'No matter how hard' = ne kadar çok çalışırsan çalış.",
+            "Anlam kaymış."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-02",
+      "title": "Çeviri Seti 2",
+      "qs": [
+        {
+          "s": "It is generally agreed that a balanced diet is essential for good health, although opinions differ on what 'balanced' means.",
+          "o": [
+            "Dengeli beslenme herkes için sağlıklıdır ama görüşler 'dengeli' kelimesinde ortaktır.",
+            "Dengeli beslenmenin sağlık için gerekli olduğu genel olarak kabul edilir, ancak 'dengeli'nin ne anlama geldiği konusunda görüşler farklıdır.",
+            "Sağlıklı olmak için diyet yapmak gerekir, çünkü dengeli beslenmenin anlamı bellidir.",
+            "Dengeli bir diyetin anlamı üzerinde uzlaşılmış olsa da sağlık için gerekli değildir.",
+            "Genel görüşe göre sağlık, dengeli beslenmeye rağmen bozulur."
+          ],
+          "a": 1,
+          "x": [
+            "'Ortaktır' ters.",
+            "Doğru: kabul edilen görüş + 'although' ile zıtlık.",
+            "Neden-sonuç bozulmuş.",
+            "Gerekliliği yanlış aktarıyor.",
+            "Anlam tamamen farklı."
+          ]
+        },
+        {
+          "s": "The museum, which was closed for renovation for two years, has finally reopened to the public.",
+          "o": [
+            "Müze, halka açık olduğu için iki yıl boyunca yenilendi.",
+            "Yenileme çalışmaları müzenin halka açılmasıyla başladı.",
+            "Müzenin yenilenmesi iki yıl sürdü ve halk müzeyi hiç ziyaret etmedi.",
+            "Müze kapanmadan önce iki yıl boyunca halka açıktı.",
+            "İki yıldır yenileme nedeniyle kapalı olan müze, nihayet halkın ziyaretine yeniden açıldı."
+          ],
+          "a": 4,
+          "x": [
+            "Neden-sonuç yanlış.",
+            "Sıra ters.",
+            "Halkın hiç ziyaret etmediği metinde yok.",
+            "Zaman sırası yanlış.",
+            "Doğru: iki yıl kapalı kaldıktan sonra yeniden açıldı."
+          ]
+        },
+        {
+          "s": "Rather than raising taxes, the government decided to cut public spending to reduce the budget deficit.",
+          "o": [
+            "Kamu harcamalarının kısılması, vergilerin artırılmasına yol açtı.",
+            "Hükümet, vergileri artırdığı için bütçe açığı azaldı.",
+            "Hükümet, bütçe açığını azaltmak için vergileri artırmak yerine kamu harcamalarını kısmaya karar verdi.",
+            "Hükümet vergi artışı ve harcama kısıntısı arasında karar veremedi.",
+            "Bütçe açığı arttığı için hükümet vergileri kesti."
+          ],
+          "a": 2,
+          "x": [
+            "Neden-sonuç tersine.",
+            "Yanlış karar aktarılmış.",
+            "Doğru: 'Rather than' = ...yerine.",
+            "Karar verilmediği metinde yok.",
+            "Gerekçe ters."
+          ]
+        },
+        {
+          "s": "Onun ne söylediğini anlamam için daha önce bu konuyu çalışmış olmam gerekirdi.",
+          "o": [
+            "I would have needed to study this subject before to understand what he said.",
+            "I should study this subject to understand what he says.",
+            "He said that I had studied this subject before.",
+            "I did not understand because I had not heard him.",
+            "To understand him, I will study the subject soon."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: geçmişte gereken ama olmayan durum: would have needed to.",
+            "Şimdiki zaman/öneri; anlam kaymış.",
+            "Özne ve eylem değişmiş.",
+            "Neden bilgisi eklenmiş.",
+            "Gelecek zaman; anlam kaymış."
+          ]
+        },
+        {
+          "s": "Şirketin kâr elde edebilmesi için ürünlerinin kalitesini artırması şarttır.",
+          "o": [
+            "The company's profit has increased since its products have improved.",
+            "The quality of the products increased so the company made a profit.",
+            "It is essential for the company to improve the quality of its products in order to make a profit.",
+            "A company which makes a profit does not need to improve its products.",
+            "The company must make a profit to improve its products."
+          ],
+          "a": 2,
+          "x": [
+            "Sonuç/neden yanlış.",
+            "Geçmiş sonuç olarak aktarılmış.",
+            "Doğru: şart = essential; amaç = in order to make a profit.",
+            "Gerekliliği reddediyor.",
+            "Amaç-araç ilişkisi tersine."
+          ]
+        },
+        {
+          "s": "Bu sorunun çözümü için hem hükümetin hem de özel sektörün işbirliği yapması gerekiyor.",
+          "o": [
+            "Neither the government nor the private sector can solve this problem.",
+            "Either the government or the private sector should cooperate to solve this problem.",
+            "This problem was solved through the cooperation of the government and the private sector.",
+            "The government has to solve this problem by cooperating with the private sector only.",
+            "Both the government and the private sector need to cooperate in order to solve this problem."
+          ],
+          "a": 4,
+          "x": [
+            "Her ikisinin de çözemeyeceği anlamı verir.",
+            "'Ya ... ya da' anlamı; metin 'hem ... hem de'.",
+            "Geçmişte çözüldü anlamı yanlış.",
+            "Yalnızca özel sektörle işbirliği yanlış.",
+            "Doğru: 'hem ... hem de' = both ... and; gereklilik = need to."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-03",
+      "title": "Çeviri Seti 3",
+      "qs": [
+        {
+          "s": "Few people realise how much the invention of the printing press changed the way knowledge was shared.",
+          "o": [
+            "Birçok kişi, matbaanın icadının bilginin paylaşılma biçimini ne kadar değiştirdiğini fark eder.",
+            "Çok az kişi, matbaanın icadının bilginin paylaşılma biçimini ne kadar değiştirdiğinin farkındadır.",
+            "Matbaanın icadı, insanların bilgiyi paylaşma biçimini çok az değiştirdi.",
+            "Bilginin paylaşılması, matbaanın icadını çok az kişiye öğretti.",
+            "Matbaa icat edilince çok az kişi bilgi paylaşmaya başladı."
+          ],
+          "a": 1,
+          "x": [
+            "'Few' = çok az; 'birçok' ters.",
+            "Doğru: Few people realise = çok az kişi farkındadır.",
+            "Değişimin miktarı yanlış aktarılmış.",
+            "Özne-nesne karışmış.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "No sooner had the results been published than the university was flooded with complaints.",
+          "o": [
+            "Üniversite sonuçları yayımlayamadan şikâyetler geldi.",
+            "Üniversite şikâyetlerle dolduktan sonra sonuçlar yayımlandı.",
+            "Sonuçlar yayımlandığı için üniversite şikâyetleri inceledi.",
+            "Sonuçlar yayımlanır yayımlanmaz üniversiteye şikâyetler yağdı.",
+            "Sonuçlar yayımlanana kadar üniversiteye şikâyet gelmedi."
+          ],
+          "a": 3,
+          "x": [
+            "Yayımlanmama anlamı yanlış.",
+            "Sıra ters.",
+            "Neden-sonuç yanlış.",
+            "Doğru: 'No sooner ... than' = ...r ...maz.",
+            "Zaman ilişkisi yanlış."
+          ]
+        },
+        {
+          "s": "The report suggests that the number of tourists visiting the region is likely to double by 2030.",
+          "o": [
+            "Rapor, bölgeyi ziyaret eden turist sayısının 2030'a kadar iki katına çıkmasının muhtemel olduğunu ileri sürüyor.",
+            "Rapora göre bölgeye giden turistler 2030'da iki kat daha fazla harcama yapacak.",
+            "Rapor, turist sayısının 2030'dan sonra iki katına çıkmasını öneriyor.",
+            "Bölgenin turistleri, 2030 yılına kadar raporun iki katı olacak.",
+            "Turist sayısı iki katına çıkarsa rapor 2030'da yayımlanacak."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'is likely to double' = iki katına çıkması muhtemel.",
+            "Harcama bilgisi metinde yok.",
+            "'Tavsiye' anlamı yanlış; zaman da yanlış.",
+            "Anlam kaymış.",
+            "Koşul yapısı yanlış."
+          ]
+        },
+        {
+          "s": "Yeni yasa, çalışanların fazla mesai ücretlerinin zamanında ödenmesini zorunlu kılıyor.",
+          "o": [
+            "The new law is about employees who have to work overtime.",
+            "The new law allows employees to work overtime on time.",
+            "Employees have been paid overtime on time since the new law.",
+            "The new law makes it compulsory for overtime payments to be made on time.",
+            "Overtime is compulsory according to the new law."
+          ],
+          "a": 3,
+          "x": [
+            "Konu kayması: ödeme değil çalışma.",
+            "İzin verme anlamı yanlış.",
+            "Geçmiş bilgi; yasa sonrası ödeme.",
+            "Doğru: zorunlu kılıyor = makes it compulsory; ödeme zamanında.",
+            "Fazla mesai zorunlu anlamı yanlış."
+          ]
+        },
+        {
+          "s": "Sınava girmeden önce iyi dinlenmeyen öğrencilerin dikkatini toplamakta zorlanması şaşırtıcı değil.",
+          "o": [
+            "Students who rest well before the exam concentrate easily, which is surprising.",
+            "It is not surprising that students who do not rest well before the exam have difficulty concentrating.",
+            "Students are surprised that they cannot rest before the exam.",
+            "It is surprising that students lose concentration after the exam.",
+            "Students who concentrate do not need to rest before an exam."
+          ],
+          "a": 1,
+          "x": [
+            "İyi dinlenenler; metin dinlenmeyenler.",
+            "Doğru: 'şaşırtıcı değil' = not surprising; zorlanma = difficulty concentrating.",
+            "Özne ve duygu yanlış.",
+            "Zaman yanlış (sınav sonrası).",
+            "Anlam ters."
+          ]
+        },
+        {
+          "s": "Ne kadar ünlü olursa olsun, hiçbir sanatçı eleştirilerden tamamen kaçamaz.",
+          "o": [
+            "Famous artists are never criticised by anyone.",
+            "Criticism makes every artist famous.",
+            "No artist can become famous without being criticised.",
+            "Artists who escape criticism become famous.",
+            "However famous an artist may be, no one can completely escape criticism."
+          ],
+          "a": 4,
+          "x": [
+            "Anlam ters.",
+            "Neden-sonuç yanlış.",
+            "Şöhret-eleştiri ilişkisi yanlış.",
+            "Neden-sonuç yanlış.",
+            "Doğru: 'However famous' = ne kadar ünlü olursa olsun."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-04",
+      "title": "Çeviri Seti 4",
+      "qs": [
+        {
+          "s": "Only after the drug had been tested on thousands of patients was it approved for public use.",
+          "o": [
+            "İlacı yalnızca binlerce hasta kullanabilir.",
+            "İlaç onaylandığı için binlerce hasta üzerinde test edildi.",
+            "İlaç, binlerce hastada test edildikten sonra kamuya kullanım için onaylandı.",
+            "İlaç kullanıma sunulunca binlerce hasta test edildi.",
+            "İlaç testlerden önce halka sunuldu."
+          ],
+          "a": 2,
+          "x": [
+            "Anlam yanlış.",
+            "Sıra ters.",
+            "Doğru: 'Only after' = ancak ...dikten sonra.",
+            "Sıra ters.",
+            "Sıra ters."
+          ]
+        },
+        {
+          "s": "Whatever the reasons may be, the decision to close the school has been criticised by parents.",
+          "o": [
+            "Gerekçeler her ne olursa olsun, okulu kapatma kararı veliler tarafından eleştirildi.",
+            "Veliler, okulun kapanma gerekçelerini eleştirdi.",
+            "Okul kapandığı için veliler gerekçelerini sordu.",
+            "Okulun kapatılması, velilerin eleştirilerinden sonra kararlaştırıldı.",
+            "Velilerin eleştirileri, okul kapanırsa gerekçelerin değişeceğini gösteriyor."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'Whatever' = her ne olursa olsun.",
+            "Eleştirilen şey karar; gerekçeler değil.",
+            "Sıra/neden yanlış.",
+            "Sıra ters.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "The study found that students who read for pleasure scored significantly higher in language tests.",
+          "o": [
+            "Öğrenciler dil sınavları için zevkle okumayı tercih ediyor.",
+            "Çalışmaya göre dil sınavında yüksek puan alan öğrenciler zevk için okumaktan vazgeçti.",
+            "Çalışma, zevk için okuyan öğrencilerin dil sınavlarında anlamlı ölçüde daha yüksek puan aldığını ortaya koydu.",
+            "Dil testlerinin zevkle okunması öğrencilerin başarısını düşürdü.",
+            "Okumaktan zevk alan öğrenciler dil sınavlarına girmek istemedi."
+          ],
+          "a": 2,
+          "x": [
+            "Metinde yok.",
+            "Anlam ters.",
+            "Doğru: 'scored significantly higher' = anlamlı ölçüde daha yüksek puan.",
+            "Neden-sonuç yanlış.",
+            "Metinde yok."
+          ]
+        },
+        {
+          "s": "Toplantıya katılan herkesin, kararın alındığı sırada odada bulunduğunu söylemek doğru olmaz.",
+          "o": [
+            "The decision was made while no one was in the room.",
+            "Everyone in the room attended the meeting where the decision was made.",
+            "It is wrong that the decision was made without everyone.",
+            "Everyone who attended the meeting said the decision was wrong.",
+            "It would be wrong to say that everyone who attended the meeting was in the room when the decision was made."
+          ],
+          "a": 4,
+          "x": [
+            "Anlam ters.",
+            "Anlam kaymış (herkes odaydı).",
+            "Karar sürecine yönelik yargı eklenmiş.",
+            "Katılımcıların görüşü eklenmiş.",
+            "Doğru: 'söylemek doğru olmaz' = it would be wrong to say."
+          ]
+        },
+        {
+          "s": "Bu kadar çok emek verilmesine rağmen projenin beklenen sonucu vermemesi herkesi hayal kırıklığına uğrattı.",
+          "o": [
+            "The project gave the expected result because so much effort was put into it.",
+            "Everyone was disappointed that the project did not give the expected result despite so much effort.",
+            "Everyone worked hard so that the project would disappoint no one.",
+            "The effort put into the project was disappointed by the result.",
+            "The project did not give any result, so no effort was spent."
+          ],
+          "a": 1,
+          "x": [
+            "Sonuç/neden yanlış.",
+            "Doğru: 'rağmen' = despite; hayal kırıklığı.",
+            "Amaç yanlış.",
+            "Özne-nesne karışmış.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "Yeterli kanıt bulunamadığı için dava, mahkeme tarafından reddedildi.",
+          "o": [
+            "The case was reopened after sufficient evidence was found.",
+            "The court did not find enough cases to reject the evidence.",
+            "The evidence was rejected by the court so the case was lost.",
+            "The case was dismissed by the court because sufficient evidence could not be found.",
+            "As the court rejected the case, no evidence was needed."
+          ],
+          "a": 3,
+          "x": [
+            "Sonuç ters.",
+            "Anlam kaymış.",
+            "Neden-sonuç yanlış.",
+            "Doğru: 'bulunamadığı için' = because ... could not be found.",
+            "Neden-sonuç yanlış."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-05",
+      "title": "Çeviri Seti 5",
+      "qs": [
+        {
+          "s": "Were it not for the support of her family, she would not have been able to complete her studies abroad.",
+          "o": [
+            "Ailesinin desteği olmasaydı yurt dışındaki eğitimini tamamlayamazdı.",
+            "Ailesi destek olduğu için eğitimini yurt dışında tamamladı.",
+            "Eğitimini tamamlayamadığı için ailesi onu destekledi.",
+            "Ailesi destek vermeseydi yurt dışına gitmezdi.",
+            "Yurt dışındaki eğitimini tamamlayınca ailesi destek oldu."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'Were it not for' = ...olmasaydı.",
+            "Gerçek durum anlatılmış; koşul yok.",
+            "Neden-sonuç ters.",
+            "Gitmeme anlamı yanlış.",
+            "Sıra ters."
+          ]
+        },
+        {
+          "s": "The new regulation aims to ensure that consumers are not misled by false advertising.",
+          "o": [
+            "Yanıltıcı reklamlar yeni düzenlemeyle arttı.",
+            "Yeni düzenleme, reklamcıların tüketicileri yanıltmasını teşvik ediyor.",
+            "Tüketiciler yeni düzenlemeye göre reklamları yanlış anlıyor.",
+            "Yeni düzenleme, tüketicilerin yanıltıcı reklamlarla kandırılmamasını sağlamayı amaçlıyor.",
+            "Düzenleme sayesinde reklamlar tüketicilere yanlış bilgi veriyor."
+          ],
+          "a": 3,
+          "x": [
+            "Sonuç ters.",
+            "Amaç ters.",
+            "Anlam kaymış.",
+            "Doğru: 'aims to ensure' = sağlamayı amaçlıyor.",
+            "Anlam ters."
+          ]
+        },
+        {
+          "s": "Not until she saw the evidence with her own eyes did she believe that the story was true.",
+          "o": [
+            "Hikâyenin doğru olduğuna inandığı için kanıtı gözleriyle gördü.",
+            "Kanıtı kendi gözleriyle görene kadar hikâyenin doğru olduğuna inanmadı.",
+            "Kanıtı gördükten sonra hikâyenin doğru olmadığına inandı.",
+            "Hikâye doğru olduğu için kanıtı görmek istemedi.",
+            "Kanıtı görmeden hikâyeye inanıyordu."
+          ],
+          "a": 1,
+          "x": [
+            "Neden-sonuç ters.",
+            "Doğru: 'Not until' = ...ene kadar ...medi.",
+            "Sonuç ters.",
+            "Anlam kaymış.",
+            "Anlam ters."
+          ]
+        },
+        {
+          "s": "Doktorların, hastaların her zaman kendilerine tam olarak doğruyu söylemediğini bilmesi gerekir.",
+          "o": [
+            "Patients need to know that doctors tell the truth.",
+            "Patients always tell the truth to doctors who need to know it.",
+            "Doctors should not know what patients tell them.",
+            "Doctors do not tell patients the truth, which they should know.",
+            "Doctors need to know that patients do not always tell them the whole truth."
+          ],
+          "a": 4,
+          "x": [
+            "Özne-nesne karışmış.",
+            "Anlam ters.",
+            "Anlam kaymış.",
+            "Özne-nesne karışmış.",
+            "Doğru: 'her zaman ... söylemediği' = do not always tell."
+          ]
+        },
+        {
+          "s": "Bu bölgedeki yağışlar azaldıkça tarımsal üretimde ciddi düşüşler yaşanması kaçınılmaz hale geldi.",
+          "o": [
+            "Rainfall decreases whenever agricultural production falls in this region.",
+            "Agricultural production increased because rainfall in this region decreased.",
+            "As rainfall in this region has decreased, serious falls in agricultural production have become inevitable.",
+            "Serious falls in production are not inevitable even if rainfall decreases.",
+            "Rainfall in this region has increased, so production will fall."
+          ],
+          "a": 2,
+          "x": [
+            "Neden-sonuç ters.",
+            "Sonuç ters.",
+            "Doğru: 'azaldıkça' = as ... has decreased; kaçınılmaz = inevitable.",
+            "Kaçınılmazlık reddediliyor.",
+            "Yağış artışı ters."
+          ]
+        },
+        {
+          "s": "Mühendisler, köprünün tasarımında hiçbir hata olmadığını ancak yıllar sonra kanıtlayabildi.",
+          "o": [
+            "Engineers were able to prove only years later that there was no fault in the design of the bridge.",
+            "Engineers proved there were many faults in the bridge's design after years.",
+            "The bridge was designed by engineers who found no fault.",
+            "It took years for engineers to design a bridge without faults.",
+            "Engineers could not prove that the design of the bridge was faultless."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'ancak yıllar sonra' = only years later.",
+            "Anlam ters.",
+            "Tasarlama ile kanıtlama karışmış.",
+            "Anlam kaymış.",
+            "Kanıtlayabildi; 'could not' ters."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-06",
+      "title": "Çeviri Seti 6",
+      "qs": [
+        {
+          "s": "Not only did the new technology reduce costs, but it also improved the quality of the final product.",
+          "o": [
+            "Maliyetler düşmeyince ürün kalitesi arttı.",
+            "Yeni teknoloji maliyetleri düşürdüğü için ürün kalitesi azaldı.",
+            "Yeni teknoloji yalnızca maliyetleri düşürmekle kalmadı, nihai ürünün kalitesini de artırdı.",
+            "Yeni teknoloji ürünün kalitesini artırmayı amaçlıyordu, maliyet düşmedi.",
+            "Ürün kalitesi arttı ama teknoloji maliyetleri etkilemedi."
+          ],
+          "a": 2,
+          "x": [
+            "Neden-sonuç ters.",
+            "Sonuç ters.",
+            "Doğru: 'Not only ... but also' = yalnızca ... değil, ...de.",
+            "Maliyet bilgisi ters.",
+            "Maliyet bilgisi ters."
+          ]
+        },
+        {
+          "s": "Whether the project succeeds or not depends largely on the support of local authorities.",
+          "o": [
+            "Proje, yerel yönetim desteğini kazanıp kazanamadığına bakmaksızın başarılı oldu.",
+            "Yerel yönetimler, proje başarılı olursa destek verecek.",
+            "Proje başarılı olduğu için yerel yönetimler destek verdi.",
+            "Yerel yönetimlerin desteği, projenin başarısız olmasını önler.",
+            "Projenin başarılı olup olmaması büyük ölçüde yerel yönetimlerin desteğine bağlıdır."
+          ],
+          "a": 4,
+          "x": [
+            "Bağımlılık reddediliyor.",
+            "Koşul yönü ters.",
+            "Neden-sonuç ters.",
+            "Kesin sonuç vermiş.",
+            "Doğru: 'Whether ... or not' = olup olmaması; 'depends on' = bağlıdır."
+          ]
+        },
+        {
+          "s": "The scientist, who had been working on the project for years, was reluctant to share her findings until they were verified.",
+          "o": [
+            "Bilim insanı bulgularını doğruladıktan sonra yıllarca paylaşmak istemedi.",
+            "Yıllardır projede çalışan bilim insanı, bulguları doğrulanana kadar paylaşmaya isteksizdi.",
+            "Projede yıllarca çalışan bilim insanı bulgularını paylaşınca doğrulandı.",
+            "Bulgular doğrulanınca bilim insanı yıllarca çalıştı.",
+            "Bilim insanı bulguları paylaşmak istediği için projeyi bıraktı."
+          ],
+          "a": 1,
+          "x": [
+            "Sıra ters.",
+            "Doğru: 'was reluctant to share until verified'.",
+            "Sıra ters.",
+            "Sıra ters.",
+            "Metinde yok."
+          ]
+        },
+        {
+          "s": "Önümüzdeki yıl faiz oranlarının düşmesi beklense de ekonomistlerin çoğu temkinli davranılması gerektiğini vurguluyor.",
+          "o": [
+            "Economists stress that rates will fall because of caution.",
+            "Because interest rates will fall next year, economists say caution is unnecessary.",
+            "Most economists expect interest rates to rise next year.",
+            "Although interest rates are expected to fall next year, most economists stress the need to be cautious.",
+            "Interest rates fell last year, so economists became cautious."
+          ],
+          "a": 3,
+          "x": [
+            "Neden-sonuç ters.",
+            "Anlam ters.",
+            "Beklenti ters.",
+            "Doğru: 'beklense de' = although ... expected; temkin vurgusu.",
+            "Zaman yanlış."
+          ]
+        },
+        {
+          "s": "Bu araştırmanın sonuçları, uykusuzluğun öğrenme becerisini ciddi biçimde etkilediğini gösteriyor.",
+          "o": [
+            "The results of this study show that sleeplessness seriously affects the ability to learn.",
+            "This study shows that learning causes sleeplessness.",
+            "Sleeplessness is not affected by learning ability according to the study.",
+            "The study found no relationship between sleep and learning.",
+            "Learning skills improve when sleep is reduced, the results show."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: etkilediğini gösteriyor.",
+            "Neden-sonuç ters.",
+            "Yön ters.",
+            "İlişki yok denmiş.",
+            "Sonuç ters."
+          ]
+        },
+        {
+          "s": "Yeterli bütçe ayrılmadığı sürece, bu tür projelerin başarıya ulaşması beklenemez.",
+          "o": [
+            "If projects succeed, sufficient funds will be allocated.",
+            "Such projects succeed even if no funds are allocated.",
+            "Funds are allocated as long as projects are successful.",
+            "Unless sufficient funds are allocated, such projects cannot be expected to succeed.",
+            "Allocating funds cannot be expected from successful projects."
+          ],
+          "a": 3,
+          "x": [
+            "Koşul yönü ters.",
+            "Anlam ters.",
+            "Koşul yönü ters.",
+            "Doğru: 'sürece' = unless; başarı beklenemez.",
+            "Anlam kaymış."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-07",
+      "title": "Çeviri Seti 7",
+      "qs": [
+        {
+          "s": "By the time the government responded to the crisis, thousands of families had already lost their homes.",
+          "o": [
+            "Binlerce aile evini kaybettiği için hükümet krize yanıt verdi.",
+            "Hükümet krize yanıt verdiğinde binlerce aile evini çoktan kaybetmişti.",
+            "Hükümet krize yanıt vermeden binlerce aile evini kaybedecek.",
+            "Krize yanıt veren hükümet, binlerce aileye evini geri verdi.",
+            "Hükümetin yanıtından sonra binlerce aile evini kaybetti."
+          ],
+          "a": 1,
+          "x": [
+            "Neden-sonuç yanlış.",
+            "Doğru: 'By the time' + past perfect = ...dığında çoktan ...mişti.",
+            "Zaman yanlış.",
+            "Anlam ters.",
+            "Sıra ters."
+          ]
+        },
+        {
+          "s": "Such is the power of social media that a single message can reach millions of people within minutes.",
+          "o": [
+            "Sosyal medya olmasaydı mesajlar milyonlara ulaşamazdı.",
+            "Sosyal medya, milyonlarca kişiye ulaşan mesajların gücünü azaltır.",
+            "Mesajların gücü, sosyal medyanın milyonlarca kişiye ulaşmasını engeller.",
+            "Tek bir mesaj, sosyal medyayı güçlü kılmak için milyonlarca kişiye gönderildi.",
+            "Sosyal medyanın gücü o kadar büyüktür ki tek bir mesaj dakikalar içinde milyonlarca kişiye ulaşabilir."
+          ],
+          "a": 4,
+          "x": [
+            "Koşul yapısı yok.",
+            "Anlam ters.",
+            "Anlam ters.",
+            "Amaç yanlış.",
+            "Doğru: 'Such is the power ... that' = ... o kadar büyüktür ki."
+          ]
+        },
+        {
+          "s": "The company's decision to relocate its factory abroad has led to the loss of hundreds of local jobs.",
+          "o": [
+            "Şirket yerel işleri korumak için fabrikasını yurt dışına taşımayı reddetti.",
+            "Yüzlerce yerel iş kaybedildiği için şirket fabrikasını yurt dışına taşıdı.",
+            "Şirketin fabrikasını yurt dışına taşıma kararı yüzlerce yerel işin kaybına yol açtı.",
+            "Fabrikanın yurt dışına taşınması yüzlerce iş yarattı.",
+            "Yerel işlerin kaybı, şirketin yurt dışındaki fabrikasını kapattı."
+          ],
+          "a": 2,
+          "x": [
+            "Karar tersine aktarılmış.",
+            "Neden-sonuç ters.",
+            "Doğru: 'has led to' = yol açtı.",
+            "Sonuç ters.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "Çocukların ekran başında geçirdiği sürenin artmasıyla birlikte, göz sağlığıyla ilgili şikâyetler de yaygınlaştı.",
+          "o": [
+            "Along with the increase in the time children spend in front of screens, complaints about eye health have also become widespread.",
+            "Children who complain about eye health spend more time in front of screens.",
+            "The increase in screen time was caused by complaints about eye health.",
+            "Eye health complaints decreased as children spent time in front of screens.",
+            "Screen time has increased since children began to complain."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'artmasıyla birlikte' = along with the increase.",
+            "Neden-sonuç karışmış.",
+            "Neden-sonuç ters.",
+            "Sonuç ters.",
+            "Neden-sonuç ters."
+          ]
+        },
+        {
+          "s": "Bu kuralın istisnaları olmasına rağmen, genel olarak geçerli olduğu kabul edilmektedir.",
+          "o": [
+            "Exceptions to this rule are generally accepted as valid.",
+            "This rule is accepted because it has no exceptions.",
+            "Although this rule has exceptions, it is generally accepted as valid.",
+            "The rule is not valid, although it is generally accepted.",
+            "It is generally accepted that exceptions make the rule valid."
+          ],
+          "a": 2,
+          "x": [
+            "Özne kaymış.",
+            "Anlam ters.",
+            "Doğru: 'rağmen' = although; genel olarak geçerli.",
+            "Anlam ters.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "Genç nüfusun hızla artması, eğitim sisteminin yeni sorunlarla karşılaşmasına neden oldu.",
+          "o": [
+            "The education system solved the problems of the young population.",
+            "New problems in the education system caused the young population to grow.",
+            "The education system grew rapidly because of its problems.",
+            "The young population decreased due to problems in education.",
+            "The rapid growth of the young population caused the education system to face new problems."
+          ],
+          "a": 4,
+          "x": [
+            "Anlam kaymış.",
+            "Neden-sonuç ters.",
+            "Anlam kaymış.",
+            "Anlam ters.",
+            "Doğru: nedenin yönü doğru (nüfus artışı → yeni sorunlar)."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}
