@@ -1257,3 +1257,72 @@ h2 .listen .rateSelect {
   line-height: 1.6;
   white-space: pre-line;
 }
+
+/* Görüntü tabanlı testler: sayfadan kırpılan soru + şık düğmeleri */
+.cropFrame {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  touch-action: pan-y pinch-zoom;
+}
+
+.cropFrame img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  display: block;
+  user-select: none;
+}
+
+.letterRow {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0.4rem 0 0.2rem;
+}
+
+.letterBtn {
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.letterBtn:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.letterBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.letterPicked {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+  color: var(--primary);
+}
+
+.letterOk {
+  border-color: var(--success);
+  background: var(--success-subtle);
+  color: var(--success);
+}
+
+.letterBad {
+  border-color: var(--danger);
+  background: var(--danger-subtle);
+  color: var(--danger);
+}

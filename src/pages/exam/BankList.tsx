@@ -58,6 +58,12 @@ export function BankList() {
         </div>
       </header>
 
+      <article className="card">
+        <Link to="strateji-3" className={styles.collectedLink} style={{ fontSize: '1rem' }}>
+          📗 MODADİL YDS Sınav Stratejileri 3 — 193 test, konulara göre (gramer + tüm soru tipleri) →
+        </Link>
+      </article>
+
       {banks.length === 0 ? (
         <p className="muted">Henüz soru bankası eklenmedi.</p>
       ) : (

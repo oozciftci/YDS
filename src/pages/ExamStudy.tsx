@@ -9,6 +9,7 @@ import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
 import { inPool, listExams, POOLS, readPool, savePool, type ExamMeta, type Pool } from './exam/examData'
 import { BankList } from './exam/BankList'
+import { ImageTestList, ImageTestRunner } from './exam/ImageTests'
 import { CustomMock } from './exam/CustomMock'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
@@ -190,7 +191,7 @@ function Hub() {
           <span className={styles.quickIcon}>📚</span>
           <span className={styles.quickBody}>
             <strong>Soru bankaları</strong>
-            <span>MODADİL gramer testleri: 20 test, 500 soru; her sorudan sonra kitabın ayrıntılı çözümü.</span>
+            <span>MODADİL gramer bankası (500 soru, çözümlü) ve Sınav Stratejileri 3 (193 test, konulara göre).</span>
           </span>
         </button>
         <button type="button" className={`card ${styles.quickCard}`} onClick={() => navigate('okuma')}>
@@ -307,6 +308,8 @@ export function ExamStudyPage() {
       <Route path="konu/:section" element={<TopicPractice />} />
       <Route path="yanlislar" element={<WrongBook />} />
       <Route path="bankalar" element={<BankList />} />
+      <Route path="bankalar/strateji-3" element={<ImageTestList />} />
+      <Route path="bankalar/strateji-3/:testId" element={<ImageTestRunner />} />
       <Route path="deneme/:examId" element={<MockExam />} />
       <Route path="ozel" element={<CustomMock />} />
       <Route path="taktik" element={<TacticsBookPage />} />

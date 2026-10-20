@@ -161,6 +161,7 @@ function localPacks(): Plugin {
 //   GET /local-api/kitap/                 -> kitap listesi (başlık, sayfa ve ünite sayısı)
 //   GET /local-api/kitap/<kitap>          -> kitap.json (sayfa metinleri hariç)
 //   GET /local-api/kitap/<kitap>/p001.webp -> sayfa görüntüsü
+//   GET /local-api/kitap/<kitap>/testler   -> testler.json (görüntü tabanlı testler; varsa)
 function localBooks(): Plugin {
   const dir = path.resolve(import.meta.dirname, 'local-data/kitaplar')
   const readBook = (id: string) => JSON.parse(fs.readFileSync(path.join(dir, id, 'kitap.json'), 'utf8'))
@@ -200,6 +201,15 @@ function localBooks(): Plugin {
           res.setHeader('Content-Type', 'application/json; charset=utf-8')
           res.setHeader('Cache-Control', 'no-store')
           res.end(JSON.stringify(b))
+          return
+        }
+        // Görüntü tabanlı testler (soru kutuları + cevap anahtarı)
+        if (parts.length === 2 && parts[1] === 'testler') {
+          const file = path.join(dir, id, 'testler.json')
+          if (!fs.existsSync(file)) return next()
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.setHeader('Cache-Control', 'no-store')
+          res.end(fs.readFileSync(file, 'utf8'))
           return
         }
         if (parts.length === 2 && /^p\d{3}\.webp$/.test(parts[1])) {

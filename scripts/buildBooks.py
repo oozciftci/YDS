@@ -146,7 +146,8 @@ def build(book):
     print(f"{book['id']}: {len(pages)} sayfa, {len(pages) - full} bölündü, {full} tam sayfa; {len(names)} ünite adı bulundu")
 
 
-want = set(sys.argv[1:])
-for b in BOOKS:
-    if not want or b['id'] in want:
-        build(b)
+if __name__ == '__main__':
+    want = set(sys.argv[1:])
+    for b in BOOKS:
+        if not want or b['id'] in want:
+            build(b)
