@@ -1,0 +1,174 @@
+# YÖKDİL alan terimi paketleri (özgün derleme: kelime, tür, Türkçe anlam, eş anlamlılar). Sınav metni içermez.
+# Biçim: [ALAN] başlığı altında  kelime|tür|Türkçe anlam|eş anlamlılar (virgülle)
+# Alanlar: Fen, Sağlık, Sosyal. Sıklık sayıları scripts/buildYokdilTerms.mjs ile yerel sınavlardan hesaplanır.
+[Fen]
+molecule|noun|molekül|particle
+atom|noun|atom|particle
+nucleus|noun|çekirdek|core, centre
+electron|noun|elektron|
+proton|noun|proton|
+neutron|noun|nötron|
+gravity|noun|yerçekimi|gravitation
+velocity|noun|hız (yönlü)|speed
+acceleration|noun|ivme, hızlanma|speeding up
+friction|noun|sürtünme|resistance
+pressure|noun|basınç|force
+density|noun|yoğunluk|compactness
+mass|noun|kütle|bulk
+voltage|noun|gerilim, voltaj|
+current|noun|akım|flow
+conductor|noun|iletken|
+insulator|noun|yalıtkan|
+magnetic|adjective|manyetik|
+radiation|noun|ışınım, radyasyon|emission
+wavelength|noun|dalga boyu|
+spectrum|noun|tayf, spektrum|range
+catalyst|noun|katalizör, hızlandırıcı|accelerator
+compound|noun|bileşik|mixture
+element|noun|element, öğe|component
+solution|noun|çözelti, çözüm|
+solvent|noun|çözücü|
+acid|noun|asit|
+alkali|noun|alkali, baz|base
+oxidation|noun|yükseltgenme, oksitlenme|
+combustion|noun|yanma|burning
+erosion|noun|aşınma, erozyon|wearing away
+sediment|noun|tortu, çökelti|deposit
+volcano|noun|yanardağ|
+earthquake|noun|deprem|tremor
+crust|noun|kabuk|shell
+tectonic|adjective|tektonik, yer kabuğuyla ilgili|
+fossil|noun|fosil|
+glacier|noun|buzul|ice mass
+atmosphere|noun|atmosfer|
+greenhouse|noun|sera|
+emission|noun|salınım, emisyon|release
+renewable|adjective|yenilenebilir|sustainable
+fossil fuel|noun|fosil yakıt|
+habitat|noun|yaşam alanı|environment
+ecosystem|noun|ekosistem|
+species|noun|tür (canlı)|kind
+extinction|noun|neslin tükenmesi|dying out
+evolution|noun|evrim|development
+mutation|noun|mutasyon, değişim|alteration
+genome|noun|genom|
+photosynthesis|noun|fotosentez|
+organism|noun|organizma, canlı|being
+hypothesis|noun|hipotez, varsayım|assumption
+experiment|noun|deney|trial
+observation|noun|gözlem|
+variable|noun|değişken|factor
+equation|noun|denklem|formula
+theorem|noun|teorem|
+algorithm|noun|algoritma|procedure
+simulation|noun|benzetim, simülasyon|model
+turbine|noun|türbin|
+semiconductor|noun|yarı iletken|
+[Sağlık]
+symptom|noun|belirti, semptom|sign
+diagnosis|noun|teşhis, tanı|identification
+prognosis|noun|hastalığın seyri, prognoz|outlook
+therapy|noun|tedavi, terapi|treatment
+dose|noun|doz|amount
+prescription|noun|reçete|
+antibiotic|noun|antibiyotik|
+vaccine|noun|aşı|
+immune|adjective|bağışık|resistant
+infection|noun|enfeksiyon, bulaş|contagion
+inflammation|noun|iltihap, yangı|swelling
+chronic|adjective|kronik, süregelen|long-term
+acute|adjective|akut, ani ve şiddetli|severe
+benign|adjective|iyi huylu|harmless
+malignant|adjective|kötü huylu|cancerous
+tumour|noun|tümör, ur|growth
+biopsy|noun|biyopsi|
+surgery|noun|ameliyat, cerrahi|operation
+anaesthesia|noun|anestezi, uyuşturma|
+transplant|noun|nakil|
+artery|noun|atardamar|
+vein|noun|toplardamar|
+circulation|noun|dolaşım|
+blood pressure|noun|tansiyon, kan basıncı|
+cholesterol|noun|kolesterol|
+diabetes|noun|şeker hastalığı|
+obesity|noun|obezite|overweight
+nutrition|noun|beslenme|nourishment
+deficiency|noun|eksiklik, yetersizlik|shortage
+metabolism|noun|metabolizma|
+hormone|noun|hormon|
+neuron|noun|sinir hücresi|
+cognitive|adjective|bilişsel|mental
+dementia|noun|bunama, demans|
+depression|noun|depresyon, çökkünlük|
+anxiety|noun|kaygı|worry
+disorder|noun|bozukluk|disease
+epidemic|noun|salgın|outbreak
+pandemic|noun|küresel salgın|
+contagious|adjective|bulaşıcı|infectious
+hygiene|noun|hijyen, temizlik|cleanliness
+sterile|adjective|steril, mikropsuz|
+side effect|noun|yan etki|
+relapse|noun|nüks, hastalığın tekrarı|
+recovery|noun|iyileşme|healing
+rehabilitation|noun|rehabilitasyon, yeniden kazandırma|
+intensive care|noun|yoğun bakım|
+clinical trial|noun|klinik deneme|
+screening|noun|tarama|
+mortality|noun|ölüm oranı|death rate
+morbidity|noun|hastalık oranı|
+incidence|noun|görülme sıklığı|frequency
+risk factor|noun|risk etkeni|
+genetic|adjective|genetik, kalıtsal|inherited
+pathogen|noun|hastalık etkeni|germ
+[Sosyal]
+inflation|noun|enflasyon|price rise
+recession|noun|durgunluk, resesyon|downturn
+unemployment|noun|işsizlik|
+subsidy|noun|sübvansiyon, devlet desteği|grant
+tariff|noun|gümrük vergisi, tarife|duty
+monopoly|noun|tekel|
+demand|noun|talep|
+supply|noun|arz, sunum|
+revenue|noun|gelir, hasılat|income
+deficit|noun|açık, eksik|shortfall
+legislation|noun|yasama, mevzuat|laws
+constitution|noun|anayasa|
+sovereignty|noun|egemenlik|independence
+democracy|noun|demokrasi|
+authoritarian|adjective|otoriter|
+bureaucracy|noun|bürokrasi|
+diplomacy|noun|diplomasi|
+treaty|noun|antlaşma|agreement
+sanction|noun|yaptırım|penalty
+migration|noun|göç|movement
+urbanisation|noun|kentleşme|
+demographic|adjective|nüfus bilimsel|
+literacy|noun|okuryazarlık|
+inequality|noun|eşitsizlik|
+poverty|noun|yoksulluk|
+welfare|noun|refah, sosyal yardım|well-being
+ethnic|adjective|etnik, ırksal|
+identity|noun|kimlik|
+norm|noun|norm, toplumsal kural|standard
+stereotype|noun|kalıp yargı|
+socialisation|noun|toplumsallaşma|
+heritage|noun|miras, kültürel miras|legacy
+civilisation|noun|uygarlık|
+dynasty|noun|hanedan|
+colony|noun|sömürge|
+empire|noun|imparatorluk|
+revolution|noun|devrim|uprising
+ideology|noun|ideoloji|doctrine
+cognition|noun|biliş|
+perception|noun|algı|
+motivation|noun|güdü, motivasyon|drive
+behaviour|noun|davranış|conduct
+syntax|noun|sözdizimi|
+semantics|noun|anlambilim|
+dialect|noun|lehçe, ağız|
+curriculum|noun|müfredat|syllabus
+pedagogy|noun|eğitbilim|teaching
+literacy rate|noun|okuryazarlık oranı|
+archaeology|noun|arkeoloji|
+anthropology|noun|antropoloji, insanbilim|
+philosophy|noun|felsefe|

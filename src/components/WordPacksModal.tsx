@@ -183,6 +183,27 @@ export function WordPacksModal({
     }
   }
 
+  // 2c. YÖKDİL alan terimleri (Fen / Sağlık / Sosyal): özgün derleme, kelime + anlam + sınavlardaki sıklık sayısı
+  async function handleLoadYokdilField(file: 'fen' | 'saglik' | 'sosyal', label: string) {
+    setLoadingAction(`yokdil_${file}`)
+    setResultMsg(null)
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}data/yokdil_${file}.json`)
+      if (!res.ok) throw new Error('Paket dosyası yüklenemedi: ' + res.status)
+      const words: CreateWordInput[] = await res.json()
+      const added = await bulkCreateWords(activeUserId, words)
+      setResultMsg({
+        type: 'success',
+        text: `✓ YÖKDİL ${label} terimlerinden ${added.addedCount} yeni kelime ${activeUserName} havuzuna eklendi! (${added.skippedCount} mükerrer atlandı)`,
+      })
+      onSuccess()
+    } catch (err) {
+      setResultMsg({ type: 'error', text: `Hata: ${err instanceof Error ? err.message : String(err)}` })
+    } finally {
+      setLoadingAction(null)
+    }
+  }
+
   // 3. Yerleşik özel YDS paketlerini yükleme
   async function handleLoadPack(pack: WordPack) {
     setLoadingAction(pack.id)
@@ -561,6 +582,43 @@ export function WordPacksModal({
             >
               {loadingAction === 'new_yds_pack' ? '⏳ Yükleniyor…' : '📥 Yeni YDS Kelimelerini Yükle'}
             </button>
+          </div>
+
+          {/* YÖKDİL alan terimleri */}
+          <div
+            style={{
+              padding: '1rem',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border)',
+              display: 'grid',
+              gap: '0.6rem',
+            }}
+          >
+            <div>
+              <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>🧪 YÖKDİL Alan Terimleri</span>
+              <p className="muted" style={{ margin: '0.2rem 0 0', fontSize: '0.82rem' }}>
+                Girdiğin alanın temel terimleri: anlam, eş anlamlı ve (varsa) YÖKDİL sınavlarında kaç kez geçtiği. Yalnızca ihtiyacın olan alanı yükle.
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {(
+                [
+                  ['fen', 'Fen', '🔬'],
+                  ['saglik', 'Sağlık', '🩺'],
+                  ['sosyal', 'Sosyal', '📚'],
+                ] as const
+              ).map(([file, label, icon]) => (
+                <button
+                  key={file}
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => void handleLoadYokdilField(file, label)}
+                  disabled={loadingAction !== null}
+                >
+                  {loadingAction === `yokdil_${file}` ? '⏳ Yükleniyor…' : `${icon} ${label} terimlerini yükle`}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* 60 Günde YDS Kelimeleri (Modadil): telifli kitap, yalnızca yerelde */}
