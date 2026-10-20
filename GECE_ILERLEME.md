@@ -26,5 +26,6 @@ Başlangıç: 19.10.2026 22:35. Hedef bitiş: 20.10.2026 06:05.
 - 8.4 tamam: YÖKDİL alan terimleri (168 terim)
 - 10.1 tamam: scripts/checkDist.mjs (`npm run check:dist`)
 - 10.2 tamam: vitest, 15 test
-- Şu an: Faz 9 yerel veri hazırlama (9.1 etiket DB, 9.2 kelime-soru, 9.3 doğrulama notları)
+- Faz 9 tamam (9.1 etiket, 9.2 kelime-soru eşleme, 9.3 doğrulama notları) — local-data değişti: kasa kilitleme gerek
+- Şu an: 10.3 uyarı temizliği; sonra Blok 5 (7.7–7.10)
 - Sıradaki: 8.3 okuma metinleri, 8.4 YÖKDİL terimleri, 8.5 çeviri cümleleri, Faz 9, Faz 10.
