@@ -9,6 +9,7 @@ import styles from '../ExamStudy.module.css'
 import { inPool, loadAllExams, POOLS, readPool, shortTitle, type ExamBundle, type Pool } from './examData'
 import { useQuestionNav } from './answerControls'
 import { QuestionCard } from './QuestionCard'
+import { QuestionNav } from './QuestionNav'
 import { ReasonPicker } from './ReasonPicker'
 import type { QueueItem } from './QueueRunner'
 
@@ -330,17 +331,15 @@ export function CustomMock() {
         )}
       </div>
 
-      <div className={styles.navigator} role="navigation" aria-label="Sorular">
-        {items.map((x, i) => {
+      <QuestionNav
+        count={items.length}
+        idx={idx}
+        onPick={setIdx}
+        stateClass={(i) => {
           const c = choices[i]
-          const cls = review ? (c ? (c === x.q.answer ? styles.navOk : styles.navBad) : '') : c ? styles.navPicked : ''
-          return (
-            <button key={i} type="button" className={`${styles.navBtn} ${i === idx ? styles.navCurrent : ''} ${cls}`} onClick={() => setIdx(i)}>
-              {i + 1}
-            </button>
-          )
-        })}
-      </div>
+          return review ? (c ? (c === items[i].q.answer ? styles.navOk : styles.navBad) : '') : c ? styles.navPicked : ''
+        }}
+      />
 
       <QuestionCard
         key={`${it.bundle.exam.id}-${it.q.no}`}

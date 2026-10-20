@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { guessGrammarTopics } from '../../data/grammar'
-import { speakSentences } from '../../services/tts'
 import { sectionOf } from '../../services/ydsSections'
 import styles from '../ExamStudy.module.css'
 import type { ExamBundle, Question, Seg } from './examData'
 import { SentenceView, useWordPopover } from './WordPopover'
 import { AiExplain } from './AiExplain'
+import { ListenControls } from './ListenControls'
 
 interface Props {
   bundle: ExamBundle
@@ -34,7 +34,6 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
   const { onWord, close, popover } = useWordPopover(exam.id + ' / Soru ' + q.no)
   // Paragraf seslendirme: o an okunan cümlenin sırası (null = okunmuyor)
   const [speaking, setSpeaking] = useState<number | null>(null)
-  const stopRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPdfPage(null)
@@ -42,34 +41,10 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  // Soru değişince balonu kapat ve seslendirmeyi durdur
+  // Soru değişince balonu kapat (seslendirme, paragrafa bağlı denetimle birlikte kapanır)
   useEffect(() => {
     close()
-    return () => {
-      stopRef.current?.()
-      stopRef.current = null
-    }
   }, [q.no, exam.id, close])
-
-  function toggleListen(sentences: Seg[]) {
-    if (stopRef.current) {
-      stopRef.current()
-      stopRef.current = null
-      setSpeaking(null)
-      return
-    }
-    setSpeaking(0)
-    stopRef.current = speakSentences(
-      sentences.map((x) => x.en),
-      {
-        onSentence: setSpeaking,
-        onDone: () => {
-          stopRef.current = null
-          setSpeaking(null)
-        },
-      },
-    )
-  }
 
   const letters = Object.keys(q.options)
   // Dilbilgisi ve cloze sorularında şıklara bakıp ilgili rehber konusunu öner
@@ -112,9 +87,12 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
               </button>
             ) : null}
             {assist && passage.kind === 'reading' && (
-              <button type="button" className={styles.pdfBtn} onClick={() => toggleListen(passage.sentences)}>
-                {speaking !== null ? '⏹ Durdur' : '🔊 Dinle'}
-              </button>
+              <ListenControls
+                key={`${exam.id}/${passage.id}`}
+                sentences={passage.sentences}
+                tr={tr}
+                onActive={setSpeaking}
+              />
             )}
           </h2>
           <p className={styles.text}>{passage.sentences.map((s, i) => sv(s, i))}</p>

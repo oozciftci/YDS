@@ -307,48 +307,63 @@
   font-weight: 700;
 }
 
-/* Masaüstü: menü üstte ortalanmış hap */
+/* Masaüstü: menü başlık çubuğunun içinde, sayfa en üstten başlar */
 @media (min-width: 820px) {
   .shell {
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .header {
+    gap: 1rem;
+    padding-top: max(0.6rem, env(safe-area-inset-top));
+    padding-bottom: 0.6rem;
   }
 
   .nav {
-    position: sticky;
-    top: 64px;
+    position: static;
     inset: auto;
-    order: 0;
-    justify-self: center;
     height: auto;
-    gap: 0.25rem;
-    padding: 0.35rem;
-    margin-top: 1rem;
+    gap: 0.15rem;
+    padding: 0.25rem;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--surface);
-    grid-row: 2;
   }
 
   .main {
-    grid-row: 3;
+    padding-top: 1.25rem;
     padding-bottom: 3rem;
   }
 
   .navItem {
+    flex: none;
     flex-direction: row;
-    gap: 0.45rem;
-    padding: 0.55rem 1rem;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
     border-radius: 999px;
-    font-size: 0.875rem;
+    font-size: 0.86rem;
   }
 
   .navItem svg {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
   }
 
   .active {
     background: color-mix(in srgb, var(--primary) 16%, transparent);
+  }
+}
+
+/* Orta genişlik: menüye yer açmak için marka yazısı ve durum metni gizlenir */
+@media (min-width: 820px) and (max-width: 1099px) {
+  .brandText,
+  .hideMobile,
+  .userName {
+    display: none;
+  }
+
+  .navItem {
+    padding: 0.45rem 0.6rem;
   }
 }
 

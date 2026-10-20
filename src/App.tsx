@@ -9,6 +9,7 @@ import { StudyPage } from './pages/Study'
 import { WordsPage } from './pages/Words'
 import { SynonymMatchPage } from './pages/SynonymMatch'
 import { ExamQuizPage } from './pages/ExamQuiz'
+import { StudyHubPage } from './pages/StudyHub'
 
 // YDS soru çalışma sayfası yalnızca yerel geliştirmede (npm run dev) vardır; yayın derlemesinde
 // import.meta.env.DEV false olduğundan bu satır ve sayfa pakete hiç girmez.
@@ -16,6 +17,7 @@ import { ExamQuizPage } from './pages/ExamQuiz'
 const GrammarPage = lazy(() => import('./pages/Grammar'))
 const CoachPage = lazy(() => import('./pages/Coach'))
 const YdsTestPage = lazy(() => import('./pages/YdsTest'))
+const NightModePage = lazy(() => import('./pages/NightMode'))
 
 const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
 
@@ -25,7 +27,16 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route path="calis" element={<StudyHubPage />} />
           <Route path="study" element={<StudyPage />} />
+          <Route
+            path="gece"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <NightModePage />
+              </Suspense>
+            }
+          />
           <Route path="match" element={<SynonymMatchPage />} />
           <Route path="quiz" element={<ExamQuizPage />} />
           {ExamStudyPage && (

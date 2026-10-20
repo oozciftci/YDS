@@ -35,6 +35,20 @@ export async function listOzgunSets(): Promise<OzgunSetMeta[]> {
   return files.flatMap((f) => f.sets.map((s) => ({ id: s.id, type: f.type, title: s.title, count: s.qs.length })))
 }
 
+/** Çevirili okuma paragrafları (gece modu dinlemesi için): cümle cümle İngilizce + Türkçe. */
+export async function listOzgunReadings(): Promise<{ id: string; title: string; sentences: { en: string; tr?: string }[] }[]> {
+  const { files } = await loadFiles()
+  return files.flatMap((f) =>
+    f.sets
+      .filter((s) => s.passage?.kind === 'reading' && s.passage.tr?.length)
+      .map((s) => ({
+        id: s.id,
+        title: s.title,
+        sentences: (s.passage?.sentences ?? []).map((en, i) => ({ en, tr: s.passage?.tr?.[i] })),
+      })),
+  )
+}
+
 function asArray(v: string | string[] | undefined): string[] {
   return v === undefined ? [] : Array.isArray(v) ? v : [v]
 }

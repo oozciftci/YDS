@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type ReactNode } from 'react'
+import { speakWord } from '../services/tts'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { BulkImportModal } from '../components/BulkImportModal'
@@ -19,19 +20,75 @@ import {
   type CreateWordInput,
 } from '../services/words'
 import { useUserStore } from '../stores/user'
-import type { WordItem } from '../types/database'
+import { MASTERY_CONFIG, type CardState, type MasteryLevel, type WordItem } from '../types/database'
 import styles from './Words.module.css'
+
+const PAGE = 50
+const NO_WORDS: WordItem[] = []
+
+const POS_SHORT: Record<string, string> = {
+  verb: 'fiil',
+  noun: 'isim',
+  adjective: 'sıfat',
+  adverb: 'zarf',
+  phrasal_verb: 'phrasal',
+  conjunction: 'bağlaç',
+  preposition: 'edat',
+  idiom: 'deyim',
+}
+
+/** Tek satırlık kelime: tıklayınca ayrıntılı kart altında açılır. */
+function WordRow({
+  word,
+  card,
+  open,
+  onToggle,
+  children,
+}: {
+  word: WordItem
+  card?: CardState
+  open: boolean
+  onToggle: () => void
+  children: ReactNode
+}) {
+  return (
+    <li className={`${styles.wordRow} ${open ? styles.wordRowOpen : ''}`}>
+      <div className={styles.rowLine}>
+        <button type="button" className={styles.rowMain} onClick={onToggle} aria-expanded={open}>
+          <strong className={styles.rowTerm}>{word.term}</strong>
+          <span className={styles.rowPos}>{POS_SHORT[word.partOfSpeech] ?? ''}</span>
+          <span className={styles.rowDef}>{word.definition}</span>
+        </button>
+        {card && (
+          <span className={styles.rowMastery} title={MASTERY_CONFIG[(card.masteryScore as MasteryLevel) || 1].label}>
+            {MASTERY_CONFIG[(card.masteryScore as MasteryLevel) || 1].badge}
+          </span>
+        )}
+        <button
+          type="button"
+          className={styles.rowSpeak}
+          onClick={() => speakWord(word.term)}
+          aria-label={`${word.term} kelimesini dinle`}
+          title="Dinle"
+        >
+          🔊
+        </button>
+      </div>
+      {open && <div className={styles.rowDetail}>{children}</div>}
+    </li>
+  )
+}
 
 export function WordsPage() {
   const { activeUser, allUsers } = useUserStore()
   const activeUserId = activeUser?.id || 'user_ozgur'
 
   // Canlı Kelime Listesi
-  const rawWords = useLiveQuery(
+  const loadedWords = useLiveQuery(
     () => db.words.where('userId').equals(activeUserId).filter((w) => !w.isDeleted).toArray(),
     [activeUserId],
-    [],
   )
+  const rawWords = loadedWords ?? NO_WORDS
 
   const allCardStates = useLiveQuery(
     () => db.cardStates.where('userId').equals(activeUserId).toArray(),
@@ -56,10 +113,17 @@ export function WordsPage() {
   const [selectedDiff, setSelectedDiff] = useState<string>('all')
   const [selectedGroup, setSelectedGroup] = useState<string>('all')
 
-  // Görünüm Modu ('cards' | 'table')
-  const [viewMode, setViewMode] = useState<'cards' | 'table'>(() => {
-    return (localStorage.getItem('yds.words_view_mode') as 'cards' | 'table') || 'cards'
+  // Görünüm: sade liste (satıra tıklayınca ayrıntı açılır) ya da tablo
+  const [viewMode, setViewMode] = useState<'list' | 'table'>(() => {
+    try {
+      return localStorage.getItem('yds.words_view_mode') === 'table' ? 'table' : 'list'
+    } catch {
+      return 'list'
+    }
   })
+  // Binlerce kelime aynı anda çizilmesin: sayfa sayfa göster
+  const [shown, setShown] = useState(PAGE)
+  const [openId, setOpenId] = useState<string | null>(null)
 
   // Modal State'leri
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -70,9 +134,21 @@ export function WordsPage() {
   const [isPacksModalOpen, setIsPacksModalOpen] = useState(false)
   const [isTextWordsOpen, setIsTextWordsOpen] = useState(false)
 
-  function toggleViewMode(mode: 'cards' | 'table') {
+  function toggleViewMode(mode: 'list' | 'table') {
     setViewMode(mode)
-    localStorage.setItem('yds.words_view_mode', mode)
+    try {
+      localStorage.setItem('yds.words_view_mode', mode)
+    } catch {
+      // Depo kapalıysa yalnızca bu oturumda geçerli
+    }
+  }
+
+  // Filtre değişince listeyi başa sar
+  const filterKey = `${searchQuery}|${selectedPos}|${selectedTag}|${selectedDiff}|${selectedGroup}`
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey)
+  if (prevFilterKey !== filterKey) {
+    setPrevFilterKey(filterKey)
+    setShown(PAGE)
   }
 
   // Kullanıcının mevcut tüm etiketleri
@@ -174,7 +250,7 @@ export function WordsPage() {
         <div className={styles.headerLeft}>
           <h1>Kelimeler</h1>
           <p className="muted">
-            {activeUser?.displayName || 'Kullanıcı'} için kelime havuzu ({rawWords.length} kayıtlı kelime)
+            {loadedWords === undefined ? 'Kelimeler yükleniyor…' : `${rawWords.length} kayıtlı kelime`}
           </p>
         </div>
 
@@ -196,34 +272,22 @@ export function WordsPage() {
           >
             📦 Hazır Paketler
           </button>
-          <button
-            id="btn-text-words"
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => setIsTextWordsOpen(true)}
-            title="Yapıştırdığın metindeki yeni sınav kelimelerini bul"
-          >
-            📄 Metinden Kelime
-          </button>
-          <button
-            id="btn-bulk-import"
-            type="button"
-            className="btn"
-            onClick={() => setIsBulkModalOpen(true)}
-          >
-            ⇅ İçe / Dışa Aktar
-          </button>
-          {allUsers.length > 1 && (
-            <button
-              id="btn-transfer-words"
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => setIsTransferModalOpen(true)}
-              title="Özgür ve İzafet arasında kelime kopyalama / aktarma"
-            >
-              ⇄ Profiller Arası Aktar
-            </button>
-          )}
+          <details className={styles.moreMenu}>
+            <summary className="btn btn-ghost">Diğer ▾</summary>
+            <div className={styles.moreList} onClick={(e) => e.currentTarget.parentElement?.removeAttribute('open')}>
+              <button id="btn-text-words" type="button" onClick={() => setIsTextWordsOpen(true)}>
+                📄 Metinden kelime bul
+              </button>
+              <button id="btn-bulk-import" type="button" onClick={() => setIsBulkModalOpen(true)}>
+                ⇅ İçe / dışa aktar
+              </button>
+              {allUsers.length > 1 && (
+                <button id="btn-transfer-words" type="button" onClick={() => setIsTransferModalOpen(true)}>
+                  ⇄ Profiller arası aktar
+                </button>
+              )}
+            </div>
+          </details>
         </div>
       </header>
 
@@ -244,11 +308,11 @@ export function WordsPage() {
             <button
               type="button"
               id="view-cards-btn"
-              className={`${styles.viewBtn} ${viewMode === 'cards' ? styles.viewBtnActive : ''}`}
-              onClick={() => toggleViewMode('cards')}
-              title="Kart Görünümü"
+              className={`${styles.viewBtn} ${viewMode === 'list' ? styles.viewBtnActive : ''}`}
+              onClick={() => toggleViewMode('list')}
+              title="Liste görünümü"
             >
-              <span>🗂️</span> Kartlar
+              <span>☰</span> Liste
             </button>
             <button
               type="button"
@@ -339,13 +403,19 @@ export function WordsPage() {
           )}
 
           <span className={styles.resultsCount}>
-            {filteredWords.length} kelime gösteriliyor
+            {filteredWords.length} kelime
           </span>
         </div>
       </div>
 
       {/* Liste / Kart İçeriği */}
-      {rawWords.length === 0 ? (
+      {loadedWords === undefined ? (
+        <div className={styles.loadingList} aria-busy="true">
+          {Array.from({ length: 8 }, (_, i) => (
+            <span key={i} />
+          ))}
+        </div>
+      ) : rawWords.length === 0 ? (
         <div className={`card ${styles.emptyState}`}>
           <div className={styles.emptyIcon}>📖</div>
           <h2>Henüz kelime eklemediniz</h2>
@@ -381,31 +451,52 @@ export function WordsPage() {
             Filtreleri Sıfırla
           </button>
         </div>
-      ) : viewMode === 'cards' ? (
-        <div className={styles.cardsGrid}>
-          {filteredWords.map((word) => (
-            <WordCard
-              key={word.id}
-              word={word}
-              cardState={cardMap.get(word.id)}
+      ) : (
+        <>
+          {viewMode === 'list' ? (
+            <ul className={styles.wordList}>
+              {filteredWords.slice(0, shown).map((word) => (
+                <WordRow
+                  key={word.id}
+                  word={word}
+                  card={cardMap.get(word.id)}
+                  open={openId === word.id}
+                  onToggle={() => setOpenId((id) => (id === word.id ? null : word.id))}
+                >
+                  <WordCard
+                    word={word}
+                    cardState={cardMap.get(word.id)}
+                    onEdit={(w) => setEditingWord(w)}
+                    onDelete={(id) => void handleDeleteWord(id)}
+                    onTransfer={otherUser ? handleTransferSingleWord : undefined}
+                    onAssignGroup={(w) => setGroupingWord(w)}
+                    otherUserName={otherUser?.displayName}
+                  />
+                </WordRow>
+              ))}
+            </ul>
+          ) : (
+            <WordTable
+              words={filteredWords.slice(0, shown)}
+              cardMap={cardMap}
               onEdit={(w) => setEditingWord(w)}
               onDelete={(id) => void handleDeleteWord(id)}
               onTransfer={otherUser ? handleTransferSingleWord : undefined}
               onAssignGroup={(w) => setGroupingWord(w)}
               otherUserName={otherUser?.displayName}
             />
-          ))}
-        </div>
-      ) : (
-        <WordTable
-          words={filteredWords}
-          cardMap={cardMap}
-          onEdit={(w) => setEditingWord(w)}
-          onDelete={(id) => void handleDeleteWord(id)}
-          onTransfer={otherUser ? handleTransferSingleWord : undefined}
-          onAssignGroup={(w) => setGroupingWord(w)}
-          otherUserName={otherUser?.displayName}
-        />
+          )}
+          {filteredWords.length > shown && (
+            <div className={styles.moreRow}>
+              <span className="muted">
+                {shown} / {filteredWords.length} gösteriliyor
+              </span>
+              <button type="button" className="btn btn-secondary" onClick={() => setShown((n) => n + PAGE)}>
+                {Math.min(PAGE, filteredWords.length - shown)} kelime daha göster
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {/* Tekil Kelime Ekleme / Düzenleme Modalı */}

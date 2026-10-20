@@ -7,13 +7,13 @@ import { speakWord } from '../services/tts'
 import { createWord } from '../services/words'
 import { formatLevelStudyTitle } from '../services/groups'
 import { useUserStore } from '../stores/user'
-import { useSyncStatus } from '../services/sync'
 import { useSettings } from '../stores/settings'
 import { buildDailyPlan, planPercent } from '../services/dailyPlan'
 import { dayKey, daysUntil, streakFromDays } from '../services/dates'
 import { summarizeBySection } from '../services/examProgress'
 import { getSection, isYokdil } from '../services/ydsSections'
 import { buildTargetPlan } from '../services/targetPlan'
+import { STUDY_CATEGORIES } from '../services/studyMap'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
 
@@ -24,7 +24,6 @@ export function HomePage() {
   const navigate = useNavigate()
   const activeUser = useUserStore((s) => s.activeUser)
   const activeUserId = activeUser?.id || 'user_ozgur'
-  const sync = useSyncStatus()
   const exam = useSettings((s) => s.exam)
 
   // Zaman damgası (bağımlılık sırası için en başta)
@@ -55,13 +54,6 @@ export function HomePage() {
   const cardStates = studyData?.cards ?? NO_CARDS
   const reviewLogs = studyData?.logs ?? NO_LOGS
 
-  // Oturum logları (Grup bazlı çalışma geçmişi)
-  const sessionLogs = useLiveQuery(
-    () => db.sessionLogs.where('userId').equals(activeUserId).toArray(),
-    [activeUserId],
-    [],
-  )
-
   // Çıkmış soru cevapları (yalnızca soru kimliği; plan ve seri için)
   const examAnswers = useLiveQuery(
     () => db.examAnswers.where('userId').equals(activeUserId).toArray(),
@@ -82,35 +74,12 @@ export function HomePage() {
       .sort((a, b) => b.lastStudiedAt.localeCompare(a.lastStudiedAt))
   }, [levelProgressList])
 
-  const todayCompletedLevels = useMemo(() => {
-    const today = dayKey(nowTimestamp)
-    return levelProgressList
-      .filter((p) => p.status === 'completed' && dayKey(p.lastStudiedAt) === today)
-      .sort((a, b) => b.lastStudiedAt.localeCompare(a.lastStudiedAt))
-  }, [levelProgressList, nowTimestamp])
-
-  const todaySessions = useMemo(() => {
-    const today = dayKey(nowTimestamp)
-    return sessionLogs
-      .filter((s) => dayKey(s.startedAt) === today)
-      .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
-  }, [sessionLogs, nowTimestamp])
-
   // Metrikler
-  const { streakDays, masteryCounts } = useMemo(() => {
+  const streakDays = useMemo(() => {
     const days = new Set(reviewLogs.map((r) => dayKey(r.reviewedAt)))
     for (const a of examAnswers) days.add(dayKey(a.answeredAt))
-
-    // Hakimiyet dağılımı (1-5)
-    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
-    for (const c of cardStates) {
-      const s = (c.masteryScore as 1 | 2 | 3 | 4 | 5) || 1
-      if (counts[s] !== undefined) counts[s]++
-      else counts[1]++
-    }
-
-    return { streakDays: streakFromDays(days, nowTimestamp), masteryCounts: counts }
-  }, [cardStates, reviewLogs, examAnswers, nowTimestamp])
+    return streakFromDays(days, nowTimestamp)
+  }, [reviewLogs, examAnswers, nowTimestamp])
 
   // Çıkmış soru havuzu yalnızca yerelde bilinir (telifli veri yayına girmez)
   const [questionPool, setQuestionPool] = useState<number | undefined>(undefined)
@@ -178,8 +147,6 @@ export function HomePage() {
     setAddedWotd(true)
   }
 
-  const totalCards = words.length
-  const totalPending = sync.pendingOutboxCount + sync.pendingLogsCount
 
   return (
     <div className={styles.container}>
@@ -294,358 +261,50 @@ export function HomePage() {
       </section>
       )}
 
-      {/* 2.5. YARIDA BIRAKILANLAR, BUGÜN ÇALIŞILAN SEVİYELER & HIZLI ERİŞİM */}
-      <section className={styles.sectionBlock}>
-        <div className={styles.sectionHeader}>
-          <div>
-            <h2 className={styles.sectionTitle}>
-              {inProgressLevels.length > 0
-                ? '⚠️ Yarıda Bırakılan ve Bugün Çalışılan Seviyeler'
-                : 'Bugün Çalışılan Seviyeler ve Gruplar'}
-            </h2>
-            <p className={styles.sectionDesc}>
-              {inProgressLevels.length > 0
-                ? `${inProgressLevels.length} seviye yarıda bırakıldı. Kaldığın yerden tek tıkla devam edebilirsin:`
-                : todaySessions.length > 0
-                ? `Bugün ${todaySessions.length} çalışma oturumu tamamladın. Detaylar ve doğru/yanlış oranların:`
-                : "Her kategori 20'şer kelimelik seviyelere ayrıldı. Bir seviye seçip çalışmaya başla:"}
-            </p>
-          </div>
-
-          <Link to="/study" className="btn btn-ghost" style={{ fontSize: '0.82rem' }}>
-            Tüm Seviyeleri Gör →
-          </Link>
-        </div>
-
-        {/* YARIDA BIRAKILAN SEVİYELER UYARISI & DEVAM BUTONU */}
-        {inProgressLevels.length > 0 && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '0.85rem',
-              marginBottom: '1rem',
-            }}
-          >
-            {inProgressLevels.map((p) => (
-              <div
-                key={p.subGroupId}
-                style={{
-                  background: 'color-mix(in srgb, var(--warning) 8%, var(--surface))',
-                  border: '1.5px solid var(--warning)',
-                  borderRadius: 'var(--radius)',
-                  padding: '1rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      fontSize: '0.75rem',
-                      fontWeight: 800,
-                      color: 'var(--warning)',
-                      background: 'color-mix(in srgb, var(--warning) 20%, transparent)',
-                      padding: '0.2rem 0.55rem',
-                      borderRadius: '999px',
-                    }}
-                  >
-                    ⏳ Yarıda Bırakıldı ({p.completedQuestions}/{p.totalQuestions})
-                  </span>
-                  <span className="muted" style={{ fontSize: '0.75rem' }}>
-                    {new Date(p.lastStudiedAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
-                  </span>
-                </div>
-
-                <strong style={{ fontSize: '1rem', color: 'var(--text)' }}>
-                  {formatLevelStudyTitle(p.categoryGroupId, p.levelNumber, p.mode)}
-                </strong>
-
+      {/* 3. KALDIĞIN YERDEN DEVAM (yalnızca yarıda bırakılan varsa) */}
+      {inProgressLevels.length > 0 && (
+        <section className={styles.sectionBlock}>
+          <h2 className={styles.sectionTitle}>⏳ Kaldığın yerden devam et</h2>
+          <ul className={styles.resumeList}>
+            {inProgressLevels.slice(0, 3).map((p) => (
+              <li key={p.subGroupId}>
                 <button
                   type="button"
-                  className="btn btn-primary"
-                  style={{ width: '100%', fontSize: '0.825rem', padding: '0.45rem 0.75rem' }}
+                  className={styles.resumeRow}
                   onClick={() => navigate(`/study?subLevel=${p.subGroupId}&resume=1&auto=1`)}
                 >
-                  ▶ Kaldığın Yerden Devam Et ({p.completedQuestions + 1}. Soru) →
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* BUGÜN TAMAMLANAN 20'ŞERLİK SEVİYELER */}
-        {todayCompletedLevels.length > 0 && (
-          <div style={{ marginBottom: '1rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--success)', marginBottom: '0.45rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span>✅ Bugün Tamamlanan Seviyeler ({todayCompletedLevels.length}):</span>
-            </div>
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {todayCompletedLevels.map((lvl) => (
-                <div
-                  key={lvl.subGroupId}
-                  style={{
-                    background: 'var(--surface-strong)',
-                    border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-sm)',
-                    padding: '0.4rem 0.75rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.6rem',
-                    fontSize: '0.82rem',
-                  }}
-                >
-                  <strong style={{ color: 'var(--text)' }}>
-                    {formatLevelStudyTitle(lvl.categoryGroupId, lvl.levelNumber, lvl.mode)}
-                  </strong>
-                  <span style={{ color: 'var(--success)', fontWeight: 700 }}>%{lvl.accuracyPercent} Başarı</span>
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    style={{ padding: '0.1rem 0.4rem', fontSize: '0.78rem' }}
-                    onClick={() => navigate(`/study?subLevel=${lvl.subGroupId}&auto=1`)}
-                    title="Tekrar Çalış"
-                  >
-                    🔄
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {todaySessions.length > 0 ? (
-          <div className={styles.todaySessionsGrid}>
-            {todaySessions.map((s) => (
-              <div key={s.id} className={styles.todaySessionCard}>
-                <div className={styles.sessionTopRow}>
-                  <h3 className={styles.sessionTitle}>{s.groupName}</h3>
-                  <span className={styles.sessionTime}>
-                    {new Date(s.completedAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                  <strong>{formatLevelStudyTitle(p.categoryGroupId, p.levelNumber, p.mode)}</strong>
+                  <span className="muted">
+                    {p.completedQuestions}/{p.totalQuestions}
                   </span>
-                </div>
-
-                <div className={styles.sessionStatRow}>
-                  <span><strong>{s.totalQuestions}</strong> soru</span>
-                  <span style={{ color: 'var(--success)' }}>✓ {s.correctCount} doğru</span>
-                  {s.wrongCount > 0 && <span style={{ color: 'var(--error)' }}>✕ {s.wrongCount} yanlış</span>}
-                  <span
-                    className={styles.accuracyBadge}
-                    style={{
-                      background: s.accuracyPercent >= 70 ? 'color-mix(in srgb, var(--success) 16%, transparent)' : 'color-mix(in srgb, var(--warning) 16%, transparent)',
-                      color: s.accuracyPercent >= 70 ? 'var(--success)' : 'var(--warning)',
-                    }}
-                  >
-                    %{s.accuracyPercent} Başarı
-                  </span>
-                </div>
-
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  style={{ width: '100%', fontSize: '0.8rem', padding: '0.4rem 0.6rem' }}
-                  onClick={() => {
-                    if (s.subGroupId) {
-                      navigate(`/study?subLevel=${s.subGroupId}&auto=1`)
-                    } else {
-                      navigate(`/study?group=${s.groupId}&auto=1`)
-                    }
-                  }}
-                >
-                  Bu Seviyeyi Tekrar Çalış →
+                  <span className={styles.resumeGo}>Devam →</span>
                 </button>
-              </div>
+              </li>
             ))}
-          </div>
-        ) : (
-          <div className={styles.levelPillsRow}>
-            <button
-              type="button"
-              className={styles.levelPillBtn}
-              onClick={() => navigate('/study?group=level_c1_c2')}
-            >
-              <span>🎯</span>
-              <span>C1-C2 İleri Düzey (45 Level)</span>
-            </button>
-            <button
-              type="button"
-              className={styles.levelPillBtn}
-              onClick={() => navigate('/study?group=level_b1_b2')}
-            >
-              <span>📘</span>
-              <span>B1-B2 Orta Düzey (92 Level)</span>
-            </button>
-            <button
-              type="button"
-              className={styles.levelPillBtn}
-              onClick={() => navigate('/study?group=level_a1_a2')}
-            >
-              <span>🌱</span>
-              <span>A1-A2 Başlangıç (71 Level)</span>
-            </button>
-            <button
-              type="button"
-              className={styles.levelPillBtn}
-              onClick={() => navigate('/study?group=yds_phrasal')}
-            >
-              <span>⚡</span>
-              <span>Phrasal Verbs (7 Level)</span>
-            </button>
-            <button
-              type="button"
-              className={styles.levelPillBtn}
-              onClick={() => navigate('/study?group=yds_conjunction')}
-            >
-              <span>🔗</span>
-              <span>Bağlaçlar (3 Level)</span>
-            </button>
-            <button
-              type="button"
-              className={styles.levelPillBtn}
-              onClick={() => navigate('/study?preset=due&auto=1')}
-            >
-              <span>🧠</span>
-              <span>FSRS Günün Tekrarları</span>
-            </button>
-          </div>
-        )}
-      </section>
+          </ul>
+        </section>
+      )}
 
-      {/* 3. ÇALIŞMA & SINAV MODLARI MERKEZİ (DENGELİ 4 KART) */}
+      {/* 4. NE ÇALIŞMAK İSTİYORSUN? (Çalış menüsünün kategorileri) */}
       <section className={styles.sectionBlock}>
         <div className={styles.sectionHeader}>
-          <div>
-            <h2 className={styles.sectionTitle}>Çalışma & Sınav Modları</h2>
-            <p className={styles.sectionDesc}>YDS soru tiplerine ve ihtiyacına göre pratik yap</p>
-          </div>
+          <h2 className={styles.sectionTitle}>Ne çalışmak istiyorsun?</h2>
+          <Link to="/calis" className="btn btn-ghost" style={{ fontSize: '0.82rem' }}>
+            Tümü →
+          </Link>
         </div>
-
-        <div className={styles.modesGrid}>
-          {/* YDS TEST: özgün örnek sorular (yayında da görünür) */}
-          <div className={styles.modeCard} onClick={() => navigate('/yds-test')} role="button" tabIndex={0}>
-            <div className={`${styles.modeIcon} ${styles.iconSky}`}>📝</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>Alıştırma Merkezi</h3>
-                <span className={styles.modePill}>300+ Özgün Soru</span>
-              </div>
-              <p>ÖSYM düzeninde özgün sorular; her şıkkın açıklamasıyla.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
-
-          {/* YZ Koç */}
-          <div
-            className={styles.modeCard}
-            onClick={() => navigate('/koc')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={`${styles.modeIcon} ${styles.iconTeal}`}>🤖</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>YZ Koç</h3>
-                <span className={styles.modePill}>Gemini</span>
-              </div>
-              <p>İngilizce sohbet pratiği yap ya da YDS koçunla durumunu ve planını konuş.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
-
-          {/* Dilbilgisi Rehberi */}
-          <div
-            className={styles.modeCard}
-            onClick={() => navigate('/dilbilgisi')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={`${styles.modeIcon} ${styles.iconIndigo}`}>📘</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>Dilbilgisi Rehberi</h3>
-                <span className={styles.modePill}>14 Konu</span>
-              </div>
-              <p>YDS’de sorulan konular: kısa anlatım, sınav ipucu ve alıştırma.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
-
-          {/* Mod 1: FSRS Akıllı Tekrar */}
-          <div
-            className={styles.modeCard}
-            onClick={() => navigate('/study?preset=due&auto=1')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={`${styles.modeIcon} ${styles.iconIndigo}`}>⚡</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>FSRS Akıllı Tekrar</h3>
-                <span className={styles.modePill}>Hafıza</span>
-              </div>
-              <p>Unutma eğrisine göre zamanı gelen kelimeleri tazele.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
-
-          {/* Mod 2: Eş Anlamlı Eşleştirmece */}
-          <div
-            className={styles.modeCard}
-            onClick={() => navigate('/match')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={`${styles.modeIcon} ${styles.iconTeal}`}>🎮</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>Eş Anlamlı Eşleştirme</h3>
-                <span className={styles.modePill}>Oyunlaştırma</span>
-              </div>
-              <p>Sınavda en çok çıkan akademik eş anlamlıları hızlıca eşleştir.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
-
-          {/* Mod 3: Mini YDS Denemesi */}
-          <div
-            className={styles.modeCard}
-            onClick={() => navigate('/quiz')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={`${styles.modeIcon} ${styles.iconSky}`}>📝</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>Mini YDS Denemesi</h3>
-                <span className={styles.modePill}>10 Soru • ÖSYM</span>
-              </div>
-              <p>ÖSYM formatında 10 soruluk süreli kelime denemesi çöz.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
-
-          {/* Mod 4: Cümle İçi Cloze Test */}
-          <div
-            className={styles.modeCard}
-            onClick={() => navigate('/study?mode=cloze&auto=1')}
-            role="button"
-            tabIndex={0}
-          >
-            <div className={`${styles.modeIcon} ${styles.iconAmber}`}>🧩</div>
-            <div className={styles.modeBody}>
-              <div className={styles.modeHeadRow}>
-                <h3>Cümle İçi Boşluk</h3>
-                <span className={styles.modePill}>Bağlam</span>
-              </div>
-              <p>Akademik cümle bağlamında doğru kelimeyi tamamla.</p>
-            </div>
-            <span className={styles.modeArrow}>→</span>
-          </div>
+        <div className={styles.catGrid}>
+          {STUDY_CATEGORIES.map((c) => (
+            <Link key={c.id} to={`/calis#${c.id}`} className={styles.catTile}>
+              <span className={styles.catIcon}>{c.icon}</span>
+              <strong>{c.title}</strong>
+              <small>{c.desc}</small>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* 4. ALT 2 SÜTUN: GÜNÜN KELİMESİ & HAKİMİYET DAĞILIMI */}
+      {/* 5. GÜNÜN KELİMESİ */}
       <div className={styles.splitGrid}>
         {/* Sol Sütun: Günün Kelimesi */}
         {wordOfTheDay && (
@@ -718,78 +377,8 @@ export function HomePage() {
           </section>
         )}
 
-        {/* Sağ Sütun: Kelime Hakimiyeti Dağılımı */}
-        <section className={styles.masteryCard}>
-          <div className={styles.masteryTop}>
-            <div>
-              <h3 className={styles.masteryHeading}>Kelime Hakimiyeti</h3>
-              <p className={styles.masterySub}>Hafızandaki kalıcılık seviyeleri</p>
-            </div>
-            <Link to="/stats" className={styles.detailLink}>
-              Detaylar →
-            </Link>
-          </div>
-
-          <div className={styles.masteryList}>
-            <MasteryItem level={5} label="Tamamen Öğrendim" count={masteryCounts[5]} total={totalCards} color="var(--success)" />
-            <MasteryItem level={4} label="İyi Biliyorum" count={masteryCounts[4]} total={totalCards} color="var(--info)" />
-            <MasteryItem level={3} label="Geliştirilmeli" count={masteryCounts[3]} total={totalCards} color="var(--yellow)" />
-            <MasteryItem level={2} label="Yeni Başlandı" count={masteryCounts[2]} total={totalCards} color="var(--orange)" />
-            <MasteryItem level={1} label="Hiç Bilmiyorum" count={masteryCounts[1]} total={totalCards} color="var(--danger)" />
-          </div>
-
-          <div className={styles.masteryFooter}>
-            <span>Toplam Kayıtlı Kelime:</span>
-            <strong>{totalCards} Kelime</strong>
-          </div>
-        </section>
       </div>
 
-      {/* 5. SİSTEM DURUM BİLGİSİ (KOMPAKT ŞERİT) */}
-      <footer className={styles.statusBar}>
-        <div className={styles.statusLeft}>
-          <span className={styles.statusIndicator} />
-          <span>Çevrimdışı Çalışmaya Hazır</span>
-          {totalPending > 0 ? (
-            <span className={styles.pendingBadge}>• {totalPending} eşitlenmeyi bekleyen işlem</span>
-          ) : (
-            <span className={styles.syncedBadge}>• Eşitlendi ✓</span>
-          )}
-        </div>
-        <Link to="/settings" className={styles.settingsLink}>
-          Ayarlar ve Yedekleme →
-        </Link>
-      </footer>
-    </div>
-  )
-}
-
-function MasteryItem(props: {
-  level: number
-  label: string
-  count: number
-  total: number
-  color: string
-}) {
-  const pct = props.total > 0 ? Math.round((props.count / props.total) * 100) : 0
-  return (
-    <div className={styles.masteryRow}>
-      <div className={styles.masteryLabelGroup}>
-        <span
-          className={styles.levelTag}
-          style={{ backgroundColor: `${props.color}20`, color: props.color }}
-        >
-          L{props.level}
-        </span>
-        <span className={styles.masteryName}>{props.label}</span>
-      </div>
-      <div className={styles.barBackground}>
-        <div
-          className={styles.barProgress}
-          style={{ width: `${pct}%`, backgroundColor: props.color }}
-        />
-      </div>
-      <span className={styles.masteryNumber}>{props.count}</span>
     </div>
   )
 }

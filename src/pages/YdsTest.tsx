@@ -5,6 +5,7 @@ import { ALL_SECTIONS, getSection, sectionOf, type SectionKey } from '../service
 import { useUserStore } from '../stores/user'
 import { TranslationWorkshop } from './TranslationWorkshop'
 import { QuestionCard } from './exam/QuestionCard'
+import { QuestionNav } from './exam/QuestionNav'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './exam/answerControls'
 import type { ExamBundle } from './exam/examData'
 import { listOzgunSets, loadOzgunSet, type OzgunSetMeta } from './exam/ozgunData'
@@ -179,27 +180,17 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
         </div>
       </header>
 
-      <div
-        className={styles.navigator}
-        role="navigation"
-        aria-label="Sorular"
-        style={questions.length <= 6 ? { gridTemplateColumns: `repeat(${questions.length}, minmax(0, 1fr))` } : undefined}
-      >
-        {questions.map((x, i) => {
-          const ok = checked[x.no] && picks[x.no] === x.answer
-          const bad = checked[x.no] && picks[x.no] !== x.answer
-          return (
-            <button
-              key={x.no}
-              type="button"
-              className={`${styles.navBtn} ${i === idx ? styles.navCurrent : ''} ${ok ? styles.navOk : ''} ${bad ? styles.navBad : ''}`}
-              onClick={() => setIdx(i)}
-            >
-              {setId === DEMO_ID ? `${sectionOf(x.no).icon} ${sectionOf(x.no).label}` : i + 1}
-            </button>
-          )
-        })}
-      </div>
+      <QuestionNav
+        count={questions.length}
+        idx={idx}
+        onPick={setIdx}
+        label={(i) => (setId === DEMO_ID ? `${sectionOf(questions[i].no).icon} ${sectionOf(questions[i].no).label}` : i + 1)}
+        stateClass={(i) => {
+          const x = questions[i]
+          if (!checked[x.no]) return ''
+          return picks[x.no] === x.answer ? styles.navOk : styles.navBad
+        }}
+      />
 
       <QuestionCard key={q.no} bundle={bundle} q={q} choice={choice} revealed={revealed} onChoose={choose} ai={false}>
         <div className={styles.actions}>

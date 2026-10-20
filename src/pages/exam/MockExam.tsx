@@ -9,6 +9,7 @@ import type { MockExamResult } from '../../types/database'
 import styles from '../ExamStudy.module.css'
 import { loadExam, type ExamBundle } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { QuestionNav } from './QuestionNav'
 import { ReasonPicker } from './ReasonPicker'
 import { useQuestionNav } from './answerControls'
 
@@ -363,30 +364,17 @@ export function MockExam() {
         )}
       </div>
 
-      <div className={styles.navigator} role="navigation" aria-label="Sorular">
-        {bundle.exam.questions.map((x, i) => {
+      <QuestionNav
+        count={bundle.exam.questions.length}
+        idx={idx}
+        onPick={setIdx}
+        label={(i) => bundle.exam.questions[i].no}
+        stateClass={(i) => {
+          const x = bundle.exam.questions[i]
           const c = choices[x.no]
-          const cls = review
-            ? c
-              ? c === x.answer
-                ? styles.navOk
-                : styles.navBad
-              : ''
-            : c
-              ? styles.navPicked
-              : ''
-          return (
-            <button
-              key={x.no}
-              type="button"
-              className={`${styles.navBtn} ${i === idx ? styles.navCurrent : ''} ${cls}`}
-              onClick={() => setIdx(i)}
-            >
-              {x.no}
-            </button>
-          )
-        })}
-      </div>
+          return review ? (c ? (c === x.answer ? styles.navOk : styles.navBad) : '') : c ? styles.navPicked : ''
+        }}
+      />
 
       <QuestionCard
         bundle={bundle}

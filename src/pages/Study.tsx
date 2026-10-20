@@ -89,7 +89,11 @@ export function StudyPage() {
   const [levelSearch, setLevelSearch] = useState('')
 
   // Çalışma Modu (Flaşkart / Test)
-  const [mode, setMode] = useState<QuestionMode>('flashcard')
+  // ?mode=cloze gibi bağlantılar çalışma türünü önceden seçer
+  const [mode, setMode] = useState<QuestionMode>(() => {
+    const m = searchParams.get('mode')
+    return m === 'multiple_choice' || m === 'synonym' || m === 'cloze' || (m === 'listen' && canSpeak()) ? m : 'flashcard'
+  })
 
   // Yeni grup oluşturma modalı
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false)
@@ -603,9 +607,9 @@ export function StudyPage() {
   // Güvenli Ana Sayfaya Dönüş
   function handleGoHome() {
     if (phase === 'studying') {
-      void handleAbandonOrExit(() => navigate('/'))
+      void handleAbandonOrExit(() => navigate('/calis'))
     } else {
-      navigate('/')
+      navigate('/calis')
     }
   }
 
@@ -620,16 +624,13 @@ export function StudyPage() {
           onClick={handleGoHome}
           className={styles.backHomeBtn}
           id="study-btn-go-home"
-          title="Ana Sayfaya Dön"
+          title="Çalış menüsüne dön"
         >
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4">
-            <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span>← Ana Sayfaya Dön</span>
+          <span>← Çalış</span>
         </button>
 
         <div className={styles.studyBreadcrumb}>
-          <span>Kelime Çalışma & Seviye Merkezi</span>
+          <span>Kelime</span>
           {phase !== 'setup' && activeSubLevel && (
             <>
               <span>/</span>

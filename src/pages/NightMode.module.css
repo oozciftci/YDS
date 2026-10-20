@@ -1,0 +1,174 @@
+.page {
+  display: grid;
+  gap: 1rem;
+  max-width: 640px;
+}
+
+.back {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.title {
+  margin: 0.2rem 0;
+  font-size: 1.5rem;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.field legend {
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.choices label {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.choices input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choices small {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.choices .on {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.92rem;
+}
+
+.row select {
+  min-width: 220px;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+}
+
+.warn {
+  margin: 0;
+  color: var(--warning);
+  font-size: 0.85rem;
+}
+
+/* Karanlık oynatıcı: tüm ekranı kaplar, göz yormaz */
+.night {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+  background: #000;
+  color: #8a8a99;
+}
+
+.nightTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #55555f;
+}
+
+.nightBody {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.nightGroup {
+  color: #55555f;
+}
+
+.nightWord {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 700;
+  color: #a5a5b8;
+}
+
+.nightSentence {
+  margin: 0;
+  max-width: 42rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  line-height: 1.5;
+  color: #a5a5b8;
+}
+
+.nightTr {
+  margin: 0;
+  max-width: 42rem;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  line-height: 1.5;
+  color: #6a6a78;
+}
+
+.nightControls {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.nightControls button {
+  padding: 0.55rem 1rem;
+  border: 1px solid #2a2a33;
+  border-radius: 999px;
+  background: #0d0d12;
+  color: #8a8a99;
+  font: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 559px) {
+  .row select {
+    min-width: 0;
+    width: 100%;
+  }
+}

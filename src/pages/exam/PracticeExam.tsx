@@ -7,6 +7,7 @@ import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { loadExam, type ExamBundle } from './examData'
 import { QuestionCard } from './QuestionCard'
+import { QuestionNav } from './QuestionNav'
 import { ReasonPicker } from './ReasonPicker'
 import { SimilarQuestion } from './SimilarQuestion'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
@@ -88,17 +89,16 @@ export function PracticeExam() {
 
   return (
     <section className={styles.page} {...swipe}>
-      <header className={styles.head}>
-        <div>
-          <Link to="/yds-sorular" className={styles.backLink}>
-            ← Soru Merkezi
-          </Link>
-          <h1 className={styles.title}>{bundle.exam.title}</h1>
-          <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
-            Çözülen {answers.length}/{total} · Doğru {correct}
-            {noKey && ' · Bu sınavın cevap anahtarı yok'}
-          </p>
-        </div>
+      <header className={styles.compactHead}>
+        <Link to="/yds-sorular" className={styles.backLink} title="Soru Merkezi">
+          ← Soru Merkezi
+        </Link>
+        <h1>{bundle.exam.title}</h1>
+        <span className="muted" style={{ fontSize: '0.85rem' }}>
+          Çözülen {answers.length}/{total} · Doğru {correct}
+          {noKey && ' · Cevap anahtarı yok'}
+        </span>
+        <span className={styles.spacer} />
         {answers.length > 0 && (
           <button type="button" className="btn btn-ghost" onClick={() => void reset()}>
             ↺ Baştan çöz
@@ -106,23 +106,16 @@ export function PracticeExam() {
         )}
       </header>
 
-      <div className={styles.navigator} role="navigation" aria-label="Sorular">
-        {bundle.exam.questions.map((x, i) => {
-          const a = byNo.get(x.no)
-          return (
-            <button
-              key={x.no}
-              type="button"
-              className={`${styles.navBtn} ${i === idx ? styles.navCurrent : ''} ${
-                a ? (a.correct ? styles.navOk : styles.navBad) : ''
-              }`}
-              onClick={() => setIdx(i)}
-            >
-              {x.no}
-            </button>
-          )
-        })}
-      </div>
+      <QuestionNav
+        count={total}
+        idx={idx}
+        onPick={setIdx}
+        label={(i) => bundle.exam.questions[i].no}
+        stateClass={(i) => {
+          const a = byNo.get(bundle.exam.questions[i].no)
+          return a ? (a.correct ? styles.navOk : styles.navBad) : ''
+        }}
+      />
 
       <QuestionCard bundle={bundle} q={q} choice={choice} revealed={revealed} onChoose={choose}>
         <div className={styles.actions}>

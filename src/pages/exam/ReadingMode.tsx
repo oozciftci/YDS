@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { canSpeak, getSpeechRate, setSpeechRate, speakSentences, TTS_RATES } from '../../services/tts'
 import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { loadAllExams, loadExam, shortTitle, type ExamBundle, type Passage } from './examData'
+import { ListenControls } from './ListenControls'
 import { QueueRunner } from './QueueRunner'
 import { SentenceView, useWordPopover } from './WordPopover'
 
@@ -128,9 +128,7 @@ export function ReadingPassage() {
   const [bundle, setBundle] = useState<ExamBundle | null>(null)
   const [error, setError] = useState('')
   const [showTr, setShowTr] = useState(false)
-  const [rate, setRate] = useState(getSpeechRate)
   const [speaking, setSpeaking] = useState<number | null>(null)
-  const stopRef = useRef<(() => void) | null>(null)
   const [startedAt] = useState(() => Date.now())
   const [now, setNow] = useState(() => Date.now())
   const [finishedSec, setFinishedSec] = useState<number | null>(null)
@@ -149,9 +147,6 @@ export function ReadingPassage() {
     return () => clearInterval(t)
   }, [finishedSec])
 
-  // Sayfadan çıkınca seslendirmeyi durdur
-  useEffect(() => () => stopRef.current?.(), [])
-
   if (error) return <p className="muted">{error}</p>
   if (!bundle) return <p className="muted">Yükleniyor…</p>
 
@@ -164,49 +159,6 @@ export function ReadingPassage() {
   const next = reading[idx + 1]
   const range = questionRange(bundle, passage.id)
   const elapsed = finishedSec ?? (now - startedAt) / 1000
-
-  function toggleListen() {
-    if (stopRef.current) {
-      stopRef.current()
-      stopRef.current = null
-      setSpeaking(null)
-      return
-    }
-    setSpeaking(0)
-    stopRef.current = speakSentences(
-      passage.sentences.map((s) => s.en),
-      {
-        rate,
-        onSentence: setSpeaking,
-        onDone: () => {
-          stopRef.current = null
-          setSpeaking(null)
-        },
-      },
-    )
-  }
-
-  function changeRate(r: number) {
-    setRate(r)
-    setSpeechRate(r)
-    // Okuma sürüyorsa yeni hızla baştan değil, kaldığı cümleden devam et
-    if (stopRef.current && speaking !== null) {
-      stopRef.current()
-      const from = speaking
-      stopRef.current = speakSentences(
-        passage.sentences.map((s) => s.en),
-        {
-          rate: r,
-          start: from,
-          onSentence: setSpeaking,
-          onDone: () => {
-            stopRef.current = null
-            setSpeaking(null)
-          },
-        },
-      )
-    }
-  }
 
   function finish() {
     const sec = Math.max(1, Math.round((Date.now() - startedAt) / 1000))
@@ -239,25 +191,7 @@ export function ReadingPassage() {
         <span className={styles.timer} title="Okuma süresi">
           ⏱ {fmt(elapsed)}
         </span>
-        {canSpeak() && (
-          <>
-            <button type="button" className="btn btn-secondary" onClick={toggleListen}>
-              {speaking !== null ? '⏹ Durdur' : '🔊 Dinle'}
-            </button>
-            <select
-              className={styles.rateSelect}
-              value={rate}
-              onChange={(e) => changeRate(Number(e.target.value))}
-              aria-label="Seslendirme hızı"
-            >
-              {TTS_RATES.map((r) => (
-                <option key={r} value={r}>
-                  {r.toLocaleString('tr-TR')}×
-                </option>
-              ))}
-            </select>
-          </>
-        )}
+        <ListenControls key={`${exam.id}/${passage.id}`} sentences={passage.sentences} tr={tr} onActive={setSpeaking} showRate />
         <label className={styles.toggle}>
           <input type="checkbox" checked={showTr} onChange={(e) => setShowTr(e.target.checked)} />
           Çeviriler
