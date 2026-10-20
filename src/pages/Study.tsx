@@ -33,6 +33,7 @@ import {
 } from '../types/database'
 import { InteractiveSentence } from '../components/InteractiveSentence'
 import { LeechHelp } from '../components/LeechHelp'
+import { MemoryHook } from '../components/MemoryHook'
 import styles from './Study.module.css'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
@@ -1462,6 +1463,8 @@ export function StudyPage() {
                             />
                           </div>
                         )}
+
+                        <MemoryHook key={`hook-${currentQ.word.id}`} word={currentQ.word} />
 
                         <LeechHelp key={`leech-${currentQ.word.id}`} word={currentQ.word} card={currentQ.cardState} />
 

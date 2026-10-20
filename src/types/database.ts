@@ -37,6 +37,8 @@ export interface WordItem {
   groupIds?: string[] // Dahil olduğu özel kelime grupları (Örn: ["grup_1", "grup_2"])
   difficulty?: number // 1: Kolay, 2: Orta, 3: İleri seviye (Varsayılan: 2)
   notes?: string // Kullanıcının kişisel notları veya mnemonik/ipucu
+  /** Öğrencinin kendi hafıza kancası (benzetme / ses çağrışımı); yalnızca bu cihazda ve yedekte */
+  hook?: string
   audioUrl?: string // Özel ses bağlantısı veya yerel ses dosya anahtarı
   createdAt: string // ISO string
   updatedAt: string // ISO string

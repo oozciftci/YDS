@@ -1,6 +1,7 @@
 import { MASTERY_CONFIG, type CardState, type MasteryLevel, type PartOfSpeech, type WordItem } from '../types/database'
 import { speakWord } from '../services/tts'
 import { InteractiveSentence } from './InteractiveSentence'
+import { MemoryHook } from './MemoryHook'
 import styles from '../pages/Words.module.css'
 
 interface WordCardProps {
@@ -170,6 +171,8 @@ export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, onAssi
           />
         </div>
       )}
+
+      <MemoryHook word={word} />
 
       {/* Etiketler */}
       {word.tags && word.tags.length > 0 && (

@@ -15,6 +15,7 @@ export interface CreateWordInput {
   groupIds?: string[]
   difficulty?: number
   notes?: string
+  hook?: string
 }
 
 /**
@@ -39,6 +40,7 @@ export async function createWord(userId: string, input: CreateWordInput): Promis
     groupIds: input.groupIds || [],
     difficulty: input.difficulty ?? 2,
     notes: input.notes?.trim() || undefined,
+    hook: input.hook?.trim() || undefined,
     createdAt: now,
     updatedAt: now,
     isDeleted: false,
@@ -103,6 +105,7 @@ export async function updateWord(
     ...(updates.groupIds !== undefined ? { groupIds: updates.groupIds } : {}),
     ...(updates.difficulty !== undefined ? { difficulty: updates.difficulty } : {}),
     ...(updates.notes !== undefined ? { notes: updates.notes.trim() || undefined } : {}),
+    ...(updates.hook !== undefined ? { hook: updates.hook.trim() || undefined } : {}),
     updatedAt: now,
   }
 
