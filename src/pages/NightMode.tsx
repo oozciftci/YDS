@@ -12,7 +12,7 @@ import styles from './NightMode.module.css'
 
 type Source = 'words' | 'paragraphs'
 type WordPool = 'due' | 'learning' | 'all'
-type ParaPool = 'ozgun' | 'exam'
+type ParaPool = 'ozgun' | 'exam' | 'story'
 
 interface NightSettings {
   source: Source
@@ -85,7 +85,16 @@ async function loadWordUnits(userId: string, pool: WordPool): Promise<Unit[]> {
   return words.filter((w) => keep.has(w.id)).map((w) => ({ en: w.term, tr: shortMeaning(w.definition) }))
 }
 
-async function loadParagraphUnits(pool: ParaPool): Promise<Unit[]> {
+async function loadParagraphUnits(pool: ParaPool, userId = ''): Promise<Unit[]> {
+  if (pool === 'story') {
+    // Ana sayfadaki "Günün hikâyesi" kartlarının hepsi (en yeniden eskiye)
+    const notes = await db.aiNotes.where('kind').equals('story').filter((n) => n.id.startsWith(`story:${userId}:`)).toArray()
+    notes.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    return notes.flatMap((n) => {
+      const s = JSON.parse(n.text) as { title: string; sentences: { en: string; tr: string }[] }
+      return s.sentences.map((x) => ({ en: x.en.replace(/\*\*/g, ''), tr: x.tr, group: `📜 ${s.title}` }))
+    })
+  }
   if (pool === 'exam' && import.meta.env.DEV) {
     const { loadAllExams, shortTitle } = await import('./exam/examData')
     const bundles = await loadAllExams()
@@ -131,9 +140,10 @@ export default function NightModePage() {
       loadWordUnits(userId, 'learning'),
       loadWordUnits(userId, 'all'),
       loadParagraphUnits('ozgun'),
+      loadParagraphUnits('story', userId),
       import.meta.env.DEV ? loadParagraphUnits('exam').catch(() => []) : Promise.resolve([]),
-    ]).then(([due, learning, all, ozgun, exam]) => {
-      if (alive) setCounts({ due: due.length, learning: learning.length, all: all.length, ozgun: ozgun.length, exam: exam.length })
+    ]).then(([due, learning, all, ozgun, story, exam]) => {
+      if (alive) setCounts({ due: due.length, learning: learning.length, all: all.length, ozgun: ozgun.length, story: story.length, exam: exam.length })
     })
     return () => {
       alive = false
@@ -151,7 +161,7 @@ export default function NightModePage() {
 
   async function start() {
     setError('')
-    const list = cfg.source === 'words' ? await loadWordUnits(userId, cfg.wordPool) : await loadParagraphUnits(cfg.paraPool)
+    const list = cfg.source === 'words' ? await loadWordUnits(userId, cfg.wordPool) : await loadParagraphUnits(cfg.paraPool, userId)
     if (list.length === 0) {
       setError('Bu seçimde dinlenecek bir şey yok. Başka bir kaynak seç.')
       return
@@ -217,6 +227,7 @@ export default function NightModePage() {
             <span>Hangi paragraflar?</span>
             <select value={cfg.paraPool} onChange={(e) => update({ paraPool: e.target.value as ParaPool })}>
               <option value="ozgun">Özgün okuma paragrafları ({n('ozgun')} cümle)</option>
+              <option value="story">Günün hikâyelerim ({n('story')} cümle)</option>
               {import.meta.env.DEV && <option value="exam">Çıkmış sınav paragrafları ({n('exam')} cümle)</option>}
             </select>
           </label>

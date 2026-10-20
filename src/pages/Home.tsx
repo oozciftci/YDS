@@ -15,6 +15,7 @@ import { getSection, isYokdil } from '../services/ydsSections'
 import { buildTargetPlan } from '../services/targetPlan'
 import { STUDY_CATEGORIES } from '../services/studyMap'
 import { QuickLinks } from '../components/QuickLinks'
+import { DailyStory } from '../components/DailyStory'
 import { getDoneUnits, unitsDoneToday } from '../services/bookProgress'
 import { dismiss, useDismissed } from '../services/dismissed'
 import type { CardState, ReviewLog } from '../types/database'
@@ -301,6 +302,8 @@ export function HomePage() {
         )}
       </section>
       )}
+
+      <DailyStory userId={activeUserId} />
 
       {/* 3. KALDIĞIN YERDEN DEVAM (yalnızca yarıda bırakılan varsa) */}
       {inProgressLevels.some((p) => !isDismissed(p.subGroupId, p.lastStudiedAt)) && (
