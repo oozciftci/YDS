@@ -1,13 +1,13 @@
 import type { CardState, PartOfSpeech, WordItem } from '../types/database'
 import { canSpeak } from './tts'
 
-export type QuestionMode = 'mixed' | 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
+export type QuestionMode = 'mixed' | 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen' | 'write'
 
 export interface StudyQuestion {
   id: string
   word: WordItem
   cardState: CardState
-  type: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
+  type: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen' | 'write'
   prompt: string
   subPrompt?: string
   options?: string[] // Çoktan seçmeli seçenekler
@@ -126,6 +126,8 @@ export function buildQuestion(
 
   if (mode === 'flashcard') {
     resolvedType = 'flashcard'
+  } else if (mode === 'write') {
+    resolvedType = 'write'
   } else if (mode === 'multiple_choice') {
     resolvedType = 'multiple_choice'
   } else if (mode === 'listen') {
@@ -150,6 +152,19 @@ export function buildQuestion(
       resolvedType = 'multiple_choice'
     } else {
       resolvedType = 'flashcard'
+    }
+  }
+
+  // 0. YAZARAK CEVAP: Türkçesi gösterilir, İngilizcesi yazılır (üretici hatırlama)
+  if (resolvedType === 'write') {
+    return {
+      id: crypto.randomUUID(),
+      word,
+      cardState,
+      type: 'write',
+      prompt: word.definition,
+      subPrompt: word.partOfSpeech,
+      explanation: `${word.term} — ${word.definition}`,
     }
   }
 
@@ -288,4 +303,32 @@ function shuffleOptions(correct: string, distractors: string[]): { options: stri
 
 function escapeRegExp(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** Yazılan cevabı karşılaştırmak için: küçük harf, noktalama ve fazla boşluk atılır. */
+export function normalizeAnswer(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[’'`]/g, "'")
+    .replace(/[^a-z0-9' -]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function editDistance(a: string, b: string): number {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)])
+  for (let j = 1; j <= b.length; j++) d[0][j] = j
+  for (let i = 1; i <= a.length; i++)
+    for (let j = 1; j <= b.length; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
+  return d[a.length][b.length]
+}
+
+/** Yazılan cevap: tam doğru, tek harflik yazım hatası ("neredeyse") ya da yanlış. */
+export function checkWritten(input: string, term: string): 'correct' | 'almost' | 'wrong' {
+  const a = normalizeAnswer(input)
+  const b = normalizeAnswer(term)
+  if (!a) return 'wrong'
+  if (a === b) return 'correct'
+  return b.length >= 5 && editDistance(a, b) === 1 ? 'almost' : 'wrong'
 }

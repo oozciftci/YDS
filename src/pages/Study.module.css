@@ -1144,3 +1144,57 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+/* Yazarak cevap */
+.writeBox {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: center;
+  margin: auto 0;
+  text-align: center;
+}
+
+.writeHint {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.writeReveal {
+  margin: 0;
+  font-family: ui-monospace, monospace;
+  font-size: 1.3rem;
+  letter-spacing: 0.15em;
+  color: var(--primary);
+}
+
+.writeInput {
+  width: min(420px, 100%);
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.writeOk {
+  border-color: var(--success);
+}
+
+.writeBad {
+  border-color: var(--danger);
+}
+
+.writeActions,
+.writeResult {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.writeResult {
+  flex-direction: column;
+}
+
+.writeTerm {
+  font-size: 1.4rem;
+  color: var(--primary);
+}

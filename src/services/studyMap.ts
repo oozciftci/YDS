@@ -26,6 +26,7 @@ const ALL: StudyCategory[] = [
       { to: '/study?preset=due&auto=1', label: 'Günün tekrarları', hint: 'Unutmak üzere olduğun kelimeler' },
       { to: '/study', label: 'Seviye seviye kelime', hint: "20'şer kelimelik gruplar" },
       { to: '/match', label: 'Eş anlamlı eşleştirme', hint: 'Hızlı oyun' },
+      { to: '/study?mode=write', label: 'Yazarak kelime', hint: 'Türkçesini gör, İngilizcesini yaz' },
       { to: '/study?mode=cloze', label: 'Cümle içinde kelime', hint: 'Boşluğa doğru kelimeyi seç' },
       { to: '/quiz', label: 'Mini kelime denemesi', hint: '10 soru, ÖSYM biçiminde' },
     ],

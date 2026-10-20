@@ -34,6 +34,7 @@ import {
 import { InteractiveSentence } from '../components/InteractiveSentence'
 import { LeechHelp } from '../components/LeechHelp'
 import { MemoryHook } from '../components/MemoryHook'
+import { WriteAnswer } from '../components/WriteAnswer'
 import styles from './Study.module.css'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
@@ -133,7 +134,7 @@ export function StudyPage() {
   }
   const [mode, setMode] = useState<QuestionMode>(() => {
     const m = searchParams.get('mode')
-    return m === 'multiple_choice' || m === 'synonym' || m === 'cloze' || (m === 'listen' && canSpeak()) ? m : 'flashcard'
+    return m === 'multiple_choice' || m === 'synonym' || m === 'cloze' || m === 'write' || (m === 'listen' && canSpeak()) ? m : 'flashcard'
   })
 
   // Yeni grup oluşturma modalı
@@ -771,6 +772,7 @@ export function StudyPage() {
                   <option value="synonym">🔗 YDS Eş Anlamlı</option>
                   <option value="cloze">📝 Cümle İçi Boşluk</option>
                   {canSpeak() && <option value="listen">🎧 Dinleme (sesi duy, anlamını seç)</option>}
+                  <option value="write">⌨️ Yazarak Cevap (Türkçesini gör, İngilizcesini yaz)</option>
                 </select>
               </div>
 
@@ -1271,6 +1273,8 @@ export function StudyPage() {
                   Kelime Türü: <strong>{currentQ.word.partOfSpeech.toUpperCase()}</strong> •{' '}
                   {activeSubLevel ? activeSubLevel.title : activeCategoryName}
                 </span>
+                {/* Yazarak cevapta ses cevabı söyler: gizli */}
+                {currentQ.type !== 'write' && (
                 <button
                   type="button"
                   className="btn btn-ghost"
@@ -1280,6 +1284,7 @@ export function StudyPage() {
                 >
                   🔊 Dinle
                 </button>
+                )}
               </div>
 
               {/* 1. FLAŞKART GÖRÜNÜMÜ (ÖN VE ARKA YÜZ SİMETRİSİ) */}
@@ -1479,6 +1484,11 @@ export function StudyPage() {
                     </div>
                   )}
                 </div>
+              )}
+
+              {/* 1b. YAZARAK CEVAP */}
+              {currentQ.type === 'write' && (
+                <WriteAnswer key={currentQ.id} q={currentQ} onDone={(s) => void handleScoreCard(s)} />
               )}
 
               {/* 2. ÇOKTAN SEÇMELİ MOD */}

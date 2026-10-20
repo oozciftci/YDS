@@ -56,6 +56,7 @@ export function labelFor(path: string): string {
   const mode = p.get('mode')
   if (mode === 'cloze') return 'Cümle içinde kelime'
   if (mode === 'listen') return 'Dinleyerek kelime'
+  if (mode === 'write') return 'Yazarak kelime'
   return base
 }
 

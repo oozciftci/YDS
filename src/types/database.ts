@@ -95,7 +95,7 @@ export interface ReviewLog {
   scheduledDays: number
   reviewedAt: string // ISO string
   durationMs: number // Soruyu çözme süresi (milisaniye)
-  questionType: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
+  questionType: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen' | 'write'
   synced: boolean
 }
 
@@ -177,7 +177,7 @@ export interface StudySessionLog {
   groupId: string
   subGroupId?: string
   groupName: string
-  mode: 'flashcard' | 'mixed' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen'
+  mode: 'flashcard' | 'mixed' | 'multiple_choice' | 'synonym' | 'cloze' | 'listen' | 'write'
   startedAt: string
   completedAt: string
   totalQuestions: number
@@ -352,7 +352,7 @@ export interface LevelProgress {
   subGroupId: string // 'level_c1_c2_lvl_1'
   levelNumber: number
   title: string
-  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed' | 'listen'
+  mode?: 'flashcard' | 'multiple_choice' | 'synonym' | 'cloze' | 'mixed' | 'listen' | 'write'
   status: 'completed' | 'in_progress' | 'not_started'
   completedQuestions: number
   totalQuestions: number

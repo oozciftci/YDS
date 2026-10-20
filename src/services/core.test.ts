@@ -7,6 +7,7 @@ import { summarizeTimes } from './mockTime'
 import { buildTargetPlan } from './targetPlan'
 import { isLeech, LEECH_LAPSES } from './leech'
 import { pageLabel, prettyExamId } from './notebook'
+import { checkWritten } from './studySession'
 import { extractWordsFromText } from './textWords'
 import { buildWeeklyReport, reportToText } from './weeklyReport'
 import { reasonCounts } from './wrongReasons'
@@ -257,5 +258,17 @@ describe('notebook', () => {
     expect(pageLabel('/yds-sorular/konu/grammar')).toBe('Konuya Göre · Dilbilgisi')
     expect(pageLabel('/yds-test/vocab-03')).toBe('Alıştırma · Kelime 3')
     expect(pageLabel('/yds-test/ceviri/')).toBe('Çeviri Atölyesi')
+  })
+})
+
+describe('yazarak cevap', () => {
+  it('büyük/küçük harf ve noktalama önemsiz', () => {
+    expect(checkWritten('  Deteriorate. ', 'deteriorate')).toBe('correct')
+    expect(checkWritten('give up', 'Give up')).toBe('correct')
+  })
+  it('tek harflik hata neredeyse sayılır, kısa kelimede sayılmaz', () => {
+    expect(checkWritten('deteriorte', 'deteriorate')).toBe('almost')
+    expect(checkWritten('dg', 'dog')).toBe('wrong')
+    expect(checkWritten('improve', 'deteriorate')).toBe('wrong')
   })
 })
