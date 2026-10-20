@@ -123,9 +123,10 @@ export function setSourceMode(m: SourceMode): void {
   }
 }
 
-/** Taktik Kitabı'nda en az bir kural var mı (Koç modu ancak o zaman seçilebilir)? */
+/** Koç modu seçilebilir mi: Taktik Kitabı'nda kural ya da kaynak haritasında en az bir bölüm olmalı. */
 export async function tacticsAvailable(): Promise<boolean> {
-  return (await loadTactics()).rules.length > 0
+  const [book, map] = await Promise.all([loadTactics(), loadSourceMap()])
+  return book.rules.length > 0 || map.entries.length > 0
 }
 
 // ---------------------------------------------------------------------------
@@ -155,10 +156,13 @@ export async function tacticsContext(q: TacticsQuery): Promise<string> {
   const secs = new Set(q.sections ?? [])
   const gram = new Set(q.grammar ?? [])
   const rules = book.rules.filter((r) => (r.section && secs.has(r.section)) || (r.grammar && gram.has(r.grammar)))
-  if (!rules.length) return ''
+  // Kural yoksa da kaynak sayfaları (ör. Sınav Stratejileri 1-2 konu anlatımı) tek başına bağlam olabilir
+  if (!rules.length && !q.withPages) return ''
 
   const cite = (r: TacticRule) => (r.source ? ` [${bookTitle(map, r.source.book)}, s. ${r.source.page}]` : '')
-  const lines = ['KAYNAK TAKTİKLERİ (hocaların kitaplarından):', ...rules.map((r) => `- ${r.text}${r.example ? ` Örnek: ${r.example}` : ''}${cite(r)}`)]
+  const lines = rules.length
+    ? ['KAYNAK TAKTİKLERİ (hocaların kitaplarından):', ...rules.map((r) => `- ${r.text}${r.example ? ` Örnek: ${r.example}` : ''}${cite(r)}`)]
+    : []
 
   if (q.withPages) {
     const entries = map.entries.filter((e) => e.sections?.some((s) => secs.has(s)) || e.grammar?.some((g) => gram.has(g)))
