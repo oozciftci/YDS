@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { db } from '../db'
 import { stamp } from '../services/notebook'
+import { getDoneUnits, markUnitDone, topicForUnit } from '../services/bookProgress'
 import { useUserStore } from '../stores/user'
 import styles from './Books.module.css'
 import {
@@ -128,10 +129,22 @@ function Reader() {
   }, [frames, pageNo, halfParam])
   const frame: Frame | undefined = frames[idx]
 
-  // Kaldığın yeri kaydet
+  // Kaldığın yeri kaydet; bir üniteyi ileri doğru geçince o ünite bitmiş sayılır (günlük plan için)
+  const prevPage = useRef<number | null>(null)
+  const [doneVersion, setDoneVersion] = useState(0)
   useEffect(() => {
-    if (frame) savePos(userId, bookId, frame.page, frame.half)
-  }, [userId, bookId, frame])
+    if (!frame || !book) return
+    savePos(userId, bookId, frame.page, frame.half)
+    const prev = prevPage.current
+    prevPage.current = frame.page
+    if (prev !== null && frame.page > prev) {
+      const u = unitOf(book, prev)
+      if (u && frame.page > u.page + 1) {
+        markUnitDone(userId, bookId, u.no)
+        setDoneVersion((v) => v + 1)
+      }
+    }
+  }, [userId, bookId, frame, book])
 
   // Sonraki sayfanın görüntüsünü önceden yükle
   useEffect(() => {
@@ -165,6 +178,9 @@ function Reader() {
   const lastUnit = book.units[book.units.length - 1]
   const unit = frame.page <= lastUnit.page + 1 ? unitOf(book, frame.page) : null
   const span = frame.end - frame.start
+  const unitDone = unit ? Boolean(getDoneUnits(userId, bookId)[unit.no]) : false
+  void doneVersion
+  const topic = unit ? topicForUnit(unit.title) : null
 
   function setMode(m: 'half' | 'full') {
     saveMode(m)
@@ -248,6 +264,26 @@ function Reader() {
           draggable={false}
         />
       </div>
+
+      {unit && (frame.page === unit.page + 1 || unitDone) && (
+        <div className={styles.unitEnd}>
+          {unitDone ? (
+            <span>✓ Ünite {unit.no} bitti.</span>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                markUnitDone(userId, bookId, unit.no)
+                setDoneVersion((v) => v + 1)
+              }}
+            >
+              ✓ Üniteyi bitirdim
+            </button>
+          )}
+          {topic && <TestSuggestion topic={topic} />}
+        </div>
+      )}
 
       <div className={styles.nav}>
         <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => go(idx - 1)}>
@@ -343,5 +379,31 @@ export default function BooksPage() {
       <Route path=":bookId/s/:page" element={<Reader />} />
       <Route path=":bookId/notlar" element={<BookNotes />} />
     </Routes>
+  )
+}
+
+/** Ünitenin konusuna uygun, sıradaki çözülmemiş Sınav Stratejileri 3 testi. */
+function TestSuggestion({ topic }: { topic: string }) {
+  const userId = useUserStore((s) => s.activeUserId)
+  const [tests, setTests] = useState<{ id: string; section: string; no: number; type: string; questions: unknown[] }[] | null>(null)
+  useEffect(() => {
+    fetch('/local-api/kitap/modadil-sinav-stratejileri-3/testler')
+      .then((r) => (r.ok ? r.json() : { tests: [] }))
+      .then((d) => setTests(d.tests))
+      .catch(() => setTests([]))
+  }, [])
+  const answers = useLiveQuery(
+    () => db.examAnswers.where('userId').equals(userId).filter((a) => a.examId.includes('-strateji3-')).toArray(),
+    [userId],
+  )
+  if (!tests || !answers) return null
+  const list = tests.filter((t) => t.section === topic)
+  if (!list.length) return null
+  const count = (t: { id: string; type: string }) => answers.filter((a) => a.examId === `banka-${t.type}-strateji3-${t.id}`).length
+  const next = list.find((t) => count(t) < t.questions.length) ?? list[0]
+  return (
+    <Link to={`/yds-sorular/bankalar/strateji-3/${next.id}`} className="btn btn-primary">
+      📗 Bu konunun testi: {next.section} · Test {next.no} →
+    </Link>
   )
 }

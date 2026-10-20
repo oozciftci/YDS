@@ -1,7 +1,7 @@
 import type { CardState, ExamAnswer, ReviewLog } from '../types/database'
 import { dayKey } from './dates'
 
-export type PlanTaskKey = 'review' | 'new' | 'questions'
+export type PlanTaskKey = 'review' | 'new' | 'questions' | 'book'
 
 export interface PlanTask {
   key: PlanTaskKey
@@ -24,6 +24,8 @@ export interface PlanInput {
   newWordCap: number
   /** Çözülmemiş (cevap anahtarlı) çıkmış soru sayısı; yalnızca yerelde bilinir, yoksa soru görevi çıkmaz. */
   unansweredQuestions?: number
+  /** Kitaptan çalış (yerel): sıradaki ünite ve bugün biten ünite sayısı. */
+  book?: { short: string; unitNo: number; unitTitle: string; to: string; doneToday: number }
   now?: number
 }
 
@@ -99,6 +101,18 @@ export function buildDailyPlan(input: PlanInput): PlanTask[] {
       target: Math.max(answeredToday, Math.min(quota, answeredToday + input.unansweredQuestions)),
       hint: 'Çıkmış YDS sorularından; en zayıf olduğun tipe öncelik ver.',
       to: '/yds-sorular',
+    })
+  }
+  if (input.book) {
+    const b = input.book
+    tasks.push({
+      key: 'book',
+      icon: '📘',
+      label: `Kitap: ${b.short}`,
+      done: b.doneToday,
+      target: Math.max(1, b.doneToday),
+      hint: b.doneToday ? 'Bugünkü üniteni bitirdin; istersen devam et.' : `Ünite ${b.unitNo}: ${b.unitTitle}`,
+      to: b.to,
     })
   }
   return tasks

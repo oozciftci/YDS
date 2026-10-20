@@ -15,6 +15,7 @@ import { getSection, isYokdil } from '../services/ydsSections'
 import { buildTargetPlan } from '../services/targetPlan'
 import { STUDY_CATEGORIES } from '../services/studyMap'
 import { QuickLinks } from '../components/QuickLinks'
+import { getDoneUnits, unitsDoneToday } from '../services/bookProgress'
 import { dismiss, useDismissed } from '../services/dismissed'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
@@ -95,6 +96,39 @@ export function HomePage() {
       .catch(() => setQuestionPool(undefined))
   }, [])
 
+  // Kitaptan çalış (yalnızca yerelde): en son okunan kitabın sıradaki ünitesi
+  const [bookTask, setBookTask] = useState<{ short: string; unitNo: number; unitTitle: string; to: string; doneToday: number } | undefined>(undefined)
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    let alive = true
+    import('./books/bookData')
+      .then(async (m) => {
+        const books = await m.listBooks()
+        // En son okunan kitap; hiç okunmadıysa temel kitap
+        const withPos = books
+          .map((b) => ({ b, pos: m.readPos(activeUserId, b.id) }))
+          .filter((x) => x.pos)
+          .sort((a, b) => (b.pos?.at ?? '').localeCompare(a.pos?.at ?? ''))
+        const pick = withPos[0]?.b ?? books.find((b) => b.id === 'essential-grammar-in-use')
+        if (!pick) return
+        const book = await m.loadBook(pick.id)
+        const done = getDoneUnits(activeUserId, pick.id)
+        const unit = book.units.find((u) => !done[u.no])
+        if (!unit || !alive) return
+        setBookTask({
+          short: pick.short,
+          unitNo: unit.no,
+          unitTitle: unit.title,
+          to: `/kitap/${pick.id}/s/${unit.page}`,
+          doneToday: unitsDoneToday(activeUserId, pick.id),
+        })
+      })
+      .catch(() => undefined)
+    return () => {
+      alive = false
+    }
+  }, [activeUserId])
+
   const plan = useMemo(
     () =>
       buildDailyPlan({
@@ -104,9 +138,10 @@ export function HomePage() {
         daysLeft: daysToExam,
         newWordCap: exam?.dailyGoal || 20,
         unansweredQuestions: questionPool === undefined ? undefined : Math.max(0, questionPool - examAnswers.length),
+        book: bookTask,
         now: nowTimestamp,
       }),
-    [cardStates, reviewLogs, examAnswers, daysToExam, exam?.dailyGoal, questionPool, nowTimestamp],
+    [cardStates, reviewLogs, examAnswers, daysToExam, exam?.dailyGoal, questionPool, bookTask, nowTimestamp],
   )
   const planPct = planPercent(plan)
   const nextTask = plan.find((t) => t.target > 0 && t.done < t.target)
