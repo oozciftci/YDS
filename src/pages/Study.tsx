@@ -81,7 +81,7 @@ export function StudyPage() {
   const [phase, setPhase] = useState<'setup' | 'studying' | 'summary'>('setup')
 
   // Seçili Kategori ve Aktif Seviye
-  const [activeCategoryId, setActiveCategoryId] = useState<string>('level_c1_c2')
+  const [activeCategoryId, setActiveCategoryId] = useState<string>('all_words')
   const [activeCategoryName, setActiveCategoryName] = useState<string>('C1 - C2 İleri Düzey')
   const [activeSubLevel, setActiveSubLevel] = useState<SubLevel | null>(null)
 
@@ -112,6 +112,24 @@ export function StudyPage() {
   const [recentStatus, setRecentStatus] = useState<'all' | 'in_progress' | 'completed'>('all')
   const [recentCat, setRecentCat] = useState('all')
   const [recentAll, setRecentAll] = useState(false)
+  // Son çalışılanlar bölümü açık mı (tercih hatırlanır)
+  const [recentOpen, setRecentOpen] = useState(() => {
+    try {
+      return localStorage.getItem('yds-study-recent-open') !== '0'
+    } catch {
+      return true
+    }
+  })
+  function toggleRecent() {
+    setRecentOpen((o) => {
+      try {
+        localStorage.setItem('yds-study-recent-open', o ? '0' : '1')
+      } catch {
+        // yoksay
+      }
+      return !o
+    })
+  }
   const [mode, setMode] = useState<QuestionMode>(() => {
     const m = searchParams.get('mode')
     return m === 'multiple_choice' || m === 'synonym' || m === 'cloze' || (m === 'listen' && canSpeak()) ? m : 'flashcard'
@@ -780,10 +798,12 @@ export function StudyPage() {
             return (
             <div className={styles.recentSection}>
               <div className={styles.sectionHeaderRow}>
-                <h3 className={styles.sectionHeading}>
+                <button type="button" className={styles.recentToggle} onClick={toggleRecent} aria-expanded={recentOpen}>
+                  <span>{recentOpen ? '▾' : '▸'}</span>
                   <span>🕒 Son Çalışılanlar & Yarıda Bırakılanlar</span>
-                </h3>
-                <span className={styles.recentFilters}>
+                  {!recentOpen && <small className="muted">({visible.length})</small>}
+                </button>
+                {recentOpen && <span className={styles.recentFilters}>
                   <select value={recentStatus} onChange={(e) => setRecentStatus(e.target.value as typeof recentStatus)} aria-label="Duruma göre süz">
                     <option value="all">Tümü</option>
                     <option value="in_progress">Yarıda kalanlar</option>
@@ -797,8 +817,9 @@ export function StudyPage() {
                       </option>
                     ))}
                   </select>
-                </span>
+                </span>}
               </div>
+              {recentOpen && <>
               {shown.length === 0 && <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>Bu süzgeçte çalışma yok.</p>
               }
 
@@ -868,6 +889,7 @@ export function StudyPage() {
                   {recentAll ? 'Daha az göster' : `Tümünü göster (${visible.length})`}
                 </button>
               )}
+              </>}
             </div>
             )
           })()}

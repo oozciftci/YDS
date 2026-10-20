@@ -43,15 +43,26 @@ export function getWordLevelGroup(w: WordItem): LevelGroup | null {
 
 export const BUILT_IN_GROUPS: GroupDefinition[] = [
   {
-    id: 'level_c1_c2',
-    name: 'Seviye 3: C1 - C2 İleri Düzey (YDS & Akademik)',
-    shortName: 'C1 - C2 İleri Düzey',
-    description: 'ÖSYM sınavlarında paragraf, çeviri ve kelime sorularında en belirleyici ileri düzey akademik kelimeler.',
-    icon: '🎯',
-    color: '#8b5cf6',
-    badge: 'C1-C2',
+    id: 'all_words',
+    name: 'Tüm Kelimelerim',
+    shortName: 'Tümü',
+    description: 'Havuzundaki tüm kelimeler, 20’şer kelimelik seviyeler halinde.',
+    icon: '📚',
+    color: '#64748b',
+    badge: 'Tümü',
     isBuiltIn: true,
-    matcher: (w) => getWordLevelGroup(w) === 'C',
+    matcher: () => true,
+  },
+  {
+    id: 'level_a1_a2',
+    name: 'Seviye 1: A1 - A2 Başlangıç (Temel İngilizce)',
+    shortName: 'A1 - A2 Başlangıç',
+    description: 'Günlük dilde en sık geçen, sağlam bir İngilizce altyapısı kurmanı sağlayan temel kelimeler.',
+    icon: '🌱',
+    color: '#10b981',
+    badge: 'A1-A2',
+    isBuiltIn: true,
+    matcher: (w) => getWordLevelGroup(w) === 'A',
   },
   {
     id: 'level_b1_b2',
@@ -65,15 +76,15 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
     matcher: (w) => getWordLevelGroup(w) === 'B',
   },
   {
-    id: 'level_a1_a2',
-    name: 'Seviye 1: A1 - A2 Başlangıç (Temel İngilizce)',
-    shortName: 'A1 - A2 Başlangıç',
-    description: 'Günlük dilde en sık geçen, sağlam bir İngilizce altyapısı kurmanı sağlayan temel kelimeler.',
-    icon: '🌱',
-    color: '#10b981',
-    badge: 'A1-A2',
+    id: 'level_c1_c2',
+    name: 'Seviye 3: C1 - C2 İleri Düzey (YDS & Akademik)',
+    shortName: 'C1 - C2 İleri Düzey',
+    description: 'ÖSYM sınavlarında paragraf, çeviri ve kelime sorularında en belirleyici ileri düzey akademik kelimeler.',
+    icon: '🎯',
+    color: '#8b5cf6',
+    badge: 'C1-C2',
     isBuiltIn: true,
-    matcher: (w) => getWordLevelGroup(w) === 'A',
+    matcher: (w) => getWordLevelGroup(w) === 'C',
   },
   {
     id: 'yds_phrasal',
@@ -462,6 +473,8 @@ export async function getLevelProgress(
  */
 export function getCategoryBadgeOrName(categoryGroupId: string): string {
   switch (categoryGroupId) {
+    case 'all_words':
+      return 'Tüm Kelimeler'
     case 'level_c1_c2':
       return 'C1-C2 İleri Düzey'
     case 'level_b1_b2':
