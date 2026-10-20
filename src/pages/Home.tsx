@@ -527,10 +527,10 @@ export function HomePage() {
             <div className={`${styles.modeIcon} ${styles.iconSky}`}>📝</div>
             <div className={styles.modeBody}>
               <div className={styles.modeHeadRow}>
-                <h3>YDS TEST</h3>
-                <span className={styles.modePill}>3 Örnek Soru</span>
+                <h3>Alıştırma Merkezi</h3>
+                <span className={styles.modePill}>300+ Özgün Soru</span>
               </div>
-              <p>Kelime, çeviri ve paragraf: ÖSYM düzeninde örnek sorular.</p>
+              <p>ÖSYM düzeninde özgün sorular; her şıkkın açıklamasıyla.</p>
             </div>
             <span className={styles.modeArrow}>→</span>
           </div>

@@ -117,7 +117,7 @@ function Hub() {
             {totalAnswered > 0 && ` · Başarı %${Math.round((totalCorrect / totalAnswered) * 100)}`}
           </p>
           <Link to="/yds-test" className={styles.collectedLink} style={{ marginRight: '1rem' }}>
-            📝 YDS TEST
+            📝 Alıştırma Merkezi
           </Link>
           <Link to="analiz" className={styles.collectedLink} style={{ marginRight: '1rem' }}>
             🔍 Hatalarımı analiz et
