@@ -814,6 +814,615 @@
           ]
         }
       ]
+    },
+    {
+      "id": "cloze-05",
+      "title": "Cloze Seti 5: Maraton",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "The marathon is one of the most popular long-distance races in the world, [[1]] thousands of amateur runners take part in it every year.",
+          "The race is named after a legend [[2]] a Greek messenger ran from the town of Marathon to Athens to announce a victory.",
+          "According to the story, he delivered his message and then [[3]] from exhaustion.",
+          "Historians doubt that the story is true, but it [[4]] the founders of the first modern Olympic Games in 1896.",
+          "At first, the distance of the race was not fixed; it was only in 1921 [[5]] it was set at 42.195 kilometres.",
+          "Running such a long distance requires months of training, [[6]] runners must increase their weekly mileage gradually.",
+          "Those who start too quickly [[7]] to get injured before the race has even begun.",
+          "Nutrition is equally important, because the body uses up most of its energy [[8]] the first two hours.",
+          "Even experienced runners often feel that the last ten kilometres are the hardest, [[9]] their muscles are tired and their motivation is low.",
+          "Nevertheless, most of them say that crossing the finish line is [[10]] a feeling that makes all the effort worthwhile."
+        ],
+        "tr": [
+          "Maraton, dünyadaki en popüler uzun mesafe yarışlarından biridir; her yıl binlerce amatör koşucu ona katılır.",
+          "Yarışın adı, bir Yunan ulağının zaferi duyurmak için Maraton kasabasından Atina'ya koştuğu efsaneden gelir.",
+          "Hikâyeye göre mesajını iletmiş ve ardından yorgunluktan yığılıp kalmıştır.",
+          "Tarihçiler hikâyenin doğru olduğundan kuşku duyar, ama o 1896'daki ilk modern Olimpiyat Oyunları'nın kurucularına ilham verdi.",
+          "Başlangıçta yarışın mesafesi sabit değildi; ancak 1921'de 42,195 kilometre olarak belirlendi.",
+          "Bu kadar uzun bir mesafeyi koşmak aylarca antrenman gerektirir; bu yüzden koşucular haftalık mesafelerini kademeli olarak artırmalıdır.",
+          "Çok hızlı başlayanların yarış daha başlamadan sakatlanma olasılığı yüksektir.",
+          "Beslenme de aynı derecede önemlidir; çünkü vücut enerjisinin büyük kısmını ilk iki saatte tüketir.",
+          "Deneyimli koşucular bile çoğu zaman son on kilometrenin en zor kısım olduğunu hisseder; çünkü kasları yorulmuş ve motivasyonları düşmüştür.",
+          "Yine de çoğu, bitiş çizgisini geçmenin tüm çabaya değdiren bir his olduğunu söylüyor."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "unless",
+            "although",
+            "so",
+            "whereas",
+            "than"
+          ],
+          "a": 2,
+          "x": [
+            "unless koşul; anlam bozulur.",
+            "although zıtlık; anlam bozulur.",
+            "Doğru: so = bu yüzden (sonuç).",
+            "whereas karşıtlık; anlam bozulur.",
+            "than karşılaştırma; uymaz."
+          ]
+        },
+        {
+          "o": [
+            "whom",
+            "which",
+            "what",
+            "whose",
+            "in which"
+          ],
+          "a": 4,
+          "x": [
+            "whom nesne zamiri; olmaz.",
+            "which tek başına 'a legend which a Greek messenger ran' bozuk.",
+            "what ilgi zamiri olarak olmaz.",
+            "whose isim ister.",
+            "Doğru: a legend in which ... = ...'nin anlatıldığı efsane."
+          ]
+        },
+        {
+          "o": [
+            "collapse",
+            "collapsed",
+            "collapsing",
+            "to collapse",
+            "has collapsed"
+          ],
+          "a": 1,
+          "x": [
+            "collapse yalın biçim; paralellik bozulur.",
+            "Doğru: delivered ... and then collapsed (past simple paralel).",
+            "collapsing paralellik bozulur.",
+            "to collapse paralellik bozulur.",
+            "has collapsed zaman uyumsuz."
+          ]
+        },
+        {
+          "o": [
+            "to inspire",
+            "inspires",
+            "inspiring",
+            "inspired",
+            "inspire"
+          ],
+          "a": 3,
+          "x": [
+            "to inspire ana fiil yok.",
+            "inspires şimdiki zaman; 1896 ile uyumsuz.",
+            "inspiring ana fiil yok.",
+            "Doğru: past simple: inspired (1896 tarihi).",
+            "inspire ana fiil biçimi hatalı."
+          ]
+        },
+        {
+          "o": [
+            "that",
+            "when",
+            "which",
+            "what",
+            "who"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: It was only in 1921 that ... (yarık cümle).",
+            "when yarık cümlede 'that' yerine kullanılmaz.",
+            "which uymaz.",
+            "what uymaz.",
+            "who uymaz."
+          ]
+        },
+        {
+          "o": [
+            "because of",
+            "unless",
+            "although",
+            "so",
+            "such"
+          ],
+          "a": 3,
+          "x": [
+            "because of isim ister.",
+            "unless koşul; anlam bozulur.",
+            "although zıtlık; anlam bozulur.",
+            "Doğru: ..., so runners must ... = bu yüzden.",
+            "such isim ister."
+          ]
+        },
+        {
+          "o": [
+            "are probable",
+            "are likely",
+            "are possible",
+            "are worth",
+            "are capable"
+          ],
+          "a": 1,
+          "x": [
+            "probable 'to' ile kullanılmaz.",
+            "Doğru: be likely to + V1.",
+            "possible 'to' ile kişi öznesiyle kullanılmaz.",
+            "worth + V-ing kalıbı; \"are worth to get\" hatalı.",
+            "capable of + V-ing."
+          ]
+        },
+        {
+          "o": [
+            "by",
+            "for",
+            "while",
+            "since",
+            "during"
+          ],
+          "a": 4,
+          "x": [
+            "by son tarih.",
+            "for + süre ile 'for two hours' olurdu; 'the first' ile uymaz.",
+            "while bağlaç; isim öbeği almaz.",
+            "since başlangıç noktası.",
+            "Doğru: during + isim öbeği (the first two hours)."
+          ]
+        },
+        {
+          "o": [
+            "unless",
+            "although",
+            "because",
+            "whereas",
+            "so that"
+          ],
+          "a": 2,
+          "x": [
+            "unless koşul.",
+            "although zıtlık; anlam bozulur.",
+            "Doğru: neden bildirir.",
+            "whereas karşıtlık.",
+            "so that amaç."
+          ]
+        },
+        {
+          "o": [
+            "such",
+            "so",
+            "very",
+            "too",
+            "enough"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: such a feeling (such + a + isim).",
+            "so + sıfat; isimle olmaz.",
+            "very + sıfat.",
+            "too + sıfat.",
+            "enough sıfattan sonra gelir."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloze-06",
+      "title": "Cloze Seti 6: Robotlar ve İş",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "Robots have been used in factories for several decades, [[1]] their role has expanded rapidly in recent years.",
+          "Early machines could only repeat a single movement, [[2]] modern robots can adjust their actions to changing conditions.",
+          "They are particularly useful for tasks that are dangerous or repetitive, or that [[3]] great precision.",
+          "As a result, many companies have been able to [[4]] their production costs and improve quality.",
+          "Many workers fear, [[5]], that they will lose their jobs to machines.",
+          "History suggests that new technologies destroy some jobs [[6]] creating others.",
+          "For example, when cars replaced horses, thousands of carriage makers lost their work, [[7]] new jobs appeared in car factories and garages.",
+          "Economists point out that the key question is [[8]] workers can be retrained quickly enough.",
+          "Governments therefore need to invest in education so that people [[9]] the skills required in a changing economy.",
+          "Those who learn to work with machines rather than against them [[10]] to benefit most from the change."
+        ],
+        "tr": [
+          "Robotlar fabrikalarda birkaç on yıldır kullanılıyor; ancak rolleri son yıllarda hızla genişledi.",
+          "İlk makineler yalnızca tek bir hareketi tekrarlayabiliyordu; modern robotlar ise eylemlerini değişen koşullara uyarlayabilir.",
+          "Özellikle tehlikeli ya da tekrarlayan veya büyük hassasiyet gerektiren işlerde yararlıdırlar.",
+          "Sonuç olarak birçok şirket üretim maliyetlerini azaltabildi ve kaliteyi artırabildi.",
+          "Ancak birçok çalışan makineler yüzünden işlerini kaybedeceklerinden korkuyor.",
+          "Tarih, yeni teknolojilerin bazı işleri yok ederken başkalarını da yarattığını gösteriyor.",
+          "Örneğin arabalar atların yerini aldığında binlerce faytoncu işini kaybetti, ama otomobil fabrikalarında ve garajlarda yeni işler ortaya çıktı.",
+          "Ekonomistler asıl sorunun işçilerin yeterince hızlı yeniden eğitilip eğitilemeyeceği olduğuna dikkat çekiyor.",
+          "Bu nedenle hükümetlerin, insanların değişen ekonominin gerektirdiği becerilere sahip olabilmesi için eğitime yatırım yapması gerekiyor.",
+          "Makinelere karşı değil onlarla birlikte çalışmayı öğrenenlerin değişimden en çok yararlanması muhtemeldir."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "because",
+            "so",
+            "but",
+            "unless",
+            "if"
+          ],
+          "a": 2,
+          "x": [
+            "because neden.",
+            "so sonuç; anlam bozulur.",
+            "Doğru: but = ancak (zıtlık).",
+            "unless koşul.",
+            "if koşul."
+          ]
+        },
+        {
+          "o": [
+            "since",
+            "so",
+            "because",
+            "unless",
+            "whereas"
+          ],
+          "a": 4,
+          "x": [
+            "since neden; karşıtlık yok.",
+            "so sonuç.",
+            "because neden.",
+            "unless koşul.",
+            "Doğru: whereas = oysa (karşıtlık: eski ↔ modern)."
+          ]
+        },
+        {
+          "o": [
+            "requiring",
+            "require",
+            "requirement",
+            "to require",
+            "requires"
+          ],
+          "a": 1,
+          "x": [
+            "requiring 'that' ile birlikte kullanılamaz.",
+            "Doğru: tasks that ... or that require precision (çoğul özne 'tasks' için yalın fiil).",
+            "requirement isim.",
+            "to require 'that' ile olmaz.",
+            "requires tekil; özne 'tasks' çoğul."
+          ]
+        },
+        {
+          "o": [
+            "multiply",
+            "increase",
+            "raise",
+            "reduce",
+            "expand"
+          ],
+          "a": 3,
+          "x": [
+            "multiply çelişir.",
+            "increase maliyeti artırmak; olumlu sonuçla çelişir.",
+            "raise artırmak; çelişir.",
+            "Doğru: reduce costs = maliyeti azaltmak.",
+            "expand çelişir."
+          ]
+        },
+        {
+          "o": [
+            "however",
+            "therefore",
+            "for example",
+            "moreover",
+            "similarly"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: however = ancak (zıtlık).",
+            "therefore sonuç.",
+            "for example örnek.",
+            "moreover ekleme.",
+            "similarly benzerlik."
+          ]
+        },
+        {
+          "o": [
+            "if",
+            "unless",
+            "because",
+            "while",
+            "than"
+          ],
+          "a": 3,
+          "x": [
+            "if koşul.",
+            "unless koşul.",
+            "because neden.",
+            "Doğru: while + V-ing (destroy some jobs while creating others).",
+            "than karşılaştırma."
+          ]
+        },
+        {
+          "o": [
+            "so",
+            "but",
+            "because",
+            "unless",
+            "which"
+          ],
+          "a": 1,
+          "x": [
+            "so sonuç.",
+            "Doğru: but = ama.",
+            "because neden.",
+            "unless koşul.",
+            "which ilgi zamiri."
+          ]
+        },
+        {
+          "o": [
+            "who",
+            "that",
+            "what",
+            "which",
+            "whether"
+          ],
+          "a": 4,
+          "x": [
+            "who uymaz.",
+            "that evet/hayır belirsizliği vermez.",
+            "what uymaz.",
+            "which uymaz.",
+            "Doğru: whether = olup olmadığı."
+          ]
+        },
+        {
+          "o": [
+            "to acquire",
+            "acquiring",
+            "acquire",
+            "acquires",
+            "acquired"
+          ],
+          "a": 2,
+          "x": [
+            "to acquire 'so that' ile olmaz.",
+            "acquiring yapı bozuk.",
+            "Doğru: so that people (can/may) acquire — 'so that + özne + V1'.",
+            "acquires özne çoğul.",
+            "acquired geçmiş; bağlam şimdiki/gelecek."
+          ]
+        },
+        {
+          "o": [
+            "are likely",
+            "are probable",
+            "are enough",
+            "are possible",
+            "are certain"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: are likely to benefit.",
+            "probable to ile olmaz.",
+            "enough ile bu kalıp kurulamaz.",
+            "possible kişi özneyle olmaz.",
+            "certain kesinlik; metin 'muhtemel' diyor."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloze-07",
+      "title": "Cloze Seti 7: Turizm ve Yerel Kültür",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "Tourism is among the world's largest industries, [[1]] it brings both benefits and problems to the places that receive visitors.",
+          "On the positive side, tourists spend money in local shops and restaurants, [[2]] creating jobs for residents.",
+          "In some small towns, tourism has saved traditional crafts that [[3]] have disappeared.",
+          "[[4]], when too many visitors arrive at the same time, local people may feel that their daily life is being disturbed.",
+          "Rents often rise, [[5]] many families can no longer afford to live in the centre of their own city.",
+          "Popular sites can also be damaged [[6]] millions of people walk through them every year.",
+          "To deal with these problems, some cities have begun to [[7]] the number of visitors allowed per day.",
+          "Others encourage tourists to visit less well-known areas, [[8]] the pressure is spread more evenly.",
+          "Travellers can also help by choosing local guides and by [[9]] respect for local customs.",
+          "In this way, tourism can remain a source of income [[10]] harming the culture that attracts visitors in the first place."
+        ],
+        "tr": [
+          "Turizm dünyanın en büyük sektörlerinden biridir; ziyaretçi alan yerlere hem yarar hem sorun getirir.",
+          "Olumlu tarafta turistler yerel dükkânlarda ve restoranlarda para harcar ve böylece sakinler için iş yaratır.",
+          "Bazı küçük kasabalarda turizm, aksi halde yok olacak olan geleneksel el sanatlarını kurtarmıştır.",
+          "Ancak aynı anda çok fazla ziyaretçi geldiğinde yerel halk günlük yaşamlarının rahatsız edildiğini hissedebilir.",
+          "Kiralar çoğu zaman yükselir; bu yüzden birçok aile artık kendi şehirlerinin merkezinde yaşamayı karşılayamaz.",
+          "Popüler yerler de her yıl milyonlarca insan içlerinde yürüdüğü için zarar görebilir.",
+          "Bu sorunlarla başa çıkmak için bazı şehirler günlük izin verilen ziyaretçi sayısını sınırlamaya başladı.",
+          "Diğerleri turistleri daha az bilinen bölgeleri ziyaret etmeye teşvik eder; böylece baskı daha eşit dağılır.",
+          "Gezginler de yerel rehberleri seçerek ve yerel göreneklere saygı göstererek yardımcı olabilir.",
+          "Bu şekilde turizm, ziyaretçileri ilk etapta çeken kültüre zarar vermeden bir gelir kaynağı olarak kalabilir."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "because",
+            "so",
+            "but",
+            "unless",
+            "if"
+          ],
+          "a": 2,
+          "x": [
+            "because neden.",
+            "so sonuç.",
+            "Doğru: but = ancak.",
+            "unless koşul.",
+            "if koşul."
+          ]
+        },
+        {
+          "o": [
+            "although",
+            "therefore",
+            "whereas",
+            "unless",
+            "thereby"
+          ],
+          "a": 4,
+          "x": [
+            "although zıtlık.",
+            "therefore + V-ing almaz (virgüllü bağlaç).",
+            "whereas karşıtlık.",
+            "unless koşul.",
+            "Doğru: thereby + V-ing = böylece (sonuç)."
+          ]
+        },
+        {
+          "o": [
+            "otherwise",
+            "would otherwise",
+            "instead",
+            "moreover",
+            "therefore"
+          ],
+          "a": 1,
+          "x": [
+            "otherwise 'would' olmadan kalıp eksik.",
+            "Doğru: crafts that would otherwise have disappeared = aksi halde yok olacak olan.",
+            "instead anlam uymaz.",
+            "moreover ekleme.",
+            "therefore sonuç."
+          ]
+        },
+        {
+          "o": [
+            "Moreover",
+            "Therefore",
+            "For example",
+            "However",
+            "Similarly"
+          ],
+          "a": 3,
+          "x": [
+            "Moreover ekleme.",
+            "Therefore sonuç.",
+            "For example örnek.",
+            "Doğru: However = ancak (zıtlık).",
+            "Similarly benzerlik."
+          ]
+        },
+        {
+          "o": [
+            "so",
+            "although",
+            "unless",
+            "whereas",
+            "because"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: ..., so many families can no longer afford = bu yüzden.",
+            "although zıtlık.",
+            "unless koşul.",
+            "whereas karşıtlık.",
+            "because: kiralar yükseliyor neden değil sonuç değil; yön ters."
+          ]
+        },
+        {
+          "o": [
+            "although",
+            "unless",
+            "if only",
+            "when",
+            "since then"
+          ],
+          "a": 3,
+          "x": [
+            "although zıtlık.",
+            "unless koşul; anlam bozulur.",
+            "if only dilek.",
+            "Doğru: ... damaged when millions walk through = ...dığında.",
+            "since then anlam uymaz."
+          ]
+        },
+        {
+          "o": [
+            "to limiting",
+            "limit",
+            "limiting",
+            "limited",
+            "limits"
+          ],
+          "a": 1,
+          "x": [
+            "to limiting yapı bozuk.",
+            "Doğru: begun to + V1.",
+            "limiting 'begun to limiting' olmaz.",
+            "limited biçim hatalı.",
+            "limits biçim hatalı."
+          ]
+        },
+        {
+          "o": [
+            "because of",
+            "unless",
+            "although",
+            "whereas",
+            "so that"
+          ],
+          "a": 4,
+          "x": [
+            "because of isim ister.",
+            "unless koşul.",
+            "although zıtlık.",
+            "whereas karşıtlık.",
+            "Doğru: so that = böylece (amaç/sonuç)."
+          ]
+        },
+        {
+          "o": [
+            "show",
+            "to show",
+            "showing",
+            "shown",
+            "shows"
+          ],
+          "a": 2,
+          "x": [
+            "show edat sonrası olmaz.",
+            "to show edat sonrası olmaz.",
+            "Doğru: by + V-ing; 'choosing ... and by showing'.",
+            "shown edat sonrası olmaz.",
+            "shows edat sonrası olmaz."
+          ]
+        },
+        {
+          "o": [
+            "without",
+            "instead of",
+            "although",
+            "unless",
+            "despite"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: without + V-ing = ...meden.",
+            "instead of anlam değiştirir.",
+            "although bağlaç; V-ing almaz.",
+            "unless koşul.",
+            "despite zıtlık; 'harming' ile anlam bozulur."
+          ]
+        }
+      ]
     }
   ],
   "balanced": true
