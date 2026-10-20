@@ -13,6 +13,13 @@ interface MatchCard {
   text: string
   isTerm: boolean // terim mi yoksa eş anlamlı mı
   matched: boolean
+  /** Çiftin Türkçe anlamı (eşleşince iki kartta da görünür) */
+  meaning: string
+}
+
+/** "kötüleşmek; bozulmak (tıp)" → "kötüleşmek; bozulmak" — kartta kısa görünsün */
+function shortMeaning(def: string): string {
+  return def.split('\n')[0].replace(/\([^)]*\)/g, '').trim().slice(0, 60)
 }
 
 const PAIRS_PER_ROUND = 5
@@ -30,7 +37,7 @@ export function SynonymMatchPage() {
 
   // Eş anlamlısı olan tüm kelime havuzu (kullanıcı + akademik hazır paketler)
   const availablePool = useMemo(() => {
-    const list: Array<{ term: string; synonym: string }> = []
+    const list: Array<{ term: string; synonym: string; meaning: string }> = []
     const seen = new Set<string>()
 
     // Önce kullanıcının kendi kelimeleri
@@ -40,7 +47,7 @@ export function SynonymMatchPage() {
         const key = `${w.term.toLowerCase()}__${syn.toLowerCase()}`
         if (!seen.has(key)) {
           seen.add(key)
-          list.push({ term: w.term, synonym: syn })
+          list.push({ term: w.term, synonym: syn, meaning: shortMeaning(w.definition || '') })
         }
       }
     }
@@ -53,7 +60,7 @@ export function SynonymMatchPage() {
           const key = `${w.term.toLowerCase()}__${syn.toLowerCase()}`
           if (!seen.has(key)) {
             seen.add(key)
-            list.push({ term: w.term, synonym: syn })
+            list.push({ term: w.term, synonym: syn, meaning: shortMeaning(w.definition || '') })
           }
         }
       }
@@ -101,6 +108,7 @@ export function SynonymMatchPage() {
         text: pair.term,
         isTerm: true,
         matched: false,
+        meaning: pair.meaning,
       })
       // 2. Kart: Eş Anlamlısı
       newCards.push({
@@ -109,6 +117,7 @@ export function SynonymMatchPage() {
         text: pair.synonym,
         isTerm: false,
         matched: false,
+        meaning: pair.meaning,
       })
     })
 
@@ -201,8 +210,8 @@ export function SynonymMatchPage() {
       {/* Üst Bilgi Barı */}
       <header className={styles.header}>
         <div className={styles.headerLeft}>
-          <Link to="/" className={styles.backLink}>
-            ← Ana Sayfa
+          <Link to="/calis" className={styles.backLink}>
+            ← Çalış
           </Link>
           <h1 className={styles.title}>Eş Anlamlı Eşleştirmece</h1>
           <span className={styles.subTitle}>
@@ -264,6 +273,7 @@ export function SynonymMatchPage() {
                     {card.isTerm ? 'Kelime' : 'Eş Anlam'}
                   </span>
                   <span className={styles.cardText}>{card.text}</span>
+                  {isMatched && card.meaning && <span className={styles.cardMeaning}>{card.meaning}</span>}
                 </button>
               );
             })}
@@ -292,6 +302,17 @@ export function SynonymMatchPage() {
               <strong>{elapsedSeconds} sn</strong>
             </div>
           </div>
+
+          <ul className={styles.pairList}>
+            {cards
+              .filter((c) => c.isTerm)
+              .map((c) => (
+                <li key={c.pairId}>
+                  <strong>{c.text}</strong> = {cards.find((x) => x.pairId === c.pairId && !x.isTerm)?.text}
+                  {c.meaning && <span className="muted"> · {c.meaning}</span>}
+                </li>
+              ))}
+          </ul>
 
           <div className={styles.congratsActions}>
             <button

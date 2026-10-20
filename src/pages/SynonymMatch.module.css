@@ -243,3 +243,22 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* Eşleşince görünen Türkçe anlam */
+.cardMeaning {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.pairList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.3rem;
+  text-align: left;
+  font-size: 0.9rem;
+}
