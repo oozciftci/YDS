@@ -123,7 +123,6 @@ function parseExam([id, title, field, from, to]) {
   let passageKind = null
   let passageNo = null // aktif parçanın id'si (cloze/okuma sorularına bağlanır)
   let nextNo = 1
-  let curPage = from
 
   const flushPassage = () => {
     const text = joinLines(buf)
@@ -166,7 +165,6 @@ function parseExam([id, title, field, from, to]) {
 
   for (let i = 0; i < stream.length; i++) {
     const [l, pg] = stream[i]
-    curPage = pg
 
     // Yönerge: "21 - 25. sorularda, ..." (birkaç satır; "bulunuz." / "cevaplayınız." ile biter)
     const ins = /^(\d{1,2})\s*[-–]\s*(\d{1,2})\.\s*soru/i.exec(l)

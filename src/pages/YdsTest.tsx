@@ -272,11 +272,15 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
 
 function SetPage() {
   const { setId = '' } = useParams()
+  // key: set değişince bileşen sıfırdan kurulur (yükleme durumu için efektte state sıfırlamaya gerek kalmaz)
+  return <SetLoader key={setId} setId={setId} />
+}
+
+function SetLoader({ setId }: { setId: string }) {
   const [state, setState] = useState<{ bundle: ExamBundle; set: OzgunSet; nextId?: string } | 'missing' | null>(null)
 
   useEffect(() => {
     let alive = true
-    setState(null)
     void Promise.all([loadOzgunSet(setId), listOzgunSets()]).then(([r, all]) => {
       if (!alive) return
       if (!r) return setState('missing')

@@ -157,7 +157,6 @@ function flushQuestion() {
   q = null
 }
 
-const INLINE_OPTS = /^A\)\s*(\S+)\s{2,}B\)\s*(\S+)\s{2,}C\)\s*(\S+)\s{2,}D\)\s*(\S+)\s{2,}E\)\s*(\S+)$/
 
 for (const raw of lines) {
   const line = raw.trim()
