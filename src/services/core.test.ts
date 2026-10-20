@@ -6,6 +6,7 @@ import { mockAdvice, mockCadence, compareMocks } from './mockPlan'
 import { summarizeTimes } from './mockTime'
 import { buildTargetPlan } from './targetPlan'
 import { isLeech, LEECH_LAPSES } from './leech'
+import { pageLabel, prettyExamId } from './notebook'
 import { extractWordsFromText } from './textWords'
 import { buildWeeklyReport, reportToText } from './weeklyReport'
 import { reasonCounts } from './wrongReasons'
@@ -242,5 +243,19 @@ describe('leech', () => {
     expect(isLeech({ lapses: LEECH_LAPSES - 1 })).toBe(false)
     expect(isLeech({ lapses: LEECH_LAPSES })).toBe(true)
     expect(isLeech(undefined)).toBe(false)
+  })
+})
+
+describe('notebook', () => {
+  it('sınav kimliğini okunur yapar', () => {
+    expect(prettyExamId('yds-2018-aralik')).toBe('2018 Aralık YDS')
+    expect(prettyExamId('yokdil-2019-mart-fen')).toBe('2019 Mart YÖKDİL Fen')
+  })
+  it('sayfa yolundan özellik adı', () => {
+    expect(pageLabel('/')).toBe('Ana Sayfa')
+    expect(pageLabel('/yds-sorular/sinav/yds-2018-aralik')).toBe('Soru Merkezi · 2018 Aralık YDS')
+    expect(pageLabel('/yds-sorular/konu/grammar')).toBe('Konuya Göre · Dilbilgisi')
+    expect(pageLabel('/yds-test/vocab-03')).toBe('Alıştırma · Kelime 3')
+    expect(pageLabel('/yds-test/ceviri/')).toBe('Çeviri Atölyesi')
   })
 })

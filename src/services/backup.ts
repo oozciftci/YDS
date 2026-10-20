@@ -1,5 +1,6 @@
 import { db } from '../db'
 import { logger } from './logger'
+import { exportNotebook, importNotebook } from './notebook'
 
 export interface BackupData {
   version: number
@@ -20,6 +21,8 @@ export interface BackupData {
   coachChats?: unknown[]
   /** Geliştirici danışmanından eklenen öneriler */
   suggestions?: unknown[]
+  /** Notlarım (sayfa notları + genel defter; ses/görsel data URL olarak) */
+  notebook?: unknown[]
 }
 
 /**
@@ -43,6 +46,7 @@ export async function exportDatabaseToJson(): Promise<void> {
         db.coachChats.toArray(),
         db.suggestions.toArray(),
       ])
+    const notebook = await exportNotebook()
 
     const backup: BackupData = {
       version: 5,
@@ -60,6 +64,7 @@ export async function exportDatabaseToJson(): Promise<void> {
       memoryNotes,
       coachChats,
       suggestions,
+      notebook,
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -154,6 +159,9 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         }
       },
     )
+
+    // Defter görselleri/sesleri data URL'den Blob'a çevrilir (fetch gerektirdiği için işlem dışında)
+    if (Array.isArray(data.notebook) && data.notebook.length > 0) await importNotebook(data.notebook)
 
     logger.interaction('storage', 'Kullanıcı JSON yedeğini başarıyla geri yükledi.', {
       wordsImported: data.words.length,

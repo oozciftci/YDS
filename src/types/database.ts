@@ -359,3 +359,27 @@ export interface LevelProgress {
   accuracyPercent: number
   lastStudiedAt: string
 }
+
+/**
+ * Notlarım: sağ alttaki not pencereleri. Yalnızca cihazda (JSON yedeğine girer; ses/görsel yedekte data URL olur).
+ * - scope 'page': sayfaya özel not (sayfa başına tek metin; id = page:<kullanıcı>:<sayfa yolu>)
+ * - scope 'general': genel çalışma defterinin bir girdisi (metin, sesli not ya da ekran görüntüsü)
+ */
+export interface NoteEntry {
+  id: string
+  userId: string
+  scope: 'page' | 'general'
+  /** Notun yazıldığı sayfanın yolu (ör. /yds-sorular/sinav/yds-2018-aralik) */
+  pageKey: string
+  /** Notun yazıldığı özelliğin adı (ör. "Soru Merkezi · 2018 Aralık YDS") */
+  pageLabel: string
+  kind: 'text' | 'audio' | 'image'
+  /** Başlık (genel defterde varsayılan: özellik adı + tarih/saat; kullanıcı değiştirebilir) */
+  title?: string
+  text?: string
+  blob?: Blob
+  mime?: string
+  durationSec?: number
+  createdAt: string
+  updatedAt: string
+}

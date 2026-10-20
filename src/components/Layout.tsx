@@ -4,6 +4,7 @@ import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { notifyRouteChanged } from '../pwa/registerSW'
 import { useSyncStatus } from '../services/sync'
 import { useUserStore } from '../stores/user'
+import { NotesDock } from './NotesDock'
 import styles from './Layout.module.css'
 
 const NAV_ITEMS = [
@@ -164,6 +165,8 @@ export function Layout() {
           </NavLink>
         ))}
       </nav>
+
+      <NotesDock />
     </div>
   )
 }

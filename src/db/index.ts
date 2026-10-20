@@ -3,6 +3,7 @@ import type {
   AiNote,
   CoachChat,
   MemoryNote,
+  NoteEntry,
   Suggestion,
   AppLog,
   ExamAnswer,
@@ -33,6 +34,7 @@ export class YdsDatabase extends Dexie {
   coachChats!: EntityTable<CoachChat, 'id'>
   memoryNotes!: EntityTable<MemoryNote, 'id'>
   suggestions!: EntityTable<Suggestion, 'id'>
+  notebook!: EntityTable<NoteEntry, 'id'>
 
   constructor() {
     super('YdsVocabularyDb')
@@ -81,6 +83,10 @@ export class YdsDatabase extends Dexie {
 
     this.version(9).stores({
       suggestions: 'id, userId, status, chatId, updatedAt, [userId+updatedAt]',
+    })
+
+    this.version(10).stores({
+      notebook: 'id, userId, scope, pageKey, createdAt, [userId+scope], [userId+pageKey]',
     })
   }
 }
