@@ -1,0 +1,1354 @@
+{
+  "type": "vocab",
+  "sets": [
+    {
+      "id": "vocab-01",
+      "title": "Kelime Seti 1",
+      "qs": [
+        {
+          "s": "The committee decided to ---- the meeting until all members could attend in person.",
+          "o": [
+            "justify",
+            "accelerate",
+            "postpone",
+            "restore",
+            "undermine"
+          ],
+          "a": 2,
+          "t": "Komite, tüm üyeler bizzat katılabilene kadar toplantıyı ertelemeye karar verdi.",
+          "ot": [
+            "haklı çıkarmak",
+            "hızlandırmak",
+            "ertelemek",
+            "eski haline getirmek",
+            "temelini zayıflatmak"
+          ],
+          "x": [
+            "justify haklı göstermek demektir; toplantıyı haklı çıkarmak cümleye uymaz.",
+            "accelerate hızlandırmak demektir; 'until all members could attend' ile çelişir.",
+            "Doğru: postpone = ertelemek; 'until' ile birlikte zamanı ileri atmayı anlatır.",
+            "restore eski hâline getirmek demektir; toplantı için anlamsız.",
+            "undermine temelini sarsmak demektir; anlam uymaz."
+          ]
+        },
+        {
+          "s": "Her ---- remarks about the project hurt the team's morale more than any official criticism.",
+          "o": [
+            "supportive",
+            "casual",
+            "accurate",
+            "thorough",
+            "dismissive"
+          ],
+          "a": 4,
+          "t": "Projeye dair küçümseyici sözleri, takımın moralini herhangi bir resmî eleştiriden daha çok bozdu.",
+          "ot": [
+            "destekleyici",
+            "gelişigüzel",
+            "doğru",
+            "kapsamlı",
+            "küçümseyici"
+          ],
+          "x": [
+            "supportive moral bozmaz, yükseltir; 'hurt' ile çelişir.",
+            "casual 'rahat, gelişigüzel' demektir; moral bozmanın nedenini açıklamaz.",
+            "accurate 'doğru' demektir; 'hurt' ile uyumsuz.",
+            "thorough 'kapsamlı' demektir; olumsuz sonucu açıklamaz.",
+            "Doğru: dismissive = küçümseyen, önemsemeyen; moral bozan söz bu olur."
+          ]
+        },
+        {
+          "s": "Scientists have yet to find a ---- for the disease, although several treatments ease its symptoms.",
+          "o": [
+            "cause",
+            "cure",
+            "symptom",
+            "warning",
+            "victim"
+          ],
+          "a": 1,
+          "t": "Bilim insanları, birkaç tedavi belirtileri hafifletse de hastalığın çaresini henüz bulamadı.",
+          "ot": [
+            "neden",
+            "çare, tedavi",
+            "belirti",
+            "uyarı",
+            "kurban"
+          ],
+          "x": [
+            "cause de aranabilir ama 'although ... treatments' zıtlığı çareyi gerektirir.",
+            "Doğru: cure = kesin çare; 'treatments ease symptoms' ile zıtlık kurar.",
+            "symptom zaten cümlede ayrıca geçiyor, 'bulmak' ile uymaz.",
+            "warning (uyarı) bulunmaz, verilir.",
+            "victim bir hastalığın 'bulunan' şeyi olamaz."
+          ]
+        },
+        {
+          "s": "The new regulation is ---- to all companies, regardless of their size or sector.",
+          "o": [
+            "exempt",
+            "indifferent",
+            "hostile",
+            "applicable",
+            "vulnerable"
+          ],
+          "a": 3,
+          "t": "Yeni düzenleme, büyüklüğü veya sektörü ne olursa olsun tüm şirketler için geçerlidir.",
+          "ot": [
+            "muaf",
+            "ilgisiz",
+            "düşmanca",
+            "uygulanabilir, geçerli",
+            "savunmasız"
+          ],
+          "x": [
+            "exempt 'muaf' demektir; 'to all companies' ile çelişir (muaf 'from' alır).",
+            "indifferent to 'umursamayan' demektir; düzenleme için uymaz.",
+            "hostile to düzenleme için anlamsız.",
+            "Doğru: applicable to = için geçerli.",
+            "vulnerable to 'açık, savunmasız' demektir; anlam uymaz."
+          ]
+        },
+        {
+          "s": "Her sudden resignation came as a ---- to her colleagues, who had expected her to stay for years.",
+          "o": [
+            "shock",
+            "relief",
+            "promise",
+            "routine",
+            "reward"
+          ],
+          "a": 0,
+          "t": "Ani istifası, yıllarca kalacağını bekleyen meslektaşları için bir şok oldu.",
+          "ot": [
+            "şok",
+            "rahatlama",
+            "söz",
+            "rutin",
+            "ödül"
+          ],
+          "x": [
+            "Doğru: come as a shock = şok etkisi yaratmak.",
+            "relief beklenmedik istifa için mantıklı değil; 'expected her to stay' bir şaşkınlığı gösterir.",
+            "promise 'come as a' kalıbına uymaz.",
+            "routine 'sudden' ile çelişir.",
+            "reward anlam olarak uymaz."
+          ]
+        },
+        {
+          "s": "Because the road was ---- after the heavy snowfall, drivers were advised to stay at home.",
+          "o": [
+            "spacious",
+            "profitable",
+            "ancient",
+            "impassable",
+            "fragile"
+          ],
+          "a": 3,
+          "t": "Yoğun kardan sonra yol geçilemez durumda olduğu için sürücülere evde kalmaları tavsiye edildi.",
+          "ot": [
+            "geniş",
+            "kârlı",
+            "kadim",
+            "geçilemez",
+            "kırılgan"
+          ],
+          "x": [
+            "spacious (geniş) evde kalma tavsiyesini açıklamaz.",
+            "profitable yol için anlamsız.",
+            "ancient kar yağışıyla ilgisiz.",
+            "Doğru: impassable = geçilemez; tavsiyenin nedenidir.",
+            "fragile eşya için kullanılır, yol için uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-02",
+      "title": "Kelime Seti 2",
+      "qs": [
+        {
+          "s": "The professor's lecture was so ---- that several students fell asleep in the middle of it.",
+          "o": [
+            "provocative",
+            "tedious",
+            "gripping",
+            "concise",
+            "urgent"
+          ],
+          "a": 1,
+          "t": "Profesörün dersi o kadar sıkıcıydı ki birkaç öğrenci ortasında uyuyakaldı.",
+          "ot": [
+            "kışkırtıcı",
+            "sıkıcı",
+            "sürükleyici",
+            "kısa ve öz",
+            "acil"
+          ],
+          "x": [
+            "provocative ilgi uyandırır, uyutmaz.",
+            "Doğru: tedious = sıkıcı, usandırıcı; uyuyakalmanın nedeni.",
+            "gripping sürükleyici demektir; uyku ile çelişir.",
+            "concise kısa demektir; uyumayı açıklamaz.",
+            "urgent acil demektir; anlam uymaz."
+          ]
+        },
+        {
+          "s": "Researchers were able to ---- the origin of the manuscript to the twelfth century.",
+          "o": [
+            "conceal",
+            "interrupt",
+            "reject",
+            "exaggerate",
+            "trace"
+          ],
+          "a": 4,
+          "t": "Araştırmacılar el yazmasının kökenini on ikinci yüzyıla kadar izleyebildi.",
+          "ot": [
+            "gizlemek",
+            "kesmek",
+            "reddetmek",
+            "abartmak",
+            "izini sürmek"
+          ],
+          "x": [
+            "conceal gizlemek; 'to the twelfth century' ile uymaz.",
+            "interrupt kesintiye uğratmak; uymaz.",
+            "reject 'to' ile bu anlamda kullanılmaz.",
+            "exaggerate abartmak; köken için anlamsız.",
+            "Doğru: trace sth to = kökenini ...'e dek izlemek."
+          ]
+        },
+        {
+          "s": "Although the two proposals seem different, they are in fact ---- in their basic aims.",
+          "o": [
+            "opposite",
+            "irrelevant",
+            "identical",
+            "contradictory",
+            "unpredictable"
+          ],
+          "a": 2,
+          "t": "İki öneri farklı görünse de aslında temel amaçlarında aynıdır.",
+          "ot": [
+            "zıt",
+            "ilgisiz",
+            "özdeş",
+            "çelişkili",
+            "öngörülemez"
+          ],
+          "x": [
+            "opposite 'although ... different' zıtlığını bozar.",
+            "irrelevant 'ilgisiz' demektir; aims ile ilgili değil.",
+            "Doğru: identical = aynı, özdeş; 'seem different' ile zıtlık kurar.",
+            "contradictory çelişkili demektir; zıtlık yönü yanlış.",
+            "unpredictable anlama uymaz."
+          ]
+        },
+        {
+          "s": "The company has been ---- criticism for its failure to protect customer data.",
+          "o": [
+            "subject to",
+            "free from",
+            "grateful for",
+            "aware to",
+            "tired with"
+          ],
+          "a": 0,
+          "t": "Şirket, müşteri verilerini koruyamadığı için eleştirilere maruz kalıyor.",
+          "ot": [
+            "maruz",
+            "arınmış",
+            "minnettar",
+            "farkında",
+            "bıkmış"
+          ],
+          "x": [
+            "Doğru: be subject to = ...e maruz olmak.",
+            "free from 'eleştiriden uzak' demek olurdu; 'failure' ile çelişir.",
+            "grateful for eleştiri için mantıksız.",
+            "aware to kalıbı yoktur (aware of).",
+            "tired with kalıbı eleştiri ile anlamlı değil."
+          ]
+        },
+        {
+          "s": "Heavy investment in education is generally seen as a ---- for long-term economic growth.",
+          "o": [
+            "coincidence",
+            "obstacle",
+            "prerequisite",
+            "rumour",
+            "penalty"
+          ],
+          "a": 2,
+          "t": "Eğitime yapılan büyük yatırım genellikle uzun vadeli ekonomik büyüme için bir ön koşul olarak görülür.",
+          "ot": [
+            "tesadüf",
+            "engel",
+            "ön koşul",
+            "söylenti",
+            "ceza"
+          ],
+          "x": [
+            "coincidence 'seen as' ile anlamsız.",
+            "obstacle büyümeyi engeller; cümle olumlu.",
+            "Doğru: prerequisite = ön koşul; olumlu yatırım-büyüme ilişkisi.",
+            "rumour uymaz.",
+            "penalty ceza; yatırım için yanlış."
+          ]
+        },
+        {
+          "s": "The mayor's speech was deliberately ----; it avoided any clear commitment on the issue.",
+          "o": [
+            "explicit",
+            "sincere",
+            "emotional",
+            "lengthy",
+            "vague"
+          ],
+          "a": 4,
+          "t": "Belediye başkanının konuşması kasıtlı olarak belirsizdi; konuda net bir taahhütten kaçındı.",
+          "ot": [
+            "açık, net",
+            "içten",
+            "duygusal",
+            "uzun",
+            "belirsiz"
+          ],
+          "x": [
+            "explicit net demektir; 'avoided any clear commitment' ile çelişir.",
+            "sincere içten; kaçamaklılıkla çelişir.",
+            "emotional net taahhüt eksikliğini açıklamaz.",
+            "lengthy uzunluk, taahhüt kaçınmasını açıklamaz.",
+            "Doğru: vague = belirsiz, muğlak; noktalı virgülden sonraki açıklama bunu verir."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-03",
+      "title": "Kelime Seti 3",
+      "qs": [
+        {
+          "s": "Climate change is ---- the frequency of extreme weather events in many regions.",
+          "o": [
+            "reducing",
+            "increasing",
+            "ignoring",
+            "predicting",
+            "celebrating"
+          ],
+          "a": 1,
+          "t": "İklim değişikliği, birçok bölgede aşırı hava olaylarının sıklığını artırıyor.",
+          "ot": [
+            "azaltmak",
+            "artırmak",
+            "göz ardı etmek",
+            "tahmin etmek",
+            "kutlamak"
+          ],
+          "x": [
+            "reducing iklim değişikliğinin bilinen etkisiyle çelişir.",
+            "Doğru: increasing = artırmak.",
+            "ignoring bir olayın sıklığına uygulanmaz.",
+            "predicting 'frequency' ile anlamlı bir fiil değil.",
+            "celebrating anlamsız."
+          ]
+        },
+        {
+          "s": "The two neighbours finally ---- their long dispute by agreeing to share the cost of the fence.",
+          "o": [
+            "inherited",
+            "provoked",
+            "neglected",
+            "resolved",
+            "ignored"
+          ],
+          "a": 3,
+          "t": "İki komşu, çitin masrafını paylaşmayı kabul ederek uzun süren anlaşmazlıklarını sonunda çözdü.",
+          "ot": [
+            "miras almak",
+            "kışkırtmak",
+            "ihmal etmek",
+            "çözmek",
+            "görmezden gelmek"
+          ],
+          "x": [
+            "inherited dispute ile uymaz.",
+            "provoked anlaşmazlığı çözmez, körükler.",
+            "neglected 'agreeing to share' ile uymaz.",
+            "Doğru: resolve a dispute = anlaşmazlığı çözmek.",
+            "ignored anlaşma ile çelişir."
+          ]
+        },
+        {
+          "s": "Only a ---- number of applicants had the experience required for the position.",
+          "o": [
+            "limited",
+            "tremendous",
+            "growing",
+            "endless",
+            "unlikely"
+          ],
+          "a": 0,
+          "t": "Başvuranların yalnızca sınırlı bir kısmı pozisyon için gereken deneyime sahipti.",
+          "ot": [
+            "sınırlı",
+            "muazzam",
+            "artan",
+            "sonsuz",
+            "olası olmayan"
+          ],
+          "x": [
+            "Doğru: a limited number = az sayıda; 'Only' ile uyumlu.",
+            "tremendous 'only' ile çelişir.",
+            "growing 'only' ile uymaz.",
+            "endless 'only' ile çelişir.",
+            "unlikely 'number' ile kullanılmaz."
+          ]
+        },
+        {
+          "s": "The film received ---- reviews: some critics loved it, while others found it dull.",
+          "o": [
+            "unanimous",
+            "rare",
+            "glowing",
+            "mixed",
+            "formal"
+          ],
+          "a": 3,
+          "t": "Film karışık eleştiriler aldı: bazı eleştirmenler çok sevdi, bazıları sıkıcı buldu.",
+          "ot": [
+            "oybirliğiyle",
+            "nadir",
+            "parlak",
+            "karışık",
+            "resmî"
+          ],
+          "x": [
+            "unanimous oybirliği demektir; 'some ... others' ile çelişir.",
+            "rare anlamı açıklamaz.",
+            "glowing tümüyle olumlu demektir; 'dull' diyenler var.",
+            "Doğru: mixed reviews = olumlu ve olumsuz karışık eleştiriler.",
+            "formal anlam uymaz."
+          ]
+        },
+        {
+          "s": "She was reluctant to ---- her opinion because she did not want to offend anyone.",
+          "o": [
+            "forget",
+            "express",
+            "borrow",
+            "inspect",
+            "decorate"
+          ],
+          "a": 1,
+          "t": "Kimseyi gücendirmek istemediği için fikrini ifade etmekte isteksizdi.",
+          "ot": [
+            "unutmak",
+            "ifade etmek",
+            "ödünç almak",
+            "denetlemek",
+            "süslemek"
+          ],
+          "x": [
+            "forget 'reluctant to' ile mantıksız.",
+            "Doğru: express an opinion = görüş belirtmek.",
+            "borrow fikir ile kullanılmaz.",
+            "inspect fikir ile kullanılmaz.",
+            "decorate fikir ile kullanılmaz."
+          ]
+        },
+        {
+          "s": "The bridge was closed to traffic because engineers found a serious ---- in its structure.",
+          "o": [
+            "tradition",
+            "benefit",
+            "ornament",
+            "volume",
+            "flaw"
+          ],
+          "a": 4,
+          "t": "Mühendisler yapıda ciddi bir kusur bulduğu için köprü trafiğe kapatıldı.",
+          "ot": [
+            "gelenek",
+            "yarar",
+            "süs",
+            "hacim",
+            "kusur"
+          ],
+          "x": [
+            "tradition uymaz.",
+            "benefit kapatma nedeni olamaz.",
+            "ornament süs; 'serious' ile uymaz.",
+            "volume anlam açıklamaz.",
+            "Doğru: flaw = kusur, çatlak; kapatmanın nedeni."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-04",
+      "title": "Kelime Seti 4",
+      "qs": [
+        {
+          "s": "The new software is designed to ---- the process of data entry and save employees hours of work.",
+          "o": [
+            "postpone",
+            "complicate",
+            "streamline",
+            "restrict",
+            "duplicate"
+          ],
+          "a": 2,
+          "t": "Yeni yazılım, veri girişi sürecini sadeleştirmek ve çalışanlara saatlerce zaman kazandırmak için tasarlandı.",
+          "ot": [
+            "ertelemek",
+            "karmaşıklaştırmak",
+            "sadeleştirmek",
+            "kısıtlamak",
+            "kopyalamak"
+          ],
+          "x": [
+            "postpone zaman kazandırmaz.",
+            "complicate zaman kazandırmaz.",
+            "Doğru: streamline = süreci sadeleştirip hızlandırmak.",
+            "restrict kısıtlar; 'save hours' ile uymaz.",
+            "duplicate iki katına çıkarır; zaman kazandırmaz."
+          ]
+        },
+        {
+          "s": "Archaeologists have ---- a large Roman villa beneath the city's main square.",
+          "o": [
+            "unearthed",
+            "embraced",
+            "outlined",
+            "withdrawn",
+            "adopted"
+          ],
+          "a": 0,
+          "t": "Arkeologlar şehrin ana meydanının altında büyük bir Roma villası ortaya çıkardı.",
+          "ot": [
+            "gün yüzüne çıkarmak",
+            "benimsemek",
+            "ana hatlarıyla anlatmak",
+            "geri çekmek",
+            "benimsemek (yasal)"
+          ],
+          "x": [
+            "Doğru: unearth = kazıp ortaya çıkarmak; 'beneath' ile uyumlu.",
+            "embraced bir fikri benimsemektir; villa için olmaz.",
+            "outlined bir planı özetlemek; villa için olmaz.",
+            "withdrawn geri çekilmiş demek, nesne alınmaz.",
+            "adopted bir villayı 'altında' bulmayı anlatmaz."
+          ]
+        },
+        {
+          "s": "Despite his wealth, he lived a ---- life, owning only a few essential possessions.",
+          "o": [
+            "lavish",
+            "hectic",
+            "modest",
+            "dangerous",
+            "public"
+          ],
+          "a": 2,
+          "t": "Zenginliğine rağmen, yalnızca birkaç temel eşyaya sahip, mütevazı bir hayat sürdü.",
+          "ot": [
+            "gösterişli",
+            "telaşlı",
+            "mütevazı",
+            "tehlikeli",
+            "kamusal"
+          ],
+          "x": [
+            "lavish 'only a few possessions' ile çelişir.",
+            "hectic eşya sayısıyla ilgisiz.",
+            "Doğru: modest = sade, mütevazı; 'Despite his wealth' zıtlığı.",
+            "dangerous bağlama uymaz.",
+            "public bağlama uymaz."
+          ]
+        },
+        {
+          "s": "The two theories are not ---- ; in fact, they complement each other quite well.",
+          "o": [
+            "compatible",
+            "familiar",
+            "convenient",
+            "reliable",
+            "mutually exclusive"
+          ],
+          "a": 4,
+          "t": "İki teori birbirini dışlamıyor; aslında birbirini oldukça iyi tamamlıyorlar.",
+          "ot": [
+            "uyumlu",
+            "tanıdık",
+            "elverişli",
+            "güvenilir",
+            "birbirini dışlayan"
+          ],
+          "x": [
+            "compatible 'not' ile birlikte 'uyumlu değil' olur; 'complement' ile çelişir.",
+            "familiar uymaz.",
+            "convenient anlam uymaz.",
+            "reliable uymaz.",
+            "Doğru: not mutually exclusive = birbirini dışlamaz."
+          ]
+        },
+        {
+          "s": "The drought has had a ---- effect on farmers, many of whom have lost their entire harvest.",
+          "o": [
+            "negligible",
+            "devastating",
+            "pleasant",
+            "temporary",
+            "predictable"
+          ],
+          "a": 1,
+          "t": "Kuraklığın çiftçiler üzerinde yıkıcı bir etkisi oldu; birçoğu tüm ürününü kaybetti.",
+          "ot": [
+            "önemsiz",
+            "yıkıcı",
+            "hoş",
+            "geçici",
+            "tahmin edilebilir"
+          ],
+          "x": [
+            "negligible 'önemsiz' demektir; çelişir.",
+            "Doğru: devastating = yıkıcı; tüm ürünü kaybetmekle uyumlu.",
+            "pleasant çelişir.",
+            "temporary kayıp miktarını anlatmaz.",
+            "predictable ağırlığı anlatmaz."
+          ]
+        },
+        {
+          "s": "Her ---- to detail made her an excellent editor; she never missed a single typing error.",
+          "o": [
+            "contribution",
+            "aversion",
+            "reluctance",
+            "attention",
+            "resistance"
+          ],
+          "a": 3,
+          "t": "Ayrıntıya gösterdiği dikkat onu mükemmel bir editör yaptı; tek bir yazım hatasını bile kaçırmazdı.",
+          "ot": [
+            "katkı",
+            "nefret",
+            "isteksizlik",
+            "dikkat",
+            "direnç"
+          ],
+          "x": [
+            "contribution to detail kalıbı anlamlı değil.",
+            "aversion to detail iyi editörlükle çelişir.",
+            "reluctance çelişir.",
+            "Doğru: attention to detail = ayrıntıya dikkat.",
+            "resistance çelişir."
+          ]
+        },
+        {
+          "s": "The government has promised to ---- the funds fairly among all the regions.",
+          "o": [
+            "distribute",
+            "confiscate",
+            "estimate",
+            "restore",
+            "deny"
+          ],
+          "a": 0,
+          "t": "Hükümet, fonları tüm bölgeler arasında adil biçimde dağıtmayı vaat etti.",
+          "ot": [
+            "dağıtmak",
+            "el koymak",
+            "tahmin etmek",
+            "onarmak",
+            "inkâr etmek"
+          ],
+          "x": [
+            "Doğru: distribute among = ... arasında dağıtmak.",
+            "confiscate 'fairly among' ile uymaz.",
+            "estimate 'among' alamaz.",
+            "restore uymaz.",
+            "deny uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-05",
+      "title": "Kelime Seti 5",
+      "qs": [
+        {
+          "s": "The rapid ---- of mobile phones has transformed the way people communicate.",
+          "o": [
+            "rejection",
+            "decline",
+            "removal",
+            "spread",
+            "absence"
+          ],
+          "a": 3,
+          "t": "Cep telefonlarının hızla yayılması, insanların iletişim kurma biçimini değiştirdi.",
+          "ot": [
+            "reddetme",
+            "gerileme",
+            "kaldırma",
+            "yayılma",
+            "yokluk"
+          ],
+          "x": [
+            "rejection uymaz.",
+            "decline gerileme; dönüşüm anlamına uymaz.",
+            "removal uymaz.",
+            "Doğru: spread = yayılma; dönüşümün nedeni.",
+            "absence uymaz."
+          ]
+        },
+        {
+          "s": "Because of his ---- behaviour, nobody could predict how he would react to the news.",
+          "o": [
+            "consistent",
+            "erratic",
+            "polite",
+            "cautious",
+            "loyal"
+          ],
+          "a": 1,
+          "t": "Düzensiz davranışları yüzünden, haberi nasıl karşılayacağını kimse tahmin edemedi.",
+          "ot": [
+            "tutarlı",
+            "düzensiz, öngörülemez",
+            "kibar",
+            "temkinli",
+            "sadık"
+          ],
+          "x": [
+            "consistent tahmin edilebilir olurdu; çelişir.",
+            "Doğru: erratic = düzensiz, ne yapacağı belli olmayan.",
+            "polite tahmini zorlaştırmaz.",
+            "cautious tahmin edilebilirliği zorlaştırmaz.",
+            "loyal uymaz."
+          ]
+        },
+        {
+          "s": "The suspect was ---- of the crime when new evidence showed that he had been abroad at the time.",
+          "o": [
+            "accused",
+            "warned",
+            "convicted",
+            "suspected",
+            "cleared"
+          ],
+          "a": 4,
+          "t": "Şüpheli, olay sırasında yurt dışında olduğunu gösteren yeni kanıt çıkınca suçtan aklandı.",
+          "ot": [
+            "suçlandı",
+            "uyarıldı",
+            "mahkûm edildi",
+            "şüphelenildi",
+            "aklandı"
+          ],
+          "x": [
+            "accused 'new evidence showed he had been abroad' ile çelişir.",
+            "warned of the crime uymaz.",
+            "convicted çelişir.",
+            "suspected zaten şüpheli; yeni kanıtla çelişir.",
+            "Doğru: be cleared of = suçtan aklanmak."
+          ]
+        },
+        {
+          "s": "The lecture covered a ---- range of topics, from ancient history to modern technology.",
+          "o": [
+            "narrow",
+            "shallow",
+            "wide",
+            "private",
+            "rare"
+          ],
+          "a": 2,
+          "t": "Ders, antik tarihten modern teknolojiye kadar geniş bir konu yelpazesini kapsadı.",
+          "ot": [
+            "dar",
+            "sığ",
+            "geniş",
+            "özel",
+            "nadir"
+          ],
+          "x": [
+            "narrow 'from ... to ...' ile çelişir.",
+            "shallow 'range' ile kalıp değil.",
+            "Doğru: a wide range of = geniş bir yelpaze.",
+            "private uymaz.",
+            "rare uymaz."
+          ]
+        },
+        {
+          "s": "Many species are on the ---- of extinction because of habitat loss.",
+          "o": [
+            "brink",
+            "origin",
+            "surface",
+            "peak",
+            "benefit"
+          ],
+          "a": 0,
+          "t": "Birçok tür, yaşam alanı kaybı yüzünden neslinin tükenmesinin eşiğinde.",
+          "ot": [
+            "eşik",
+            "köken",
+            "yüzey",
+            "zirve",
+            "yarar"
+          ],
+          "x": [
+            "Doğru: on the brink of = eşiğinde.",
+            "origin uymaz.",
+            "surface uymaz.",
+            "peak: on the peak kalıbı 'extinction' ile kullanılmaz.",
+            "benefit uymaz."
+          ]
+        },
+        {
+          "s": "The two leaders agreed to ---- diplomatic relations after years of tension.",
+          "o": [
+            "resist",
+            "abandon",
+            "resume",
+            "doubt",
+            "attach"
+          ],
+          "a": 2,
+          "t": "İki lider, yıllarca süren gerginliğin ardından diplomatik ilişkileri yeniden başlatmayı kabul etti.",
+          "ot": [
+            "direnmek",
+            "terk etmek",
+            "yeniden başlatmak",
+            "kuşku duymak",
+            "eklemek"
+          ],
+          "x": [
+            "resist uymaz.",
+            "abandon 'after tension' sonrası anlamlı değil.",
+            "Doğru: resume = (kesintiden sonra) yeniden başlamak.",
+            "doubt uymaz.",
+            "attach uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-06",
+      "title": "Kelime Seti 6",
+      "qs": [
+        {
+          "s": "The doctor advised him to ---- from heavy meals until his stomach had fully recovered.",
+          "o": [
+            "emerge",
+            "benefit",
+            "result",
+            "suffer",
+            "refrain"
+          ],
+          "a": 4,
+          "t": "Doktor, mide tamamen iyileşene kadar ağır yemeklerden kaçınmasını önerdi.",
+          "ot": [
+            "ortaya çıkmak",
+            "yararlanmak",
+            "sonuçlanmak",
+            "acı çekmek",
+            "kaçınmak"
+          ],
+          "x": [
+            "emerge from ortaya çıkmak; uymaz.",
+            "benefit from yararlanmak; tavsiyeye uymaz.",
+            "result from 'sonucu olarak' demektir; uymaz.",
+            "suffer from 'acı çekmek'; tavsiye ile uymaz.",
+            "Doğru: refrain from = ...den kaçınmak."
+          ]
+        },
+        {
+          "s": "Her argument was so ---- that even her critics had to admit she was right.",
+          "o": [
+            "ridiculous",
+            "persuasive",
+            "ambiguous",
+            "irrelevant",
+            "defensive"
+          ],
+          "a": 1,
+          "t": "Savı o kadar ikna ediciydi ki eleştirmenleri bile haklı olduğunu kabul etmek zorunda kaldı.",
+          "ot": [
+            "gülünç",
+            "ikna edici",
+            "belirsiz",
+            "ilgisiz",
+            "savunmacı"
+          ],
+          "x": [
+            "ridiculous haklı çıkarmaz.",
+            "Doğru: persuasive = ikna edici.",
+            "ambiguous 'so ... that' sonucuna uymaz.",
+            "irrelevant uymaz.",
+            "defensive uymaz."
+          ]
+        },
+        {
+          "s": "The factory was forced to ---- production when a key supplier went bankrupt.",
+          "o": [
+            "multiply",
+            "celebrate",
+            "inherit",
+            "halt",
+            "evaluate"
+          ],
+          "a": 3,
+          "t": "Önemli bir tedarikçi iflas edince fabrika üretimi durdurmak zorunda kaldı.",
+          "ot": [
+            "çoğaltmak",
+            "kutlamak",
+            "miras almak",
+            "durdurmak",
+            "değerlendirmek"
+          ],
+          "x": [
+            "multiply iflasla çelişir.",
+            "celebrate uymaz.",
+            "inherit uymaz.",
+            "Doğru: halt production = üretimi durdurmak.",
+            "evaluate 'forced to' ile uyumsuz."
+          ]
+        },
+        {
+          "s": "The new law aims to ---- children from harmful online content.",
+          "o": [
+            "shield",
+            "expose",
+            "deprive",
+            "distract",
+            "release"
+          ],
+          "a": 0,
+          "t": "Yeni yasa, çocukları zararlı çevrimiçi içeriklerden korumayı amaçlıyor.",
+          "ot": [
+            "korumak",
+            "maruz bırakmak",
+            "mahrum bırakmak",
+            "dikkatini dağıtmak",
+            "serbest bırakmak"
+          ],
+          "x": [
+            "Doğru: shield sb from = ...den korumak.",
+            "expose amaçla çelişir (expose to).",
+            "deprive of kalıbı 'of' alır.",
+            "distract from dikkat dağıtır; amaca uymaz.",
+            "release from serbest bırakmak; uymaz."
+          ]
+        },
+        {
+          "s": "Prices have remained ---- for the past year, neither rising nor falling significantly.",
+          "o": [
+            "scarce",
+            "volatile",
+            "excessive",
+            "stable",
+            "rival"
+          ],
+          "a": 3,
+          "t": "Fiyatlar geçen yıl boyunca istikrarlı kaldı; belirgin biçimde ne arttı ne düştü.",
+          "ot": [
+            "kıt",
+            "oynak",
+            "aşırı",
+            "istikrarlı",
+            "rakip"
+          ],
+          "x": [
+            "scarce uymaz.",
+            "volatile oynaktır; çelişir.",
+            "excessive uymaz.",
+            "Doğru: stable = istikrarlı; 'neither rising nor falling' açıklaması.",
+            "rival uymaz."
+          ]
+        },
+        {
+          "s": "The report ---- that unemployment will fall slightly over the next two years.",
+          "o": [
+            "denies",
+            "predicts",
+            "regrets",
+            "conceals",
+            "demands"
+          ],
+          "a": 1,
+          "t": "Rapor, işsizliğin önümüzdeki iki yıl içinde hafifçe düşeceğini öngörüyor.",
+          "ot": [
+            "inkâr etmek",
+            "öngörmek",
+            "pişman olmak",
+            "gizlemek",
+            "talep etmek"
+          ],
+          "x": [
+            "denies 'will fall' ile gelecek belirtmez.",
+            "Doğru: predict = önceden bildirmek; gelecek zaman ile uyumlu.",
+            "regrets gelecek için olmaz.",
+            "conceals uymaz.",
+            "demands 'will' ile bir tahmin vermez."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-07",
+      "title": "Kelime Seti 7",
+      "qs": [
+        {
+          "s": "Heavy traffic is the main ---- of air pollution in large cities.",
+          "o": [
+            "witness",
+            "victim",
+            "remedy",
+            "obstacle",
+            "source"
+          ],
+          "a": 4,
+          "t": "Yoğun trafik, büyük şehirlerde hava kirliliğinin başlıca kaynağıdır.",
+          "ot": [
+            "tanık",
+            "kurban",
+            "çare",
+            "engel",
+            "kaynak"
+          ],
+          "x": [
+            "witness uymaz.",
+            "victim kirlilik için kaynak olamaz.",
+            "remedy çözüm demektir; trafik çözüm değil.",
+            "obstacle uymaz.",
+            "Doğru: source of = ...in kaynağı."
+          ]
+        },
+        {
+          "s": "The lawyer asked the witness to ---- on what she had seen that night.",
+          "o": [
+            "depend",
+            "insist",
+            "elaborate",
+            "rely",
+            "concentrate"
+          ],
+          "a": 2,
+          "t": "Avukat, tanıktan o gece gördükleri hakkında ayrıntı vermesini istedi.",
+          "ot": [
+            "bağlı olmak",
+            "ısrar etmek",
+            "ayrıntılandırmak",
+            "güvenmek",
+            "yoğunlaşmak"
+          ],
+          "x": [
+            "depend on bağlı olmak; uymaz.",
+            "insist on ısrar etmek; 'what she had seen' ile anlam uymaz.",
+            "Doğru: elaborate on = ayrıntılı açıklamak.",
+            "rely on güvenmek; uymaz.",
+            "concentrate on odaklanmak; avukat istemi için uymaz."
+          ]
+        },
+        {
+          "s": "The explorers were ---- by a sudden storm and had to take shelter in a cave.",
+          "o": [
+            "overtaken",
+            "supported",
+            "invited",
+            "rewarded",
+            "imitated"
+          ],
+          "a": 0,
+          "t": "Kâşifler ani bir fırtınaya yakalandı ve bir mağarada sığınmak zorunda kaldı.",
+          "ot": [
+            "yakalanmak",
+            "desteklenmek",
+            "davet edilmek",
+            "ödüllendirilmek",
+            "taklit edilmek"
+          ],
+          "x": [
+            "Doğru: be overtaken by a storm = fırtınaya yakalanmak.",
+            "supported 'take shelter' ile uyumsuz.",
+            "invited uymaz.",
+            "rewarded uymaz.",
+            "imitated uymaz."
+          ]
+        },
+        {
+          "s": "Some experts argue that social media is ---- people from face-to-face interaction.",
+          "o": [
+            "informing",
+            "protecting",
+            "isolating",
+            "educating",
+            "welcoming"
+          ],
+          "a": 2,
+          "t": "Bazı uzmanlar, sosyal medyanın insanları yüz yüze etkileşimden yalıttığını savunuyor.",
+          "ot": [
+            "bilgilendirmek",
+            "korumak",
+            "yalıtmak",
+            "eğitmek",
+            "karşılamak"
+          ],
+          "x": [
+            "informing from kalıbı yok.",
+            "protecting from etkileşim ile olumlu/uymaz.",
+            "Doğru: isolate from = ...den soyutlamak.",
+            "educating uymaz.",
+            "welcoming uymaz."
+          ]
+        },
+        {
+          "s": "Their sales have ---- steadily since the company introduced its online store.",
+          "o": [
+            "surrendered",
+            "vanished",
+            "withdrawn",
+            "shrunk",
+            "soared"
+          ],
+          "a": 4,
+          "t": "Şirket çevrim içi mağazasını açtığından beri satışları istikrarlı biçimde fırladı.",
+          "ot": [
+            "teslim olmak",
+            "yok olmak",
+            "geri çekilmek",
+            "küçülmek",
+            "fırlamak"
+          ],
+          "x": [
+            "surrendered uymaz.",
+            "vanished 'steadily' ile uymaz.",
+            "withdrawn uymaz.",
+            "shrunk 'introduced online store' sonrası beklenmez.",
+            "Doğru: soar = hızla yükselmek."
+          ]
+        },
+        {
+          "s": "The judge ---- the prisoner's request for an early release because of his violent record.",
+          "o": [
+            "welcomed",
+            "rejected",
+            "forwarded",
+            "recalled",
+            "tolerated"
+          ],
+          "a": 1,
+          "t": "Yargıç, şiddet içeren sicili nedeniyle mahkûmun erken tahliye talebini reddetti.",
+          "ot": [
+            "memnuniyetle karşılamak",
+            "reddetmek",
+            "iletmek",
+            "hatırlamak",
+            "hoş görmek"
+          ],
+          "x": [
+            "welcomed çelişir.",
+            "Doğru: reject a request = talebi reddetmek; 'because of violent record' ile uyumlu.",
+            "forwarded gerekçe ile ilgisiz.",
+            "recalled uymaz.",
+            "tolerated uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-08",
+      "title": "Kelime Seti 8",
+      "qs": [
+        {
+          "s": "He was ---- to leave the company after he was caught sharing confidential information.",
+          "o": [
+            "attracted",
+            "praised",
+            "tempted",
+            "compelled",
+            "hired"
+          ],
+          "a": 3,
+          "t": "Gizli bilgileri paylaşırken yakalandıktan sonra şirketten ayrılmak zorunda bırakıldı.",
+          "ot": [
+            "çekilmek",
+            "övülmek",
+            "özendirilmek",
+            "zorlanmak",
+            "işe alınmak"
+          ],
+          "x": [
+            "attracted uymaz.",
+            "praised çelişir.",
+            "tempted uymaz.",
+            "Doğru: be compelled to = zorunda bırakılmak.",
+            "hired 'leave' ile çelişir."
+          ]
+        },
+        {
+          "s": "Vitamin D is ---- for healthy bones, so a lack of it can lead to serious problems.",
+          "o": [
+            "essential",
+            "optional",
+            "harmful",
+            "artificial",
+            "obvious"
+          ],
+          "a": 0,
+          "t": "D vitamini sağlıklı kemikler için gereklidir; bu yüzden eksikliği ciddi sorunlara yol açabilir.",
+          "ot": [
+            "gerekli",
+            "isteğe bağlı",
+            "zararlı",
+            "yapay",
+            "bariz"
+          ],
+          "x": [
+            "Doğru: essential = vazgeçilmez; 'lack ... serious problems' ile uyumlu.",
+            "optional çelişir.",
+            "harmful çelişir.",
+            "artificial uymaz.",
+            "obvious uymaz."
+          ]
+        },
+        {
+          "s": "The two companies decided to ---- their resources to develop a new engine.",
+          "o": [
+            "borrow",
+            "waste",
+            "divide",
+            "pool",
+            "refuse"
+          ],
+          "a": 3,
+          "t": "İki şirket, yeni bir motor geliştirmek için kaynaklarını birleştirmeye karar verdi.",
+          "ot": [
+            "ödünç almak",
+            "israf etmek",
+            "bölmek",
+            "birleştirmek",
+            "reddetmek"
+          ],
+          "x": [
+            "borrow 'two companies' ortaklığını anlatmaz.",
+            "waste amaçla çelişir.",
+            "divide ortak geliştirme ile çelişir.",
+            "Doğru: pool resources = kaynakları birleştirmek.",
+            "refuse uymaz."
+          ]
+        },
+        {
+          "s": "It is ---- that the climate will continue to warm over the coming decades.",
+          "o": [
+            "capable",
+            "likely",
+            "eager",
+            "able",
+            "keen"
+          ],
+          "a": 1,
+          "t": "Önümüzdeki on yıllarda iklimin ısınmaya devam etmesi muhtemeldir.",
+          "ot": [
+            "yetenekli",
+            "muhtemel",
+            "hevesli",
+            "muktedir",
+            "istekli"
+          ],
+          "x": [
+            "capable kişi için kullanılır; 'It is capable that' olmaz.",
+            "Doğru: It is likely that = ...olması muhtemeldir.",
+            "eager 'It is eager that' olmaz.",
+            "able 'It is able that' olmaz.",
+            "keen 'It is keen that' olmaz."
+          ]
+        },
+        {
+          "s": "The museum's rare collection of coins is ---- to scholars from all over the world.",
+          "o": [
+            "similar",
+            "hostile",
+            "faithful",
+            "equal",
+            "accessible"
+          ],
+          "a": 4,
+          "t": "Müzenin nadir sikke koleksiyonu dünyanın her yerinden araştırmacılara açıktır.",
+          "ot": [
+            "benzer",
+            "düşmanca",
+            "sadık",
+            "eşit",
+            "erişilebilir"
+          ],
+          "x": [
+            "similar to uymaz.",
+            "hostile to koleksiyon için uymaz.",
+            "faithful to uymaz.",
+            "equal to uymaz.",
+            "Doğru: be accessible to = ...e açık/erişilebilir olmak."
+          ]
+        },
+        {
+          "s": "A ---- of evidence suggests that regular exercise improves mental health.",
+          "o": [
+            "pair",
+            "piece",
+            "body",
+            "slice",
+            "lack"
+          ],
+          "a": 2,
+          "t": "Bir dizi kanıt, düzenli egzersizin ruh sağlığını iyileştirdiğini gösteriyor.",
+          "ot": [
+            "çift",
+            "parça",
+            "küme",
+            "dilim",
+            "eksiklik"
+          ],
+          "x": [
+            "pair uymaz.",
+            "piece of evidence tekil olur; 'suggest' çoğul/bütünlük ister.",
+            "Doğru: a body of evidence = bir dizi/bütün kanıt; 'suggests' ile uyumlu.",
+            "slice uymaz.",
+            "lack 'suggests' ile çelişir."
+          ]
+        },
+        {
+          "s": "The company's decision to close the factory ---- widespread anger among local residents.",
+          "o": [
+            "provoked",
+            "eased",
+            "welcomed",
+            "explained",
+            "resolved"
+          ],
+          "a": 0,
+          "t": "Şirketin fabrikayı kapatma kararı yerel halk arasında yaygın öfkeye yol açtı.",
+          "ot": [
+            "yol açmak",
+            "hafifletmek",
+            "memnuniyetle karşılamak",
+            "açıklamak",
+            "çözmek"
+          ],
+          "x": [
+            "Doğru: provoke anger = öfke uyandırmak.",
+            "eased öfkeyi hafifletir; kapanma ile uymaz.",
+            "welcomed uymaz.",
+            "explained uymaz.",
+            "resolved uymaz."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}
