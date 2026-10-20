@@ -18,6 +18,7 @@ const GrammarPage = lazy(() => import('./pages/Grammar'))
 const CoachPage = lazy(() => import('./pages/Coach'))
 const YdsTestPage = lazy(() => import('./pages/YdsTest'))
 const NightModePage = lazy(() => import('./pages/NightMode'))
+const WordFamiliesPage = lazy(() => import('./pages/WordFamilies').then((m) => ({ default: m.WordFamiliesPage })))
 
 const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
 // Kitaptan çalış: telifli kitap görüntüleri yalnızca yerelde (yayında sayfa yok)
@@ -31,6 +32,14 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="calis" element={<StudyHubPage />} />
           <Route path="study" element={<StudyPage />} />
+          <Route
+            path="kelime-ailesi"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <WordFamiliesPage />
+              </Suspense>
+            }
+          />
           <Route
             path="gece"
             element={

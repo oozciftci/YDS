@@ -40,6 +40,7 @@ const STATIC: Record<string, string> = {
   '/calis': 'Çalış',
   '/study': 'Kelime Çalış',
   '/gece': 'Gece Modu',
+  '/kelime-ailesi': 'Kelime Ailesi ve Ekler',
   '/words': 'Kelimeler',
   '/stats': 'İstatistik',
   '/settings': 'Ayarlar',

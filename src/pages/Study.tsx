@@ -35,6 +35,7 @@ import { InteractiveSentence } from '../components/InteractiveSentence'
 import { LeechHelp } from '../components/LeechHelp'
 import { MemoryHook } from '../components/MemoryHook'
 import { WriteAnswer } from '../components/WriteAnswer'
+import { familyOf } from '../data/affixes'
 import styles from './Study.module.css'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
@@ -1468,6 +1469,15 @@ export function StudyPage() {
                             />
                           </div>
                         )}
+
+                        {(() => {
+                          const fam = familyOf(currentQ.word.term, allWords.map((w) => w.term))
+                          return fam.length > 0 ? (
+                            <div>
+                              <span className={styles.subtleLabel}>👪 Aynı aileden:</span> {fam.join(' · ')}
+                            </div>
+                          ) : null
+                        })()}
 
                         <MemoryHook key={`hook-${currentQ.word.id}`} word={currentQ.word} />
 

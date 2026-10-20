@@ -8,6 +8,7 @@ import { buildTargetPlan } from './targetPlan'
 import { isLeech, LEECH_LAPSES } from './leech'
 import { pageLabel, prettyExamId } from './notebook'
 import { checkWritten } from './studySession'
+import { familyOf, stemOf } from '../data/affixes'
 import { extractWordsFromText } from './textWords'
 import { buildWeeklyReport, reportToText } from './weeklyReport'
 import { reasonCounts } from './wrongReasons'
@@ -270,5 +271,15 @@ describe('yazarak cevap', () => {
     expect(checkWritten('deteriorte', 'deteriorate')).toBe('almost')
     expect(checkWritten('dg', 'dog')).toBe('wrong')
     expect(checkWritten('improve', 'deteriorate')).toBe('wrong')
+  })
+})
+
+describe('kelime ailesi', () => {
+  it('ortak kök', () => {
+    expect(stemOf('development')).toBe(stemOf('develop'))
+    expect(stemOf('creation')).toBe(stemOf('create'))
+  })
+  it('havuzdaki aile', () => {
+    expect(familyOf('develop', ['development', 'developer', 'deep', 'develop']).sort()).toEqual(['developer', 'development'])
   })
 })

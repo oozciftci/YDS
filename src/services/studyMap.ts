@@ -28,6 +28,7 @@ const ALL: StudyCategory[] = [
       { to: '/match', label: 'Eş anlamlı eşleştirme', hint: 'Hızlı oyun' },
       { to: '/study?mode=write', label: 'Yazarak kelime', hint: 'Türkçesini gör, İngilizcesini yaz' },
       { to: '/study?mode=cloze', label: 'Cümle içinde kelime', hint: 'Boşluğa doğru kelimeyi seç' },
+      { to: '/kelime-ailesi', label: 'Kelime ailesi ve ekler', hint: 'Kök + ek: develop → development' },
       { to: '/quiz', label: 'Mini kelime denemesi', hint: '10 soru, ÖSYM biçiminde' },
     ],
   },
@@ -85,5 +86,5 @@ export const STUDY_CATEGORIES: StudyCategory[] = ALL.map((c) => ({
 
 /** Bu yollar "Çalış" menüsünün altında sayılır (menüde Çalış seçili görünür). */
 export function isStudyPath(pathname: string): boolean {
-  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap)(\/|$)/.test(pathname)
+  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap|kelime-ailesi)(\/|$)/.test(pathname)
 }
