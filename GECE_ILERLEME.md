@@ -19,17 +19,8 @@ Başlangıç: 19.10.2026 22:35. Hedef bitiş: 20.10.2026 06:05.
 
 ## Engeller / notlar
 
-## Güncelleme
-- 8.1 tamam (kısmen): 310 özgün soru, 49 set, Alıştırma Merkezi çalışıyor (`/yds-test`). Kalan: paragraf tamamlamayı 20’ye çıkarmak, 14 uyarılı soruda çeldirici uzatmak.
-- 8.2 tamam: gramer alıştırmaları 10’a çıktı (grammarExtra.ts)
-- 8.3 tamam: 6 okuma metni
-- 8.4 tamam: YÖKDİL alan terimleri (168 terim)
-- 10.1 tamam: scripts/checkDist.mjs (`npm run check:dist`)
-- 10.2 tamam: vitest, 15 test
-- Faz 9 tamam (9.1 etiket, 9.2 kelime-soru eşleme, 9.3 doğrulama notları) — local-data değişti: kasa kilitleme gerek
-- 7.7 + 8.5 tamam: Çeviri Atölyesi (/yds-test/ceviri)
-- 7.8 tamam: SimilarQuestion
-- 7.10 (haftalık rapor) tamam; 17 test geçiyor
-- 7.10 tamam (metinden kelime çıkar da): 18 test geçiyor
-- Şu an: 7.9 leech + boşluk kartı, sonra sabah raporu
-- Sıradaki: 8.3 okuma metinleri, 8.4 YÖKDİL terimleri, 8.5 çeviri cümleleri, Faz 9, Faz 10.
+## Güncelleme (05:05)
+- Blok 1–4 ve Blok 5’in çoğu tamam; ayrıntı `SABAH_RAPORU.md`.
+- Kalan/isteğe bağlı: 7.9 ikinci yarı (sınav cümlesinden boşluk kartı), özgün soruları 600+’a çıkarmak, 10.3 eski React uyarıları, Devrik konusu kalıpları.
+- Test: `npm test` (19), `npm run build && npm run check:dist` temiz.
+- Bekleyenler (dokunulmadı): 6.7b, 6.3, File Search, 5.3, kasa kilitleme + push (kullanıcı).
