@@ -4,6 +4,7 @@ import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import { loadAllExams, loadExam, shortTitle, type ExamBundle, type Passage } from './examData'
 import { ListenControls } from './ListenControls'
+import { PacerControls } from './PacerControls'
 import { QueueRunner } from './QueueRunner'
 import { SentenceView, useWordPopover } from './WordPopover'
 
@@ -192,6 +193,7 @@ export function ReadingPassage() {
           ⏱ {fmt(elapsed)}
         </span>
         <ListenControls key={`${exam.id}/${passage.id}`} sentences={passage.sentences} tr={tr} onActive={setSpeaking} showRate />
+        <PacerControls key={`pacer-${exam.id}/${passage.id}`} userId={userId} sentences={passage.sentences} onActive={setSpeaking} />
         <label className={styles.toggle}>
           <input type="checkbox" checked={showTr} onChange={(e) => setShowTr(e.target.checked)} />
           Çeviriler
