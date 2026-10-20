@@ -9,7 +9,7 @@ import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
 import { inPool, listExams, POOLS, readPool, savePool, type ExamMeta, type Pool } from './exam/examData'
 import { BankList } from './exam/BankList'
-import { ImageTestList, ImageTestRunner } from './exam/ImageTests'
+import { ImageTestList, ImageTestRunner, ImageWrongBook } from './exam/ImageTests'
 import { CustomMock } from './exam/CustomMock'
 import { MockExam } from './exam/MockExam'
 import { MockHistory } from './exam/MockHistory'
@@ -92,7 +92,9 @@ function Hub() {
 
   const examIds = new Set(exams.map((e) => e.id))
   const poolAnswers = answers.filter((a) => examIds.has(a.examId))
-  const wrongCount = poolAnswers.filter((a) => a.inWrongBook).length
+  const wrongCount =
+    poolAnswers.filter((a) => a.inWrongBook).length +
+    answers.filter((a) => a.inWrongBook && a.examId.includes('-strateji3-')).length
   const totalAnswered = poolAnswers.length
   const totalCorrect = poolAnswers.filter((a) => a.correct).length
   const totalQuestions = exams.length * QUESTIONS_PER_EXAM
@@ -309,6 +311,7 @@ export function ExamStudyPage() {
       <Route path="yanlislar" element={<WrongBook />} />
       <Route path="bankalar" element={<BankList />} />
       <Route path="bankalar/strateji-3" element={<ImageTestList />} />
+      <Route path="bankalar/strateji-3/yanlislar" element={<ImageWrongBook />} />
       <Route path="bankalar/strateji-3/:testId" element={<ImageTestRunner />} />
       <Route path="deneme/:examId" element={<MockExam />} />
       <Route path="ozel" element={<CustomMock />} />

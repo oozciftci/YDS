@@ -1,3 +1,4 @@
+import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { db } from '../../db'
@@ -16,7 +17,7 @@ export function WrongBook() {
     db.examAnswers
       .where('userId')
       .equals(userId)
-      .filter((a) => a.inWrongBook)
+      .filter((a) => a.inWrongBook && !a.examId.includes('-strateji3-'))
       .sortBy('answeredAt')
       .then(async (rows) => {
         const out: QueueItem[] = []
@@ -41,6 +42,8 @@ export function WrongBook() {
   if (!items) return <p className="muted">Defter hazırlanıyor…</p>
 
   return (
+    <>
+    <ImageWrongLink userId={userId} />
     <QueueRunner
       title="📕 Yanlış Defteri"
       description="Daha önce yanlış yaptığın sorular. Doğru çözdüğün soru defterden çıkar; yanlışsa defterde kalır."
@@ -55,5 +58,20 @@ export function WrongBook() {
         </>
       }
     />
+    </>
+  )
+}
+
+/** Sınav Stratejileri 3 (görüntü tabanlı) yanlışları ayrı kuyrukta çözülür. */
+function ImageWrongLink({ userId }: { userId: string }) {
+  const count = useLiveQuery(
+    () => db.examAnswers.where('userId').equals(userId).filter((a) => a.inWrongBook && a.examId.includes('-strateji3-')).count(),
+    [userId],
+  )
+  if (!count) return null
+  return (
+    <Link to="/yds-sorular/bankalar/strateji-3/yanlislar" className="card" style={{ display: 'block', marginBottom: '0.75rem', textDecoration: 'none' }}>
+      📗 Sınav Stratejileri 3’teki yanlışların: <strong>{count}</strong> soru → ayrı defterde çöz
+    </Link>
   )
 }

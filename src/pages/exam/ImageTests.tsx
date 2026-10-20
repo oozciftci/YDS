@@ -332,3 +332,129 @@ export function ImageTestRunner() {
     </section>
   )
 }
+
+interface WrongItem {
+  test: ImgTest
+  q: ImgQuestion
+}
+
+/** Görüntü testlerindeki yanlışlar: en eski yanlıştan başlayarak; doğru çözülen defterden çıkar. */
+export function ImageWrongBook() {
+  const userId = useUserStore((s) => s.activeUserId)
+  const [items, setItems] = useState<WrongItem[] | null>(null)
+  const [book, setBook] = useState<Book | null>(null)
+  const [pos, setPos] = useState(0)
+  const [choice, setChoice] = useState<string | null>(null)
+  const [result, setResult] = useState<boolean | null>(null)
+  const [showPage, setShowPage] = useState(false)
+
+  // Defter açılışta bir kez alınır (çözdükçe liste kaymasın)
+  useEffect(() => {
+    void Promise.all([
+      loadTests(STRATEJI3),
+      loadBook(STRATEJI3),
+      db.examAnswers
+        .where('userId')
+        .equals(userId)
+        .filter((a) => a.inWrongBook && a.examId.includes('-strateji3-'))
+        .sortBy('answeredAt'),
+    ]).then(([d, b, rows]) => {
+      const byId = new Map(d.tests.map((t) => [examIdOf(t), t]))
+      const out: WrongItem[] = []
+      for (const r of rows) {
+        const t = byId.get(r.examId)
+        const q = t?.questions.find((x) => x.n === r.no)
+        if (t && q) out.push({ test: t, q })
+      }
+      setBook(b)
+      setItems(out)
+    })
+  }, [userId])
+
+  const swipe = useQuestionNav(
+    () => go(pos - 1),
+    () => go(pos + 1),
+  )
+  function go(i: number) {
+    if (!items || i < 0 || i >= items.length) return
+    setPos(i)
+    setChoice(null)
+    setResult(null)
+    setShowPage(false)
+  }
+
+  if (!items || !book) return <p className="muted">Defter hazırlanıyor…</p>
+  if (items.length === 0)
+    return (
+      <section className={styles.page}>
+        <Link to="/yds-sorular/yanlislar" className={styles.backLink}>
+          ← Yanlış Defteri
+        </Link>
+        <p>Sınav Stratejileri 3’te defterde soru yok. Yanlış yaptığın sorular burada toplanır.</p>
+      </section>
+    )
+  if (pos >= items.length) return <p>Defterin sonuna geldin. 🎉</p>
+
+  const { test, q } = items[pos]
+  const kind = getSection(test.type)
+
+  async function check(letter: string) {
+    setChoice(letter)
+    const ok = letter === q.answer
+    setResult(ok)
+    await recordAnswer(userId, examIdOf(test), q.n, letter, ok, { fromWrongBook: true })
+  }
+
+  return (
+    <section className={styles.page} {...swipe}>
+      <header className={styles.compactHead}>
+        <Link to="/yds-sorular/yanlislar" className={styles.backLink}>
+          ← Yanlış Defteri
+        </Link>
+        <h1>📕 Sınav Stratejileri 3 · Yanlışlar</h1>
+        <span className="muted" style={{ fontSize: '0.85rem' }}>
+          {pos + 1} / {items.length}
+        </span>
+      </header>
+      <article className={`card ${styles.question}`}>
+        <h2 className={styles.sectionTitle}>
+          {test.section} · Test {test.no} · Soru {q.n}
+          <span className={styles.sectionChip}>
+            {kind.icon} {kind.label}
+          </span>
+          <button type="button" className={styles.pdfBtn} onClick={() => setShowPage((v) => !v)}>
+            {showPage ? 'Yalnız soru' : '📄 Sayfanın tamamı'}
+          </button>
+        </h2>
+        {showPage || !q.box
+          ? (q.page ? [q.page] : test.pages).map((p) => <PageCrop key={p} book={book} page={p} box={null} />)
+          : <PageCrop book={book} page={q.page ?? test.pages[0]} box={q.box} />}
+        <div className={styles.letterRow} role="group" aria-label="Şıklar">
+          {['A', 'B', 'C', 'D', 'E'].map((l) => {
+            const state =
+              result === null ? '' : l === q.answer ? styles.letterOk : l === choice ? styles.letterBad : ''
+            return (
+              <button key={l} type="button" className={`${styles.letterBtn} ${state}`} disabled={result !== null} onClick={() => void check(l)}>
+                {l}
+              </button>
+            )
+          })}
+        </div>
+        <div className={styles.actions}>
+          {result !== null && (
+            <span className={result ? styles.okText : styles.badText}>
+              {result ? '✓ Doğru — soru defterden çıkarıldı' : `✗ Yanlış — doğru cevap: ${q.answer}`}
+            </span>
+          )}
+          <span className={styles.spacer} />
+          <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => go(pos - 1)}>
+            ← Önceki
+          </button>
+          <button type="button" className="btn btn-secondary" onClick={() => go(pos + 1)}>
+            {result === null ? 'Atla →' : 'Sonraki →'}
+          </button>
+        </div>
+      </article>
+    </section>
+  )
+}
