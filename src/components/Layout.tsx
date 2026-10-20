@@ -30,6 +30,39 @@ export function Layout() {
     notifyRouteChanged()
   }, [location.pathname])
 
+  // Odak modu: yalnızca içerik kalır (tercih hatırlanır); F tuşu açar/kapatır (yazı yazarken değil)
+  const [focus, setFocusState] = useState(() => {
+    try {
+      return localStorage.getItem('yds-focus') === '1'
+    } catch {
+      return false
+    }
+  })
+  function setFocus(on: boolean) {
+    setFocusState(on)
+    try {
+      localStorage.setItem('yds-focus', on ? '1' : '0')
+    } catch {
+      // yoksay
+    }
+  }
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement
+      if (e.ctrlKey || e.metaKey || e.altKey || t.closest('input, textarea, select, [contenteditable]')) return
+      if (e.key === 'f' || e.key === 'F') setFocusState((f) => {
+        try {
+          localStorage.setItem('yds-focus', f ? '0' : '1')
+        } catch {
+          // yoksay
+        }
+        return !f
+      })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   // Sık kullanılanlar için ziyaret sayacı; ☆ bu sayfayı kaydeder
   const activeUserId = activeUser?.id || 'user_ozgur'
   useEffect(() => {
@@ -55,7 +88,12 @@ export function Layout() {
   const totalPending = sync.pendingOutboxCount + sync.pendingLogsCount
 
   return (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${focus ? styles.focus : ''}`}>
+      {focus && (
+        <button type="button" className={styles.focusExit} onClick={() => setFocus(false)} title="Odak modundan çık (F)">
+          ✕ Odak modu
+        </button>
+      )}
       <header className={styles.header}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <NavLink to="/" className={styles.brand} aria-label="YDS Kelime ana sayfa">
@@ -84,6 +122,15 @@ export function Layout() {
         </nav>
 
         <div className={styles.headerRight}>
+          <button
+            type="button"
+            className={styles.syncBtn}
+            onClick={() => setFocus(true)}
+            title="Odak modu: menü ve not pencereleri gizlenir (F)"
+            aria-label="Odak modu"
+          >
+            ⛶
+          </button>
           <button
             type="button"
             className={styles.syncBtn}
@@ -193,7 +240,7 @@ export function Layout() {
       </main>
 
 
-      <NotesDock />
+      {!focus && <NotesDock />}
       <CommandPalette />
     </div>
   )

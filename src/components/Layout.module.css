@@ -388,3 +388,35 @@
   color: var(--warning);
   border-color: var(--warning);
 }
+
+/* Odak modu: üst/alt menü gizli, içerik ekranın tamamında */
+.focus .header,
+.focus .nav {
+  display: none;
+}
+
+.focus .main {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.focusExit {
+  position: fixed;
+  top: 8px;
+  right: 10px;
+  z-index: 20;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.focusExit:hover {
+  opacity: 1;
+  color: var(--text);
+}
