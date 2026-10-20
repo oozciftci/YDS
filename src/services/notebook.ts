@@ -25,6 +25,8 @@ const SEASONS: Record<string, string> = {
 
 /** "yds-2018-aralik" → "2018 Aralık YDS", "yokdil-2019-mart-fen" → "2019 Mart YÖKDİL Fen" */
 export function prettyExamId(id: string): string {
+  const bank = /^banka-[a-z]+-([a-z]+)-(\d+)$/.exec(id)
+  if (bank) return `${bank[1].toLocaleUpperCase('tr-TR')} Test ${Number(bank[2])}`
   const parts = id.split('-')
   const kind = parts[0] === 'yokdil' ? 'YÖKDİL' : parts[0] === 'yds' ? 'YDS' : parts[0].toUpperCase()
   const year = parts[1] ?? ''
@@ -53,6 +55,7 @@ const STATIC: Record<string, string> = {
   '/yds-sorular/analiz': 'Hatalarımı Analiz Et',
   '/yds-sorular/okuma': 'Okuma Modu',
   '/yds-sorular/taktik': 'Taktik Kitabı',
+  '/yds-sorular/bankalar': 'Soru Bankaları',
   '/koc': 'YZ Koç',
   '/koc/hafiza': 'Hafızam',
   '/koc/oneriler': 'Öneriler',

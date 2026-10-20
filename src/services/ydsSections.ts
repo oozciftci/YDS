@@ -68,6 +68,9 @@ export const isYokdil = (examId?: string | null) => Boolean(examId && examId.sta
 
 /** Soru numarasının tipi. YÖKDİL sınavlarında düzen farklı olduğu için sınav kimliği verilmelidir. */
 export function sectionOf(no: number, examId?: string | null): YdsSection {
+  // Soru bankası testleri (banka-<tip>-…): tüm sorular aynı tipte
+  const bank = /^banka-([a-z]+)-/.exec(examId ?? '')?.[1]
+  if (bank && BY_KEY.has(bank as SectionKey)) return getSection(bank as SectionKey)
   if (isYokdil(examId)) {
     const r = YOKDIL_RANGES.find(([a, b]) => no >= a && no <= b)
     if (r) return getSection(r[2])

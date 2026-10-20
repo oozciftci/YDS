@@ -1249,3 +1249,11 @@ h2 .listen .rateSelect {
   padding: 0.3rem 0.75rem;
   font-size: 0.85rem;
 }
+
+/* Soru bankası: kitabın çözümü */
+.explainText {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}

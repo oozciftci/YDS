@@ -174,6 +174,13 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
           </p>
         )}
 
+        {revealed && q.explain && (
+          <details className={styles.details} open>
+            <summary>📘 Kitabın çözümü</summary>
+            <p className={styles.explainText}>{q.explain}</p>
+          </details>
+        )}
+
         {children}
 
         {revealed && assist && ai && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}

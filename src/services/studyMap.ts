@@ -49,6 +49,7 @@ const ALL: StudyCategory[] = [
     desc: 'Sınavda sorulan konular, kısa anlatım ve alıştırma.',
     links: [
       { to: '/dilbilgisi', label: 'Dilbilgisi Rehberi', hint: 'Konu konu anlatım' },
+      { to: '/yds-sorular/bankalar', label: 'Gramer soru bankası', hint: 'Test test, kitabın çözümüyle', dev: true },
       { to: '/yds-sorular/taktik', label: 'Taktik Kitabı', hint: 'Soru tiplerine göre ipuçları', dev: true },
     ],
   },

@@ -19,6 +19,8 @@ export interface Question {
   stem: Seg[]
   options: Record<string, Seg>
   answer: string | null
+  /** Kaynak kitabın çözümü (soru bankalarında). */
+  explain?: string | null
 }
 export interface Exam {
   id: string
@@ -29,6 +31,8 @@ export interface Exam {
   /** 'yokdil' ise YÖKDİL sınavı (yoksa YDS) */
   kind?: 'yds' | 'yokdil'
   field?: string
+  /** Soru bankası testi ise tüm soruların tipi (örn. 'grammar'); sınav değildir. */
+  bank?: string
   passages: Passage[]
   questions: Question[]
 }
@@ -44,6 +48,9 @@ export interface ExamMeta {
   kind?: 'yds' | 'yokdil'
   /** YÖKDİL alanı: Sosyal, Sağlık, Fen */
   field?: string
+  /** Soru bankası testi (sınav listesinde değil, ayrı gösterilir) */
+  bank?: string
+  count?: number
 }
 
 /** Havuz süzgeci: hepsi, yalnız YDS, yalnız YÖKDİL ya da bir YÖKDİL alanı. */
@@ -87,13 +94,24 @@ function getJson<T>(url: string): Promise<T> {
   return fetch(url).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(String(r.status)))))
 }
 
-/** Sınav listesi, kronolojik sırada. */
-export function listExams(): Promise<ExamMeta[]> {
+function listAll(): Promise<ExamMeta[]> {
   listCache ??= getJson<ExamMeta[]>('/local-api/yds/').catch((e) => {
     listCache = null
     throw e
   })
   return listCache
+}
+
+/** Çıkmış sınav listesi, kronolojik sırada (soru bankaları hariç). */
+export function listExams(): Promise<ExamMeta[]> {
+  return listAll().then((all) => all.filter((e) => !e.bank))
+}
+
+/** Soru bankası testleri (örn. MODADİL gramer testleri), başlık sırasıyla. */
+export function listBanks(): Promise<ExamMeta[]> {
+  return listAll().then((all) =>
+    all.filter((e) => e.bank).sort((a, b) => a.title.localeCompare(b.title, 'tr', { numeric: true })),
+  )
 }
 
 export function loadExam(id: string): Promise<ExamBundle> {

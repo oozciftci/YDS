@@ -90,9 +90,15 @@ export function PracticeExam() {
   return (
     <section className={styles.page} {...swipe}>
       <header className={styles.compactHead}>
-        <Link to="/yds-sorular" className={styles.backLink} title="Soru Merkezi">
-          ← Soru Merkezi
-        </Link>
+        {examId.startsWith('banka-') ? (
+          <Link to="/yds-sorular/bankalar" className={styles.backLink}>
+            ← Soru bankaları
+          </Link>
+        ) : (
+          <Link to="/yds-sorular" className={styles.backLink}>
+            ← Soru Merkezi
+          </Link>
+        )}
         <h1>{bundle.exam.title}</h1>
         <span className="muted" style={{ fontSize: '0.85rem' }}>
           Çözülen {answers.length}/{total} · Doğru {correct}

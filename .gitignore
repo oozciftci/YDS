@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 cikmis_sorular/
 local-data/
+
+# Telifli PDF kaynakları kökte unutulursa da girmesin
+/*.pdf
