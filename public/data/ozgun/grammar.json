@@ -1,0 +1,986 @@
+{
+  "type": "grammar",
+  "sets": [
+    {
+      "id": "grammar-01",
+      "title": "Dilbilgisi Seti 1",
+      "qs": [
+        {
+          "s": "By the time the rescue team arrived, the climbers ---- trapped in the snow for nearly two days.",
+          "o": [
+            "were being",
+            "have been",
+            "had been",
+            "would be",
+            "are"
+          ],
+          "a": 2,
+          "t": "Kurtarma ekibi geldiğinde, dağcılar neredeyse iki gündür karda mahsur kalmıştı.",
+          "x": [
+            "were being: passive sürekli yapı, anlamlı değil.",
+            "have been: present perfect, geçmişteki 'arrived' ile uyumsuz.",
+            "Doğru: 'By the time + past simple' geçmişteki bir andan önceki durumu past perfect ile anlatır.",
+            "would be: gelecek/varsayım, geçmiş olayla uymaz.",
+            "are: şimdiki zaman, uymaz."
+          ]
+        },
+        {
+          "s": "If the government ---- the tax earlier, the economy would not have slowed down so much.",
+          "o": [
+            "reduced",
+            "has reduced",
+            "would reduce",
+            "reduces",
+            "had reduced"
+          ],
+          "a": 4,
+          "t": "Hükümet vergiyi daha önce düşürseydi, ekonomi bu kadar yavaşlamazdı.",
+          "x": [
+            "reduced: 2. tip koşul kalıbı; ana cümle 'would not have slowed' (3. tip).",
+            "has reduced: present perfect, 3. tip koşula uymaz.",
+            "would reduce: if cümlesinde would kullanılmaz.",
+            "reduces: 1. tip koşul, ana cümleyle uymaz.",
+            "Doğru: 3. tip koşul: If + past perfect, would have + V3."
+          ]
+        },
+        {
+          "s": "The new bridge, ---- construction began last year, will open to traffic in spring.",
+          "o": [
+            "which",
+            "whose",
+            "that",
+            "whom",
+            "of which the"
+          ],
+          "a": 1,
+          "t": "Yapımına geçen yıl başlanan yeni köprü, baharda trafiğe açılacak.",
+          "x": [
+            "which: 'construction' isimsiz kalır, aitlik anlamı kurulamaz.",
+            "Doğru: whose + isim = ...in; köprünün yapımı.",
+            "that: virgülden sonra kullanılmaz.",
+            "whom: kişiler için ve nesne olarak kullanılır.",
+            "of which the: 'whose' varken gereksiz ve kalıp hatalı."
+          ]
+        },
+        {
+          "s": "She is the only student in the class ---- scored full marks on the final exam.",
+          "o": [
+            "what",
+            "whom",
+            "whose",
+            "who",
+            "which"
+          ],
+          "a": 3,
+          "t": "O, sınıfta final sınavından tam puan alan tek öğrencidir.",
+          "x": [
+            "what ilgi zamiri olarak önceki isme bağlanmaz.",
+            "whom nesne konumunda kullanılır; burada özne eksik.",
+            "whose isim ister.",
+            "Doğru: 'who' özne konumunda kişi için ilgi zamiri.",
+            "which kişi için kullanılmaz."
+          ]
+        },
+        {
+          "s": "Not only ---- the budget, but they also postponed the project indefinitely.",
+          "o": [
+            "did they cut",
+            "they cut",
+            "they did cut",
+            "cut they",
+            "have they cut"
+          ],
+          "a": 0,
+          "t": "Sadece bütçeyi kesmekle kalmadılar, projeyi de süresiz erteledi.",
+          "x": [
+            "Doğru: Not only + did + özne + V1 (devrik).",
+            "they cut: 'Not only' başta olduğu için devrik yapı gerekir.",
+            "they did cut: devrik değil.",
+            "cut they: yardımcı fiil olmadan devrik hatalı.",
+            "have they cut: present perfect, ikinci kısım past simple ile uyumsuz."
+          ]
+        },
+        {
+          "s": "The manager insisted that every employee ---- the safety training before starting work.",
+          "o": [
+            "completes",
+            "completed",
+            "will complete",
+            "complete",
+            "has completed"
+          ],
+          "a": 3,
+          "t": "Müdür, her çalışanın işe başlamadan önce güvenlik eğitimini tamamlaması konusunda ısrar etti.",
+          "x": [
+            "completes: 'insist that' sonrası özne üçüncü tekil bile olsa -s almaz.",
+            "completed: past simple, subjunctive kalıbına uymaz.",
+            "will complete: kalıbı bozar.",
+            "Doğru: insist that + özne + V1 (subjunctive).",
+            "has completed: kalıba uymaz."
+          ]
+        },
+        {
+          "s": "Neither the teachers nor the principal ---- aware of the changes in the schedule.",
+          "o": [
+            "were",
+            "was",
+            "have been",
+            "are",
+            "being"
+          ],
+          "a": 1,
+          "t": "Ne öğretmenler ne de müdür program değişikliklerinden haberdardı.",
+          "x": [
+            "were: 'neither...nor' ile fiil yakın özneye uyar; yakın özne 'principal' tekil.",
+            "Doğru: fiil yakın özneye (the principal) uyar: was.",
+            "have been: tekil özne ile uyumsuz.",
+            "are: geçmiş anlam yok ve çoğul.",
+            "being: yardımcı fiil değil."
+          ]
+        },
+        {
+          "s": "This is the third time he ---- his keys in the office this month.",
+          "o": [
+            "forgets",
+            "had forgotten",
+            "forgot",
+            "is forgetting",
+            "has forgotten"
+          ],
+          "a": 4,
+          "t": "Bu, bu ay anahtarlarını ofiste unuttuğu üçüncü seferdir.",
+          "x": [
+            "forgets: 'the third time' kalıbı perfect ister.",
+            "had forgotten: past perfect, 'This is' ile uyumsuz.",
+            "forgot: kalıba uymaz.",
+            "is forgetting: uymaz.",
+            "Doğru: 'This is the third time + present perfect'."
+          ]
+        },
+        {
+          "s": "The children were made ---- their rooms before they were allowed to go out.",
+          "o": [
+            "clean",
+            "cleaning",
+            "to clean",
+            "cleaned",
+            "having cleaned"
+          ],
+          "a": 2,
+          "t": "Çocuklar dışarı çıkmalarına izin verilmeden önce odalarını temizlemeye mecbur bırakıldı.",
+          "x": [
+            "clean: aktifte 'made them clean' olur; edilgende 'to' gerekir.",
+            "cleaning: kalıba uymaz.",
+            "Doğru: be made to V (edilgen make + to-infinitive).",
+            "cleaned: anlam bozulur.",
+            "having cleaned: uymaz."
+          ]
+        },
+        {
+          "s": "Unlike his brother, who is very outgoing, Tom is ---- shy that he avoids parties altogether.",
+          "o": [
+            "so",
+            "too",
+            "such",
+            "very much",
+            "enough"
+          ],
+          "a": 0,
+          "t": "Dışa dönük olan kardeşinin aksine, Tom o kadar utangaçtır ki partilerden tamamen kaçınır.",
+          "x": [
+            "Doğru: so + sıfat + that.",
+            "too: 'that' ile sonuç cümlesi kurmaz.",
+            "such: 'such + (a) + sıfat + isim' kalıbı; burada sıfat tek başına.",
+            "very much: sıfatla kullanılmaz.",
+            "enough: sıfattan sonra gelir ve 'that' almaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-02",
+      "title": "Dilbilgisi Seti 2",
+      "qs": [
+        {
+          "s": "The report ---- by a team of independent experts before it was published.",
+          "o": [
+            "reviewed",
+            "had reviewed",
+            "was reviewed",
+            "was reviewing",
+            "has been reviewing"
+          ],
+          "a": 2,
+          "t": "Rapor, yayımlanmadan önce bağımsız uzmanlardan oluşan bir ekip tarafından incelendi.",
+          "x": [
+            "reviewed: aktif; 'by a team' edilgen ister.",
+            "had reviewed: aktif past perfect.",
+            "Doğru: past simple passive: was reviewed.",
+            "was reviewing: aktif sürekli.",
+            "has been reviewing: aktif perfect sürekli."
+          ]
+        },
+        {
+          "s": "I would rather you ---- the window; it's getting a bit cold in here.",
+          "o": [
+            "close",
+            "to close",
+            "will close",
+            "have closed",
+            "closed"
+          ],
+          "a": 4,
+          "t": "Pencereyi kapatmanı tercih ederdim; burası biraz soğuyor.",
+          "x": [
+            "close: 'would rather + özne' sonrası past simple gerekir.",
+            "to close: 'would rather' to almaz.",
+            "will close: kalıba uymaz.",
+            "have closed: kalıba uymaz.",
+            "Doğru: would rather + özne + past simple (şimdiki istek)."
+          ]
+        },
+        {
+          "s": "She has been working at the hospital ---- 2015, and she still enjoys it.",
+          "o": [
+            "for",
+            "since",
+            "during",
+            "from",
+            "while"
+          ],
+          "a": 1,
+          "t": "2015'ten beri hastanede çalışıyor ve hâlâ keyif alıyor.",
+          "x": [
+            "for: süre ile kullanılır (for ten years).",
+            "Doğru: since + başlangıç noktası (2015).",
+            "during: bir olay/dönem adı ile kullanılır.",
+            "from: 'from 2015 to' kalıbında 'to' gerekir.",
+            "while: bağlaç; yıl ile kullanılmaz."
+          ]
+        },
+        {
+          "s": "The more attention you pay to your diet, ---- you will feel in the long run.",
+          "o": [
+            "as healthy",
+            "healthier",
+            "the most healthy",
+            "the healthier",
+            "more healthy than"
+          ],
+          "a": 3,
+          "t": "Beslenmene ne kadar dikkat edersen, uzun vadede o kadar sağlıklı hissedersin.",
+          "x": [
+            "as healthy: eşitlik kalıbı.",
+            "healthier: 'the' eksik.",
+            "the most healthy: üstünlük, kalıba uymaz.",
+            "Doğru: The + comparative..., the + comparative.",
+            "more healthy than: 'than' ile kalıp bozulur."
+          ]
+        },
+        {
+          "s": "He denied ---- the window, although the broken glass was found next to his desk.",
+          "o": [
+            "breaking",
+            "to break",
+            "break",
+            "having broke",
+            "to have breaking"
+          ],
+          "a": 0,
+          "t": "Kırık cam masasının yanında bulunmasına rağmen camı kırdığını inkâr etti.",
+          "x": [
+            "Doğru: deny + V-ing.",
+            "to break: 'deny' sonrası to-infinitive gelmez.",
+            "break: yalın fiil olmaz.",
+            "having broke: yanlış biçim (having broken olmalı).",
+            "to have breaking: yapı hatalı."
+          ]
+        },
+        {
+          "s": "Had the company invested in research, it ---- ahead of its competitors today.",
+          "o": [
+            "will be",
+            "was",
+            "would have been",
+            "would be",
+            "is being"
+          ],
+          "a": 3,
+          "t": "Şirket araştırmaya yatırım yapmış olsaydı, bugün rakiplerinin önünde olurdu.",
+          "x": [
+            "will be: gerçek gelecek; koşul geçmişe ait.",
+            "was: koşul anlamı yok.",
+            "would have been: sonuç da geçmişte olurdu; 'today' ile uyumsuz.",
+            "Doğru: karma koşul: 'Had + V3' (geçmiş), sonuç 'today' (şimdi) = would be.",
+            "is being: uymaz."
+          ]
+        },
+        {
+          "s": "The scientist, along with her assistants, ---- the experiment when the power went out.",
+          "o": [
+            "were conducting",
+            "was conducting",
+            "have conducted",
+            "conduct",
+            "had been conduct"
+          ],
+          "a": 1,
+          "t": "Bilim insanı, asistanlarıyla birlikte, elektrikler kesildiğinde deneyi yürütüyordu.",
+          "x": [
+            "were conducting: 'along with' çoğul yapmaz; özne 'scientist'.",
+            "Doğru: özne tekil (scientist) → was conducting.",
+            "have conducted: 'when the power went out' ile geçmiş sürekli gerekir.",
+            "conduct: geçmiş anlam yok.",
+            "had been conduct: yapı hatalı."
+          ]
+        },
+        {
+          "s": "Few people realise ---- much energy is wasted by leaving devices on standby.",
+          "o": [
+            "what",
+            "whether",
+            "that",
+            "which",
+            "how"
+          ],
+          "a": 4,
+          "t": "Çok az kişi, cihazları beklemede bırakarak ne kadar çok enerjinin boşa harcandığını fark eder.",
+          "x": [
+            "what: 'what much' kalıbı yok.",
+            "whether: 'olup olmadığı' anlamı, burada yok.",
+            "that: 'that much' olurdu ama anlam 'ne kadar' ister.",
+            "which: uymaz.",
+            "Doğru: how much = ne kadar çok."
+          ]
+        },
+        {
+          "s": "By 2030, the city ---- its entire public transport system to electric vehicles.",
+          "o": [
+            "converts",
+            "has converted",
+            "will have converted",
+            "converted",
+            "is converting"
+          ],
+          "a": 2,
+          "t": "2030'a kadar şehir tüm toplu taşıma sistemini elektrikli araçlara dönüştürmüş olacak.",
+          "x": [
+            "converts: genel zaman, 'By 2030' ile uymaz.",
+            "has converted: present perfect, gelecek tarihle uymaz.",
+            "Doğru: By + gelecek tarih → future perfect.",
+            "converted: geçmiş.",
+            "is converting: sürekli, bitmişlik vurgusu yok."
+          ]
+        },
+        {
+          "s": "It is essential that the results ---- confidential until the official announcement.",
+          "o": [
+            "remain",
+            "remains",
+            "remained",
+            "will remain",
+            "are remaining"
+          ],
+          "a": 0,
+          "t": "Resmî duyuruya kadar sonuçların gizli kalması çok önemlidir.",
+          "x": [
+            "Doğru: It is essential that + özne + V1 (subjunctive).",
+            "remains: -s almaz.",
+            "remained: past, subjunctive değil.",
+            "will remain: kalıba uymaz.",
+            "are remaining: uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-03",
+      "title": "Dilbilgisi Seti 3",
+      "qs": [
+        {
+          "s": "---- the heavy rain, the match went ahead as planned.",
+          "o": [
+            "Because of",
+            "Due to",
+            "Despite",
+            "Owing to",
+            "As a result of"
+          ],
+          "a": 2,
+          "t": "Şiddetli yağmura rağmen maç planlandığı gibi yapıldı.",
+          "x": [
+            "Because of: neden bildirir; 'went ahead' ile çelişir.",
+            "Due to: neden.",
+            "Doğru: Despite = -e rağmen.",
+            "Owing to: neden.",
+            "As a result of: sonuç/neden."
+          ]
+        },
+        {
+          "s": "The book is so well written ---- it is impossible to put it down.",
+          "o": [
+            "as",
+            "than",
+            "if",
+            "which",
+            "that"
+          ],
+          "a": 4,
+          "t": "Kitap o kadar iyi yazılmış ki elden bırakmak imkânsız.",
+          "x": [
+            "as: 'so...as' eşitlik, sonuç değil.",
+            "than: karşılaştırma.",
+            "if: koşul.",
+            "which: bağlayıcı değil.",
+            "Doğru: so + sıfat + that (sonuç)."
+          ]
+        },
+        {
+          "s": "She apologised for ---- late to the meeting.",
+          "o": [
+            "be",
+            "being",
+            "to be",
+            "been",
+            "was"
+          ],
+          "a": 1,
+          "t": "Toplantıya geç kaldığı için özür diledi.",
+          "x": [
+            "be: edat sonrası yalın fiil olmaz.",
+            "Doğru: edat + V-ing.",
+            "to be: edat sonrası to-infinitive olmaz.",
+            "been: tek başına olmaz.",
+            "was: finite fiil, edat sonrası olmaz."
+          ]
+        },
+        {
+          "s": "Only after the data had been verified ---- the findings to the public.",
+          "o": [
+            "the team announced",
+            "announced the team",
+            "the team did announce",
+            "did the team announce",
+            "had the team announced"
+          ],
+          "a": 3,
+          "t": "Ancak veriler doğrulandıktan sonra ekip bulguları kamuoyuna duyurdu.",
+          "x": [
+            "the team announced: 'Only after' başta olunca devrik gerekir.",
+            "announced the team: yardımcı fiil yok.",
+            "the team did announce: devrik değil.",
+            "Doğru: Only after ... + did + özne + V1.",
+            "had the team announced: ana cümle past simple; had uymaz."
+          ]
+        },
+        {
+          "s": "He asked me ---- I had ever visited the ancient city of Ephesus.",
+          "o": [
+            "whether",
+            "that",
+            "what",
+            "which",
+            "how"
+          ],
+          "a": 0,
+          "t": "Bana, antik Efes kentini hiç ziyaret edip etmediğimi sordu.",
+          "x": [
+            "Doğru: whether/if = olup olmadığı (evet-hayır dolaylı sorusu).",
+            "that: soru anlamı yok.",
+            "what: 'olup olmadığı' anlamı vermez.",
+            "which: seçim bildirir.",
+            "how: yöntem sorar."
+          ]
+        },
+        {
+          "s": "The agreement is ---- to be signed by both parties by the end of next week.",
+          "o": [
+            "supposedly",
+            "suppose",
+            "supposing",
+            "supposed",
+            "supposition"
+          ],
+          "a": 3,
+          "t": "Anlaşmanın gelecek haftanın sonuna kadar iki tarafça imzalanması gerekiyor.",
+          "x": [
+            "supposedly: zarf.",
+            "suppose: fiil biçimi, 'is ... to' ile olmaz.",
+            "supposing: bağlaç/ing.",
+            "Doğru: be supposed to = -mesi bekleniyor/gerekiyor.",
+            "supposition: isim."
+          ]
+        },
+        {
+          "s": "Most of the students ---- took part in the survey said they were satisfied with the course.",
+          "o": [
+            "whose",
+            "who",
+            "whom",
+            "what",
+            "of whom"
+          ],
+          "a": 1,
+          "t": "Ankete katılan öğrencilerin çoğu dersten memnun olduklarını söyledi.",
+          "x": [
+            "whose: aitlik bildirir.",
+            "Doğru: who = özne konumunda ilgi zamiri.",
+            "whom: nesne konumu; burada özne gerekli.",
+            "what: ilgi zamiri olarak isme bağlanmaz.",
+            "of whom: yapı bozuk."
+          ]
+        },
+        {
+          "s": "Rarely ---- such a talented young pianist in my whole career.",
+          "o": [
+            "I have seen",
+            "seen I have",
+            "I saw",
+            "did I seen",
+            "have I seen"
+          ],
+          "a": 4,
+          "t": "Kariyerim boyunca bu kadar yetenekli genç bir piyanist nadiren gördüm.",
+          "x": [
+            "I have seen: 'Rarely' başta olunca devrik gerekir.",
+            "seen I have: kalıp bozuk.",
+            "I saw: devrik değil.",
+            "did I seen: did + V3 hatalı.",
+            "Doğru: Rarely + have + özne + V3."
+          ]
+        },
+        {
+          "s": "The company is expected ---- its profits by 15 percent this year.",
+          "o": [
+            "increasing",
+            "increase",
+            "to increase",
+            "having increased",
+            "to increasing"
+          ],
+          "a": 2,
+          "t": "Şirketin bu yıl kârını yüzde 15 artırması bekleniyor.",
+          "x": [
+            "increasing: 'expected' sonrası ing gelmez.",
+            "increase: yalın fiil olmaz.",
+            "Doğru: be expected + to-infinitive.",
+            "having increased: anlam/zaman uyumsuz.",
+            "to increasing: hatalı."
+          ]
+        },
+        {
+          "s": "No sooner had the lecture begun ---- the projector stopped working.",
+          "o": [
+            "than",
+            "when",
+            "then",
+            "while",
+            "that"
+          ],
+          "a": 0,
+          "t": "Ders başlar başlamaz projektör çalışmayı bıraktı.",
+          "x": [
+            "Doğru: No sooner ... than.",
+            "when: 'Hardly...when' kalıbında kullanılır, 'No sooner' ile değil.",
+            "then: bağlaç değil.",
+            "while: eşzamanlılık.",
+            "that: kalıba uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-04",
+      "title": "Dilbilgisi Seti 4",
+      "qs": [
+        {
+          "s": "The patient ---- to a specialist by the time the test results came back.",
+          "o": [
+            "referred",
+            "has been referred",
+            "had already been referred",
+            "was referring",
+            "would refer"
+          ],
+          "a": 2,
+          "t": "Test sonuçları geldiğinde hasta çoktan bir uzmana yönlendirilmişti.",
+          "x": [
+            "referred: aktif.",
+            "has been referred: present perfect, geçmiş zamanlı yan cümleyle uyumsuz.",
+            "Doğru: past perfect passive: had already been referred.",
+            "was referring: aktif.",
+            "would refer: aktif/gelecek."
+          ]
+        },
+        {
+          "s": "You ---- have told me earlier; I could have helped you with the project.",
+          "o": [
+            "would",
+            "must",
+            "can",
+            "may",
+            "should"
+          ],
+          "a": 4,
+          "t": "Bana daha erken söylemeliydin; projede sana yardım edebilirdim.",
+          "x": [
+            "would have: 'you would have told me' tamamen farklı.",
+            "must have + V3: geçmişe dair kesin çıkarım.",
+            "can have: bu anlamda kullanılmaz.",
+            "may have: olasılık.",
+            "Doğru: should have + V3 = yapılmamış eylem için eleştiri."
+          ]
+        },
+        {
+          "s": "He speaks English so fluently that he is often mistaken ---- a native speaker.",
+          "o": [
+            "by",
+            "for",
+            "to",
+            "with",
+            "as"
+          ],
+          "a": 1,
+          "t": "İngilizceyi o kadar akıcı konuşuyor ki sık sık anadili İngilizce olan biri sanılıyor.",
+          "x": [
+            "by: 'mistaken by' faili bildirir.",
+            "Doğru: be mistaken for = ...ile karıştırılmak.",
+            "to: uymaz.",
+            "with: 'confused with' olurdu.",
+            "as: bu yapıda kullanılmaz."
+          ]
+        },
+        {
+          "s": "The professor, ---- research on climate change has won several awards, will give a talk tomorrow.",
+          "o": [
+            "who",
+            "whom",
+            "which",
+            "whose",
+            "that"
+          ],
+          "a": 3,
+          "t": "Araştırmaları iklim değişikliği üzerine olan ve birkaç ödül kazanan profesör yarın bir konuşma yapacak.",
+          "x": [
+            "who: 'research' öznesiz kalır.",
+            "whom: nesne.",
+            "which: kişi için kullanılmaz.",
+            "Doğru: whose + isim (profesörün araştırması).",
+            "that: virgülle kullanılmaz."
+          ]
+        },
+        {
+          "s": "If it ---- for his quick thinking, the accident could have been much worse.",
+          "o": [
+            "had not been",
+            "were not",
+            "was not",
+            "has not been",
+            "would not be"
+          ],
+          "a": 0,
+          "t": "Onun hızlı düşünmesi olmasaydı kaza çok daha kötü olabilirdi.",
+          "x": [
+            "Doğru: If it had not been for = ...olmasaydı (3. tip).",
+            "were not: 2. tip koşul; sonuç 'could have been' (3. tip).",
+            "was not: 2. tip.",
+            "has not been: koşul anlamı yok.",
+            "would not be: if cümlesinde olmaz."
+          ]
+        },
+        {
+          "s": "Despite ---- several times, she failed to persuade him to change his mind.",
+          "o": [
+            "try",
+            "tried",
+            "to try",
+            "trying",
+            "having try"
+          ],
+          "a": 3,
+          "t": "Birkaç kez denemesine rağmen onu fikrini değiştirmeye ikna edemedi.",
+          "x": [
+            "try: edat sonrası yalın fiil olmaz.",
+            "tried: edat sonrası finite olmaz.",
+            "to try: edat sonrası olmaz.",
+            "Doğru: Despite + V-ing.",
+            "having try: biçim hatalı (having tried)."
+          ]
+        },
+        {
+          "s": "The new software is far ---- than the old one, so most users have already switched to it.",
+          "o": [
+            "efficient",
+            "more efficient",
+            "most efficient",
+            "the more efficient",
+            "as efficient"
+          ],
+          "a": 1,
+          "t": "Yeni yazılım eskisinden çok daha verimli, bu yüzden kullanıcıların çoğu şimdiden ona geçti.",
+          "x": [
+            "efficient: 'than' ile karşılaştırma gerekir.",
+            "Doğru: far + comparative (more efficient) + than.",
+            "most efficient: üstünlük.",
+            "the more efficient: 'the' hatalı.",
+            "as efficient: 'as' ile 'than' kullanılmaz."
+          ]
+        },
+        {
+          "s": "Hardly ---- the building when the fire alarm went off.",
+          "o": [
+            "we had entered",
+            "entered we",
+            "we entered",
+            "did we enter",
+            "had we entered"
+          ],
+          "a": 4,
+          "t": "Binaya girer girmez yangın alarmı çaldı.",
+          "x": [
+            "we had entered: 'Hardly' başta olunca devrik gerekir.",
+            "entered we: biçim hatalı.",
+            "we entered: devrik değil.",
+            "did we enter: 'Hardly...when' past perfect ister.",
+            "Doğru: Hardly + had + özne + V3 ... when."
+          ]
+        },
+        {
+          "s": "She is thought ---- one of the most influential economists of her generation.",
+          "o": [
+            "being",
+            "be",
+            "to be",
+            "been",
+            "having"
+          ],
+          "a": 2,
+          "t": "Onun kuşağının en etkili ekonomistlerinden biri olduğu düşünülüyor.",
+          "x": [
+            "being: kalıba uymaz.",
+            "be: 'to' eksik.",
+            "Doğru: be thought to be.",
+            "been: uymaz.",
+            "having: uymaz."
+          ]
+        },
+        {
+          "s": "The committee has not yet decided ---- the proposal should be accepted.",
+          "o": [
+            "whether",
+            "that",
+            "what",
+            "which",
+            "who"
+          ],
+          "a": 0,
+          "t": "Komite, önerinin kabul edilip edilmeyeceğine henüz karar vermedi.",
+          "x": [
+            "Doğru: decide whether = ...olup olmayacağına karar vermek.",
+            "that: 'karar' ile olumsuz belirsizlik anlamı vermez.",
+            "what: nesne öğesi eksik.",
+            "which: bir seçim sorar.",
+            "who: kişi sorar."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grammar-05",
+      "title": "Dilbilgisi Seti 5",
+      "qs": [
+        {
+          "s": "She ---- in London for ten years before she moved to Paris in 2012.",
+          "o": [
+            "has lived",
+            "lives",
+            "had lived",
+            "was living",
+            "would live"
+          ],
+          "a": 2,
+          "t": "2012'de Paris'e taşınmadan önce on yıl Londra'da yaşamıştı.",
+          "x": [
+            "has lived: present perfect, 'in 2012' ile olmaz.",
+            "lives: şimdiki zaman.",
+            "Doğru: past perfect: geçmişteki bir noktadan önceki süre.",
+            "was living: süre ile 'before' arasında perfect gerekir.",
+            "would live: uymaz."
+          ]
+        },
+        {
+          "s": "The workers demanded that they ---- paid overtime for the extra hours.",
+          "o": [
+            "are",
+            "have been",
+            "were being",
+            "will be",
+            "be"
+          ],
+          "a": 4,
+          "t": "İşçiler, ek saatler için fazla mesai ücreti ödenmesini talep etti.",
+          "x": [
+            "are: 'demand that' sonrası subjunctive gerekir.",
+            "have been: uymaz.",
+            "were being: uymaz.",
+            "will be: uymaz.",
+            "Doğru: demand that + özne + (should) be + V3."
+          ]
+        },
+        {
+          "s": "There was ---- information in the report that the committee asked for a second draft.",
+          "o": [
+            "so few",
+            "so little",
+            "such little",
+            "too few",
+            "very less"
+          ],
+          "a": 1,
+          "t": "Raporda o kadar az bilgi vardı ki komite ikinci bir taslak istedi.",
+          "x": [
+            "so few: 'information' sayılamaz, few olmaz.",
+            "Doğru: so little + sayılamaz isim + that.",
+            "such little: 'such' ile 'little' bu yapıda olmaz.",
+            "too few: sayılamaz isimle few olmaz.",
+            "very less: kalıp yok."
+          ]
+        },
+        {
+          "s": "He is reported ---- the country last night after the scandal broke.",
+          "o": [
+            "to leave",
+            "having left",
+            "leaving",
+            "to have left",
+            "to be left"
+          ],
+          "a": 3,
+          "t": "Skandalın patlamasından sonra dün gece ülkeyi terk ettiği bildiriliyor.",
+          "x": [
+            "to leave: geçmiş zaman (last night) için perfect infinitive gerekir.",
+            "having left: 'is reported' ile bağlanamaz.",
+            "leaving: kalıba uymaz.",
+            "Doğru: be reported + to have + V3 (geçmişteki eylem).",
+            "to be left: edilgen, anlam bozulur."
+          ]
+        },
+        {
+          "s": "The more carefully you read the contract, ---- mistakes you will make.",
+          "o": [
+            "the fewer",
+            "fewer",
+            "the less",
+            "least",
+            "fewest"
+          ],
+          "a": 0,
+          "t": "Sözleşmeyi ne kadar dikkatli okursan, o kadar az hata yaparsın.",
+          "x": [
+            "Doğru: the + comparative; mistakes sayılabilir → the fewer.",
+            "fewer: 'the' eksik.",
+            "the less: sayılamayanlar için.",
+            "least: üstünlük.",
+            "fewest: üstünlük."
+          ]
+        },
+        {
+          "s": "Scarcely ---- the room when the lights went out.",
+          "o": [
+            "she had left",
+            "she left",
+            "did she leave",
+            "had she left",
+            "left she"
+          ],
+          "a": 3,
+          "t": "Odadan çıkar çıkmaz ışıklar söndü.",
+          "x": [
+            "she had left: devrik gerekir.",
+            "she left: devrik değil.",
+            "did she leave: kalıp had ister.",
+            "Doğru: Scarcely had + özne + V3 ... when.",
+            "left she: biçim bozuk."
+          ]
+        },
+        {
+          "s": "The question ---- the company can afford to expand remains unanswered.",
+          "o": [
+            "that",
+            "of whether",
+            "which",
+            "what",
+            "how"
+          ],
+          "a": 1,
+          "t": "Şirketin genişlemeyi karşılayıp karşılayamayacağı sorusu yanıtsız kalıyor.",
+          "x": [
+            "that: 'question' ile 'that' bu anlamı vermez.",
+            "Doğru: the question of whether = ...olup olmadığı sorusu.",
+            "which: bağlayıcı olarak uymaz.",
+            "what: uymaz.",
+            "how: 'afford' ile anlamsız."
+          ]
+        },
+        {
+          "s": "We have no choice ---- to cancel the event because of the storm warning.",
+          "o": [
+            "except",
+            "unless",
+            "other",
+            "besides",
+            "but"
+          ],
+          "a": 4,
+          "t": "Fırtına uyarısı nedeniyle etkinliği iptal etmekten başka seçeneğimiz yok.",
+          "x": [
+            "except: 'except to' kalıbı yok.",
+            "unless: bağlaç.",
+            "other: 'other than to' olurdu.",
+            "besides: 'besides to' yok.",
+            "Doğru: have no choice but to V = ...dan başka seçeneği yok."
+          ]
+        },
+        {
+          "s": "Having ---- the documents carefully, the lawyer advised her client to settle out of court.",
+          "o": [
+            "examining",
+            "examine",
+            "examined",
+            "been examining",
+            "to examine"
+          ],
+          "a": 2,
+          "t": "Belgeleri dikkatle inceledikten sonra avukat müvekkiline mahkeme dışında uzlaşmasını önerdi.",
+          "x": [
+            "examining: having + V3 gerekir.",
+            "examine: yalın fiil olmaz.",
+            "Doğru: Having + V3 (tamamlanmış eylem).",
+            "been examining: 'documents' nesnesiyle uyumsuz.",
+            "to examine: uymaz."
+          ]
+        },
+        {
+          "s": "It is high time the government ---- steps to tackle the housing crisis.",
+          "o": [
+            "took",
+            "takes",
+            "will take",
+            "to take",
+            "has taken"
+          ],
+          "a": 0,
+          "t": "Hükümetin konut krizini çözmek için adım atma zamanı çoktan geldi.",
+          "x": [
+            "Doğru: It is high time + özne + past simple.",
+            "takes: 'It is high time' sonrası past simple gerekir.",
+            "will take: kalıba uymaz.",
+            "to take: özne var, uymaz.",
+            "has taken: kalıba uymaz."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}

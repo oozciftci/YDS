@@ -1,0 +1,1005 @@
+{
+  "type": "completion",
+  "sets": [
+    {
+      "id": "completion-01",
+      "title": "Cümle Tamamlama Seti 1",
+      "qs": [
+        {
+          "s": "Although the museum attracts thousands of visitors every year, ----.",
+          "o": [
+            "the building was constructed in 1890",
+            "tickets are sold at the main entrance",
+            "its collection is largely unknown to the general public",
+            "it is located in the city centre",
+            "many tourists take photographs there"
+          ],
+          "a": 2,
+          "t": "Müze her yıl binlerce ziyaretçi çekse de, koleksiyonu geniş halk kitlesince büyük ölçüde bilinmiyor.",
+          "x": [
+            "İnşa tarihi zıtlık oluşturmaz.",
+            "Biletlerin satılması zıtlık oluşturmaz.",
+            "Doğru: 'Although' zıtlık kurar; çok ziyaretçi ↔ koleksiyonun bilinmemesi.",
+            "Konum bilgisi zıtlık oluşturmaz.",
+            "Fotoğraf çekmek ziyaretçiyi doğal biçimde izler; zıtlık yok."
+          ]
+        },
+        {
+          "s": "Since the new tax was introduced, ----.",
+          "o": [
+            "it will be abolished next year",
+            "the economy had been growing steadily before",
+            "prices would have fallen if it had not",
+            "the government is going to hold elections",
+            "consumers have been spending considerably less on luxury goods"
+          ],
+          "a": 4,
+          "t": "Yeni vergi uygulamaya konduğundan beri tüketiciler lüks mallara belirgin biçimde daha az harcıyor.",
+          "x": [
+            "will be abolished: 'since' ile uyumsuz.",
+            "past perfect 'had been' 'since' sonrası anlamı bozar.",
+            "would have fallen: koşul yapısı gerektirir; bağlamla uymaz.",
+            "Seçim ile verginin ilişkisi kurulmamış; zaman uyumu yok.",
+            "Doğru: 'Since' + present perfect ile uyumlu: have been spending."
+          ]
+        },
+        {
+          "s": "Unless the funding is increased, ----.",
+          "o": [
+            "the researchers were highly motivated",
+            "the research programme will have to be suspended",
+            "the programme started in 2010",
+            "scientists have published many papers",
+            "the laboratory is located abroad"
+          ],
+          "a": 1,
+          "t": "Fon artırılmadığı takdirde araştırma programının askıya alınması gerekecek.",
+          "x": [
+            "Geçmiş zaman, koşul-sonuç ilişkisi yok.",
+            "Doğru: 'Unless' koşul; sonuç will ile gelecek bir sonuç bildirir.",
+            "Başlangıç yılı koşulla ilgisiz.",
+            "Perfect yapı koşul sonucu olamaz.",
+            "Konum bilgisi koşula bağlı sonuç değil."
+          ]
+        },
+        {
+          "s": "The more people use public transport, ----.",
+          "o": [
+            "buses run every ten minutes",
+            "the roads were built decades ago",
+            "traffic is a problem in cities",
+            "the less congested the roads become",
+            "cars are usually expensive"
+          ],
+          "a": 3,
+          "t": "İnsanlar toplu taşımayı ne kadar çok kullanırsa yollar o kadar az sıkışık olur.",
+          "x": [
+            "Kalıbın ikinci yarısı eksik.",
+            "Kalıbın ikinci yarısı eksik.",
+            "Kalıbın ikinci yarısı eksik.",
+            "Doğru: 'The more..., the + comparative' kalıbı.",
+            "Kalıbın ikinci yarısı eksik."
+          ]
+        },
+        {
+          "s": "Having failed the driving test twice, ----.",
+          "o": [
+            "Mark decided to take extra lessons before trying again",
+            "the test was extremely difficult for everyone",
+            "the instructor was very patient",
+            "driving schools are expensive",
+            "many people prefer to cycle"
+          ],
+          "a": 0,
+          "t": "Sürücü sınavını iki kez kaybettikten sonra Mark yeniden denemeden önce ek ders almaya karar verdi.",
+          "x": [
+            "Doğru: 'Having failed' öznesi cümlenin öznesi olmalı: Mark.",
+            "Özne 'the test' olamaz (sınavı kaybeden o değil).",
+            "Özne 'the instructor' olamaz.",
+            "Özne 'driving schools' olamaz.",
+            "Özne 'many people' olamaz."
+          ]
+        },
+        {
+          "s": "Whereas some species adapt easily to new environments, ----.",
+          "o": [
+            "forests cover a third of the land",
+            "it is important to protect wildlife",
+            "scientists have studied animals for centuries",
+            "others cannot survive even small changes in temperature",
+            "zoos are visited by millions of people"
+          ],
+          "a": 3,
+          "t": "Bazı türler yeni ortamlara kolayca uyum sağlarken diğerleri sıcaklıktaki küçük değişikliklere bile dayanamaz.",
+          "x": [
+            "Karşıtlık oluşturmaz.",
+            "Karşıtlık oluşturmaz.",
+            "Karşıtlık oluşturmaz.",
+            "Doğru: 'Whereas' karşıtlık; 'some ... others'.",
+            "Karşıtlık oluşturmaz."
+          ]
+        },
+        {
+          "s": "Provided that the weather stays fine, ----.",
+          "o": [
+            "the stage was built last week",
+            "the outdoor concert will take place as scheduled",
+            "tickets sold out in a few hours",
+            "the singer has released ten albums",
+            "the park was closed yesterday"
+          ],
+          "a": 1,
+          "t": "Hava güzel kalırsa açık hava konseri programlandığı gibi yapılacak.",
+          "x": [
+            "Geçmiş bilgi, koşulun sonucu değil.",
+            "Doğru: 'Provided that' koşul; sonuç gelecekle (will) bildirilir.",
+            "Geçmiş bilgi.",
+            "Koşulla ilgisiz bilgi.",
+            "Geçmiş zamanlı, koşulla uyumsuz."
+          ]
+        },
+        {
+          "s": "Not only did the new policy reduce costs, but it also ----.",
+          "o": [
+            "which was a matter of great concern",
+            "had been introduced by the previous manager",
+            "was criticised during the meeting held yesterday",
+            "the employees who were previously dismissed",
+            "improved the quality of services provided to customers"
+          ],
+          "a": 4,
+          "t": "Yeni politika yalnızca maliyetleri düşürmekle kalmadı, müşterilere sunulan hizmetin kalitesini de artırdı.",
+          "x": [
+            "Fiil yok.",
+            "'had been introduced' zaman uyumunu ve paralelliği bozar.",
+            "was criticised: anlam olumlu paralelliği bozar.",
+            "Fiil yok, cümle tamamlanmaz.",
+            "Doğru: 'but it also + V2' paralel yapı."
+          ]
+        },
+        {
+          "s": "As soon as the results were announced, ----.",
+          "o": [
+            "contestants have been practising for months",
+            "the competition will start soon",
+            "the winners were congratulated by the whole audience",
+            "the rules had been explained earlier",
+            "the hall can hold 500 people"
+          ],
+          "a": 2,
+          "t": "Sonuçlar açıklanır açıklanmaz kazananlar tüm seyirci tarafından kutlandı.",
+          "x": [
+            "have been practising: zaman uyumsuz.",
+            "will start: zaman uyumsuz.",
+            "Doğru: geçmiş zamanlı ardışık olay: past simple passive.",
+            "had been explained: 'as soon as' ile ardışıklık bozulur.",
+            "can hold: genel bilgi, ardışık olay değil."
+          ]
+        },
+        {
+          "s": "If the experiment had been conducted more carefully, ----.",
+          "o": [
+            "the results would have been more reliable",
+            "the results will be more reliable",
+            "the results are more reliable",
+            "the results were more reliable",
+            "the results would be reliable now if"
+          ],
+          "a": 0,
+          "t": "Deney daha dikkatli yapılsaydı sonuçlar daha güvenilir olurdu.",
+          "x": [
+            "Doğru: 3. tip koşul: If + past perfect, would have + V3.",
+            "will be: 1. tip.",
+            "are: genel zaman, koşulla uyumsuz.",
+            "were: gerçek geçmiş, koşul sonucu değil.",
+            "Yapı hatalı."
+          ]
+        },
+        {
+          "s": "Much as she admired his courage, ----.",
+          "o": [
+            "his courage was admired in the village",
+            "she was admired by everyone",
+            "she could not agree with his decision to leave",
+            "admiration is a strong feeling",
+            "he showed great courage in battle"
+          ],
+          "a": 2,
+          "t": "Cesaretine hayran olsa da onun ayrılma kararına katılamadı.",
+          "x": [
+            "Zıtlık yok.",
+            "Zıtlık yok.",
+            "Doğru: 'Much as' = 'though'; zıtlık: hayranlık ↔ katılmama.",
+            "Zıtlık yok.",
+            "Zıtlık yok; sadece destekler."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "completion-02",
+      "title": "Cümle Tamamlama Seti 2",
+      "qs": [
+        {
+          "s": "Because the company failed to adapt to digital technology, ----.",
+          "o": [
+            "most of its employees have a university degree",
+            "its headquarters are located in Chicago",
+            "digital technology is developing rapidly",
+            "innovation requires a great deal of investment",
+            "it gradually lost its market share to more innovative rivals"
+          ],
+          "a": 4,
+          "t": "Şirket dijital teknolojiye uyum sağlayamadığı için pazar payını yavaş yavaş daha yenilikçi rakiplerine kaptırdı.",
+          "x": [
+            "Çalışan eğitimi sonuç değil.",
+            "Merkez konumu sonuç değil.",
+            "Genel bilgi, sonuç değil.",
+            "Genel bilgi, sonuç değil.",
+            "Doğru: neden-sonuç: uyum sağlayamamak → pazar payı kaybı."
+          ]
+        },
+        {
+          "s": "Once the final report has been submitted, ----.",
+          "o": [
+            "the committee reviewed it yesterday",
+            "the committee will review it within two weeks",
+            "the report was written by three authors",
+            "reports are usually long documents",
+            "the committee members were chosen carefully"
+          ],
+          "a": 1,
+          "t": "Nihai rapor sunulduktan sonra komite onu iki hafta içinde inceleyecek.",
+          "x": [
+            "Geçmiş zaman uyumsuz.",
+            "Doğru: 'Once + present perfect' geleceği gösterir; ana cümle will.",
+            "Zaman uyumsuz.",
+            "Genel bilgi; bağ kurmaz.",
+            "Zaman uyumsuz."
+          ]
+        },
+        {
+          "s": "Although he had no formal training in music, ----.",
+          "o": [
+            "his teachers praised him highly",
+            "he studied the piano at the conservatory",
+            "music is taught in most schools",
+            "he composed several pieces that were performed internationally",
+            "he took lessons from a famous composer"
+          ],
+          "a": 3,
+          "t": "Müzik alanında resmî bir eğitimi olmamasına rağmen uluslararası alanda seslendirilen birkaç eser besteledi.",
+          "x": [
+            "'Hoca' eğitimle çelişir.",
+            "Eğitim aldığını söylemek zıtlığı bozar.",
+            "Zıtlık yok.",
+            "Doğru: zıtlık: eğitimsizlik ↔ başarı.",
+            "Ders almak 'no formal training' ile çelişir."
+          ]
+        },
+        {
+          "s": "By the time the ambulance reached the scene, ----.",
+          "o": [
+            "the injured had already been taken to hospital by passers-by",
+            "the road was closed to all traffic",
+            "ambulances are equipped with modern devices",
+            "the accident occurs at the junction every week",
+            "the driver will be questioned tomorrow"
+          ],
+          "a": 0,
+          "t": "Ambulans olay yerine ulaştığında yaralılar yoldan geçenler tarafından çoktan hastaneye götürülmüştü.",
+          "x": [
+            "Doğru: 'By the time + past simple' → past perfect (had been taken).",
+            "Zaman uyumu yok.",
+            "Genel bilgi.",
+            "Genel zaman.",
+            "Gelecek zamanlı, uymaz."
+          ]
+        },
+        {
+          "s": "The film was criticised for being too long; ----, it won several international awards.",
+          "o": [
+            "in addition",
+            "therefore",
+            "for instance",
+            "nevertheless",
+            "similarly"
+          ],
+          "a": 3,
+          "t": "Film çok uzun olduğu için eleştirildi; yine de birçok uluslararası ödül kazandı.",
+          "x": [
+            "in addition ekleme yapar.",
+            "therefore sonuç bildirir.",
+            "for instance örnek verir.",
+            "Doğru: nevertheless = yine de (zıtlık).",
+            "similarly benzerlik kurar."
+          ]
+        },
+        {
+          "s": "Only when the fog lifted ----.",
+          "o": [
+            "the pilots were able to see the runway",
+            "were the pilots able to see the runway",
+            "the pilots saw the runway just",
+            "could see the pilots the runway",
+            "the runway the pilots saw"
+          ],
+          "a": 1,
+          "t": "Ancak sis dağılınca pilotlar pisti görebildi.",
+          "x": [
+            "Devrik değil.",
+            "Doğru: 'Only when' başta olunca devrik: were the pilots able.",
+            "Devrik değil.",
+            "Sözdizimi bozuk.",
+            "Sözdizimi bozuk."
+          ]
+        },
+        {
+          "s": "Few of the participants complained about the schedule, ----.",
+          "o": [
+            "so that whether it was",
+            "which the building was repaired",
+            "because are they satisfied",
+            "while the participant who",
+            "although it was considerably tighter than they had expected"
+          ],
+          "a": 4,
+          "t": "Katılımcıların çok azı programdan şikâyet etti, oysa program beklediklerinden çok daha sıkışıktı.",
+          "x": [
+            "Dilbilgisi hatalı.",
+            "Bağlaç ve cümle yapısı hatalı.",
+            "Dilbilgisi hatalı.",
+            "Dilbilgisi hatalı.",
+            "Doğru: 'although' + tam cümle; anlamca tutarlı."
+          ]
+        },
+        {
+          "s": "The medicine, ----, is now widely used in the treatment of heart disease.",
+          "o": [
+            "whose discovered by accident",
+            "that discovering by accident",
+            "which was discovered by accident in the 1920s",
+            "was discovered by accident",
+            "it discovered by accident"
+          ],
+          "a": 2,
+          "t": "1920'lerde tesadüfen keşfedilen bu ilaç, artık kalp hastalıklarının tedavisinde yaygın olarak kullanılıyor.",
+          "x": [
+            "whose + fiil yapısı hatalı.",
+            "'that' virgülle kullanılmaz ve yapı hatalı.",
+            "Doğru: virgüllü ilgi cümleciği: which was discovered...",
+            "Ana fiil gibi görünür; cümlede iki ana fiil olur.",
+            "Zamir tekrarı."
+          ]
+        },
+        {
+          "s": "Rather than waiting for the situation to improve, ----.",
+          "o": [
+            "the manager took immediate action to solve the problem",
+            "the problem was a complicated one",
+            "the situation had been improving steadily",
+            "waiting is not always a good strategy",
+            "the company was founded in 1998"
+          ],
+          "a": 0,
+          "t": "Durumun düzelmesini beklemek yerine müdür sorunu çözmek için derhal harekete geçti.",
+          "x": [
+            "Doğru: 'Rather than waiting' öznesi harekete geçen kişi: the manager.",
+            "Özne uyumu bozuk.",
+            "Özne uyumu bozuk.",
+            "Genel bilgi, özne uyumsuz.",
+            "Özne uyumsuz."
+          ]
+        },
+        {
+          "s": "Considering how little time they had, ----.",
+          "o": [
+            "the project had no deadline",
+            "time is the most valuable resource",
+            "the students completed the project remarkably well",
+            "projects are common in schools",
+            "they had a lot of time"
+          ],
+          "a": 2,
+          "t": "Ne kadar az zamanları olduğu düşünülürse öğrenciler projeyi olağanüstü iyi tamamladı.",
+          "x": [
+            "'little time' ile çelişir.",
+            "Genel bilgi, bağ zayıf.",
+            "Doğru: 'Considering' ile olumlu bir sonuç; öğrenciler.",
+            "Genel bilgi.",
+            "'little time' ile çelişir."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "completion-03",
+      "title": "Cümle Tamamlama Seti 3",
+      "qs": [
+        {
+          "s": "Not until the early twentieth century ----.",
+          "o": [
+            "the women who vote",
+            "women gained the right to vote in many countries",
+            "women have gained the right to vote",
+            "gained women the right to vote",
+            "did women gain the right to vote in many countries"
+          ],
+          "a": 4,
+          "t": "Yirminci yüzyılın başlarına kadar birçok ülkede kadınlar oy hakkı kazanamadı.",
+          "x": [
+            "Fiil yok.",
+            "Devrik değil.",
+            "Devrik değil ve zaman uyumsuz.",
+            "Yardımcı fiil yok.",
+            "Doğru: 'Not until' başta, devrik: did women gain."
+          ]
+        },
+        {
+          "s": "The two candidates differ in their views on taxation; ----, they agree on the need for reform.",
+          "o": [
+            "moreover",
+            "however",
+            "as a result",
+            "for example",
+            "in the same way"
+          ],
+          "a": 1,
+          "t": "İki aday vergilendirme konusunda farklı görüşlere sahip; ancak reform ihtiyacında hemfikirler.",
+          "x": [
+            "moreover ekleme yapar.",
+            "Doğru: however = ancak (zıtlık).",
+            "as a result sonuç bildirir.",
+            "for example örnek verir.",
+            "in the same way benzerlik kurar."
+          ]
+        },
+        {
+          "s": "The greater the demand for housing, ----.",
+          "o": [
+            "housing is a basic need",
+            "prices have been rising",
+            "the houses are built quickly",
+            "the higher the prices tend to rise",
+            "demand is determined by population"
+          ],
+          "a": 3,
+          "t": "Konut talebi ne kadar artarsa fiyatlar da o kadar yükselme eğilimi gösterir.",
+          "x": [
+            "Kalıp tamamlanmıyor.",
+            "Kalıp tamamlanmıyor.",
+            "Kalıp tamamlanmıyor.",
+            "Doğru: the + comparative, the + comparative.",
+            "Kalıp tamamlanmıyor."
+          ]
+        },
+        {
+          "s": "While some scientists believe the universe will expand forever, ----.",
+          "o": [
+            "others argue that it will eventually collapse",
+            "the universe is very large",
+            "astronomy is an ancient science",
+            "telescopes have improved over the years",
+            "stars are made mostly of hydrogen"
+          ],
+          "a": 0,
+          "t": "Bazı bilim insanları evrenin sonsuza dek genişleyeceğine inanırken diğerleri sonunda çökeceğini savunuyor.",
+          "x": [
+            "Doğru: 'While' karşıtlık: some ↔ others.",
+            "Karşıtlık yok.",
+            "Karşıtlık yok.",
+            "Karşıtlık yok.",
+            "Karşıtlık yok."
+          ]
+        },
+        {
+          "s": "She would have accepted the job offer if ----.",
+          "o": [
+            "the salary would be higher",
+            "the salary was higher",
+            "the salary is higher",
+            "the salary had been higher",
+            "the salary has been higher"
+          ],
+          "a": 3,
+          "t": "Maaş daha yüksek olsaydı iş teklifini kabul ederdi.",
+          "x": [
+            "if cümlesinde would olmaz.",
+            "past simple: 2. tip.",
+            "present: 1. tip.",
+            "Doğru: would have V3 + if + past perfect.",
+            "present perfect: uymaz."
+          ]
+        },
+        {
+          "s": "The new airport, ----, will serve more than ten million passengers a year.",
+          "o": [
+            "that currently under construction",
+            "which is currently under construction",
+            "is currently under construction",
+            "what is under construction currently",
+            "currently being under construct"
+          ],
+          "a": 1,
+          "t": "Şu anda yapım aşamasında olan yeni havalimanı yılda on milyondan fazla yolcuya hizmet verecek.",
+          "x": [
+            "'that' virgülle olmaz, fiil eksik.",
+            "Doğru: virgüllü ilgi cümleciği.",
+            "İkinci ana fiil gerekir; yapı hatalı.",
+            "'what' ilgi zamiri olarak olmaz.",
+            "Biçim hatalı."
+          ]
+        },
+        {
+          "s": "In spite of ---- warned about the risks, he went ahead with the plan.",
+          "o": [
+            "had been",
+            "he was",
+            "being been",
+            "to be",
+            "having been"
+          ],
+          "a": 4,
+          "t": "Riskler konusunda uyarılmış olmasına rağmen planla devam etti.",
+          "x": [
+            "Edat sonrası had been olmaz.",
+            "Edat sonrası finite fiil olmaz.",
+            "Biçim hatalı.",
+            "Edat sonrası to-infinitive olmaz.",
+            "Doğru: In spite of + having been + V3."
+          ]
+        },
+        {
+          "s": "No matter how hard the team trained, ----.",
+          "o": [
+            "training is essential for athletes",
+            "the team had trained for years",
+            "they could not match the speed of their opponents",
+            "the coach was highly experienced",
+            "opponents are usually well prepared"
+          ],
+          "a": 2,
+          "t": "Takım ne kadar sıkı antrenman yaparsa yapsın rakiplerinin hızına yetişemedi.",
+          "x": [
+            "Genel bilgi, zıtlık yok.",
+            "Zıtlık yok.",
+            "Doğru: 'No matter how' zıtlık: çabaya rağmen başarısızlık.",
+            "Zıtlık yok.",
+            "Zıtlık yok."
+          ]
+        },
+        {
+          "s": "Were it not for the volunteers, ----.",
+          "o": [
+            "the festival would not have been possible",
+            "the festival is held annually",
+            "volunteers are young people",
+            "the festival has attracted visitors",
+            "tickets were sold online"
+          ],
+          "a": 0,
+          "t": "Gönüllüler olmasaydı festival mümkün olmazdı.",
+          "x": [
+            "Doğru: Were it not for ... (koşul devrik); sonuç would.",
+            "Genel zaman, koşul sonucu değil.",
+            "Koşul sonucu değil.",
+            "Koşul sonucu değil.",
+            "Koşul sonucu değil."
+          ]
+        },
+        {
+          "s": "The article claims that the number of people working from home ----.",
+          "o": [
+            "to rise sharply for five years",
+            "rises sharply the past five years ago",
+            "has risen sharply over the past five years",
+            "is risen sharply since five years",
+            "were rising sharply last five years"
+          ],
+          "a": 2,
+          "t": "Makale, evden çalışan kişilerin sayısının son beş yılda keskin biçimde arttığını öne sürüyor.",
+          "x": [
+            "Fiil biçimi hatalı.",
+            "Zaman ifadesi ve fiil uyumsuz.",
+            "Doğru: 'over the past five years' ile present perfect.",
+            "'is risen' hatalı; 'since five years' hatalı.",
+            "Özne-fiil uyumsuz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "completion-04",
+      "title": "Cümle Tamamlama Seti 4",
+      "qs": [
+        {
+          "s": "Having been warned about the storm, ----.",
+          "o": [
+            "the village is located near the sea",
+            "the storm was expected to be severe",
+            "the weather forecast was accurate",
+            "storms are common in autumn",
+            "the villagers moved to higher ground before nightfall"
+          ],
+          "a": 4,
+          "t": "Fırtına konusunda uyarılan köylüler gece olmadan daha yüksek bir yere çekildi.",
+          "x": [
+            "Özne uyumsuz.",
+            "Özne 'the storm' olamaz.",
+            "Özne 'forecast' olamaz.",
+            "Genel bilgi, özne uyumsuz.",
+            "Doğru: öznesi uyarılan kişiler: the villagers."
+          ]
+        },
+        {
+          "s": "Insofar as the data are reliable, ----.",
+          "o": [
+            "the data were collected from 200 people",
+            "the findings can be regarded as significant",
+            "data collection takes a long time",
+            "the survey was conducted online",
+            "reliability is a key concept"
+          ],
+          "a": 1,
+          "t": "Veriler güvenilir olduğu ölçüde bulgular önemli sayılabilir.",
+          "x": [
+            "Bilgi, koşulun sonucu değil.",
+            "Doğru: koşula bağlı sonuç ifadesi.",
+            "Genel bilgi.",
+            "Yöntem bilgisi; sonuç değil.",
+            "Tanım; sonuç değil."
+          ]
+        },
+        {
+          "s": "The company has reduced its carbon emissions by 30 percent, ----.",
+          "o": [
+            "so as that cutting",
+            "which the emissions are caused",
+            "in order that to reduce",
+            "thereby setting an example for other manufacturers",
+            "what it is an example"
+          ],
+          "a": 3,
+          "t": "Şirket karbon emisyonunu yüzde 30 azalttı ve böylece diğer üreticilere örnek oldu.",
+          "x": [
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Doğru: 'thereby + V-ing' sonuç bildirir.",
+            "Yapı hatalı."
+          ]
+        },
+        {
+          "s": "Had I known about the delay, ----.",
+          "o": [
+            "I would have taken a later train",
+            "I will take a later train",
+            "I take a later train",
+            "I would take a later train now",
+            "I took a later train"
+          ],
+          "a": 0,
+          "t": "Gecikmeyi bilseydim daha geç bir trene binerdim.",
+          "x": [
+            "Doğru: Had + özne + V3 → would have + V3.",
+            "will: 1. tip.",
+            "present: koşul sonucu değil.",
+            "'now' ile karma anlam; geçmiş koşulda uygun değil.",
+            "past simple koşul sonucu değil."
+          ]
+        },
+        {
+          "s": "Everyone, ----, must wear a helmet in the construction area.",
+          "o": [
+            "is including the managers",
+            "included the managers",
+            "to include the managers",
+            "including the managers",
+            "with including managers"
+          ],
+          "a": 3,
+          "t": "Yöneticiler de dahil olmak üzere herkes inşaat alanında kask takmalıdır.",
+          "x": [
+            "is including: ana fiil gibi olur, hatalı.",
+            "included: yapı hatalı.",
+            "to include: hatalı.",
+            "Doğru: including = dahil olmak üzere.",
+            "with including: hatalı."
+          ]
+        },
+        {
+          "s": "It was not until she moved abroad ----.",
+          "o": [
+            "when she realises how much she misses",
+            "that she realised how much she missed her family",
+            "she had realised how she missed",
+            "that did she realise she missed",
+            "than she realised missing"
+          ],
+          "a": 1,
+          "t": "Yurt dışına taşınana kadar ailesini ne kadar özlediğini fark etmedi.",
+          "x": [
+            "Kalıp ve zaman hatalı.",
+            "Doğru: It was not until ... that ... kalıbı.",
+            "'that' eksik, zaman hatalı.",
+            "Yarık cümlede devrik olmaz.",
+            "'than' hatalı."
+          ]
+        },
+        {
+          "s": "The more he practised, ----.",
+          "o": [
+            "confident he became the more",
+            "he became more and confident",
+            "more confident was he",
+            "he was very confident",
+            "the more confident he became"
+          ],
+          "a": 4,
+          "t": "Ne kadar çalışırsa o kadar kendine güvendi.",
+          "x": [
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "'the' kalıbı eksik.",
+            "Doğru: the more ..., the more ..."
+          ]
+        },
+        {
+          "s": "Whether or not the proposal is accepted, ----.",
+          "o": [
+            "councils are elected every four years",
+            "the proposal was submitted on Monday",
+            "the council must announce its decision by Friday",
+            "proposals are rarely rejected",
+            "the decision was disappointing"
+          ],
+          "a": 2,
+          "t": "Öneri kabul edilse de edilmese de konsey kararını Cuma gününe kadar açıklamak zorunda.",
+          "x": [
+            "Genel bilgi.",
+            "Bilgi sonuç değil.",
+            "Doğru: koşuldan bağımsız zorunluluk.",
+            "Genel bilgi.",
+            "Geçmiş zaman, uyumsuz."
+          ]
+        },
+        {
+          "s": "Rarely have I read a book ----.",
+          "o": [
+            "that moved me as deeply as this one did",
+            "which moves me deep",
+            "what has moved me deeply",
+            "so deeply move me that",
+            "as deeply moving that"
+          ],
+          "a": 0,
+          "t": "Beni bu kadar derinden etkileyen bir kitap pek okumadım.",
+          "x": [
+            "Doğru: ilgi cümleciği + karşılaştırma yapısı.",
+            "Zaman ve biçim hatalı.",
+            "'what' ilgi zamiri olamaz.",
+            "Yapı hatalı.",
+            "Yapı hatalı."
+          ]
+        },
+        {
+          "s": "Contrary to popular belief, ----.",
+          "o": [
+            "goldfish are kept as pets",
+            "popular beliefs are often wrong",
+            "goldfish can remember things for several months",
+            "memory is a complex process",
+            "many people keep goldfish"
+          ],
+          "a": 2,
+          "t": "Yaygın inancın aksine, japon balıkları birkaç ay boyunca şeyleri hatırlayabilir.",
+          "x": [
+            "İnançla çelişen bilgi değil.",
+            "Soyut ve açıklayıcı değil.",
+            "Doğru: yaygın inancı çürüten somut bir bilgi.",
+            "Genel bilgi.",
+            "Genel bilgi."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "completion-05",
+      "title": "Cümle Tamamlama Seti 5",
+      "qs": [
+        {
+          "s": "Many students find it difficult to concentrate in class, ----.",
+          "o": [
+            "so students who finding",
+            "which many students are studying",
+            "although concentration to find",
+            "that is difficult find students",
+            "especially when they have not had enough sleep"
+          ],
+          "a": 4,
+          "t": "Birçok öğrenci derste dikkatini toplamakta zorlanıyor, özellikle yeterince uyumadıklarında.",
+          "x": [
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Doğru: 'especially when' açıklayıcı ek."
+          ]
+        },
+        {
+          "s": "By the end of this decade, ----.",
+          "o": [
+            "electric vehicles replaced petrol cars",
+            "electric vehicles will have replaced petrol cars in many cities",
+            "electric vehicles are replacing petrol cars yesterday",
+            "petrol cars were replaced last decade",
+            "electric vehicles had been replaced"
+          ],
+          "a": 1,
+          "t": "Bu on yılın sonuna kadar birçok şehirde elektrikli araçlar benzinli araçların yerini almış olacak.",
+          "x": [
+            "past simple, uyumsuz.",
+            "Doğru: 'By the end of' gelecek → future perfect.",
+            "'yesterday' ile çelişir.",
+            "Geçmiş zaman, uyumsuz.",
+            "Anlam tersine döner."
+          ]
+        },
+        {
+          "s": "The mountain was so steep that ----.",
+          "o": [
+            "the weather was fine",
+            "it was very beautiful",
+            "mountains are dangerous places",
+            "only experienced climbers attempted to reach the top",
+            "climbing is a popular sport"
+          ],
+          "a": 3,
+          "t": "Dağ o kadar dikti ki yalnızca deneyimli dağcılar zirveye ulaşmaya çalıştı.",
+          "x": [
+            "Sonuçla ilgisiz.",
+            "Sonuç değil, görüş.",
+            "Genel bilgi.",
+            "Doğru: 'so steep that' sonuç bildirir.",
+            "Genel bilgi."
+          ]
+        },
+        {
+          "s": "Few countries have been as successful as Finland ----.",
+          "o": [
+            "in reducing the gap between rich and poor",
+            "to reduce the gap between rich and poor if",
+            "in reduce the gap",
+            "reducing the gap that between",
+            "for the gap reducing"
+          ],
+          "a": 0,
+          "t": "Çok az ülke zengin ile yoksul arasındaki farkı azaltmada Finlandiya kadar başarılı oldu.",
+          "x": [
+            "Doğru: successful in + V-ing.",
+            "Yapı hatalı.",
+            "Edat sonrası yalın fiil olmaz.",
+            "Yapı hatalı.",
+            "Yapı hatalı."
+          ]
+        },
+        {
+          "s": "Just as the economy was beginning to recover, ----.",
+          "o": [
+            "the government increased salaries",
+            "the economy is recovering quickly",
+            "recoveries take many years",
+            "a new financial crisis broke out in the region",
+            "the region has a large population"
+          ],
+          "a": 3,
+          "t": "Ekonomi tam toparlanmaya başlıyorken bölgede yeni bir mali kriz patlak verdi.",
+          "x": [
+            "Beklenmedik olay değil.",
+            "Zaman uyumu bozuk.",
+            "Genel bilgi.",
+            "Doğru: 'Just as' ani zamandaşlık; yeni olay beklenmedik biçimde geldi.",
+            "Genel bilgi."
+          ]
+        },
+        {
+          "s": "The suspect denied ----, although the police had found his fingerprints on the weapon.",
+          "o": [
+            "to be at the scene",
+            "having been at the scene of the crime",
+            "that he be there",
+            "being at the scene yesterday night then",
+            "he was there"
+          ],
+          "a": 1,
+          "t": "Polis silahın üzerinde parmak izlerini bulmuş olsa da şüpheli olay yerinde bulunduğunu inkâr etti.",
+          "x": [
+            "deny sonrası to-infinitive olmaz.",
+            "Doğru: deny + having + V3.",
+            "Biçim hatalı.",
+            "Yapı hatalı.",
+            "deny sonrası finite cümle bu şekilde olmaz."
+          ]
+        },
+        {
+          "s": "Highly as the committee rated her proposal, ----.",
+          "o": [
+            "the rating was higher than expected",
+            "she was rated highly by everyone",
+            "committees rate many proposals",
+            "the proposal had high costs",
+            "it was rejected on the grounds of cost"
+          ],
+          "a": 4,
+          "t": "Komite öneriyi ne kadar yüksek değerlendirmiş olsa da maliyet gerekçesiyle reddedildi.",
+          "x": [
+            "Zıtlık yok.",
+            "Zıtlık yok.",
+            "Zıtlık yok.",
+            "Zıtlık yok.",
+            "Doğru: 'Highly as' = although; zıtlık: yüksek puan ↔ red."
+          ]
+        },
+        {
+          "s": "Candidates will not be admitted to the exam hall ----.",
+          "o": [
+            "if present they a valid card",
+            "when they presenting a valid card",
+            "unless they present a valid identity card",
+            "whereas valid cards present",
+            "because of valid identity"
+          ],
+          "a": 2,
+          "t": "Adaylar, geçerli bir kimlik kartı ibraz etmedikçe sınav salonuna alınmayacak.",
+          "x": [
+            "Yapı hatalı.",
+            "Yapı hatalı.",
+            "Doğru: unless + present simple, ana cümle will.",
+            "Yapı hatalı.",
+            "Mantık ve yapı hatalı."
+          ]
+        },
+        {
+          "s": "Such was the demand for tickets that ----.",
+          "o": [
+            "the website crashed within minutes of going on sale",
+            "tickets are expensive nowadays",
+            "demand is high for concerts",
+            "the concert was held in a stadium",
+            "tickets are sold online"
+          ],
+          "a": 0,
+          "t": "Biletlere talep o kadar yüksekti ki internet sitesi satışa çıkar çıkmaz dakikalar içinde çöktü.",
+          "x": [
+            "Doğru: 'Such ... that' sonuç bildirir.",
+            "Sonuç değil.",
+            "Sonuç değil.",
+            "Sonuç değil.",
+            "Sonuç değil."
+          ]
+        },
+        {
+          "s": "It is widely accepted that smoking ----.",
+          "o": [
+            "being a leading cause lung cancer",
+            "to be one of the causes",
+            "is one of the leading causes of lung cancer",
+            "are leading cause of cancer",
+            "which causes lung cancer is"
+          ],
+          "a": 2,
+          "t": "Sigara içmenin akciğer kanserinin önde gelen nedenlerinden biri olduğu yaygın olarak kabul edilir.",
+          "x": [
+            "Fiil eksik.",
+            "Fiil yapısı hatalı.",
+            "Doğru: that cümlesi: özne + fiil.",
+            "Özne-fiil uyumsuz.",
+            "Yapı hatalı."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}
