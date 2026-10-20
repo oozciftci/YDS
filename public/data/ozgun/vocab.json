@@ -646,32 +646,6 @@
             "Doğru: attention to detail = ayrıntıya dikkat.",
             "resistance çelişir."
           ]
-        },
-        {
-          "s": "The government has promised to ---- the funds fairly among all the regions.",
-          "o": [
-            "distribute",
-            "confiscate",
-            "estimate",
-            "restore",
-            "deny"
-          ],
-          "a": 0,
-          "t": "Hükümet, fonları tüm bölgeler arasında adil biçimde dağıtmayı vaat etti.",
-          "ot": [
-            "dağıtmak",
-            "el koymak",
-            "tahmin etmek",
-            "onarmak",
-            "inkâr etmek"
-          ],
-          "x": [
-            "Doğru: distribute among = ... arasında dağıtmak.",
-            "confiscate 'fairly among' ile uymaz.",
-            "estimate 'among' alamaz.",
-            "restore uymaz.",
-            "deny uymaz."
-          ]
         }
       ]
     },
@@ -1319,6 +1293,38 @@
             "Doğru: a body of evidence = bir dizi/bütün kanıt; 'suggests' ile uyumlu.",
             "slice uymaz.",
             "lack 'suggests' ile çelişir."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vocab-09",
+      "title": "Kelime Seti 9",
+      "qs": [
+        {
+          "s": "The government has promised to ---- the funds fairly among all the regions.",
+          "o": [
+            "distribute",
+            "confiscate",
+            "estimate",
+            "restore",
+            "deny"
+          ],
+          "a": 0,
+          "t": "Hükümet, fonları tüm bölgeler arasında adil biçimde dağıtmayı vaat etti.",
+          "ot": [
+            "dağıtmak",
+            "el koymak",
+            "tahmin etmek",
+            "onarmak",
+            "inkâr etmek"
+          ],
+          "x": [
+            "Doğru: distribute among = ... arasında dağıtmak.",
+            "confiscate 'fairly among' ile uymaz.",
+            "estimate 'among' alamaz.",
+            "restore uymaz.",
+            "deny uymaz."
           ]
         },
         {

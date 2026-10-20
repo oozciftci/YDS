@@ -1,0 +1,646 @@
+{
+  "type": "reading",
+  "sets": [
+    {
+      "id": "reading-01",
+      "title": "Okuma Metni 1: Mercan Resifleri",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "Coral reefs cover less than one percent of the ocean floor, yet they support about a quarter of all marine species.",
+          "This remarkable diversity exists because reefs offer shelter, food and breeding grounds in otherwise nutrient-poor waters.",
+          "Corals themselves are tiny animals that live in partnership with microscopic algae.",
+          "The algae use sunlight to produce energy, part of which they pass on to the coral, while the coral provides the algae with a protected home.",
+          "When the water becomes too warm, however, corals expel their algae, lose their colour and may eventually die, a process known as bleaching.",
+          "Scientists have recorded several mass bleaching events in recent decades, and most of them coincided with unusually high sea temperatures.",
+          "Reefs also protect coastlines by absorbing the force of waves, and millions of people depend on them for fishing and tourism.",
+          "Conservation efforts therefore focus not only on protecting reefs from pollution but also on slowing the warming of the oceans."
+        ],
+        "tr": [
+          "Mercan resifleri okyanus tabanının yüzde birinden azını kaplar, ancak tüm deniz türlerinin yaklaşık dörtte birini barındırır.",
+          "Bu dikkat çekici çeşitlilik, resiflerin besin açısından fakir sularda barınak, yiyecek ve üreme alanı sunmasından kaynaklanır.",
+          "Mercanlar, mikroskobik algerle ortaklık içinde yaşayan küçük hayvanlardır.",
+          "Algler güneş ışığını enerji üretmek için kullanır ve bir kısmını mercana aktarır; mercan ise algere korunaklı bir yuva sağlar.",
+          "Ancak su çok ısındığında mercanlar alglerini dışarı atar, renklerini kaybeder ve sonunda ölebilir; bu sürece ağarma denir.",
+          "Bilim insanları son on yıllarda birkaç kitlesel ağarma olayı kaydetti ve bunların çoğu alışılmadık derecede yüksek deniz sıcaklıklarıyla çakıştı.",
+          "Resifler ayrıca dalgaların gücünü emerek kıyıları korur ve milyonlarca insan balıkçılık ve turizm için onlara bağımlıdır.",
+          "Bu nedenle koruma çabaları yalnızca resifleri kirlilikten korumaya değil, okyanusların ısınmasını yavaşlatmaya da odaklanıyor."
+        ]
+      },
+      "qs": [
+        {
+          "s": "What is the main point of the passage?",
+          "o": [
+            "Tourism is the main cause of damage to coral reefs.",
+            "Algae are more important than corals for the survival of marine life.",
+            "Coral reefs are valuable ecosystems that are threatened by rising sea temperatures.",
+            "Corals can live without sunlight in cold, deep waters.",
+            "Fishing communities should move away from coastlines."
+          ],
+          "a": 2,
+          "t": "Parçanın ana fikri nedir?",
+          "x": [
+            "Turizm hasarın ana nedeni olarak gösterilmiyor.",
+            "Algin corallerden önemli olduğu söylenmiyor.",
+            "Doğru: resiflerin değeri ve ısınmanın tehdidi parçanın bütününü özetler.",
+            "Parçada mercanların soğuk, derin suda yaşadığı söylenmiyor.",
+            "Böyle bir öneri yok."
+          ]
+        },
+        {
+          "s": "According to the passage, corals lose their colour when ----.",
+          "o": [
+            "fish feed on their surface",
+            "they are covered by sand",
+            "they absorb the force of waves",
+            "the water becomes too cold",
+            "they expel the algae living inside them"
+          ],
+          "a": 4,
+          "t": "Parçaya göre mercanlar ---- renklerini kaybeder.",
+          "x": [
+            "Balık beslenmesi anılmıyor.",
+            "Kum örtüsü anılmıyor.",
+            "Dalga gücünü emmek renk kaybıyla ilgisiz.",
+            "Soğuk su değil, sıcak su sorun.",
+            "Doğru: 5. cümle: su çok ısınınca algleri dışarı atar ve rengini kaybeder."
+          ]
+        },
+        {
+          "s": "It can be inferred from the passage that mass bleaching events ----.",
+          "o": [
+            "have been recorded only in the last year",
+            "are mainly linked to increases in sea temperature",
+            "occur in all oceans at the same time",
+            "can be prevented by fishing",
+            "have no effect on tourism"
+          ],
+          "a": 1,
+          "t": "Parçadan kitlesel ağarma olaylarının ---- olduğu çıkarılabilir.",
+          "x": [
+            "'Son on yıllarda' deniyor, son bir yıl değil.",
+            "Doğru: 6. cümle: çoğu yüksek sıcaklıklarla çakıştı.",
+            "Aynı anda tüm okyanuslarda olduğu söylenmiyor.",
+            "Balıkçılıkla önlenme anılmıyor.",
+            "Turizmle ilişkisi anılmıyor; 7. cümle turizmin resiflere bağımlı olduğunu söylüyor."
+          ]
+        },
+        {
+          "s": "The word 'expel' in the fifth sentence is closest in meaning to ----.",
+          "o": [
+            "produce",
+            "take in",
+            "protect",
+            "push out",
+            "colour"
+          ],
+          "a": 3,
+          "t": "Beşinci cümledeki 'expel' sözcüğü ---- ile anlamca en yakındır.",
+          "ot": [
+            "üretmek",
+            "içine almak",
+            "korumak",
+            "dışarı atmak",
+            "renklendirmek"
+          ],
+          "x": [
+            "produce algleri üretmek anlamı olmaz.",
+            "take in tam tersi.",
+            "protect farklı anlam.",
+            "Doğru: expel = dışarı atmak/çıkarmak.",
+            "colour anlamca uyumsuz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-02",
+      "title": "Okuma Metni 2: Kentsel Isı Adaları",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "On a hot summer day, the temperature in the centre of a large city can be several degrees higher than in the surrounding countryside.",
+          "This phenomenon is known as the urban heat island effect.",
+          "Dark surfaces such as asphalt and roofs absorb sunlight during the day and release it slowly at night, so the city never cools down completely.",
+          "In addition, tall buildings block the wind, which would otherwise carry heat away.",
+          "Heat produced by cars, air conditioners and factories adds to the problem.",
+          "The consequences are serious: higher energy use for cooling, poorer air quality and an increased risk of heat-related illness, especially among the elderly.",
+          "Planners are trying to reduce these effects by planting trees, creating parks and painting roofs white to reflect sunlight.",
+          "Some cities have also begun to allow more space between buildings so that air can circulate more freely."
+        ],
+        "tr": [
+          "Sıcak bir yaz gününde büyük bir şehrin merkezindeki sıcaklık çevredeki kırsaldan birkaç derece yüksek olabilir.",
+          "Bu olgu kentsel ısı adası etkisi olarak bilinir.",
+          "Asfalt ve çatılar gibi koyu yüzeyler gün boyunca güneş ışığını emer ve geceleri yavaşça salar; bu yüzden şehir hiçbir zaman tamamen soğumaz.",
+          "Ayrıca yüksek binalar, aksi halde ısıyı uzaklaştıracak olan rüzgârı engeller.",
+          "Arabalar, klimalar ve fabrikalarda üretilen ısı sorunu artırır.",
+          "Sonuçlar ciddidir: soğutma için daha yüksek enerji kullanımı, daha kötü hava kalitesi ve özellikle yaşlılar arasında ısıyla ilgili hastalık riskinde artış.",
+          "Planlamacılar ağaç dikerek, park oluşturarak ve güneş ışığını yansıtmak için çatıları beyaza boyayarak bu etkileri azaltmaya çalışıyor.",
+          "Bazı şehirler havanın daha serbestçe dolaşabilmesi için binalar arasında daha fazla boşluk bırakmaya da başladı."
+        ]
+      },
+      "qs": [
+        {
+          "s": "Which of the following is NOT mentioned as a cause of the urban heat island effect?",
+          "o": [
+            "Heavy rainfall in city centres",
+            "Tall buildings that block the wind",
+            "Heat from cars and factories",
+            "Dark surfaces that absorb sunlight",
+            "Surfaces that release heat at night"
+          ],
+          "a": 0,
+          "t": "Aşağıdakilerden hangisi kentsel ısı adası etkisinin nedeni olarak belirtilmemiştir?",
+          "x": [
+            "Doğru: yoğun yağış parçada hiç anılmıyor.",
+            "Parçada geçiyor (4. cümle).",
+            "Parçada geçiyor (5. cümle).",
+            "Parçada geçiyor (3. cümle).",
+            "Parçada geçiyor (3. cümle)."
+          ]
+        },
+        {
+          "s": "According to the passage, white roofs help to ----.",
+          "o": [
+            "increase energy use",
+            "store heat for the night",
+            "block the wind in the streets",
+            "reflect sunlight and reduce heat",
+            "produce more shade for trees"
+          ],
+          "a": 3,
+          "t": "Parçaya göre beyaz çatılar ---- yardımcı olur.",
+          "x": [
+            "Enerji kullanımı artmaz, azalır.",
+            "Isıyı depolamak ısı adası nedeni.",
+            "Rüzgârı engellemek yapıların sorunu.",
+            "Doğru: 7. cümle: güneş ışığını yansıtmak için.",
+            "Ağaçlarla ilgisi anılmıyor."
+          ]
+        },
+        {
+          "s": "The passage suggests that older people ----.",
+          "o": [
+            "prefer to live in the countryside",
+            "are more at risk during very hot periods",
+            "use air conditioners more than others",
+            "plant most of the trees in cities",
+            "are unaffected by poor air quality"
+          ],
+          "a": 1,
+          "t": "Parça yaşlı insanların ---- olduğunu ima ediyor.",
+          "x": [
+            "Tercih bilgisi yok.",
+            "Doğru: 6. cümle: ısıyla ilgili hastalık riski özellikle yaşlılarda artıyor.",
+            "Klima kullanımı karşılaştırılmıyor.",
+            "Ağaç dikimi yaşlılara atfedilmiyor.",
+            "Hava kalitesinin etkisiz olduğu söylenmiyor."
+          ]
+        },
+        {
+          "s": "What is the writer's main purpose in the passage?",
+          "o": [
+            "To compare asphalt with other building materials",
+            "To argue that people should move to the countryside",
+            "To criticise the use of air conditioners",
+            "To describe the history of urban planning",
+            "To explain why cities are warmer than rural areas and how this can be reduced"
+          ],
+          "a": 4,
+          "t": "Yazarın parçadaki temel amacı nedir?",
+          "x": [
+            "Karşılaştırma yapılmıyor.",
+            "Böyle bir görüş yok.",
+            "Klima eleştirisi ana amaç değil.",
+            "Tarih anlatılmıyor.",
+            "Doğru: nedenler + sonuçlar + çözümler."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-03",
+      "title": "Okuma Metni 3: İki Dilli Beyin",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "For many years, people believed that growing up with two languages would confuse children and slow down their development.",
+          "Recent research, however, has shown almost the opposite.",
+          "Bilingual children often develop a stronger ability to focus, because their brains constantly choose between two languages and ignore the one that is not needed.",
+          "This daily mental exercise seems to improve skills such as switching between tasks and solving problems.",
+          "Some studies even suggest that lifelong bilingualism may delay the onset of memory-related illnesses by several years.",
+          "Nevertheless, scientists warn against exaggerating these benefits, since the results of different studies are not always consistent.",
+          "What is certain is that learning another language also gives people access to new cultures and ways of thinking.",
+          "For this reason, many schools now encourage children to begin a second language at an early age."
+        ],
+        "tr": [
+          "Uzun yıllar boyunca insanlar iki dille büyümenin çocukları şaşırtacağına ve gelişimlerini yavaşlatacağına inandı.",
+          "Ancak yakın tarihli araştırmalar neredeyse tam tersini gösterdi.",
+          "İki dilli çocuklar çoğu zaman daha güçlü bir odaklanma yeteneği geliştirir; çünkü beyinleri sürekli iki dil arasında seçim yapar ve gerekmeyeni göz ardı eder.",
+          "Bu günlük zihinsel egzersiz, görevler arasında geçiş yapma ve problem çözme gibi becerileri geliştiriyor gibi görünüyor.",
+          "Bazı çalışmalar, ömür boyu iki dilliliğin bellekle ilgili hastalıkların başlangıcını birkaç yıl geciktirebileceğini bile ileri sürüyor.",
+          "Yine de bilim insanları farklı çalışmaların sonuçları her zaman tutarlı olmadığı için bu yararların abartılmasına karşı uyarıyor.",
+          "Kesin olan, başka bir dil öğrenmenin insanlara yeni kültürlere ve düşünme biçimlerine erişim de sağlamasıdır.",
+          "Bu nedenle birçok okul artık çocukları ikinci bir dile erken yaşta başlamaya teşvik ediyor."
+        ]
+      },
+      "qs": [
+        {
+          "s": "According to the passage, the old belief about bilingual children was that they ----.",
+          "o": [
+            "would have a better memory",
+            "would learn languages faster",
+            "would be slowed down in their development",
+            "would be unable to focus on one task",
+            "would prefer to live abroad"
+          ],
+          "a": 2,
+          "t": "Parçaya göre iki dilli çocuklarla ilgili eski inanç, onların ---- olduğuydu.",
+          "x": [
+            "Bellek bilgisi yeni çalışmalara ait.",
+            "Tersi: yeni araştırmalar olumlu.",
+            "Doğru: 1. cümle: gelişimleri yavaşlayacak.",
+            "Odaklanma yeni bulgularda güçlü.",
+            "Yaşam yeri anılmıyor."
+          ]
+        },
+        {
+          "s": "Why do bilingual children develop a stronger ability to focus?",
+          "o": [
+            "Because their brains constantly select one language and ignore the other",
+            "Because they study more hours at school",
+            "Because they are better at memorising words",
+            "Because they read more books than other children",
+            "Because they live in more than one country"
+          ],
+          "a": 0,
+          "t": "İki dilli çocuklar neden daha güçlü odaklanma yeteneği geliştirir?",
+          "x": [
+            "Doğru: 3. cümle.",
+            "Çalışma saatleri anılmıyor.",
+            "Ezber anılmıyor.",
+            "Kitap okuma anılmıyor.",
+            "Yaşanılan ülke anılmıyor."
+          ]
+        },
+        {
+          "s": "What does the writer say about the benefits of bilingualism?",
+          "o": [
+            "They only appear after the age of sixty",
+            "They have been proven beyond any doubt",
+            "They should not be exaggerated because studies do not always agree",
+            "They are limited to memory skills",
+            "They are smaller than the difficulties of learning a second language"
+          ],
+          "a": 2,
+          "t": "Yazar iki dilliliğin yararları hakkında ne söylüyor?",
+          "x": [
+            "Yaş sınırı yok.",
+            "Kesin kanıtlandığı söylenmiyor.",
+            "Doğru: 6. cümle.",
+            "Yalnızca bellekle sınırlı değil.",
+            "Karşılaştırma yapılmıyor."
+          ]
+        },
+        {
+          "s": "The word 'consistent' in the sixth sentence is closest in meaning to ----.",
+          "o": [
+            "complicated",
+            "unusual",
+            "delayed",
+            "dangerous",
+            "in agreement"
+          ],
+          "a": 4,
+          "t": "Altıncı cümledeki 'consistent' sözcüğü ---- ile anlamca en yakındır.",
+          "ot": [
+            "karmaşık",
+            "alışılmadık",
+            "gecikmiş",
+            "tehlikeli",
+            "uyumlu"
+          ],
+          "x": [
+            "complicated karmaşık.",
+            "unusual alışılmadık.",
+            "delayed gecikmiş.",
+            "dangerous tehlikeli.",
+            "Doğru: consistent = tutarlı/uyumlu."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-04",
+      "title": "Okuma Metni 4: Haritaların Tarihi",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "Maps are among the oldest tools created by humans, with the earliest known examples dating back thousands of years.",
+          "Early maps were rarely drawn to scale; instead, they showed what mattered most to their makers, such as trade routes or the location of sacred places.",
+          "As sailors travelled farther, the need for accurate maps grew, and by the sixteenth century mapmakers had developed new methods to show a round Earth on a flat sheet of paper.",
+          "Every such method, however, distorts something: it may stretch the size of countries near the poles or change the shape of continents.",
+          "The famous map created by Gerardus Mercator in 1569 was ideal for sailors because straight lines on it matched constant compass directions.",
+          "Its drawback is that it makes regions far from the equator look much larger than they really are.",
+          "Today, digital technology allows people to view the globe from any angle, but the old problem of representing a sphere on a flat screen remains."
+        ],
+        "tr": [
+          "Haritalar insanların yarattığı en eski araçlar arasındadır; bilinen en eski örnekler binlerce yıl öncesine uzanır.",
+          "Erken haritalar nadiren ölçekli çizilirdi; bunun yerine yapımcıları için en önemli olanı, örneğin ticaret yollarını veya kutsal yerlerin konumunu gösterirlerdi.",
+          "Denizciler daha uzaklara seyahat ettikçe doğru haritalara duyulan ihtiyaç arttı ve on altıncı yüzyıla gelindiğinde harita yapımcıları yuvarlak bir Dünya'yı düz bir kâğıtta göstermek için yeni yöntemler geliştirdi.",
+          "Ancak her yöntem bir şeyi çarpıtır: kutuplara yakın ülkelerin boyutunu uzatabilir veya kıtaların şeklini değiştirebilir.",
+          "Gerardus Mercator'un 1569'da oluşturduğu ünlü harita denizciler için idealdi; çünkü üzerindeki düz çizgiler sabit pusula yönleriyle örtüşüyordu.",
+          "Dezavantajı, ekvatordan uzaktaki bölgelerin gerçekte olduklarından çok daha büyük görünmesidir.",
+          "Bugün dijital teknoloji insanların küreyi her açıdan görmesine izin veriyor, ancak bir küreyi düz bir ekranda göstermenin eski sorunu sürüyor."
+        ]
+      },
+      "qs": [
+        {
+          "s": "According to the passage, early maps ----.",
+          "o": [
+            "were drawn exactly to scale",
+            "emphasised what was important to their makers rather than exact distances",
+            "were used only by sailors",
+            "showed the Earth as a sphere",
+            "were produced mainly for tourists"
+          ],
+          "a": 1,
+          "t": "Parçaya göre erken haritalar ----.",
+          "x": [
+            "Ölçekli çizilmediği söyleniyor.",
+            "Doğru: 2. cümle.",
+            "Yalnızca denizciler değil.",
+            "Küre gösterimi daha sonra.",
+            "Turistler anılmıyor."
+          ]
+        },
+        {
+          "s": "Why was Mercator's map useful for sailors?",
+          "o": [
+            "It included the location of sacred places",
+            "It showed the true size of all continents",
+            "It was cheaper than other maps",
+            "Straight lines on it corresponded to constant compass directions",
+            "It was drawn on a globe"
+          ],
+          "a": 3,
+          "t": "Mercator'un haritası denizciler için neden yararlıydı?",
+          "x": [
+            "Kutsal yerler erken haritalarla ilgili.",
+            "Gerçek boyutu göstermez; 6. cümle.",
+            "Maliyet anılmıyor.",
+            "Doğru: 5. cümle.",
+            "Küre değil, düz harita."
+          ]
+        },
+        {
+          "s": "It can be understood from the passage that representing the Earth on a flat surface ----.",
+          "o": [
+            "always causes some kind of distortion",
+            "became unnecessary with digital technology",
+            "was first solved by Mercator",
+            "is possible without changing shapes",
+            "was never attempted before the sixteenth century"
+          ],
+          "a": 0,
+          "t": "Parçadan Dünya'yı düz bir yüzeyde göstermenin ---- anlaşılır.",
+          "x": [
+            "Doğru: 4. cümle: her yöntem bir şeyi çarpıtır; son cümle de sorun sürüyor.",
+            "Dijital teknolojiyle sorun çözülmedi.",
+            "Mercator çözüm bulmadı; dezavantajı var.",
+            "Şekillerin değişmesi kaçınılmaz.",
+            "Daha önce denendiği zaten söyleniyor (erken haritalar)."
+          ]
+        },
+        {
+          "s": "What is the writer's attitude towards Mercator's map?",
+          "o": [
+            "Indifferent: it is mentioned only briefly",
+            "Enthusiastic: it is described as flawless",
+            "Hostile: it is described as useless",
+            "Balanced: it acknowledges both its usefulness and its disadvantage",
+            "Doubtful: its date is questioned"
+          ],
+          "a": 3,
+          "t": "Yazarın Mercator haritasına karşı tutumu nedir?",
+          "x": [
+            "İki cümleyle ayrıntılı anlatılıyor.",
+            "Kusursuz denmiyor.",
+            "Yararsız denmiyor.",
+            "Doğru: hem yararı (5.) hem dezavantajı (6.) anlatılıyor.",
+            "Tarih sorgulanmıyor."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-05",
+      "title": "Okuma Metni 5: Uzaktan Eğitim",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "Online education grew rapidly in the past decade, and the number of students taking at least one course over the internet has increased several times over.",
+          "Supporters point out that it removes geographical barriers, allowing a student in a small village to follow lectures given at a leading university.",
+          "It is also flexible, since learners can watch recorded lessons at any hour and repeat difficult parts as many times as they need.",
+          "Critics, on the other hand, argue that many students miss the daily contact with teachers and classmates, which keeps them motivated.",
+          "Indeed, completion rates for free online courses are often below fifteen percent.",
+          "Researchers have found that courses combining online lessons with regular face-to-face meetings give the best results.",
+          "This blended approach keeps the flexibility of online study while providing the support that many learners need.",
+          "As a result, a growing number of universities are redesigning their programmes in this way."
+        ],
+        "tr": [
+          "Çevrim içi eğitim son on yılda hızla büyüdü ve internet üzerinden en az bir ders alan öğrencilerin sayısı birkaç kat arttı.",
+          "Destekçiler, çevrim içi eğitimin coğrafi engelleri kaldırdığına, küçük bir köydeki öğrencinin önde gelen bir üniversitedeki dersleri izlemesine olanak tanıdığına dikkat çekiyor.",
+          "Aynı zamanda esnektir; çünkü öğrenciler kayıtlı dersleri istedikleri saatte izleyebilir ve zor bölümleri gerektiği kadar tekrarlayabilir.",
+          "Eleştirmenler ise birçok öğrencinin onları motive eden öğretmenler ve sınıf arkadaşlarıyla günlük temasın eksikliğini hissettiğini savunuyor.",
+          "Gerçekten de ücretsiz çevrim içi derslerin tamamlanma oranları çoğu zaman yüzde on beşin altındadır.",
+          "Araştırmacılar, çevrim içi dersleri düzenli yüz yüze buluşmalarla birleştiren derslerin en iyi sonuçları verdiğini buldu.",
+          "Bu karma yaklaşım, çevrim içi eğitimin esnekliğini korurken birçok öğrencinin ihtiyaç duyduğu desteği de sağlar.",
+          "Sonuç olarak giderek daha fazla üniversite programlarını bu şekilde yeniden tasarlıyor."
+        ]
+      },
+      "qs": [
+        {
+          "s": "According to the passage, one advantage of online education is that ----.",
+          "o": [
+            "it is always cheaper than traditional education",
+            "students can study at times that suit them",
+            "it guarantees higher grades",
+            "it removes the need for teachers",
+            "it is only available in small villages"
+          ],
+          "a": 1,
+          "t": "Parçaya göre çevrim içi eğitimin bir avantajı ---- olmasıdır.",
+          "x": [
+            "Maliyet anılmıyor.",
+            "Doğru: 3. cümle: esneklik, istediği saatte izleme.",
+            "Yüksek not garantisi yok.",
+            "Öğretmen ihtiyacı ortadan kalkmıyor.",
+            "Yalnızca köylerde değil."
+          ]
+        },
+        {
+          "s": "Why do critics say that many students do not complete online courses?",
+          "o": [
+            "The courses last too many years",
+            "The courses are too expensive",
+            "The lectures are given by unknown teachers",
+            "The internet connection is usually unreliable",
+            "They lack the regular contact that keeps them motivated"
+          ],
+          "a": 4,
+          "t": "Eleştirmenler birçok öğrencinin çevrim içi dersleri neden tamamlamadığını söylüyor?",
+          "x": [
+            "Süre anılmıyor.",
+            "Ücret anılmıyor (dersler ücretsiz).",
+            "Öğretmen bilinirliği anılmıyor.",
+            "Bağlantı sorunu anılmıyor.",
+            "Doğru: 4-5. cümleler."
+          ]
+        },
+        {
+          "s": "The 'blended approach' mentioned in the passage combines ----.",
+          "o": [
+            "several universities in one programme",
+            "free courses and paid courses",
+            "online lessons and regular face-to-face meetings",
+            "recorded lectures and written exams",
+            "difficult and easy topics"
+          ],
+          "a": 2,
+          "t": "Parçada geçen 'karma yaklaşım' ---- birleştirir.",
+          "x": [
+            "Üniversite birleştirme anılmıyor.",
+            "Ücret türleri değil.",
+            "Doğru: 6. cümle.",
+            "Sınav türü anılmıyor.",
+            "Zorluk seviyesi anılmıyor."
+          ]
+        },
+        {
+          "s": "It can be concluded from the passage that ----.",
+          "o": [
+            "the combination of online and face-to-face study is becoming more common",
+            "online education will soon replace universities",
+            "free courses are better than university courses",
+            "students prefer to study alone",
+            "online courses are not suitable for villages"
+          ],
+          "a": 0,
+          "t": "Parçadan ---- sonucu çıkarılabilir.",
+          "x": [
+            "Doğru: son cümle: giderek daha fazla üniversite bu modele geçiyor.",
+            "Üniversitelerin yerini alacağı söylenmiyor.",
+            "Karşılaştırma yok.",
+            "Tercih bilgisi yok; tersi söyleniyor.",
+            "2. cümle tam tersini söylüyor."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-06",
+      "title": "Okuma Metni 6: Mikroplastikler",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "Microplastics are tiny pieces of plastic, usually smaller than five millimetres, that are found almost everywhere on Earth.",
+          "Some are produced intentionally, for example as small beads used in cosmetics, while others form when larger items such as bottles and bags break down over time.",
+          "Washing synthetic clothes is another important source, since each wash releases thousands of microscopic fibres into the water.",
+          "Because these particles are so small, ordinary water treatment plants cannot filter them all, and many end up in rivers and oceans.",
+          "Marine animals often swallow them by mistake, and the plastic can then enter the human food chain.",
+          "The health effects on people are not yet fully understood, but researchers have already found microplastics in drinking water, salt and even human blood.",
+          "Some countries have therefore banned plastic microbeads in cosmetics, and scientists are developing filters that can be fitted to washing machines."
+        ],
+        "tr": [
+          "Mikroplastikler, genellikle beş milimetreden küçük, Dünya'da neredeyse her yerde bulunan minik plastik parçalarıdır.",
+          "Bazıları, örneğin kozmetikte kullanılan küçük boncuklar gibi kasıtlı olarak üretilir; diğerleri ise şişe ve poşet gibi büyük nesneler zamanla parçalandığında oluşur.",
+          "Sentetik giysileri yıkamak da önemli bir kaynaktır; çünkü her yıkama suya binlerce mikroskobik lif salar.",
+          "Bu parçacıklar çok küçük olduğu için sıradan su arıtma tesisleri hepsini süzemez ve çoğu nehirlere ve okyanuslara karışır.",
+          "Deniz hayvanları onları çoğu zaman yanlışlıkla yutar ve plastik sonra insan besin zincirine girebilir.",
+          "İnsanlar üzerindeki sağlık etkileri henüz tam olarak anlaşılmış değil; ancak araştırmacılar mikroplastikleri içme suyunda, tuzda ve hatta insan kanında buldu bile.",
+          "Bu nedenle bazı ülkeler kozmetikteki plastik mikroboncukları yasakladı ve bilim insanları çamaşır makinelerine takılabilecek filtreler geliştiriyor."
+        ]
+      },
+      "qs": [
+        {
+          "s": "According to the passage, microplastics ----.",
+          "o": [
+            "are larger than five millimetres",
+            "are all produced for cosmetics",
+            "can be produced on purpose or formed when larger plastics break down",
+            "are found only in the oceans",
+            "are completely removed by water treatment plants"
+          ],
+          "a": 2,
+          "t": "Parçaya göre mikroplastikler ----.",
+          "x": [
+            "Beş milimetreden küçük.",
+            "Yalnızca kozmetik değil.",
+            "Doğru: 2. cümle.",
+            "Her yerde bulunuyor.",
+            "Tesisler hepsini süzemiyor."
+          ]
+        },
+        {
+          "s": "Why can water treatment plants not remove all microplastics?",
+          "o": [
+            "Because most microplastics are heavier than water",
+            "Because they are not connected to rivers",
+            "Because the plastic dissolves in water",
+            "Because the plants only treat drinking water",
+            "Because the particles are too small to be filtered completely"
+          ],
+          "a": 4,
+          "t": "Su arıtma tesisleri neden tüm mikroplastikleri gideremez?",
+          "x": [
+            "Ağırlık bilgisi yok.",
+            "Nehirlere bağlantı sorun değil.",
+            "Plastik suda çözünmez.",
+            "Bu bilgi yok.",
+            "Doğru: 4. cümle."
+          ]
+        },
+        {
+          "s": "What does the writer say about the health effects of microplastics?",
+          "o": [
+            "They are known to cause serious illnesses",
+            "They are not yet fully understood",
+            "They are harmless to humans",
+            "They only affect marine animals",
+            "They have been completely eliminated"
+          ],
+          "a": 1,
+          "t": "Yazar mikroplastiklerin sağlık etkileri hakkında ne söylüyor?",
+          "x": [
+            "Böyle bir kesinlik yok.",
+            "Doğru: 6. cümle.",
+            "Zararsız olduğu söylenmiyor.",
+            "İnsan besin zincirine girdiği söyleniyor.",
+            "Ortadan kalkmadı."
+          ]
+        },
+        {
+          "s": "Which of the following measures is mentioned in the passage?",
+          "o": [
+            "Reducing the production of salt",
+            "Banning all synthetic clothes",
+            "Closing water treatment plants",
+            "Fitting special filters to washing machines",
+            "Importing plastic from other countries"
+          ],
+          "a": 3,
+          "t": "Parçada aşağıdaki önlemlerden hangisi anılmaktadır?",
+          "x": [
+            "Tuz üretimi anılmıyor.",
+            "Sentetik giysi yasağı anılmıyor.",
+            "Tesisleri kapatma anılmıyor.",
+            "Doğru: son cümle.",
+            "İthalat anılmıyor."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}

@@ -194,25 +194,6 @@
             "were: gerçek geçmiş, koşul sonucu değil.",
             "Yapı hatalı."
           ]
-        },
-        {
-          "s": "Much as she admired his courage, ----.",
-          "o": [
-            "his courage was admired in the village",
-            "she was admired by everyone",
-            "she could not agree with his decision to leave",
-            "admiration is a strong feeling",
-            "he showed great courage in battle"
-          ],
-          "a": 2,
-          "t": "Cesaretine hayran olsa da onun ayrılma kararına katılamadı.",
-          "x": [
-            "Zıtlık yok.",
-            "Zıtlık yok.",
-            "Doğru: 'Much as' = 'though'; zıtlık: hayranlık ↔ katılmama.",
-            "Zıtlık yok.",
-            "Zıtlık yok; sadece destekler."
-          ]
         }
       ]
     },
@@ -996,6 +977,31 @@
             "Doğru: that cümlesi: özne + fiil.",
             "Özne-fiil uyumsuz.",
             "Yapı hatalı."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "completion-06",
+      "title": "Cümle Tamamlama Seti 6",
+      "qs": [
+        {
+          "s": "Much as she admired his courage, ----.",
+          "o": [
+            "his courage was admired in the village",
+            "she was admired by everyone",
+            "she could not agree with his decision to leave",
+            "admiration is a strong feeling",
+            "he showed great courage in battle"
+          ],
+          "a": 2,
+          "t": "Cesaretine hayran olsa da onun ayrılma kararına katılamadı.",
+          "x": [
+            "Zıtlık yok.",
+            "Zıtlık yok.",
+            "Doğru: 'Much as' = 'though'; zıtlık: hayranlık ↔ katılmama.",
+            "Zıtlık yok.",
+            "Zıtlık yok; sadece destekler."
           ]
         }
       ]
