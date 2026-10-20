@@ -66,7 +66,7 @@ function TopicList() {
       <header>
         <h1 className={styles.title}>📘 Dilbilgisi Rehberi</h1>
         <p className="muted" style={{ margin: 0 }}>
-          YDS’de sorulan {GRAMMAR_TOPICS.length} konu: kısa anlatım, örnekler, sınav ipucu ve 5 soruluk alıştırma.
+          YDS’de sorulan {GRAMMAR_TOPICS.length} konu: kısa anlatım, örnekler, sınav ipucu ve 10 soruluk alıştırma.
           {done > 0 && ` ${done} konunun alıştırmasını eksiksiz çözdün.`}
         </p>
         {top.length > 0 && freq && (

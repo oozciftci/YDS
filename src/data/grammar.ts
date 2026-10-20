@@ -1,5 +1,6 @@
 // YDS dilbilgisi rehberi. Tüm anlatımlar, örnekler ve alıştırmalar özgündür (çıkmış sorulardan alıntı yoktur);
 // bu yüzden yayın derlemesinde de bulunabilir.
+import { GRAMMAR_EXTRA } from './grammarExtra.ts'
 
 export interface GrammarExample {
   en: string
@@ -615,6 +616,9 @@ export const GRAMMAR_TOPICS: GrammarTopic[] = [
     patterns: [/^(had|has|have|did|does|do|was|were|is|are|should|could|would|can) (we|they|he|she|it|the|i|you|these|those|this|that|scientists|people)\b/],
   },
 ]
+
+// Ek alıştırmalar (konu başına 5 → 10)
+for (const t of GRAMMAR_TOPICS) t.exercises.push(...(GRAMMAR_EXTRA[t.id] ?? []))
 
 /** Konu kimliğinden konu. */
 export function getGrammarTopic(id: string): GrammarTopic | undefined {
