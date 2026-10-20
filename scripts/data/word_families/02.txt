@@ -1,0 +1,99 @@
+arbitrary|adj|keyfi, gelişigüzel; arbitrarily|adv|keyfi olarak; arbitrariness|n|keyfilik
+archaeology|n|arkeoloji; archaeologist|n|arkeolog; archaeological|adj|arkeolojik
+architecture|n|mimari; architect|n|mimar; architectural|adj|mimari
+ardent|adj|ateşli, tutkulu; ardently|adv|tutkuyla; ardour|n|şevk
+argue|v|tartışmak, iddia etmek; argument|n|tartışma, argüman; arguably|adv|tartışmaya açık olsa da; arguable|adj|tartışılır; argumentative|adj|tartışmacı
+arise|v|ortaya çıkmak; arising|adj|kaynaklanan
+aristocrat|n|aristokrat; aristocracy|n|aristokrasi; aristocratic|adj|aristokratik
+arm|n/v|kol; silahlandırmak; armed|adj|silahlı; arms|n|silahlar; army|n|ordu; disarm|v|silahsızlandırmak; disarmament|n|silahsızlanma; unarmed|adj|silahsız
+arrange|v|düzenlemek; arrangement|n|düzenleme, anlaşma; rearrange|v|yeniden düzenlemek
+arrest|n/v|tutuklama; tutuklamak
+arrive|v|varmak; arrival|n|varış
+art|n|sanat; artist|n|sanatçı; artistic|adj|sanatsal; artistically|adv|sanatsal olarak; artwork|n|sanat eseri
+artificial|adj|yapay; artificially|adv|yapay olarak
+articulate|adj/v|açık ifade eden; açıkça ifade etmek; articulation|n|ifade, eklem
+ashamed|adj|utanmış; shame|n|utanç; shameful|adj|utanç verici; shameless|adj|utanmaz
+aspire|v|arzulamak, hedeflemek; aspiration|n|özlem, hedef; aspiring|adj|hevesli, gelecek vadeden
+assemble|v|toplamak, monte etmek; assembly|n|meclis, montaj
+assert|v|ileri sürmek; assertion|n|iddia; assertive|adj|kendine güvenen, iddialı; assertiveness|n|atılganlık
+assess|v|değerlendirmek; assessment|n|değerlendirme; assessor|n|değerlendirici
+assist|v|yardım etmek; assistance|n|yardım; assistant|n|asistan
+associate|v/n|ilişkilendirmek; ortak; associated|adj|ilişkili; association|n|dernek, çağrışım
+assume|v|varsaymak, üstlenmek; assumption|n|varsayım; assumed|adj|varsayılan, sahte
+assure|v|güvence vermek; assurance|n|güvence; assured|adj|emin; reassure|v|içini rahatlatmak
+astronomy|n|astronomi; astronomer|n|gökbilimci; astronomical|adj|astronomik, çok büyük
+athlete|n|sporcu; athletic|adj|atletik; athletics|n|atletizm
+atmosphere|n|atmosfer, ortam; atmospheric|adj|atmosferik
+atom|n|atom; atomic|adj|atomik
+attach|v|iliştirmek, bağlamak; attached|adj|ekli, bağlı; attachment|n|ek, bağlılık; detach|v|ayırmak
+attack|n/v|saldırı; saldırmak; attacker|n|saldırgan
+attain|v|ulaşmak, elde etmek; attainment|n|kazanım; attainable|adj|ulaşılabilir; unattainable|adj|ulaşılamaz
+attempt|n/v|girişim; denemek; attempted|adj|teşebbüs edilmiş
+attend|v|katılmak; attendance|n|katılım; attention|n|dikkat; attentive|adj|dikkatli; attentively|adv|dikkatle; inattention|n|dikkatsizlik
+attitude|n|tutum
+attract|v|çekmek; attraction|n|çekim, ilgi çekici yer; attractive|adj|çekici; attractively|adv|çekici biçimde; unattractive|adj|çekici olmayan
+attribute|n/v|nitelik; -e bağlamak (to); attribution|n|atfetme
+author|n|yazar; authorship|n|yazarlık
+authority|n|otorite, yetki; authoritarian|adj|otoriter; authorize|v|yetki vermek; authorization|n|yetki, izin; authoritative|adj|güvenilir, yetkili
+automatic|adj|otomatik; automatically|adv|otomatik olarak; automate|v|otomatikleştirmek; automation|n|otomasyon
+autonomy|n|özerklik; autonomous|adj|özerk; autonomously|adv|bağımsız olarak
+available|adj|mevcut, müsait; availability|n|bulunabilirlik; unavailable|adj|mevcut olmayan
+average|n/adj|ortalama
+avoid|v|kaçınmak; avoidance|n|kaçınma; unavoidable|adj|kaçınılmaz; avoidable|adj|önlenebilir
+awake|adj|uyanık; awaken|v|uyandırmak
+aware|adj|farkında; awareness|n|farkındalık; unaware|adj|habersiz
+award|n/v|ödül; ödüllendirmek
+awful|adj|berbat; awfully|adv|son derece, berbat biçimde; awe|n|huşu
+awkward|adj|garip, beceriksiz; awkwardly|adv|beceriksizce; awkwardness|n|tuhaflık
+background|n|geçmiş, arka plan
+backward|adj|geri, geri kalmış; backwards|adv|geriye doğru
+bacteria|n|bakteriler; bacterial|adj|bakteriyel; bacterium|n|bakteri
+bad|adj|kötü; badly|adv|kötü biçimde, çok
+bake|v|fırında pişirmek; baker|n|fırıncı; bakery|n|fırın
+balance|n/v|denge; dengelemek; balanced|adj|dengeli; imbalance|n|dengesizlik; unbalanced|adj|dengesiz
+ban|n/v|yasak; yasaklamak
+bare|adj|çıplak, yalın; barely|adv|zar zor, ancak
+bargain|n/v|kelepir, pazarlık; pazarlık etmek
+base|n/v|temel; -e dayandırmak; based|adj|dayalı; basis|n|temel; basic|adj|temel; basically|adv|temelde
+battle|n/v|savaş; savaşmak
+bear|v|katlanmak, taşımak, doğurmak; bearable|adj|katlanılabilir; unbearable|adj|dayanılmaz; unbearably|adv|dayanılmaz biçimde
+beat|v/n|yenmek, dövmek; vuruş; unbeatable|adj|yenilmez
+beauty|n|güzellik; beautiful|adj|güzel; beautifully|adv|güzelce; beautify|v|güzelleştirmek
+become|v|olmak, dönüşmek; becoming|adj|yakışan
+begin|v|başlamak; beginning|n|başlangıç; beginner|n|acemi
+behave|v|davranmak; behaviour|n|davranış; behavioural|adj|davranışsal; behaviourist|n|davranışçı; misbehave|v|yaramazlık yapmak
+believe|v|inanmak; belief|n|inanç; believable|adj|inandırıcı; unbelievable|adj|inanılmaz; disbelief|n|inanmazlık
+belong|v|ait olmak; belongings|n|eşyalar
+bend|v/n|bükmek; viraj; bent|adj|bükülmüş
+benefit|n/v|fayda; yararlanmak; beneficial|adj|faydalı; beneficiary|n|yararlanıcı
+benign|adj|iyi huylu, zararsız
+better|adj/adv|daha iyi; best|adj|en iyi; improve|v|geliştirmek
+bet|n/v|bahis; bahse girmek; betting|n|bahis oynama
+bias|n/v|önyargı; taraflı davranmak; biased|adj|taraflı; unbiased|adj|tarafsız
+biology|n|biyoloji; biological|adj|biyolojik; biologist|n|biyolog; biologically|adv|biyolojik olarak
+biodiversity|n|biyoçeşitlilik
+birth|n|doğum; birthday|n|doğum günü; born|adj|doğmuş
+bite|v/n|ısırmak; ısırık; bitten|adj|ısırılmış
+bitter|adj|acı, kırgın; bitterly|adv|acı acı, şiddetle; bitterness|n|acılık, kırgınlık
+blame|n/v|suç; suçlamak; blameless|adj|suçsuz
+blank|adj/n|boş; boşluk
+blend|n/v|karışım; harmanlamak
+blind|adj/v|kör; kör etmek; blindness|n|körlük; blindly|adv|körü körüne
+block|n/v|blok; engellemek; blockage|n|tıkanıklık
+blood|n|kan; bloody|adj|kanlı; bleed|v|kanamak
+bloom|n/v|çiçek; çiçek açmak
+blow|v/n|esmek, üflemek; darbe
+body|n|vücut; bodily|adj|bedensel
+boil|v|kaynamak; boiling|adj|kaynar
+bomb|n/v|bomba; bombalamak; bombing|n|bombalama
+bond|n/v|bağ; bağ kurmak; bondage|n|esaret
+boom|n/v|patlama, ani artış; patlama yaşamak
+boost|n/v|artış; artırmak
+bore|v|sıkmak; bored|adj|sıkılmış; boring|adj|sıkıcı; boredom|n|can sıkıntısı
+border|n/v|sınır; sınır komşusu olmak
+borrow|v|ödünç almak; borrower|n|borçlu
+botany|n|botanik; botanical|adj|botanik; botanist|n|botanikçi
+bother|v/n|rahatsız etmek; zahmet
+bound|adj|bağlı, -mek zorunda; boundary|n|sınır; boundless|adj|sınırsız
+branch|n/v|dal, şube; dallanmak
+brand|n|marka

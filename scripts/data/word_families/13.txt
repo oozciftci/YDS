@@ -1,0 +1,142 @@
+tight|adj|sıkı; tightly|adv|sıkıca; tighten|v|sıkılaştırmak
+timetable|n|ders/sefer programı; timely|adj|zamanında; timeless|adj|zamansız
+tire|v|yorulmak; tired|adj|yorgun; tiring|adj|yorucu; tireless|adj|yorulmak bilmez
+title|n|başlık, unvan; entitle|v|hak vermek
+tolerate|v|hoş görmek, katlanmak; tolerance|n|hoşgörü, tolerans; tolerant|adj|hoşgörülü; intolerant|adj|hoşgörüsüz; tolerable|adj|katlanılabilir
+tone|n|ton
+top|n/adj|üst; en iyi
+topic|n|konu; topical|adj|güncel
+total|adj/n|toplam; totally|adv|tamamen
+touch|n/v|dokunuş; dokunmak; touching|adj|dokunaklı
+tough|adj|zorlu, sert; toughness|n|dayanıklılık
+tour|n/v|tur; gezmek; tourist|n|turist; tourism|n|turizm
+toxic|adj|zehirli; toxin|n|toksin; toxicity|n|zehirlilik
+trace|n/v|iz; izini sürmek
+track|n/v|iz, pist; izlemek
+trade|n/v|ticaret; ticaret yapmak; trader|n|tüccar; trading|n|ticaret
+tradition|n|gelenek; traditional|adj|geleneksel; traditionally|adv|geleneksel olarak
+train|n/v|tren; eğitmek; training|n|eğitim; trainer|n|eğitmen; trainee|n|stajyer
+trait|n|özellik
+transact|v|işlem yapmak; transaction|n|işlem
+transfer|n/v|aktarım; aktarmak
+transform|v|dönüştürmek; transformation|n|dönüşüm
+transition|n|geçiş; transitional|adj|geçiş dönemi
+translate|v|çevirmek; translation|n|çeviri; translator|n|çevirmen
+transmit|v|iletmek; transmission|n|iletim
+transparent|adj|şeffaf; transparency|n|şeffaflık
+transplant|n/v|nakil; nakletmek
+transport|n/v|ulaşım; taşımak; transportation|n|taşımacılık
+trap|n/v|tuzak; tuzağa düşürmek
+trauma|n|travma; traumatic|adj|travmatik
+travel|n/v|seyahat; seyahat etmek; traveller|n|yolcu
+treasure|n|hazine
+treat|v|davranmak, tedavi etmek; treatment|n|tedavi, muamele; treaty|n|antlaşma
+tremendous|adj|muazzam; tremendously|adv|son derece
+trend|n|eğilim; trendy|adj|moda
+trial|n|deneme, dava; try|v|denemek
+tribe|n|kabile; tribal|adj|kabileye ait
+trick|n/v|hile; kandırmak; tricky|adj|yanıltıcı, zor
+trigger|n/v|tetik; tetiklemek
+trivial|adj|önemsiz
+tropical|adj|tropik
+trouble|n/v|sorun; rahatsız etmek; troublesome|adj|sıkıntılı
+true|adj|doğru; truly|adv|gerçekten; truth|n|gerçek; truthful|adj|dürüst; untrue|adj|yanlış
+trust|n/v|güven; güvenmek; trustworthy|adj|güvenilir; distrust|n/v|güvensizlik; güvenmemek
+tumour|n|tümör
+turmoil|n|kargaşa
+turn|v/n|dönmek; sıra; return|v/n|geri dönmek; dönüş
+twist|v/n|bükmek; kıvrım; twisted|adj|bükülmüş, sapkın
+type|n|tür; typical|adj|tipik; typically|adv|genellikle; atypical|adj|alışılmadık
+ugly|adj|çirkin
+ultimate|adj|nihai; ultimately|adv|sonunda
+undergo|v|geçirmek (ameliyat, değişim)
+underlie|v|temelinde olmak; underlying|adj|altta yatan
+underline|v|vurgulamak, altını çizmek
+undermine|v|zayıflatmak, baltalamak
+understand|v|anlamak; understanding|n/adj|anlayış; anlayışlı; misunderstand|v|yanlış anlamak; misunderstanding|n|yanlış anlama; understandable|adj|anlaşılır
+undertake|v|üstlenmek; undertaking|n|girişim
+undo|v|geri almak
+uniform|adj/n|tek tip; üniforma; uniformity|n|tekdüzelik; uniformly|adv|eşit biçimde
+unify|v|birleştirmek; unification|n|birleşme
+union|n|birlik; unite|v|birleşmek; united|adj|birleşik; unity|n|birlik; unit|n|birim
+unique|adj|eşsiz; uniquely|adv|benzersiz biçimde; uniqueness|n|benzersizlik
+universe|n|evren; universal|adj|evrensel; universally|adv|evrensel olarak; university|n|üniversite
+unlike|prep|-in aksine; unlikely|adj|olası olmayan
+unprecedented|adj|eşi görülmemiş
+unusual|adj|olağandışı; unusually|adv|alışılmadık biçimde; usual|adj|olağan; usually|adv|genellikle
+upset|adj/v|üzgün; üzmek; upsetting|adj|üzücü
+upward|adj|yukarı doğru; upwards|adv|yukarıya
+urban|adj|kentsel; urbanisation|n|kentleşme; urbanize|v|kentleşmek
+urge|n/v|dürtü; ısrarla istemek; urgent|adj|acil; urgently|adv|acilen; urgency|n|aciliyet
+use|n/v|kullanım; kullanmak; used|adj|kullanılmış, alışkın (to); useful|adj|yararlı; usefulness|n|yararlılık; useless|adj|yararsız; user|n|kullanıcı; usage|n|kullanım; misuse|n/v|kötüye kullanım
+utilize|v|kullanmak; utilisation|n|kullanım; utility|n|fayda, kamu hizmeti
+vaccine|n|aşı; vaccinate|v|aşılamak; vaccination|n|aşılama
+valid|adj|geçerli; validity|n|geçerlilik; validate|v|doğrulamak; invalid|adj|geçersiz
+value|n/v|değer; değer vermek; valuable|adj|değerli; invaluable|adj|paha biçilmez; undervalue|v|küçümsemek
+vanish|v|kaybolmak
+vary|v|değişmek; various|adj|çeşitli; variety|n|çeşitlilik; variation|n|değişim; variable|n/adj|değişken; varied|adj|çeşitli; variably|adv|değişken biçimde; invariably|adv|her zaman
+vast|adj|engin, çok büyük; vastly|adv|büyük ölçüde
+vegetable|n|sebze; vegetation|n|bitki örtüsü; vegetarian|n|vejetaryen
+vehicle|n|araç
+velocity|n|hız
+venture|n/v|girişim; cesaret etmek
+verbal|adj|sözlü; verbally|adv|sözlü olarak
+version|n|sürüm; reverse|v/adj|tersine çevirmek; ters; reversible|adj|geri döndürülebilir
+vertical|adj|dikey; vertically|adv|dikey olarak
+viable|adj|uygulanabilir; viability|n|yaşayabilirlik
+victim|n|kurban; victimize|v|mağdur etmek
+victory|n|zafer; victorious|adj|muzaffer
+view|n/v|görüş, manzara; görmek; viewer|n|izleyici; review|n/v|inceleme; gözden geçirmek
+vigorous|adj|güçlü, dinç; vigorously|adv|kuvvetle; vigour|n|canlılık
+violate|v|ihlal etmek; violation|n|ihlal; violence|n|şiddet; violent|adj|şiddetli; violently|adv|şiddetle; nonviolent|adj|şiddet içermeyen
+virus|n|virüs; viral|adj|viral
+virtual|adj|sanal; virtually|adv|neredeyse
+visible|adj|görünür; visibly|adv|gözle görülür biçimde; vision|n|görme, vizyon; visual|adj|görsel; visualize|v|gözünde canlandırmak
+visit|n/v|ziyaret; ziyaret etmek; visitor|n|ziyaretçi
+vital|adj|hayati; vitality|n|canlılık
+volatile|adj|uçucu, değişken; volatility|n|oynaklık
+volume|n|hacim, cilt
+volunteer|n/v|gönüllü; gönüllü olmak; voluntary|adj|gönüllü; voluntarily|adv|gönüllü olarak; involuntary|adj|istemsiz
+vote|n/v|oy; oy vermek; voter|n|seçmen
+vulnerable|adj|savunmasız; vulnerability|n|savunmasızlık
+wage|n|ücret
+wait|v|beklemek; waiter|n|garson
+wake|v|uyanmak; awake|adj|uyanık
+wander|v|dolaşmak
+war|n|savaş; warrior|n|savaşçı; warfare|n|savaş
+reward|n/v|ödül; ödüllendirmek; rewarding|adj|tatmin edici
+warm|adj/v|sıcak; ısıtmak; warmth|n|sıcaklık; warming|n|ısınma
+warn|v|uyarmak; warning|n|uyarı
+waste|n/v|atık, israf; israf etmek; wasteful|adj|savurgan
+water|n/v|su; sulamak; watery|adj|sulu
+wave|n/v|dalga; el sallamak; wavelength|n|dalga boyu
+weak|adj|zayıf; weakness|n|zayıflık; weaken|v|zayıflatmak; weakly|adv|zayıfça
+wealth|n|servet; wealthy|adj|varlıklı
+wear|v|giymek, aşınmak
+weigh|v|tartmak; weight|n|ağırlık; overweight|adj|kilolu
+welcome|n/v|hoş geldin; karşılamak
+welfare|n|refah, sosyal yardım
+west|n|batı; western|adj|batılı
+wet|adj|ıslak
+whereas|conj|oysa
+wide|adj|geniş; widely|adv|yaygın biçimde; width|n|genişlik; widen|v|genişletmek; widespread|adj|yaygın
+wild|adj|vahşi; wildly|adv|çılgınca; wildlife|n|yaban hayatı; wilderness|n|vahşi doğa
+will|n|irade, vasiyet; willing|adj|istekli; willingly|adv|isteyerek; willingness|n|isteklilik; unwilling|adj|isteksiz
+win|v|kazanmak; winner|n|kazanan
+wise|adj|bilge; wisdom|n|bilgelik; wisely|adv|akıllıca; unwise|adj|akılsızca
+withdraw|v|geri çekmek; withdrawal|n|geri çekilme
+witness|n/v|tanık; tanık olmak
+wonder|n/v|hayret; merak etmek; wonderful|adj|harika
+wood|n|odun, orman; wooden|adj|tahta
+work|n/v|iş; çalışmak; worker|n|işçi; working|adj|çalışan; workforce|n|iş gücü; workplace|n|iş yeri
+world|n|dünya; worldwide|adj/adv|dünya çapında
+worry|n/v|endişe; endişelenmek; worried|adj|endişeli; worrying|adj|endişe verici
+worse|adj|daha kötü; worst|adj|en kötü; worsen|v|kötüleşmek
+worship|n/v|ibadet; tapınmak
+worth|adj/n|değer; worthwhile|adj|zahmete değer; worthless|adj|değersiz; worthy|adj|layık
+wound|n/v|yara; yaralamak; wounded|adj|yaralı
+wrap|v|sarmak; wrapping|n|ambalaj
+write|v|yazmak; writer|n|yazar; writing|n|yazı; written|adj|yazılı
+wrong|adj|yanlış; wrongly|adv|haksız yere, yanlış
+yield|n/v|verim; vermek, boyun eğmek
+young|adj|genç; youth|n|gençlik; youthful|adj|genç görünümlü

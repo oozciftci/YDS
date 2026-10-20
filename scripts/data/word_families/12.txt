@@ -1,0 +1,180 @@
+slave|n|köle; slavery|n|kölelik; enslave|v|köleleştirmek
+sleep|n/v|uyku; uyumak; sleepy|adj|uykulu; sleepless|adj|uykusuz; asleep|adj|uykuda
+slide|v/n|kaymak; slayt
+slight|adj|hafif; slightly|adv|biraz
+slip|v/n|kaymak; kayma
+slope|n|yokuş, eğim
+slow|adj/v|yavaş; yavaşlamak; slowly|adv|yavaşça
+smart|adj|zeki, akıllı
+smash|v|parçalamak
+smell|n/v|koku; koklamak
+smile|n/v|gülümseme; gülümsemek
+smoke|n/v|duman; sigara içmek; smoker|n|sigara içen; smoking|n|sigara içme
+smooth|adj|düz, pürüzsüz; smoothly|adv|sorunsuzca
+snow|n/v|kar; kar yağmak; snowy|adj|karlı
+society|n|toplum; social|adj|sosyal; socially|adv|sosyal olarak; socialise|v|sosyalleşmek; socialisation|n|sosyalleşme; societal|adj|toplumsal; sociology|n|sosyoloji; sociologist|n|sosyolog; socioeconomic|adj|sosyoekonomik
+soft|adj|yumuşak; softly|adv|yumuşakça; soften|v|yumuşatmak
+solar|adj|güneşe ait
+soldier|n|asker
+solve|v|çözmek; solution|n|çözüm; solvent|n/adj|çözücü; ödeme gücü olan; resolve|v|çözmek, kararlaştırmak; resolution|n|çözüm, karar; dissolve|v|çözünmek, feshetmek; insoluble|adj|çözünmez
+somewhat|adv|biraz, bir ölçüde
+sophisticated|adj|gelişmiş, karmaşık; sophistication|n|incelik; unsophisticated|adj|basit
+sore|adj|ağrıyan
+sort|n/v|tür; sıralamak; resort|n/v|tatil yeri; başvurmak (to)
+soul|n|ruh
+sound|n/v/adj|ses; gibi gelmek; sağlam
+source|n|kaynak; resource|n|kaynak; resourceful|adj|becerikli
+south|n|güney; southern|adj|güneyli
+sovereign|adj/n|egemen; hükümdar; sovereignty|n|egemenlik
+space|n|uzay, alan; spacious|adj|geniş; spacecraft|n|uzay aracı
+span|n/v|süre, açıklık; kapsamak
+spare|adj/v|yedek, boş; ayırmak, esirgemek
+spark|n/v|kıvılcım; başlatmak
+speak|v|konuşmak; speaker|n|konuşmacı; speech|n|konuşma; spoken|adj|sözlü
+special|adj|özel; specialist|n|uzman; specialize|v|uzmanlaşmak; specialty|n|uzmanlık; especially|adv|özellikle
+species|n|tür
+specific|adj|belirli; specifically|adv|özellikle; specify|v|belirtmek; specification|n|şartname
+spectacular|adj|muhteşem; spectacle|n|gösteri; spectator|n|seyirci
+spectrum|n|yelpaze, tayf
+speculate|v|tahmin yürütmek; speculation|n|spekülasyon; speculative|adj|tahmine dayalı
+speed|n/v|hız; hızlanmak
+spend|v|harcamak; spending|n|harcama
+spice|n|baharat; spicy|adj|baharatlı
+spirit|n|ruh; spiritual|adj|manevi
+spite|n|kin; in spite of|prep|-e rağmen
+split|v/n|bölmek; ayrılık
+spoil|v|bozmak, şımartmak
+sport|n|spor; sporty|adj|sportif
+spot|n/v|nokta, yer; fark etmek
+spread|v/n|yaymak; yayılma
+square|n/adj|kare, meydan
+squeeze|v|sıkmak
+stable|adj|istikrarlı; stability|n|istikrar; instability|n|istikrarsızlık
+staff|n|personel
+stage|n/v|aşama, sahne; sahnelemek
+stand|v|ayakta durmak, katlanmak; standard|n/adj|standart; standardize|v|standartlaştırmak
+start|n/v|başlangıç; başlamak
+starve|v|açlık çekmek; starvation|n|açlık
+state|n/v|devlet, durum; belirtmek; statement|n|açıklama; station|n|istasyon
+statistic|n|istatistik; statistical|adj|istatistiksel; statistically|adv|istatistiksel olarak
+statue|n|heykel; status|n|statü, durum
+stay|v/n|kalmak; kalış
+steady|adj|istikrarlı; steadily|adv|istikrarlı biçimde; unsteady|adj|dengesiz
+steal|v|çalmak
+steep|adj|dik, keskin; steeply|adv|keskin biçimde
+steer|v|yönlendirmek
+stem|n/v|sap, kök; kaynaklanmak (from)
+step|n/v|adım; adım atmak
+stereotype|n/v|kalıp yargı; kalıplaştırmak; stereotypical|adj|basmakalıp
+sterile|adj|steril, kısır; sterilize|v|sterilize etmek
+stick|v/n|yapışmak, saplamak; sopa; sticky|adj|yapışkan
+stiff|adj|sert, katı
+stimulate|v|uyarmak, teşvik etmek; stimulus|n|uyaran; stimulation|n|uyarılma
+stir|v|karıştırmak
+stock|n/v|stok, hisse; stoklamak
+store|n/v|mağaza; depolamak; storage|n|depolama; restore|v|onarmak, geri getirmek; restoration|n|restorasyon
+storm|n|fırtına; stormy|adj|fırtınalı
+straight|adj/adv|düz; doğrudan; straightforward|adj|açık, basit
+strain|n/v|gerginlik, zorlanma; zorlamak; restrain|v|zapt etmek; restraint|n|kısıtlama
+strange|adj|tuhaf; strangely|adv|tuhaf biçimde; stranger|n|yabancı
+strategy|n|strateji; strategic|adj|stratejik; strategically|adv|stratejik olarak
+strength|n|güç; strong|adj|güçlü; strongly|adv|şiddetle; strengthen|v|güçlendirmek
+stress|n/v|stres, vurgu; vurgulamak; stressful|adj|stresli; stressed|adj|stresli
+stretch|v/n|germek; uzantı
+strict|adj|katı; strictly|adv|kesinlikle; restrict|v|kısıtlamak; restriction|n|kısıtlama; restrictive|adj|kısıtlayıcı
+strike|v/n|vurmak; grev; striking|adj|çarpıcı; strikingly|adv|çarpıcı biçimde
+stringent|adj|sıkı; stringently|adv|sıkı biçimde
+strip|n/v|şerit; soymak; stripe|n|çizgi
+stroke|n|felç, darbe
+structure|n/v|yapı; yapılandırmak; structural|adj|yapısal
+struggle|n/v|mücadele; mücadele etmek
+student|n|öğrenci; study|n/v|çalışma; çalışmak, incelemek
+stupid|adj|aptal; stupidity|n|aptallık
+style|n|tarz; stylish|adj|şık
+subject|n/adj|konu; maruz (to); subjective|adj|öznel
+subliminal|adj|bilinçaltı
+submit|v|sunmak, boyun eğmek; submission|n|teslim, boyun eğme
+subsequent|adj|sonraki; subsequently|adv|daha sonra
+subsidy|n|sübvansiyon; subsidize|v|sübvanse etmek
+substance|n|madde; substantial|adj|önemli, büyük; substantially|adv|büyük ölçüde
+substitute|n/v|yedek; yerine koymak; substitution|n|ikame
+subtle|adj|ince, belli belirsiz; subtly|adv|ustaca, belirsizce; subtlety|n|incelik
+succeed|v|başarmak; success|n|başarı; successful|adj|başarılı; successfully|adv|başarıyla; unsuccessful|adj|başarısız; succession|n|ardıllık; successive|adj|ardışık; successor|n|halef
+sudden|adj|ani; suddenly|adv|aniden
+suffer|v|acı çekmek; suffering|n|ıstırap
+sufficient|adj|yeterli; sufficiently|adv|yeterince; insufficient|adj|yetersiz
+suggest|v|önermek; suggestion|n|öneri
+suit|v/n|uymak; takım elbise; suitable|adj|uygun; unsuitable|adj|uygunsuz; suited|adj|uygun
+sum|n|toplam; summary|n|özet; summarize|v|özetlemek
+sun|n|güneş; sunlight|n|güneş ışığı; sunny|adj|güneşli
+superficial|adj|yüzeysel; superficially|adv|yüzeysel olarak
+superfluous|adj|gereksiz
+superior|adj|üstün; superiority|n|üstünlük; inferior|adj|aşağı
+supervise|v|denetlemek; supervision|n|denetim; supervisor|n|danışman, amir
+supply|n/v|tedarik; sağlamak; supplier|n|tedarikçi
+supplement|n/v|takviye; desteklemek; supplementary|adj|ek
+support|n/v|destek; desteklemek; supporter|n|destekçi; supportive|adj|destekleyici
+suppose|v|varsaymak; supposedly|adv|güya
+suppress|v|bastırmak; suppression|n|bastırma
+sure|adj|emin; surely|adv|kesinlikle; ensure|v|sağlamak
+surface|n/v|yüzey; ortaya çıkmak
+surgery|n|ameliyat; surgeon|n|cerrah; surgical|adj|cerrahi
+surpass|v|geçmek, aşmak
+surprise|n/v|sürpriz; şaşırtmak; surprising|adj|şaşırtıcı; surprisingly|adv|şaşırtıcı biçimde; surprised|adj|şaşırmış
+surround|v|kuşatmak; surrounding|adj|çevreleyen; surroundings|n|çevre
+survey|n/v|anket; incelemek
+survive|v|hayatta kalmak; survival|n|hayatta kalma; survivor|n|hayatta kalan
+susceptible|adj|duyarlı, yatkın; susceptibility|n|yatkınlık
+suspect|n/v|şüpheli; şüphelenmek; suspicion|n|şüphe; suspicious|adj|şüpheli; suspiciously|adv|şüpheyle
+suspend|v|askıya almak; suspension|n|askıya alma
+sustain|v|sürdürmek; sustainable|adj|sürdürülebilir; sustainability|n|sürdürülebilirlik; unsustainable|adj|sürdürülemez
+swallow|v|yutmak
+swell|v|şişmek; swollen|adj|şişmiş
+swift|adj|hızlı; swiftly|adv|hızla
+swim|v|yüzmek; swimmer|n|yüzücü
+switch|n/v|anahtar; değiştirmek
+symbol|n|sembol; symbolic|adj|sembolik; symbolize|v|simgelemek
+sympathy|n|sempati, acıma; sympathetic|adj|anlayışlı; sympathize|v|duygudaşlık kurmak
+symptom|n|belirti; symptomatic|adj|belirti niteliğinde
+syntax|n|sözdizimi
+system|n|sistem; systematic|adj|sistematik; systematically|adv|sistemli olarak
+tackle|v|ele almak, uğraşmak
+tactic|n|taktik; tactical|adj|taktiksel
+talent|n|yetenek; talented|adj|yetenekli
+target|n/v|hedef; hedeflemek
+task|n|görev
+taste|n/v|tat; tatmak; tasty|adj|lezzetli; tasteless|adj|tatsız
+tax|n/v|vergi; vergilendirmek; taxation|n|vergilendirme
+teach|v|öğretmek; teacher|n|öğretmen; teaching|n|öğretim
+technical|adj|teknik; technically|adv|teknik olarak; technique|n|teknik; technology|n|teknoloji; technological|adj|teknolojik
+tectonic|adj|tektonik
+tedious|adj|sıkıcı; tediously|adv|sıkıcı biçimde
+temperature|n|sıcaklık
+temporary|adj|geçici; temporarily|adv|geçici olarak
+tend|v|eğiliminde olmak; tendency|n|eğilim
+intend|v|niyet etmek; intended|adj|amaçlanan; intention|n|niyet; intentional|adj|kasıtlı; unintentional|adj|kasıtsız
+tenet|n|ilke
+tense|adj/n|gergin; zaman (dilbilgisi); tension|n|gerilim
+intense|adj|yoğun; intensity|n|yoğunluk; intensive|adj|yoğun; intensify|v|yoğunlaştırmak
+term|n|terim, dönem
+terminate|v|sona erdirmek; termination|n|sona erdirme
+terrible|adj|korkunç; terribly|adv|çok, korkunç biçimde; terrify|v|dehşete düşürmek; terrified|adj|dehşete düşmüş
+terrestrial|adj|karasal
+territory|n|bölge, toprak; territorial|adj|bölgesel
+test|n/v|sınav; test etmek
+text|n|metin; textual|adj|metinsel; textbook|n|ders kitabı
+texture|n|doku
+theory|n|kuram; theoretical|adj|kuramsal; theorist|n|kuramcı; theorem|n|teorem
+therapy|n|terapi; therapist|n|terapist; therapeutic|adj|tedavi edici
+thereby|adv|böylece; therefore|adv|bu nedenle
+thick|adj|kalın, yoğun; thickness|n|kalınlık; thicken|v|koyulaşmak
+thief|n|hırsız; theft|n|hırsızlık
+thin|adj|ince
+think|v|düşünmek; thinker|n|düşünür; thinking|n|düşünce; thought|n|düşünce; thoughtful|adj|düşünceli
+thirst|n|susuzluk; thirsty|adj|susamış
+thorough|adj|kapsamlı, titiz; thoroughly|adv|tamamen, iyice
+threat|n|tehdit; threaten|v|tehdit etmek; threatening|adj|tehditkâr
+thrive|v|gelişmek, büyümek; thriving|adj|gelişen
+throughout|prep|boyunca
+thus|adv|böylece
+tidy|adj/v|düzenli; toplamak; untidy|adj|dağınık

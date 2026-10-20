@@ -1,0 +1,42 @@
+# Amerikan yazımları ve kalan türevler
+behavior|n|davranış; behave|v|davranmak; behavioral|adj|davranışsal; misbehavior|n|yaramazlık
+analyze|v|analiz etmek; analysis|n|analiz; analyst|n|analist; analytical|adj|analitik
+neighbor|n|komşu; neighborhood|n|mahalle; neighboring|adj|komşu, bitişik
+favorite|adj/n|en sevilen; favor|n/v|iyilik; kayırmak; favorable|adj|olumlu; unfavorable|adj|olumsuz
+offense|n|suç, gücenme; offend|v|gücendirmek; offensive|adj|saldırgan; offender|n|suçlu
+flavour|n|tat, aroma; flavor|n|tat (Am.); flavourful|adj|lezzetli; flavourless|adj|tatsız
+fulfillment|n|gerçekleştirme, tatmin; fulfill|v|yerine getirmek; fulfilling|adj|tatmin edici
+civilisation|n|medeniyet; civilization|n|medeniyet; civilized|adj|medeni; uncivilized|adj|medeniyetsiz; civil|adj|sivil
+characterisation|n|nitelendirme, karakter yaratma; characterize|v|nitelendirmek; characteristic|n/adj|özellik; tipik
+incline|v|eğilim göstermek; inclination|n|eğilim; inclined|adj|eğilimli; disinclined|adj|isteksiz
+convertibly|adv|dönüştürülebilir biçimde; convertible|adj|dönüştürülebilir; convert|v|dönüştürmek
+deniably|adv|inkâr edilebilir biçimde; deny|v|inkâr etmek; undeniable|adj|inkâr edilemez
+disputably|adv|tartışmalı biçimde; dispute|n/v|anlaşmazlık; itiraz etmek; indisputable|adj|tartışılmaz
+indispensible|adj|vazgeçilmez (indispensable yazımı da kullanılır); indispensable|adj|vazgeçilmez
+incentive|n|teşvik; incentivize|v|teşvik etmek
+geographic|adj|coğrafi; geography|n|coğrafya; geographically|adv|coğrafi olarak
+cardiovascular|adj|kalp-damar
+nowadays|adv|günümüzde
+furthermore|adv|ayrıca; moreover|adv|üstelik; further|adj/adv|daha ileri; ayrıca
+although|conj|-e rağmen; though|conj|-e rağmen; even though|conj|-se bile
+despite|prep|-e rağmen; in spite of|prep|-e rağmen
+according|adj|göre (according to); accordingly|adv|buna göre
+recently|adv|son zamanlarda; recent|adj|yakın zamanda olmuş
+otherwise|adv|aksi takdirde
+meanwhile|adv|bu arada
+whereas|conj|oysa; whether|conj|-ip -mediği
+perhaps|adv|belki
+mankind|n|insanlık; humankind|n|insanoğlu
+leisure|n|boş zaman; leisurely|adj|acelesiz
+vocabulary|n|kelime dağarcığı
+language|n|dil; linguistic|adj|dilbilimsel
+journey|n|yolculuk
+audience|n|seyirci, dinleyici; audible|adj|duyulabilir; inaudible|adj|duyulmaz
+pattern|n|desen, örüntü; patterned|adj|desenli
+grammar|n|dilbilgisi; grammatical|adj|dilbilgisel; grammatically|adv|dilbilgisi açısından; ungrammatical|adj|dilbilgisine aykırı
+commission|n/v|komisyon; sipariş etmek; commissioner|n|komiser
+council|n|konsey; councillor|n|meclis üyesi
+algorithm|n|algoritma; algorithmic|adj|algoritmik
+catalyst|n|katalizör; catalyse|v|hızlandırmak
+pathogen|n|patojen; pathogenic|adj|hastalık yapıcı
+cloning|n|klonlama; clone|n/v|klon; kopyalamak

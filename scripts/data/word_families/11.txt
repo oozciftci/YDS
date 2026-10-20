@@ -1,0 +1,193 @@
+rainforest|n|yağmur ormanı
+raise|v|yükseltmek, yetiştirmek, gündeme getirmek
+ramification|n|sonuç, yan etki
+range|n/v|aralık, çeşit; arasında değişmek
+rank|n/v|rütbe, sıra; sıralamak; ranking|n|sıralama
+rapid|adj|hızlı; rapidly|adv|hızla; rapidity|n|hız
+rare|adj|nadir; rarely|adv|nadiren; rarity|n|nadirlik
+rate|n/v|oran, hız; değerlendirmek; rating|n|derecelendirme
+rational|adj|akılcı; rationally|adv|mantıklı biçimde; rationality|n|akılcılık; irrational|adj|mantıksız
+reach|v/n|ulaşmak; erişim
+react|v|tepki vermek; reaction|n|tepki; reactive|adj|tepkisel; reactor|n|reaktör
+read|v|okumak; reader|n|okuyucu; reading|n|okuma; readable|adj|okunabilir
+ready|adj|hazır; readily|adv|kolayca, istekle; readiness|n|hazırlık
+real|adj|gerçek; really|adv|gerçekten; reality|n|gerçeklik; realize|v|fark etmek, gerçekleştirmek; realization|n|farkına varma; realistic|adj|gerçekçi; unrealistic|adj|gerçekçi olmayan; realistically|adv|gerçekçi olarak
+rear|n/v|arka; yetiştirmek
+reason|n/v|neden; akıl yürütmek; reasonable|adj|makul; reasonably|adv|makul ölçüde; unreasonable|adj|mantıksız; reasoning|n|akıl yürütme
+receive|v|almak; receipt|n|makbuz; reception|n|resepsiyon, karşılama; recipient|n|alıcı; receptive|adj|açık fikirli
+recede|v|geri çekilmek; recession|n|durgunluk
+recipe|n|tarif
+reckless|adj|pervasız; recklessly|adv|pervasızca
+recognize|v|tanımak; recognition|n|tanınma; recognizable|adj|tanınabilir
+recommend|v|tavsiye etmek; recommendation|n|tavsiye
+record|n/v|kayıt, rekor; kaydetmek; recording|n|kayıt
+recover|v|iyileşmek, geri almak; recovery|n|iyileşme
+recreation|n|eğlence, dinlence; recreational|adj|eğlence amaçlı
+recruit|v/n|işe almak; acemi; recruitment|n|işe alım
+reduce|v|azaltmak; reduction|n|azalma
+redundant|adj|gereksiz, işten çıkarılmış; redundancy|n|fazlalık, işten çıkarma
+refer|v|atıfta bulunmak; reference|n|referans, atıf
+refine|v|arıtmak, geliştirmek; refinement|n|incelik, iyileştirme; refined|adj|arıtılmış, kibar
+reflect|v|yansıtmak, düşünmek; reflection|n|yansıma, düşünce; reflective|adj|düşünceli; reflectively|adv|düşünceli biçimde
+refrain|v|kaçınmak (from)
+refrigerate|v|soğutmak; refrigerator|n|buzdolabı
+refuse|v|reddetmek; refusal|n|ret
+refute|v|çürütmek; refutable|adj|çürütülebilir; irrefutable|adj|çürütülemez
+regard|v/n|saymak, görmek; saygı; regarding|prep|hakkında; regardless|adv|-e bakılmaksızın; disregard|v/n|göz ardı etmek; umursamazlık
+region|n|bölge; regional|adj|bölgesel
+register|n/v|kayıt; kaydolmak; registration|n|kayıt
+regret|n/v|pişmanlık; pişman olmak; regrettable|adj|üzücü
+regular|adj|düzenli; regularly|adv|düzenli olarak; regularity|n|düzenlilik; irregular|adj|düzensiz
+regulate|v|düzenlemek; regulation|n|yönetmelik; regulator|n|düzenleyici; regulatory|adj|düzenleyici
+rehabilitate|v|rehabilite etmek; rehabilitation|n|rehabilitasyon
+reinforce|v|güçlendirmek; reinforcement|n|takviye
+reject|v|reddetmek; rejection|n|ret
+relapse|n/v|nüks; tekrarlamak (hastalık)
+relate|v|ilişkilendirmek; related|adj|ilgili; unrelated|adj|ilgisiz; relation|n|ilişki; relationship|n|ilişki; relative|adj/n|göreceli; akraba; relatively|adv|nispeten; relativity|n|görelilik
+relax|v|rahatlamak; relaxed|adj|rahat; relaxing|adj|rahatlatıcı; relaxation|n|gevşeme
+release|n/v|serbest bırakma; salıvermek, yayımlamak
+relevant|adj|ilgili; relevance|n|ilgi, alaka; irrelevant|adj|ilgisiz
+rely|v|güvenmek (on); reliable|adj|güvenilir; reliability|n|güvenilirlik; unreliable|adj|güvenilmez; reliance|n|bağımlılık; reliant|adj|bağımlı
+relieve|v|rahatlatmak; relief|n|rahatlama, yardım; relieved|adj|rahatlamış
+religion|n|din; religious|adj|dini
+reluctant|adj|isteksiz; reluctantly|adv|istemeyerek; reluctance|n|isteksizlik
+remarkable|adj|dikkat çekici; unremarkable|adj|sıradan
+remedy|n/v|çare; çözmek
+remnant|n|kalıntı
+remote|adj|uzak; remotely|adv|uzaktan
+remove|v|kaldırmak; removal|n|kaldırma
+renaissance|n|rönesans, yeniden doğuş
+renew|v|yenilemek; renewable|adj|yenilenebilir; renewal|n|yenileme
+renowned|adj|ünlü; renown|n|şöhret
+rent|n/v|kira; kiralamak; rented|adj|kiralık; rental|n|kiralama
+repeat|v|tekrarlamak; repeated|adj|tekrarlanan; repeatedly|adv|tekrar tekrar; repetition|n|tekrar; repetitive|adj|tekrarlayan
+replicate|v|kopyalamak, tekrarlamak; replication|n|tekrarlama
+reply|n/v|cevap; cevap vermek
+reptile|n|sürüngen
+reputation|n|itibar; reputable|adj|saygın; reputed|adj|söylenen
+require|v|gerektirmek; requirement|n|gereklilik; requisite|adj/n|gerekli; gereklilik; prerequisite|n|ön koşul
+rescue|n/v|kurtarma; kurtarmak
+resemble|v|benzemek; resemblance|n|benzerlik
+reside|v|ikamet etmek; resident|n|sakin; residence|n|konut; residential|adj|konut
+resilient|adj|dirençli, esnek; resilience|n|dayanıklılık
+respect|n/v|saygı; saygı duymak; respectful|adj|saygılı; respectfully|adv|saygıyla; respectable|adj|saygın; disrespect|n|saygısızlık; respective|adj|kendi, ilgili; respectively|adv|sırasıyla; irrespective|adj|-den bağımsız olarak
+respond|v|yanıt vermek; response|n|yanıt; responsive|adj|duyarlı; responsible|adj|sorumlu; responsibility|n|sorumluluk; irresponsible|adj|sorumsuz
+rest|n/v|dinlenme, geri kalan; dinlenmek; restless|adj|huzursuz
+result|n/v|sonuç; sonuçlanmak (in)
+retain|v|tutmak, korumak; retention|n|tutma, akılda kalma
+retire|v|emekli olmak; retirement|n|emeklilik; retired|adj|emekli
+retrieve|v|geri almak; retrieval|n|geri getirme
+reveal|v|ortaya çıkarmak; revelation|n|açığa çıkma
+revenue|n|gelir
+reverse|v/adj|tersine çevirmek; ters; reversible|adj|geri döndürülebilir; irreversible|adj|geri döndürülemez; irreversibly|adv|kalıcı olarak
+revise|v|gözden geçirmek; revision|n|revizyon, tekrar
+revive|v|canlandırmak; revival|n|yeniden canlanma
+revolution|n|devrim; revolutionary|adj|devrimci; revolutionise|v|kökten değiştirmek
+rhythm|n|ritim; rhythmic|adj|ritmik
+rich|adj|zengin; richness|n|zenginlik; enrich|v|zenginleştirmek; riches|n|servet
+ride|v/n|binmek; yolculuk; rider|n|binici
+rid|v|kurtulmak (get rid of)
+rigid|adj|katı; rigidity|n|katılık; rigidly|adv|katı biçimde
+rise|n/v|artış; yükselmek; rising|adj|yükselen
+risk|n/v|risk; riske atmak; risky|adj|riskli
+ritual|n|ritüel
+rival|n/v|rakip; rekabet etmek; rivalry|n|rekabet
+romance|n|aşk; romantic|adj|romantik
+root|n/v|kök; kökleşmek; rooted|adj|köklü
+rough|adj|kaba, pürüzlü, kabaca; roughly|adv|yaklaşık olarak
+route|n|güzergâh; routine|n/adj|rutin; routinely|adv|olağan olarak
+royal|adj|kraliyet; royalty|n|kraliyet ailesi
+rude|adj|kaba; rudely|adv|kabaca; rudeness|n|kabalık
+ruin|n/v|harabe; mahvetmek
+rule|n/v|kural; yönetmek; ruler|n|hükümdar, cetvel; ruling|n|karar
+rumour|n|söylenti
+run|v|koşmak, işletmek; runner|n|koşucu; running|n|koşu, işletme
+rural|adj|kırsal
+sacrifice|n/v|fedakârlık; feda etmek
+sad|adj|üzgün; sadly|adv|üzülerek, ne yazık ki; sadness|n|üzüntü
+safe|adj|güvenli; safely|adv|güvenle; safety|n|güvenlik; unsafe|adj|güvensiz
+sail|n/v|yelken; yelken açmak; sailing|n|yelkencilik; sailor|n|denizci
+sale|n|satış; salesman|n|satıcı
+salt|n|tuz; salty|adj|tuzlu
+sample|n/v|örnek; örneklemek
+sanction|n/v|yaptırım, onay; onaylamak
+sarcastic|adj|alaycı; sarcasm|n|iğneleme
+satisfy|v|tatmin etmek; satisfaction|n|memnuniyet; satisfied|adj|memnun; satisfactory|adj|tatmin edici; dissatisfied|adj|memnuniyetsiz
+save|v|kurtarmak, biriktirmek; saving|n|tasarruf
+scale|n|ölçek
+scan|v|taramak; scanner|n|tarayıcı
+scare|v|korkutmak; scared|adj|korkmuş; scary|adj|korkunç
+scarce|adj|kıt; scarcity|n|kıtlık; scarcely|adv|neredeyse hiç
+scene|n|sahne; scenery|n|manzara; scenario|n|senaryo
+scent|n|koku
+sceptical|adj|kuşkucu; sceptically|adv|kuşkuyla; scepticism|n|kuşkuculuk
+schedule|n/v|program; planlamak
+scheme|n|plan, düzen
+scholar|n|bilim insanı; scholarly|adj|akademik; scholarship|n|burs
+science|n|bilim; scientist|n|bilim insanı; scientific|adj|bilimsel; scientifically|adv|bilimsel olarak
+scope|n|kapsam
+score|n/v|puan; puan almak
+scratch|n/v|çizik; kaşımak
+scream|n/v|çığlık; çığlık atmak
+screen|n/v|ekran; taramak; screening|n|tarama
+scrutinize|v|incelemek; scrutiny|n|inceleme
+sculpture|n|heykel; sculptor|n|heykeltıraş
+seal|n/v|mühür, fok; mühürlemek
+search|n/v|arama; aramak; research|n/v|araştırma; araştırmak; researcher|n|araştırmacı
+season|n|mevsim; seasonal|adj|mevsimsel
+second|adj/n|ikinci; saniye; secondary|adj|ikincil; secondly|adv|ikinci olarak
+secret|n/adj|sır; gizli; secretly|adv|gizlice; secrecy|n|gizlilik
+section|n|bölüm; sector|n|sektör
+secure|adj/v|güvenli; sağlamak; security|n|güvenlik; insecure|adj|güvensiz
+sediment|n|tortu
+seek|v|aramak
+seem|v|görünmek; seemingly|adv|görünüşe göre
+segregate|v|ayırmak; segregation|n|ayrım
+select|v|seçmek; selection|n|seçim; selective|adj|seçici
+self|n|benlik; selfish|adj|bencil; selfless|adj|özverili
+sell|v|satmak; seller|n|satıcı
+semantics|n|anlam bilim; semantic|adj|anlamsal
+senior|adj/n|kıdemli; yaşlı
+sense|n/v|duyu, anlam; sezmek; sensible|adj|mantıklı; sensitive|adj|hassas; sensitivity|n|hassasiyet; sensory|adj|duyusal; nonsense|n|saçmalık; insensitive|adj|duyarsız
+sentence|n/v|cümle, ceza; mahkûm etmek
+sentiment|n|duygu; sentimental|adj|duygusal
+separate|adj/v|ayrı; ayırmak; separately|adv|ayrı ayrı; separation|n|ayrılık
+sequence|n|sıra, dizi; sequential|adj|ardışık
+serious|adj|ciddi; seriously|adv|ciddi olarak; seriousness|n|ciddiyet
+serve|v|hizmet etmek; service|n|hizmet; servant|n|hizmetçi; reserve|v/n|ayırmak; rezerv; reservation|n|rezervasyon, çekince
+session|n|oturum
+set|v/n|koymak, kurmak; set, takım; setting|n|ortam, ayar
+settle|v|yerleşmek, çözmek; settlement|n|yerleşim, anlaşma; settler|n|yerleşimci
+severe|adj|şiddetli; severely|adv|ağır biçimde; severity|n|şiddet
+sex|n|cinsiyet; sexual|adj|cinsel
+shade|n|gölge; shadow|n|gölge
+shake|v|sallamak; shaky|adj|titrek
+shallow|adj|sığ
+shame|n|utanç; ashamed|adj|utanmış; shameful|adj|utanç verici
+shape|n/v|şekil; şekillendirmek; shaped|adj|biçimli
+share|n/v|pay; paylaşmak; shareholder|n|hissedar
+sharp|adj|keskin; sharply|adv|keskin biçimde, birden; sharpen|v|keskinleştirmek
+shelter|n/v|barınak; barındırmak
+shift|n/v|değişim, vardiya; değişmek
+shine|v|parlamak; shiny|adj|parlak
+shock|n/v|şok; şoke etmek; shocked|adj|şoke olmuş; shocking|adj|şok edici
+shoot|v|ateş etmek; shooting|n|silahlı saldırı
+short|adj|kısa; shortly|adv|kısa süre içinde; shortage|n|kıtlık; shorten|v|kısaltmak
+show|v/n|göstermek; gösteri
+shrink|v|küçülmek
+shy|adj|utangaç; shyness|n|utangaçlık
+sick|adj|hasta; sickness|n|hastalık
+sight|n|görüş; insight|n|kavrayış, iç görü; insightful|adj|anlayışlı
+sign|n/v|işaret; imzalamak; signal|n/v|sinyal; işaret vermek; signature|n|imza; signify|v|anlamına gelmek
+significant|adj|önemli; significantly|adv|önemli ölçüde; significance|n|önem; insignificant|adj|önemsiz
+silence|n|sessizlik; silent|adj|sessiz; silently|adv|sessizce
+similar|adj|benzer; similarity|n|benzerlik; similarly|adv|benzer şekilde
+simple|adj|basit; simply|adv|basitçe, sadece; simplicity|n|sadelik; simplify|v|basitleştirmek
+simulate|v|benzetim yapmak; simulation|n|simülasyon
+sincere|adj|içten; sincerely|adv|içtenlikle; sincerity|n|samimiyet
+sing|v|şarkı söylemek; singer|n|şarkıcı
+single|adj|tek, bekâr
+insist|v|ısrar etmek; insistence|n|ısrar
+resist|v|direnmek; resistance|n|direnç; resistant|adj|dirençli; irresistible|adj|karşı konulmaz
+situate|v|konumlandırmak; situation|n|durum; site|n|alan, site
+skill|n|beceri; skilled|adj|vasıflı; skilful|adj|becerikli; skilfully|adv|ustalıkla; unskilled|adj|vasıfsız

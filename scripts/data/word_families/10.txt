@@ -1,0 +1,180 @@
+overt|adj|açık, aleni; overtly|adv|açıkça; covert|adj|gizli
+overtake|v|geçmek, sollamak
+overwhelm|v|bunaltmak, alt etmek; overwhelming|adj|ezici; overwhelmingly|adv|ezici biçimde
+owe|v|borçlu olmak; owing to|prep|-den dolayı
+own|adj/v|kendi; sahip olmak; owner|n|sahip; ownership|n|mülkiyet
+oxygen|n|oksijen; oxidation|n|oksitlenme; oxidize|v|oksitlenmek
+pace|n|hız, tempo
+pack|n/v|paket; paketlemek; package|n|paket; packaging|n|ambalaj
+pain|n|acı; painful|adj|acılı; painfully|adv|acı verici biçimde; painless|adj|ağrısız
+paint|n/v|boya; boyamak; painter|n|ressam; painting|n|tablo
+repair|n/v|tamir; onarmak; impair|v|bozmak, zayıflatmak; impairment|n|bozukluk
+pandemic|n|pandemi
+parasite|n|parazit; parasitic|adj|parazit
+parent|n|ebeveyn; parental|adj|ebeveynlere ait; parenthood|n|ebeveynlik; parenting|n|ebeveynlik
+park|n/v|park; park etmek; parking|n|otopark
+part|n|parça; partial|adj|kısmi; partially|adv|kısmen; partly|adv|kısmen
+participate|v|katılmak; participant|n|katılımcı; participation|n|katılım
+particle|n|parçacık
+particular|adj|belirli, özel; particularly|adv|özellikle
+partner|n|ortak; partnership|n|ortaklık
+pass|v|geçmek; passing|adj|geçici; passage|n|geçit, pasaj; passenger|n|yolcu
+passion|n|tutku; passionate|adj|tutkulu; passionately|adv|tutkuyla
+patent|n|patent
+patient|n/adj|hasta; sabırlı; patience|n|sabır; patiently|adv|sabırla; impatient|adj|sabırsız
+pause|n/v|ara; durmak
+pay|v|ödemek; payment|n|ödeme
+peace|n|barış; peaceful|adj|barışçıl; peacefully|adv|barışçıl biçimde
+peculiar|adj|tuhaf, özgü; peculiarity|n|tuhaflık
+pedagogy|n|pedagoji; pedagogical|adj|pedagojik
+penetrate|v|nüfuz etmek; penetration|n|nüfuz; penetrable|adj|geçirgen; impenetrable|adj|geçilmez
+perceive|v|algılamak; perception|n|algı; perceptive|adj|anlayışlı; perceptible|adj|fark edilir
+percent|n|yüzde; percentage|n|yüzde oranı
+perfect|adj/v|mükemmel; mükemmelleştirmek; perfectly|adv|mükemmel biçimde; perfection|n|mükemmellik; imperfect|adj|kusurlu
+perform|v|gerçekleştirmek, sahnelemek; performance|n|performans; performer|n|sanatçı
+permanent|adj|kalıcı; permanently|adv|kalıcı olarak; permanence|n|kalıcılık
+permit|v/n|izin vermek; izin belgesi; permission|n|izin; permissible|adj|izin verilir; impermissible|adj|kabul edilemez
+perpetuate|v|sürdürmek; perpetual|adj|sürekli
+perplex|v|şaşırtmak; perplexity|n|şaşkınlık; perplexed|adj|şaşkın
+persist|v|ısrar etmek, sürmek; persistence|n|ısrar; persistent|adj|sürekli, ısrarlı; persistently|adv|ısrarla
+person|n|kişi; personal|adj|kişisel; personally|adv|kişisel olarak; personality|n|kişilik
+perspective|n|bakış açısı
+persuade|v|ikna etmek; persuasion|n|ikna; persuasive|adj|ikna edici
+pertain|v|ilgili olmak (to); pertinent|adj|ilgili
+pervade|v|yayılmak; pervasive|adj|yaygın
+pessimistic|adj|karamsar; pessimism|n|karamsarlık
+pest|n|zararlı; pesticide|n|böcek ilacı
+petroleum|n|petrol
+pharmacy|n|eczane; pharmaceutical|adj|ilaçla ilgili; pharmacist|n|eczacı
+phase|n|aşama
+phenomenon|n|olgu; phenomena|n|olgular; phenomenal|adj|olağanüstü
+philosophy|n|felsefe; philosopher|n|filozof; philosophical|adj|felsefi
+phobia|n|fobi
+photograph|n/v|fotoğraf; fotoğraf çekmek; photographer|n|fotoğrafçı; photography|n|fotoğrafçılık
+photosynthesis|n|fotosentez
+physics|n|fizik; physicist|n|fizikçi; physical|adj|fiziksel; physically|adv|fiziksel olarak; physician|n|hekim
+physiology|n|fizyoloji; physiological|adj|fizyolojik
+pinpoint|v|tam yerini belirlemek
+pity|n/v|acıma; acımak
+place|n/v|yer; yerleştirmek; replace|v|yerine koymak; replacement|n|yedek, yerine geçen
+placebo|n|plasebo
+plague|n/v|veba; başına bela olmak
+plain|adj|sade, açık; plainly|adv|açıkça
+plan|n/v|plan; planlamak; planning|n|planlama
+planet|n|gezegen; planetary|adj|gezegenle ilgili
+plant|n/v|bitki, tesis; dikmek; plantation|n|plantasyon
+plausible|adj|akla yatkın; implausible|adj|inandırıcı olmayan
+play|n/v|oyun; oynamak; player|n|oyuncu; playful|adj|oyuncu; display|n/v|gösterim; sergilemek
+please|v|memnun etmek; pleasant|adj|hoş; unpleasant|adj|nahoş; pleasure|n|zevk; pleased|adj|memnun
+plenty|n|bolluk; plentiful|adj|bol
+poem|n|şiir; poet|n|şair; poetry|n|şiir sanatı; poetic|adj|şiirsel
+point|n/v|nokta; işaret etmek; pointed|adj|sivri; pointless|adj|anlamsız
+poison|n/v|zehir; zehirlemek; poisonous|adj|zehirli
+police|n|polis; policy|n|politika
+polite|adj|kibar; politely|adv|kibarca; impolite|adj|kaba
+politics|n|siyaset; political|adj|siyasi; politically|adv|siyasi olarak; politician|n|politikacı
+pollute|v|kirletmek; pollution|n|kirlilik; pollutant|n|kirletici
+poor|adj|yoksul, zayıf; poorly|adv|kötü biçimde; poverty|n|yoksulluk
+population|n|nüfus; populated|adj|nüfuslu; populous|adj|kalabalık
+popular|adj|popüler; popularity|n|popülerlik; unpopular|adj|sevilmeyen
+port|n|liman; import|n/v|ithalat; ithal etmek; export|n/v|ihracat; ihraç etmek; transport|n/v|ulaşım; taşımak; portable|adj|taşınabilir
+portion|n|kısım, porsiyon
+report|n/v|rapor; bildirmek; reporter|n|muhabir; reportedly|adv|bildirildiğine göre
+portray|v|tasvir etmek; portrayal|n|tasvir; portrait|n|portre
+pose|v|oluşturmak (tehdit), poz vermek
+position|n|konum; positive|adj|olumlu; positively|adv|olumlu biçimde
+possible|adj|mümkün; possibly|adv|muhtemelen; possibility|n|olasılık; impossible|adj|imkânsız
+possess|v|sahip olmak; possession|n|mülk, sahiplik; possessive|adj|sahiplenici
+postpone|v|ertelemek; postponement|n|erteleme
+potential|n/adj|potansiyel; potentially|adv|potansiyel olarak
+power|n|güç; powerful|adj|güçlü; powerless|adj|güçsüz; empower|v|güçlendirmek
+practice|n|uygulama, alıştırma; practise|v|pratik yapmak; practical|adj|pratik; practically|adv|neredeyse, pratikte; practitioner|n|uygulayıcı
+praise|n/v|övgü; övmek
+precaution|n|önlem; precautionary|adj|önleyici
+precede|v|önce gelmek; preceding|adj|önceki; precedent|n|emsal; unprecedented|adj|eşi görülmemiş
+precious|adj|değerli
+precise|adj|kesin; precisely|adv|tam olarak; precision|n|hassasiyet; imprecise|adj|belirsiz
+predator|n|yırtıcı; predatory|adj|yırtıcı; predate|v|-den önce gelmek
+predict|v|tahmin etmek; prediction|n|tahmin; predictable|adj|öngörülebilir; unpredictable|adj|öngörülemez
+predominant|adj|baskın; predominantly|adv|ağırlıklı olarak
+prefer|v|tercih etmek; preference|n|tercih; preferable|adj|tercih edilir
+pregnant|adj|hamile; pregnancy|n|hamilelik
+prehistoric|adj|tarih öncesi
+prejudice|n|önyargı; prejudiced|adj|önyargılı
+preliminary|adj|ön, hazırlık
+premature|adj|erken, vakitsiz; prematurely|adv|vaktinden önce
+prepare|v|hazırlamak; preparation|n|hazırlık; prepared|adj|hazır
+present|adj/n/v|mevcut, şimdiki; hediye; sunmak; presence|n|varlık; presentation|n|sunum; represent|v|temsil etmek; representation|n|temsil; representative|n/adj|temsilci; temsilî
+press|v/n|bastırmak; basın; pressure|n|baskı; impress|v|etkilemek
+prescribe|v|reçete yazmak; prescription|n|reçete
+preserve|v|korumak; preservation|n|koruma; preservative|n|koruyucu
+president|n|başkan; presidential|adj|başkanlık
+presume|v|varsaymak; presumably|adv|muhtemelen; presumption|n|varsayım
+pretend|v|-mış gibi yapmak; pretence|n|numara
+pretty|adj/adv|güzel; oldukça
+prevail|v|galip gelmek, hâkim olmak; prevalent|adj|yaygın; prevalence|n|yaygınlık
+prevent|v|önlemek; prevention|n|önleme; preventive|adj|önleyici; preventable|adj|önlenebilir
+previous|adj|önceki; previously|adv|daha önce
+prey|n/v|av; avlamak (on)
+price|n|fiyat; priceless|adj|paha biçilmez
+pride|n|gurur; proud|adj|gururlu; proudly|adv|gururla
+primary|adj|birincil; primarily|adv|öncelikle
+primitive|adj|ilkel
+principal|adj/n|başlıca; müdür
+principle|n|ilke
+print|n/v|baskı; basmak; printer|n|yazıcı
+prior|adj|önceki; priority|n|öncelik; prioritise|v|önceliklendirmek
+prison|n|hapishane; prisoner|n|mahkûm; imprison|v|hapsetmek
+private|adj|özel; privacy|n|mahremiyet; privately|adv|özel olarak; privatize|v|özelleştirmek
+probable|adj|olası; probably|adv|muhtemelen; probability|n|olasılık
+probe|n/v|sonda, soruşturma; araştırmak
+problem|n|sorun; problematic|adj|sorunlu
+proceed|v|devam etmek; procedure|n|prosedür; process|n/v|süreç; işlemek; proceeds|n|gelir
+produce|v|üretmek; producer|n|üretici; product|n|ürün; production|n|üretim; productive|adj|üretken; productivity|n|verimlilik; reproduce|v|üremek; reproduction|n|üreme
+profession|n|meslek; professional|adj/n|profesyonel; professionally|adv|profesyonelce; professor|n|profesör
+profit|n/v|kâr; kâr etmek; profitable|adj|kârlı; unprofitable|adj|kârsız
+profound|adj|derin; profoundly|adv|derinden
+prognosis|n|prognoz, hastalığın gidişatı
+program|n/v|program; programlamak; programmer|n|programcı
+progress|n/v|ilerleme; ilerlemek; progression|n|ilerleyiş; progressive|adj|ilerici, giderek artan
+prohibit|v|yasaklamak; prohibition|n|yasak
+project|n/v|proje; yansıtmak, tahmin etmek; projection|n|tahmin
+prolific|adj|üretken; prolifically|adv|bolca
+prolong|v|uzatmak; prolonged|adj|uzun süreli
+promise|n/v|söz; söz vermek; promising|adj|umut vadeden
+prominent|adj|önde gelen; prominence|n|önem
+promote|v|teşvik etmek, terfi ettirmek; promotion|n|terfi, tanıtım
+prompt|adj/v|hızlı; yol açmak; promptly|adv|derhal
+prone|adj|eğilimli
+prove|v|kanıtlamak; proof|n|kanıt; provable|adj|kanıtlanabilir
+improve|v|geliştirmek; improvement|n|iyileşme
+proper|adj|uygun; properly|adv|düzgünce; improper|adj|uygunsuz
+propel|v|itmek; propulsion|n|itme gücü
+property|n|mülk, özellik
+proponent|n|savunucu
+proportion|n|oran; proportional|adj|orantılı; disproportionate|adj|orantısız
+propose|v|önermek; proposal|n|öneri
+prospect|n|olasılık, beklenti; prospective|adj|muhtemel, gelecekteki
+prosper|v|zenginleşmek; prosperity|n|refah; prosperous|adj|müreffeh
+protect|v|korumak; protection|n|koruma; protective|adj|koruyucu
+protest|n/v|protesto; protesto etmek; protester|n|protestocu
+provide|v|sağlamak; provided|conj|şartıyla; providing|conj|koşuluyla; provision|n|tedarik, hüküm; provider|n|sağlayıcı
+provoke|v|kışkırtmak; provocation|n|kışkırtma; provocative|adj|kışkırtıcı
+proximity|n|yakınlık
+psychology|n|psikoloji; psychological|adj|psikolojik; psychologically|adv|psikolojik olarak; psychologist|n|psikolog; psychiatry|n|psikiyatri; psychiatrist|n|psikiyatr; psychiatric|adj|psikiyatrik
+public|adj/n|kamu; halk; publicly|adv|alenen; publicity|n|tanıtım; publication|n|yayın; publish|v|yayımlamak; publisher|n|yayıncı
+punish|v|cezalandırmak; punishment|n|ceza
+pure|adj|saf; purely|adv|tamamen; purity|n|saflık; purify|v|arıtmak
+purchase|n/v|satın alma; satın almak
+purpose|n|amaç; purposeful|adj|amaçlı; purposely|adv|kasten
+pursue|v|peşinden gitmek; pursuit|n|arayış, takip
+qualify|v|hak kazanmak; qualified|adj|nitelikli; qualification|n|nitelik, yeterlilik; unqualified|adj|niteliksiz
+quality|n|kalite, nitelik; quantity|n|miktar; quantitative|adj|niceliksel; qualitative|adj|niteliksel
+question|n/v|soru; sorgulamak; questionable|adj|şüpheli; questionably|adv|tartışmalı biçimde; request|n/v|istek; rica etmek
+quick|adj|hızlı; quickly|adv|hızlıca
+quiet|adj|sessiz; quietly|adv|sessizce
+quote|n/v|alıntı; alıntılamak; quotation|n|alıntı
+race|n/v|yarış, ırk; yarışmak; racial|adj|ırksal; racism|n|ırkçılık
+radiate|v|yaymak; radiation|n|radyasyon
+radical|adj|köklü, radikal; radically|adv|kökten
+rain|n/v|yağmur; yağmak; rainfall|n|yağış miktarı; rainy|adj|yağmurlu

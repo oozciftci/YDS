@@ -1,0 +1,137 @@
+matter|n/v|madde, mesele; önemli olmak
+mature|adj/v|olgun; olgunlaşmak; maturity|n|olgunluk; immature|adj|olgunlaşmamış
+maximum|n/adj|azami; maximize|v|en üst düzeye çıkarmak; maximal|adj|en yüksek
+mean|v/adj|anlamına gelmek; cimri, ortalama; meaning|n|anlam; meaningful|adj|anlamlı; meaningless|adj|anlamsız; means|n|araç, yol
+measure|n/v|önlem, ölçü; ölçmek; measurement|n|ölçüm; measurable|adj|ölçülebilir
+mechanic|n|tamirci; mechanical|adj|mekanik; mechanism|n|mekanizma; mechanically|adv|mekanik olarak
+media|n|medya; medium|n/adj|araç, ortam; orta
+medicine|n|ilaç, tıp; medical|adj|tıbbi; medically|adv|tıbbi olarak; medication|n|ilaç tedavisi; medicinal|adj|tıbbi, şifalı
+medieval|adj|ortaçağa ait
+mediocre|adj|vasat; mediocrity|n|sıradanlık
+meet|v|buluşmak, karşılamak; meeting|n|toplantı
+melt|v|erimek
+member|n|üye; membership|n|üyelik
+remember|v|hatırlamak; remembrance|n|anma
+memory|n|hafıza, anı; memorize|v|ezberlemek; memorable|adj|unutulmaz; memorial|n|anıt
+mental|adj|zihinsel; mentally|adv|zihinsel olarak; mentality|n|zihniyet
+mention|n/v|söz; söz etmek
+mere|adj|sadece, salt; merely|adv|yalnızca
+merge|v|birleşmek; merger|n|şirket birleşmesi
+mess|n|dağınıklık; messy|adj|dağınık
+metabolism|n|metabolizma; metabolic|adj|metabolik
+method|n|yöntem; methodology|n|yöntem bilimi; methodical|adj|sistemli
+microbe|n|mikrop; microorganism|n|mikroorganizma; microscope|n|mikroskop; microscopic|adj|mikroskobik
+migrate|v|göç etmek; migration|n|göç; migrant|n|göçmen; immigrant|n|göçmen (gelen); immigration|n|göç (ülkeye)
+migraine|n|migren
+mild|adj|ılımlı, hafif; mildly|adv|hafifçe
+military|adj/n|askerî; ordu; militant|adj|militan
+mind|n/v|zihin; aldırmak; remind|v|hatırlatmak; reminder|n|hatırlatıcı; mindful|adj|dikkatli, bilinçli
+mineral|n|mineral
+minimum|n/adj|asgari; minimal|adj|asgari, çok az; minimize|v|en aza indirmek
+minister|n|bakan; ministry|n|bakanlık
+minor|adj/n|küçük, önemsiz; reşit olmayan; minority|n|azınlık
+miss|v|özlemek, kaçırmak; missing|adj|kayıp; mission|n|görev
+mistake|n/v|hata; yanılmak; mistaken|adj|yanılmış; mistakenly|adv|yanlışlıkla
+mitigate|v|hafifletmek; mitigation|n|hafifletme
+mix|v|karıştırmak; mixed|adj|karışık; mixture|n|karışım
+mobile|adj|hareketli; mobility|n|hareketlilik; mobilize|v|seferber etmek
+model|n/v|model; örnek almak
+moderate|adj/v|ılımlı; yumuşatmak; moderately|adv|orta derecede; moderation|n|ölçülülük
+modern|adj|modern; modernize|v|modernleştirmek; modernization|n|modernleşme
+modify|v|değiştirmek; modification|n|değişiklik
+molecule|n|molekül; molecular|adj|moleküler
+monitor|n/v|ekran, gözetmen; izlemek
+monopoly|n|tekel; monopolize|v|tekeline almak
+moral|adj/n|ahlaki; ders; morality|n|ahlak; morally|adv|ahlaken; immoral|adj|ahlaksız
+morbid|adj|hastalıklı; morbidity|n|hastalık oranı
+mortal|adj|ölümlü; mortality|n|ölüm oranı; immortal|adj|ölümsüz
+most|adj/adv|en çok; mostly|adv|çoğunlukla
+motion|n|hareket; motionless|adj|hareketsiz
+motivate|v|motive etmek; motivation|n|motivasyon; motivated|adj|istekli; motive|n|güdü
+mount|v/n|tırmanmak, artmak; dağ; mountain|n|dağ; mountainous|adj|dağlık
+move|v/n|hareket etmek; hamle; movement|n|hareket; movable|adj|taşınabilir; moving|adj|dokunaklı
+multiply|v|çoğalmak, çarpmak; multiple|adj|çoklu; multiplication|n|çarpma
+murder|n/v|cinayet; öldürmek; murderer|n|katil
+music|n|müzik; musical|adj|müzikal; musician|n|müzisyen
+mutate|v|mutasyona uğramak; mutation|n|mutasyon; mutant|n|mutant
+mutual|adj|karşılıklı; mutually|adv|karşılıklı olarak
+mystery|n|gizem; mysterious|adj|gizemli; mysteriously|adv|gizemli biçimde
+myth|n|efsane, yanlış inanç; mythical|adj|efsanevi; mythology|n|mitoloji
+narrate|v|anlatmak; narrative|n|anlatı; narrator|n|anlatıcı
+narrow|adj/v|dar; daralmak; narrowly|adv|kıl payı
+nation|n|ulus; national|adj|ulusal; nationality|n|uyruk; nationalism|n|milliyetçilik
+native|adj/n|yerli; ana dili
+nature|n|doğa; natural|adj|doğal; naturally|adv|doğal olarak; unnatural|adj|doğal olmayan
+navigate|v|yön bulmak; navigation|n|seyir; navy|n|donanma; naval|adj|deniz kuvvetlerine ait
+near|adj/adv|yakın; nearly|adv|neredeyse; nearby|adj/adv|yakındaki
+neat|adj|düzenli; neatly|adv|düzenlice
+necessary|adj|gerekli; necessarily|adv|zorunlu olarak; necessity|n|gereklilik; necessitate|v|gerektirmek; unnecessary|adj|gereksiz
+negative|adj|olumsuz; negatively|adv|olumsuz yönde
+neglect|n/v|ihmal; ihmal etmek; negligent|adj|ihmalkâr; negligible|adj|önemsiz
+negotiate|v|müzakere etmek; negotiation|n|müzakere
+neighbour|n|komşu; neighbourhood|n|mahalle
+nerve|n|sinir; nervous|adj|gergin; nervously|adv|gergin biçimde; nervousness|n|gerginlik
+network|n/v|ağ; ilişki ağı kurmak
+neuron|n|nöron; neural|adj|sinirsel; neurology|n|nöroloji; neurological|adj|nörolojik
+neutral|adj|tarafsız; neutrality|n|tarafsızlık; neutralize|v|etkisiz hale getirmek
+nevertheless|adv|yine de; nonetheless|adv|buna rağmen
+new|adj|yeni; newly|adv|yeni olarak; renew|v|yenilemek; renewable|adj|yenilenebilir
+nice|adj|hoş; nicely|adv|güzelce
+noise|n|gürültü; noisy|adj|gürültülü; noisily|adv|gürültüyle
+norm|n|norm; normal|adj|normal; normally|adv|normalde; abnormal|adj|anormal; normality|n|olağanlık
+north|n|kuzey; northern|adj|kuzeyli; northward|adv|kuzeye doğru
+note|n/v|not; dikkat etmek; notable|adj|kayda değer; notably|adv|özellikle; noted|adj|tanınmış
+notice|n/v|duyuru; fark etmek; noticeable|adj|fark edilir; noticeably|adv|belirgin biçimde
+notion|n|kavram, fikir
+notorious|adj|kötü şöhretli; notoriously|adv|herkesçe bilindiği gibi (kötü)
+novel|n/adj|roman; yeni, özgün; novelty|n|yenilik; novelist|n|romancı
+nucleus|n|çekirdek; nuclear|adj|nükleer
+number|n|sayı; numerous|adj|çok sayıda; numerical|adj|sayısal
+nutrient|n|besin maddesi; nutrition|n|beslenme; nutritional|adj|beslenmeyle ilgili; nutritious|adj|besleyici; malnutrition|n|yetersiz beslenme
+obese|adj|obez; obesity|n|obezite
+obey|v|itaat etmek; obedience|n|itaat; obedient|adj|itaatkâr; disobey|v|karşı gelmek
+object|n/v|nesne; itiraz etmek; objection|n|itiraz; objective|n/adj|hedef; nesnel; objectively|adv|nesnel olarak
+oblige|v|zorunda bırakmak; obligation|n|yükümlülük; obligatory|adj|zorunlu
+obscure|adj/v|belirsiz; gölgelemek; obscurely|adv|belirsiz biçimde; obscurity|n|belirsizlik
+observe|v|gözlemlemek; observation|n|gözlem; observable|adj|gözlemlenebilir; observer|n|gözlemci
+obsess|v|takıntı haline gelmek; obsession|n|saplantı; obsessive|adj|takıntılı
+obsolete|adj|modası geçmiş
+obstacle|n|engel
+obstruct|v|engellemek; obstruction|n|engel, tıkanma
+obtain|v|elde etmek; obtainable|adj|elde edilebilir
+obvious|adj|açık; obviously|adv|belli ki
+occasion|n|fırsat, durum; occasional|adj|ara sıra olan; occasionally|adv|ara sıra
+occupy|v|işgal etmek, meşgul etmek; occupation|n|meslek, işgal; occupant|n|sakin
+occur|v|meydana gelmek; occurrence|n|olay
+odd|adj|tuhaf, tek; oddly|adv|tuhaf biçimde; oddity|n|tuhaflık
+offend|v|gücendirmek; offence|n|suç, hakaret; offensive|adj|saldırgan, rahatsız edici; offensively|adv|kırıcı biçimde; offender|n|suçlu
+offer|n/v|teklif; teklif etmek
+office|n|ofis; officer|n|memur; official|adj/n|resmî; yetkili; officially|adv|resmî olarak
+ongoing|adj|süregelen
+open|adj/v|açık; açmak; openly|adv|açıkça; opening|n|açılış
+operate|v|işletmek, ameliyat etmek; operation|n|işlem, ameliyat; operational|adj|işlevsel; operator|n|operatör
+opinion|n|görüş
+opportunity|n|fırsat; opportunistic|adj|fırsatçı
+oppose|v|karşı çıkmak; opposition|n|muhalefet; opposite|adj/n|karşıt; opposed|adj|karşı
+opt|v|tercih etmek; option|n|seçenek; optional|adj|isteğe bağlı
+optimal|adj|en uygun; optimise|v|en iyi hale getirmek; optimum|adj|optimum
+optimistic|adj|iyimser; optimism|n|iyimserlik; pessimistic|adj|kötümser
+oral|adj|sözlü, ağızla ilgili; orally|adv|sözlü olarak
+order|n/v|sıra, düzen, emir; emretmek, sipariş vermek; orderly|adj|düzenli
+ordinary|adj|sıradan; extraordinary|adj|olağanüstü
+organ|n|organ; organism|n|organizma; organic|adj|organik
+organize|v|düzenlemek; organization|n|kuruluş; organized|adj|düzenli; organizer|n|düzenleyici
+orient|v|yönlendirmek; orientation|n|yönelim, uyum; oriented|adj|yönelimli
+origin|n|köken; original|adj|özgün; originally|adv|başlangıçta; originate|v|kaynaklanmak; originality|n|özgünlük
+outbreak|n|salgın, patlak verme
+outcome|n|sonuç
+outdoor|adj|açık hava; outdoors|adv|dışarıda
+outline|n/v|ana hat; özetlemek
+outlook|n|bakış açısı, beklenti
+outnumber|v|sayıca üstün olmak
+output|n|çıktı, üretim
+outweigh|v|ağır basmak
+overall|adj/adv|genel; genel olarak
+overcome|v|üstesinden gelmek
+overlap|n/v|örtüşme; örtüşmek
+overlook|v|gözden kaçırmak, bakmak

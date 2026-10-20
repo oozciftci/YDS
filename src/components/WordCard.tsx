@@ -2,6 +2,7 @@ import { MASTERY_CONFIG, type CardState, type MasteryLevel, type PartOfSpeech, t
 import { speakWord } from '../services/tts'
 import { InteractiveSentence } from './InteractiveSentence'
 import { MemoryHook } from './MemoryHook'
+import { WordFamilyBlock } from './WordFamilyBlock'
 import styles from '../pages/Words.module.css'
 
 interface WordCardProps {
@@ -171,6 +172,8 @@ export function WordCard({ word, cardState, onEdit, onDelete, onTransfer, onAssi
           />
         </div>
       )}
+
+      <WordFamilyBlock word={word} showSynonyms={false} />
 
       <MemoryHook word={word} />
 

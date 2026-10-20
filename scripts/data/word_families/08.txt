@@ -1,0 +1,157 @@
+individual|n/adj|birey; bireysel; individually|adv|tek tek; individuality|n|bireysellik
+induce|v|neden olmak, ikna etmek; induction|n|tümevarım, uyum eğitimi
+industry|n|sanayi; industrial|adj|sanayi; industrialize|v|sanayileşmek; industrialisation|n|sanayileşme; industrious|adj|çalışkan
+inevitable|adj|kaçınılmaz; inevitably|adv|kaçınılmaz olarak
+infant|n|bebek; infancy|n|bebeklik
+infect|v|bulaştırmak; infection|n|enfeksiyon; infectious|adj|bulaşıcı
+infer|v|çıkarım yapmak; inference|n|çıkarım
+inflate|v|şişirmek; inflation|n|enflasyon
+inflame|v|alevlendirmek; inflammation|n|iltihap; inflammatory|adj|iltihaplı, kışkırtıcı
+influence|n/v|etki; etkilemek; influential|adj|etkili
+infrastructure|n|altyapı
+ingredient|n|bileşen, malzeme
+inherit|v|miras almak; inheritance|n|miras; inherited|adj|kalıtsal
+inhibit|v|engellemek; inhibition|n|çekingenlik, engelleme
+initial|adj|ilk; initially|adv|başlangıçta; initiate|v|başlatmak; initiative|n|girişim
+inject|v|enjekte etmek; injection|n|iğne
+injure|v|yaralamak; injured|adj|yaralı; injury|n|yaralanma
+innate|adj|doğuştan; innately|adv|doğuştan
+inner|adj|iç
+innocent|adj|masum; innocence|n|masumiyet
+innovate|v|yenilik yapmak; innovation|n|yenilik; innovative|adj|yenilikçi; innovatively|adv|yenilikçi biçimde
+input|n|girdi
+inquire|v|sormak; inquiry|n|soruşturma
+separate|adj/v|ayrı; ayırmak; separation|n|ayrılık; separately|adv|ayrı ayrı; inseparable|adj|ayrılmaz; inseparably|adv|ayrılmaz biçimde
+insomnia|n|uykusuzluk
+inspire|v|ilham vermek; inspiration|n|ilham; inspiring|adj|ilham verici
+stable|adj|istikrarlı; stability|n|istikrar; instability|n|istikrarsızlık; unstable|adj|dengesiz; stabilize|v|istikrar kazandırmak
+instance|n|örnek, durum; instant|adj/n|anlık; an; instantly|adv|anında; instantaneous|adj|ani, anlık
+install|v|kurmak; installation|n|kurulum
+instead|adv|onun yerine
+institute|n/v|enstitü; başlatmak; institution|n|kurum; institutional|adj|kurumsal
+instruct|v|talimat vermek; instruction|n|talimat; instructor|n|eğitmen; instructive|adj|öğretici
+instrument|n|alet, enstrüman; instrumental|adj|etkili, araçsal
+insulate|v|yalıtmak; insulator|n|yalıtkan; insulation|n|yalıtım
+insult|n/v|hakaret; hakaret etmek; insulting|adj|aşağılayıcı
+insure|v|sigortalamak; insurance|n|sigorta
+surmount|v|üstesinden gelmek; insurmountable|adj|aşılmaz
+intact|adj|bozulmamış
+intake|n|alım (besin vb.)
+integral|adj|ayrılmaz, temel; integrate|v|bütünleştirmek; integration|n|entegrasyon; integrity|n|dürüstlük, bütünlük
+intellect|n|akıl; intellectual|adj/n|entelektüel
+intelligence|n|zekâ; intelligent|adj|zeki; intelligently|adv|zekice; intelligible|adj|anlaşılır; unintelligible|adj|anlaşılmaz
+interact|v|etkileşmek; interaction|n|etkileşim; interactive|adj|etkileşimli
+interest|n/v|ilgi, faiz; ilgilendirmek; interested|adj|ilgili; interesting|adj|ilginç; uninterested|adj|ilgisiz
+interfere|v|karışmak; interference|n|müdahale
+interior|n/adj|iç; iç kısım
+internal|adj|iç; internally|adv|içten
+international|adj|uluslararası; internationally|adv|uluslararası olarak
+interpersonal|adj|kişilerarası
+interpret|v|yorumlamak; interpretation|n|yorum; interpreter|n|tercüman; misinterpret|v|yanlış yorumlamak
+interrupt|v|araya girmek; interruption|n|kesinti; uninterrupted|adj|kesintisiz
+intervene|v|müdahale etmek; intervention|n|müdahale
+interview|n/v|görüşme; görüşme yapmak; interviewer|n|görüşmeci
+intimate|adj|samimi, yakın; intimacy|n|yakınlık
+intricate|adj|karmaşık; intricately|adv|karmaşık biçimde
+intrigue|v/n|ilgisini çekmek; entrika; intriguing|adj|merak uyandıran
+introduce|v|tanıtmak, sunmak; introduction|n|giriş, tanıtım; introductory|adj|giriş niteliğinde
+intuition|n|sezgi; intuitive|adj|sezgisel; intuitively|adv|sezgiyle
+invade|v|istila etmek; invasion|n|istila; invasive|adj|istilacı
+invent|v|icat etmek; invention|n|icat; inventor|n|mucit; inventive|adj|yaratıcı
+invest|v|yatırım yapmak; investment|n|yatırım; investor|n|yatırımcı
+investigate|v|araştırmak; investigation|n|soruşturma; investigator|n|araştırmacı
+visible|adj|görünür; invisible|adj|görünmez; visibility|n|görünürlük; vision|n|görme, vizyon
+invite|v|davet etmek; invitation|n|davet
+involve|v|içermek, dahil etmek; involved|adj|dahil, ilgili; involvement|n|katılım
+irrigate|v|sulamak; irrigation|n|sulama
+irritate|v|sinirlendirmek; irritated|adj|sinirli; irritation|n|tahriş, sinirlilik; irritating|adj|sinir bozucu
+isolate|v|izole etmek; isolation|n|yalıtım, yalnızlık; isolated|adj|izole, tek başına
+issue|n/v|sorun, konu; yayımlamak
+jealous|adj|kıskanç; jealousy|n|kıskançlık
+jeopardy|n|tehlike; jeopardize|v|tehlikeye atmak
+join|v|katılmak; joint|adj/n|ortak; eklem; jointly|adv|ortaklaşa
+journal|n|dergi; journalist|n|gazeteci; journalism|n|gazetecilik
+judge|n/v|yargıç; yargılamak; judgement|n|yargı, karar; judicial|adj|adli
+just|adj/adv|adil; sadece; justice|n|adalet; injustice|n|adaletsizlik; justify|v|haklı çıkarmak; justification|n|gerekçe; justifiable|adj|haklı gösterilebilir
+keen|adj|istekli, keskin; keenly|adv|hevesle
+kind|adj/n|nazik; tür; kindly|adv|nazikçe; kindness|n|nezaket; unkind|adj|kaba
+king|n|kral; kingdom|n|krallık
+know|v|bilmek; knowledge|n|bilgi; knowledgeable|adj|bilgili; known|adj|bilinen; unknown|adj|bilinmeyen
+label|n/v|etiket; etiketlemek
+labour|n|emek, iş gücü; laborious|adj|zahmetli
+lack|n/v|eksiklik; -den yoksun olmak
+land|n/v|kara, toprak; inmek; landmark|n|dönüm noktası, simge yapı; landscape|n|manzara
+large|adj|büyük; largely|adv|büyük ölçüde; enlarge|v|büyütmek
+late|adj/adv|geç; lately|adv|son zamanlarda; latest|adj|en son
+latter|adj|ikincisi, sonraki
+laugh|n/v|gülüş; gülmek; laughter|n|kahkaha
+launch|n/v|başlatma; başlatmak, fırlatmak
+law|n|yasa; lawyer|n|avukat; lawful|adj|yasal; unlawful|adj|yasa dışı
+lay|v|sermek, koymak; layer|n|katman
+lazy|adj|tembel; laziness|n|tembellik
+lead|v/n|yönetmek, yol açmak (to); öncülük; leader|n|lider; leadership|n|liderlik; leading|adj|önde gelen; mislead|v|yanıltmak; misleading|adj|yanıltıcı
+lean|v/adj|eğilmek, yaslanmak; zayıf
+leap|n/v|sıçrama; sıçramak
+learn|v|öğrenmek; learner|n|öğrenen; learning|n|öğrenme
+lecture|n/v|ders, konferans; ders vermek; lecturer|n|öğretim görevlisi
+legal|adj|yasal; legally|adv|yasal olarak; illegal|adj|yasa dışı
+legible|adj|okunaklı; illegible|adj|okunaksız
+legislate|v|yasa yapmak; legislation|n|mevzuat; legislative|adj|yasama
+legitimate|adj|meşru; legitimacy|n|meşruiyet; illegitimate|adj|gayri meşru
+lend|v|ödünç vermek; lender|n|borç veren
+length|n|uzunluk; long|adj|uzun; lengthen|v|uzatmak; lengthy|adj|uzun, uzun soluklu
+less|adj|daha az; lessen|v|azaltmak; least|adj|en az
+level|n|seviye
+lie|v/n|uzanmak, yalan söylemek; yalan; liar|n|yalancı
+license|n/v|lisans; lisans vermek
+life|n|hayat; live|v|yaşamak; living|n/adj|geçim; canlı; lifetime|n|ömür; lively|adj|canlı
+light|n/adj|ışık; hafif; lightly|adv|hafifçe; lighten|v|hafifletmek; lightning|n|şimşek
+likely|adj|olası; likelihood|n|olasılık; unlikely|adj|olası olmayan; likewise|adv|benzer şekilde
+limit|n/v|sınır; sınırlamak; limitation|n|sınırlama; limited|adj|sınırlı; unlimited|adj|sınırsız
+linguistics|n|dilbilim; linguistic|adj|dilbilimsel; linguist|n|dilbilimci
+link|n/v|bağlantı; bağlamak
+liquid|n/adj|sıvı; liquidity|n|likidite
+listen|v|dinlemek; listener|n|dinleyici
+literacy|n|okuryazarlık; literate|adj|okuryazar; illiterate|adj|okuma yazma bilmeyen
+literature|n|edebiyat, literatür; literary|adj|edebi; literal|adj|kelimesi kelimesine; literally|adv|tam anlamıyla
+load|n/v|yük; yüklemek; unload|v|boşaltmak; overload|v|aşırı yüklemek
+loan|n/v|borç, kredi; ödünç vermek
+local|adj|yerel; locally|adv|yerel olarak
+locate|v|yerini belirlemek; location|n|konum; located|adj|bulunan
+lock|n/v|kilit; kilitlemek; unlock|v|kilidi açmak
+logic|n|mantık; logical|adj|mantıklı; logically|adv|mantıksal olarak; illogical|adj|mantıksız
+lonely|adj|yalnız; loneliness|n|yalnızlık
+loose|adj|gevşek; loosen|v|gevşetmek
+lose|v|kaybetmek; loss|n|kayıp; lost|adj|kayıp; loser|n|kaybeden
+loud|adj|yüksek sesli; loudly|adv|yüksek sesle
+love|n/v|aşk; sevmek; lovely|adj|güzel, hoş; lover|n|sevgili; loving|adj|sevecen
+low|adj|alçak, düşük; lower|v/adj|düşürmek; daha alçak
+luck|n|şans; lucky|adj|şanslı; luckily|adv|neyse ki; unlucky|adj|şanssız
+lucrative|adj|kârlı, kazançlı
+machine|n|makine; machinery|n|makineler
+magic|n|sihir; magical|adj|büyülü; magician|n|sihirbaz
+magnet|n|mıknatıs; magnetic|adj|manyetik; magnetism|n|manyetizma
+magnificent|adj|muhteşem; magnificence|n|ihtişam
+main|adj|ana; mainly|adv|çoğunlukla; mainstream|n/adj|ana akım
+remain|v|kalmak; remaining|adj|kalan; remains|n|kalıntılar; remainder|n|kalan
+maintain|v|sürdürmek, iddia etmek; maintenance|n|bakım
+major|adj|başlıca, büyük; majority|n|çoğunluk
+make|v|yapmak; maker|n|üretici
+male|n/adj|erkek; masculine|adj|erkeksi
+malignant|adj|kötü huylu (tümör)
+manage|v|yönetmek, başarmak; management|n|yönetim; manager|n|müdür; manageable|adj|yönetilebilir; unmanageable|adj|yönetilemez
+mandate|n/v|yetki; zorunlu kılmak; mandatory|adj|zorunlu
+manifest|v/adj|göstermek; açık; manifestation|n|belirti
+manipulate|v|manipüle etmek; manipulation|n|manipülasyon; manipulative|adj|manipülatif
+manner|n|tarz, davranış
+manual|adj/n|elle yapılan; kılavuz; manually|adv|elle
+manufacture|n/v|imalat; üretmek; manufacturer|n|üretici; manufacturing|n|imalat
+marine|adj|deniz
+mark|n/v|işaret, not; işaretlemek; remark|n/v|söz; belirtmek; remarkable|adj|dikkate değer; remarkably|adv|dikkat çekici biçimde; marked|adj|belirgin
+market|n/v|pazar; pazarlamak; marketing|n|pazarlama
+marry|v|evlenmek; marriage|n|evlilik; married|adj|evli
+mass|n/adj|kütle; kitlesel; massive|adj|devasa; massively|adv|büyük ölçüde
+master|n/v|usta; ustalaşmak; mastery|n|ustalık
+match|n/v|maç, eş; uymak; matching|adj|uyumlu; mismatch|n|uyumsuzluk
+material|n/adj|malzeme; maddi; materialism|n|materyalizm
+mathematics|n|matematik; mathematical|adj|matematiksel; mathematician|n|matematikçi

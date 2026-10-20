@@ -1,0 +1,158 @@
+endow|v|bağışlamak, donatmak; endowed|adj|donatılmış (with); endowment|n|bağış, yetenek
+endure|v|dayanmak; endurance|n|dayanıklılık; enduring|adj|kalıcı
+enemy|n|düşman; enmity|n|düşmanlık
+energy|n|enerji; energetic|adj|enerjik; energize|v|güç vermek
+enforce|v|uygulamak, zorla yaptırmak; enforcement|n|uygulama, yaptırım
+engage|v|meşgul etmek, katılmak; engaged|adj|nişanlı, meşgul; engagement|n|katılım, nişan; engaging|adj|ilgi çekici
+engine|n|motor; engineer|n|mühendis; engineering|n|mühendislik
+enhance|v|geliştirmek, artırmak; enhancement|n|iyileştirme
+enjoy|v|zevk almak; enjoyable|adj|eğlenceli; enjoyment|n|keyif
+enormous|adj|devasa; enormously|adv|son derece
+enquire|v|sormak; enquiry|n|soruşturma, soru
+enrich|v|zenginleştirmek; enrichment|n|zenginleştirme
+ensure|v|sağlamak, güvenceye almak
+entail|v|gerektirmek
+entangle|v|dolaştırmak; entanglement|n|karışıklık, dolaşma
+enter|v|girmek; entrance|n|giriş; entry|n|giriş, kayıt
+enterprise|n|girişim, işletme; entrepreneur|n|girişimci
+entertain|v|eğlendirmek; entertainment|n|eğlence; entertainer|n|şovmen; entertaining|adj|eğlenceli
+enthusiasm|n|coşku; enthusiastic|adj|hevesli; enthusiastically|adv|coşkuyla; enthusiast|n|meraklı
+entire|adj|bütün; entirely|adv|tamamen; entirety|n|bütünlük
+entitle|v|hak vermek; entitlement|n|hak; entitled|adj|hakkı olan
+environment|n|çevre; environmental|adj|çevresel; environmentally|adv|çevresel olarak; environmentalist|n|çevreci
+epidemic|n/adj|salgın
+equal|adj/v|eşit; eşit olmak; equally|adv|eşit olarak; equality|n|eşitlik; inequality|n|eşitsizlik; equalize|v|eşitlemek
+equate|v|eşitlemek; equation|n|denklem
+equip|v|donatmak; equipment|n|ekipman; equipped|adj|donanımlı
+equivalent|adj/n|eşdeğer; equivalence|n|eşdeğerlik
+eradicate|v|kökünü kazımak; eradication|n|yok etme
+erode|v|aşındırmak; erosion|n|erozyon
+error|n|hata; erroneous|adj|hatalı; erroneously|adv|yanlışlıkla; err|v|hata yapmak
+escalate|v|tırmanmak, artmak; escalation|n|tırmanma
+escape|n/v|kaçış; kaçmak
+especially|adv|özellikle; special|adj|özel
+essence|n|öz; essential|adj|gerekli, temel; essentially|adv|esasen
+establish|v|kurmak; establishment|n|kuruluş; established|adj|yerleşik
+esteem|n/v|saygı; saygı duymak; self-esteem|n|özsaygı
+estimate|n/v|tahmin; tahmin etmek; estimation|n|tahmin, değerlendirme; underestimate|v|hafife almak; overestimate|v|abartmak
+ethic|n|etik ilke; ethical|adj|etik; ethically|adv|etik olarak; unethical|adj|etik dışı
+ethnic|adj|etnik; ethnicity|n|etnik köken
+evacuate|v|tahliye etmek; evacuation|n|tahliye
+evaluate|v|değerlendirmek; evaluation|n|değerlendirme
+even|adj/adv|düz, eşit; bile; evenly|adv|eşit biçimde; uneven|adj|düzensiz; unevenly|adv|düzensiz biçimde
+event|n|olay; eventual|adj|nihai; eventually|adv|sonunda
+evident|adj|açık; evidence|n|kanıt; evidently|adv|açıkça
+evil|adj/n|kötü; kötülük
+evoke|v|uyandırmak, çağrıştırmak; evocative|adj|çağrıştırıcı
+evolve|v|evrimleşmek, gelişmek; evolution|n|evrim; evolutionary|adj|evrimsel
+exact|adj|kesin; exactly|adv|tam olarak; exactness|n|kesinlik
+exaggerate|v|abartmak; exaggerated|adj|abartılı; exaggeration|n|abartı
+examine|v|incelemek; examination|n|inceleme, sınav; exam|n|sınav; examiner|n|sınav görevlisi
+exceed|v|aşmak; excess|n|fazlalık; excessive|adj|aşırı; excessively|adv|aşırı derecede
+excel|v|üstün olmak; excellent|adj|mükemmel; excellence|n|mükemmellik
+except|prep|hariç; exception|n|istisna; exceptional|adj|olağanüstü; exceptionally|adv|olağanüstü derecede
+exchange|n/v|değişim; değiş tokuş etmek
+excite|v|heyecanlandırmak; excited|adj|heyecanlı; exciting|adj|heyecan verici; excitement|n|heyecan
+exclude|v|hariç tutmak; exclusion|n|dışlama; exclusive|adj|özel, ayrıcalıklı; exclusively|adv|yalnızca; excluding|prep|hariç
+excuse|n/v|bahane; affetmek
+execute|v|uygulamak, idam etmek; execution|n|uygulama, idam; executive|n/adj|yönetici; yürütme
+exemplify|v|örneklemek; example|n|örnek
+exercise|n/v|egzersiz; egzersiz yapmak, kullanmak
+exert|v|uygulamak (güç); exertion|n|çaba
+exhaust|v/n|tüketmek; egzoz; exhausted|adj|bitkin; exhaustion|n|bitkinlik; exhaustive|adj|kapsamlı
+exhibit|v/n|sergilemek; sergi parçası; exhibition|n|sergi
+exist|v|var olmak; existence|n|varoluş; existing|adj|mevcut; existent|adj|var olan
+exotic|adj|egzotik
+expand|v|genişlemek; expansion|n|genişleme; expansive|adj|geniş
+expect|v|beklemek; expectation|n|beklenti; expected|adj|beklenen; unexpected|adj|beklenmedik; unexpectedly|adv|beklenmedik biçimde; expectancy|n|beklenti
+expedition|n|keşif gezisi
+expend|v|harcamak; expenditure|n|harcama; expense|n|masraf; expensive|adj|pahalı; inexpensive|adj|ucuz
+experience|n/v|deneyim; yaşamak; experienced|adj|deneyimli; inexperienced|adj|deneyimsiz
+experiment|n/v|deney; deney yapmak; experimental|adj|deneysel; experimentally|adv|deneysel olarak
+expert|n|uzman; expertise|n|uzmanlık
+expire|v|süresi dolmak; expiry|n|son kullanma
+explain|v|açıklamak; explanation|n|açıklama; explicable|adj|açıklanabilir; inexplicable|adj|açıklanamaz; explanatory|adj|açıklayıcı
+explicit|adj|açık, belirgin; explicitly|adv|açıkça; implicit|adj|örtük
+explode|v|patlamak; explosion|n|patlama; explosive|adj/n|patlayıcı
+exploit|v/n|sömürmek, yararlanmak; başarı; exploitation|n|sömürü
+explore|v|keşfetmek; exploration|n|keşif; explorer|n|kâşif; exploratory|adj|keşif amaçlı
+exponential|adj|katlanarak artan; exponentially|adv|katlanarak
+export|n/v|ihracat; ihraç etmek; exporter|n|ihracatçı
+expose|v|maruz bırakmak, açığa çıkarmak; exposure|n|maruz kalma
+express|v/adj|ifade etmek; hızlı; expression|n|ifade; expressive|adj|anlamlı
+extend|v|uzatmak, genişletmek; extension|n|uzantı; extensive|adj|kapsamlı; extensively|adv|yaygın olarak; extent|n|kapsam, derece
+external|adj|dış; externally|adv|dıştan
+extinct|adj|soyu tükenmiş; extinction|n|yok oluş
+extract|v/n|çıkarmak; öz; extraction|n|çıkarma
+extraordinary|adj|olağanüstü; extraordinarily|adv|olağanüstü derecede
+extreme|adj/n|aşırı; uç; extremely|adv|son derece; extremist|n|aşırı uç
+fabric|n|kumaş, doku; fabricate|v|uydurmak, üretmek
+face|n/v|yüz; yüzleşmek; facial|adj|yüzle ilgili
+facilitate|v|kolaylaştırmak; facility|n|tesis, kolaylık; facilitator|n|kolaylaştırıcı
+fact|n|gerçek; factual|adj|olgusal; factor|n|etken
+fail|v|başarısız olmak; failure|n|başarısızlık
+faint|adj/v|belli belirsiz; bayılmak; faintly|adv|hafifçe
+fair|adj|adil; fairly|adv|oldukça, adil biçimde; fairness|n|adalet; unfair|adj|haksız; unfairly|adv|haksız yere
+faith|n|inanç, güven; faithful|adj|sadık; faithfully|adv|sadakatle
+fall|v/n|düşmek; düşüş, sonbahar
+fallacy|n|yanılgı; fallacious|adj|yanıltıcı
+false|adj|yanlış, sahte; falsely|adv|yanlış biçimde; falsify|v|tahrif etmek
+fame|n|ün; famous|adj|ünlü; famously|adv|bilindiği üzere
+familiar|adj|tanıdık; familiarity|n|aşinalık; unfamiliar|adj|yabancı; familiarize|v|alıştırmak
+fancy|adj/v|süslü; hoşlanmak
+farm|n/v|çiftlik; çiftçilik yapmak; farmer|n|çiftçi; farming|n|tarım
+fascinate|v|büyülemek; fascinating|adj|büyüleyici; fascination|n|hayranlık
+fashion|n|moda; fashionable|adj|modaya uygun; unfashionable|adj|demode
+fast|adj/adv|hızlı; fasten|v|bağlamak
+fat|n/adj|yağ; şişman; fatty|adj|yağlı
+fatal|adj|ölümcül; fatally|adv|ölümcül biçimde; fatality|n|ölüm (kaza)
+fault|n|kusur, hata; faulty|adj|bozuk
+favour|n/v|iyilik; kayırmak; favourable|adj|olumlu; favourably|adv|olumlu biçimde; favourite|adj/n|en sevilen; unfavourable|adj|olumsuz
+fear|n/v|korku; korkmak; fearful|adj|korkulu; fearless|adj|korkusuz
+feasible|adj|uygulanabilir; feasibility|n|fizibilite; feasibly|adv|makul biçimde
+feature|n/v|özellik; öne çıkarmak
+federal|adj|federal; federation|n|federasyon
+feed|v|beslemek; feedback|n|geri bildirim
+feel|v|hissetmek; feeling|n|duygu
+female|n/adj|dişi, kadın; feminine|adj|kadınsı
+fertile|adj|verimli; fertility|n|doğurganlık; fertilize|v|döllemek, gübrelemek; fertiliser|n|gübre
+fight|n/v|kavga; savaşmak; fighter|n|savaşçı; fighting|n|çatışma
+figure|n/v|rakam, şekil; anlamak (out)
+final|adj|son; finally|adv|sonunda; finalize|v|sonuçlandırmak
+finance|n/v|finans; finanse etmek; financial|adj|mali; financially|adv|mali açıdan
+find|v|bulmak; finding|n|bulgu
+finish|v/n|bitirmek; son; finished|adj|bitmiş; unfinished|adj|bitmemiş
+firm|adj/n|sağlam; firma; firmly|adv|sıkıca
+fish|n/v|balık; balık tutmak; fishing|n|balıkçılık; fisherman|n|balıkçı
+fit|adj/v|formda, uygun; uymak; fitness|n|fitness, uygunluk
+flexible|adj|esnek; flexibility|n|esneklik; inflexible|adj|esnek olmayan
+float|v|yüzmek (su üstünde)
+flood|n/v|sel; su basmak
+flourish|v|gelişmek, serpilmek; flourishing|adj|gelişen
+flow|n/v|akış; akmak
+fluctuate|v|dalgalanmak; fluctuation|n|dalgalanma
+fluid|n/adj|sıvı; akıcı
+fly|v|uçmak; flight|n|uçuş
+focus|n/v|odak; odaklanmak
+fold|v|katlamak
+follow|v|takip etmek; following|adj|aşağıdaki, sonraki; follower|n|takipçi
+force|n/v|güç; zorlamak; forceful|adj|güçlü, zorlayıcı
+forecast|n/v|tahmin; tahmin etmek
+foreign|adj|yabancı; foreigner|n|yabancı
+forensic|adj|adli
+forest|n|orman; forestry|n|ormancılık
+forgive|v|affetmek; forgiveness|n|bağışlama
+forget|v|unutmak; forgetful|adj|unutkan; unforgettable|adj|unutulmaz
+form|n/v|biçim, form; oluşturmak; formation|n|oluşum; formal|adj|resmî; formally|adv|resmî olarak; informal|adj|gayri resmî; reform|n/v|reform; inform|v|bilgilendirmek; information|n|bilgi
+format|n|biçim
+former|adj|eski, önceki; formerly|adv|eskiden
+formulate|v|formüle etmek; formulation|n|formülasyon; formula|n|formül
+fortify|v|güçlendirmek; fortification|n|tahkimat
+fortune|n|servet, şans; fortunate|adj|şanslı; fortunately|adv|neyse ki; unfortunate|adj|şanssız; unfortunately|adv|ne yazık ki
+fossil|n|fosil; fossilize|v|fosilleşmek
+foster|v|teşvik etmek, beslemek
+found|v|kurmak; foundation|n|temel, vakıf; founder|n|kurucu
+fragile|adj|kırılgan; fragility|n|kırılganlık
+fragment|n|parça; fragmentation|n|parçalanma; fragmented|adj|parçalı
+framework|n|çerçeve
+free|adj/v|özgür, ücretsiz; serbest bırakmak; freedom|n|özgürlük; freely|adv|özgürce

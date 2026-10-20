@@ -1,0 +1,105 @@
+brave|adj|cesur; bravely|adv|cesurca; bravery|n|cesaret
+break|v/n|kırmak; ara; broken|adj|kırık; breakable|adj|kırılabilir; unbreakable|adj|kırılmaz; breakdown|n|çöküş, arıza; breakthrough|n|atılım, büyük buluş
+breathe|v|nefes almak; breath|n|nefes; breathing|n|soluma; breathless|adj|nefessiz
+breed|v/n|üremek, yetiştirmek; tür, ırk; breeding|n|yetiştirme, üreme
+brief|adj/v|kısa; bilgi vermek; briefly|adv|kısaca; briefing|n|brifing
+bright|adj|parlak, zeki; brightly|adv|parlakça; brightness|n|parlaklık; brighten|v|aydınlatmak
+brilliant|adj|parlak, harika; brilliantly|adv|harika biçimde; brilliance|n|parlaklık, deha
+broad|adj|geniş; broadly|adv|genel olarak; broaden|v|genişletmek; breadth|n|genişlik
+broadcast|n/v|yayın; yayınlamak; broadcaster|n|yayıncı
+budget|n/v|bütçe; bütçe yapmak; budgetary|adj|bütçesel
+build|v|inşa etmek; building|n|bina; builder|n|inşaatçı; rebuild|v|yeniden inşa etmek
+bully|n/v|zorba; zorbalık etmek; bullying|n|zorbalık
+burden|n/v|yük; yük olmak; burdensome|adj|külfetli
+bureaucracy|n|bürokrasi; bureaucrat|n|bürokrat; bureaucratic|adj|bürokratik
+burn|v/n|yakmak; yanık; burnt|adj|yanmış
+burst|v/n|patlamak; patlama
+bury|v|gömmek; burial|n|gömme, defin
+business|n|iş, ticaret; businessman|n|iş adamı; busy|adj|meşgul; busily|adv|meşgulce
+buy|v|satın almak; buyer|n|alıcı
+calculate|v|hesaplamak; calculation|n|hesaplama; calculator|n|hesap makinesi; incalculable|adj|hesaplanamaz
+call|v/n|çağırmak, aramak; çağrı; called|adj|... denilen; recall|v/n|hatırlamak; geri çağırma
+calm|adj/v|sakin; sakinleştirmek; calmly|adv|sakince; calmness|n|sakinlik
+camp|n/v|kamp; kamp yapmak; camping|n|kampçılık
+campaign|n/v|kampanya; kampanya yürütmek; campaigner|n|kampanyacı
+cancel|v|iptal etmek; cancellation|n|iptal
+candidate|n|aday; candidacy|n|adaylık
+capable|adj|yetenekli, -ebilen; capability|n|yetenek, kapasite; incapable|adj|beceriksiz, -emeyen; capacity|n|kapasite
+capital|n/adj|başkent, sermaye; büyük harf; capitalism|n|kapitalizm; capitalize|v|-den yararlanmak (on)
+captive|n/adj|tutsak; captivity|n|tutsaklık; capture|v/n|yakalamak; ele geçirme; captivate|v|büyülemek
+care|n/v|bakım, özen; önemsemek; careful|adj|dikkatli; carefully|adv|dikkatle; careless|adj|dikkatsiz; carelessly|adv|dikkatsizce; carelessness|n|dikkatsizlik; caring|adj|şefkatli
+career|n|kariyer
+carry|v|taşımak; carrier|n|taşıyıcı
+cast|v/n|atmak, dökmek; oyuncu kadrosu
+casual|adj|gündelik, rahat; casually|adv|rahatça
+catastrophe|n|felaket; catastrophic|adj|felaket niteliğinde
+categorize|v|sınıflandırmak; category|n|kategori; categorical|adj|kesin
+cause|n/v|neden; neden olmak; causal|adj|nedensel; causation|n|nedensellik
+cautious|adj|temkinli; cautiously|adv|temkinle; caution|n/v|dikkat, uyarı; uyarmak
+cease|v|sona ermek, durdurmak; ceaseless|adj|bitmek bilmeyen; ceaselessly|adv|durmaksızın
+celebrate|v|kutlamak; celebration|n|kutlama; celebrity|n|ünlü; celebrated|adj|ünlü
+centre|n|merkez; central|adj|merkezi; centrally|adv|merkezi olarak; centralize|v|merkezileştirmek
+ceremony|n|tören; ceremonial|adj|törensel
+certain|adj|kesin, belirli; certainly|adv|kesinlikle; certainty|n|kesinlik; uncertain|adj|belirsiz; uncertainty|n|belirsizlik
+certificate|n|sertifika; certify|v|onaylamak, belgelemek; certification|n|sertifikasyon
+chair|n|sandalye; chairman|n|başkan; chairwoman|n|kadın başkan; chairperson|n|başkan
+challenge|n/v|zorluk; meydan okumak; challenging|adj|zorlu; challenger|n|rakip
+change|n/v|değişim; değiştirmek; changeable|adj|değişken; unchanged|adj|değişmemiş
+character|n|karakter; characteristic|n/adj|özellik; karakteristik; characterize|v|nitelendirmek; characterization|n|nitelendirme
+charity|n|hayır kurumu; charitable|adj|hayırsever
+charge|n/v|ücret, suçlama; ücret almak, suçlamak, şarj etmek; rechargeable|adj|şarj edilebilir
+cheap|adj|ucuz; cheaply|adv|ucuza; cheapen|v|değerini düşürmek
+cheat|v/n|hile yapmak; hileci; cheating|n|kopya, hile
+check|v/n|kontrol etmek; kontrol
+cheer|v/n|tezahürat yapmak; neşe; cheerful|adj|neşeli; cheerfully|adv|neşeyle
+chemistry|n|kimya; chemical|n/adj|kimyasal; chemist|n|kimyager, eczacı; chemically|adv|kimyasal olarak
+child|n|çocuk; childhood|n|çocukluk; childish|adj|çocukça; childless|adj|çocuksuz
+choose|v|seçmek; choice|n|seçim
+chronic|adj|kronik, süreğen; chronically|adv|kronik olarak
+circle|n/v|daire, çevre; daire çizmek; circular|adj|dairesel
+circulate|v|dolaşmak, yaymak; circulation|n|dolaşım
+circumstance|n|koşul, durum; circumstantial|adj|dolaylı
+cite|v|alıntı yapmak; citation|n|alıntı, atıf
+citizen|n|vatandaş; citizenship|n|vatandaşlık
+civil|adj|sivil, medeni; civilian|n|sivil; civilization|n|medeniyet; civilized|adj|medeni
+claim|n/v|iddia; iddia etmek, talep etmek
+clarify|v|açıklığa kavuşturmak; clarity|n|netlik; clarification|n|açıklama
+classify|v|sınıflandırmak; classification|n|sınıflandırma; classified|adj|gizli, sınıflandırılmış; class|n|sınıf
+classic|adj/n|klasik; classical|adj|klasik (sanat)
+clean|adj/v|temiz; temizlemek; cleaner|n|temizlikçi; cleanliness|n|temizlik
+clear|adj/v|açık, net; temizlemek; clearly|adv|açıkça; clarity|n|netlik; unclear|adj|belirsiz
+clever|adj|zeki; cleverly|adv|zekice
+climate|n|iklim; climatic|adj|iklimsel
+climb|v|tırmanmak; climbing|n|tırmanış; climber|n|dağcı
+clinic|n|klinik; clinical|adj|klinik; clinically|adv|klinik olarak
+close|v/adj|kapatmak; yakın; closed|adj|kapalı; closely|adv|yakından; closure|n|kapanma
+clothes|n|giysiler; clothing|n|giyim; cloth|n|kumaş
+cloud|n|bulut; cloudy|adj|bulutlu
+coast|n|kıyı; coastal|adj|kıyısal
+cognition|n|biliş; cognitive|adj|bilişsel; cognitively|adv|bilişsel olarak; recognize|v|tanımak; recognition|n|tanınma
+coherent|adj|tutarlı; coherence|n|tutarlılık; incoherent|adj|tutarsız
+cold|adj/n|soğuk; soğuk algınlığı; coldly|adv|soğuk bir şekilde
+collaborate|v|işbirliği yapmak; collaboration|n|işbirliği; collaborative|adj|işbirliğine dayalı; collaborator|n|işbirlikçi
+collapse|n/v|çöküş; çökmek
+collect|v|toplamak; collection|n|koleksiyon; collector|n|koleksiyoncu; collective|adj|kolektif; recollect|v|hatırlamak; recollection|n|anı
+collide|v|çarpışmak; collision|n|çarpışma
+colony|n|koloni; colonial|adj|sömürge; colonize|v|sömürgeleştirmek; colonization|n|sömürgecilik
+colour|n/v|renk; boyamak; coloured|adj|renkli; colourful|adj|renkli, canlı
+combat|n/v|savaş, mücadele; mücadele etmek
+combine|v|birleştirmek; combination|n|birleşim; combined|adj|birleşik
+combustion|n|yanma; combustible|adj|yanıcı
+comfort|n/v|rahatlık; teselli etmek; comfortable|adj|rahat; comfortably|adv|rahatça; uncomfortable|adj|rahatsız; discomfort|n|rahatsızlık
+comment|n/v|yorum; yorum yapmak; commentary|n|yorum, anlatım; commentator|n|yorumcu
+command|n/v|komut; emretmek; commander|n|komutan
+commerce|n|ticaret; commercial|adj|ticari; commercially|adv|ticari olarak
+commit|v|işlemek, adamak; commitment|n|bağlılık; committed|adj|kendini adamış; committee|n|komite
+common|adj|yaygın, ortak; commonly|adv|genellikle; uncommon|adj|nadir
+communicate|v|iletişim kurmak; communication|n|iletişim; communicative|adj|konuşkan
+community|n|topluluk
+comply|v|uymak; compliance|n|uyum, itaat; compliant|adj|uyumlu
+compare|v|karşılaştırmak; comparison|n|karşılaştırma; comparable|adj|kıyaslanabilir; comparative|adj|karşılaştırmalı; comparatively|adv|nispeten; incomparable|adj|eşsiz
+compel|v|zorlamak; compelling|adj|ikna edici, etkileyici; compulsion|n|zorlama; compulsory|adj|zorunlu
+compensate|v|telafi etmek; compensation|n|tazminat, telafi
+compete|v|yarışmak; competition|n|rekabet, yarışma; competitive|adj|rekabetçi; competitor|n|rakip; uncompetitive|adj|rekabetçi olmayan
+competent|adj|yetkin; competence|n|yetkinlik; incompetent|adj|beceriksiz
+complain|v|şikâyet etmek; complaint|n|şikâyet

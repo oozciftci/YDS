@@ -1,0 +1,145 @@
+complement|n/v|tamamlayıcı; tamamlamak; complementary|adj|tamamlayıcı
+complete|adj/v|tam; tamamlamak; completely|adv|tamamen; completion|n|tamamlanma; incomplete|adj|eksik
+complex|adj|karmaşık; complexity|n|karmaşıklık
+complicate|v|karmaşıklaştırmak; complicated|adj|karmaşık; complication|n|komplikasyon
+component|n|bileşen
+compose|v|oluşturmak, bestelemek; composer|n|besteci; composition|n|bileşim, beste; composed|adj|sakin, -den oluşan
+compound|n/adj/v|bileşik; bileşik; kötüleştirmek
+comprise|v|içermek, -den oluşmak
+comprehend|v|kavramak; comprehension|n|anlama; comprehensive|adj|kapsamlı; comprehensible|adj|anlaşılır; incomprehensible|adj|anlaşılmaz
+compulsion|n|zorlama, dürtü; compulsive|adj|takıntılı; compulsory|adj|zorunlu; compulsorily|adv|zorunlu olarak
+compute|v|hesaplamak; computer|n|bilgisayar; computation|n|hesaplama; computational|adj|hesaplamalı
+concentrate|v|yoğunlaşmak; concentration|n|konsantrasyon, yoğunluk; concentrated|adj|yoğun
+concept|n|kavram; conception|n|kavrayış, anlayış; conceptual|adj|kavramsal; conceive|v|tasarlamak, gebe kalmak
+concern|n/v|endişe; ilgilendirmek; concerned|adj|endişeli, ilgili; concerning|prep/adj|ile ilgili; endişe verici
+conciliate|v|uzlaştırmak; conciliation|n|uzlaşma; reconcile|v|barıştırmak; reconciliation|n|uzlaşma
+conclude|v|sonuçlandırmak, sonuca varmak; conclusion|n|sonuç; conclusive|adj|kesin; conclusively|adv|kesin olarak; inconclusive|adj|sonuçsuz
+concrete|adj/n|somut; beton; concretely|adv|somut olarak
+condemn|v|kınamak; condemnation|n|kınama
+condition|n/v|koşul; şartlandırmak; conditional|adj|koşullu; unconditional|adj|koşulsuz
+conduct|n/v|davranış; yürütmek; conductor|n|şef, iletken
+confer|v|danışmak, vermek; conference|n|konferans
+confident|adj|kendinden emin; confidence|n|güven; confidently|adv|güvenle; confidential|adj|gizli; confide|v|sır vermek
+confine|v|sınırlamak, kapatmak; confined|adj|sınırlı, dar; confinement|n|kapatılma
+confirm|v|doğrulamak; confirmation|n|onay
+conflict|n/v|çatışma; çelişmek; conflicting|adj|çelişen
+conform|v|uymak; conformity|n|uygunluk, uyma
+confront|v|yüzleşmek; confrontation|n|yüzleşme, çatışma
+confuse|v|karıştırmak; confused|adj|şaşkın; confusing|adj|kafa karıştırıcı; confusion|n|karışıklık
+congratulate|v|tebrik etmek; congratulation|n|tebrik
+connect|v|bağlamak; connection|n|bağlantı; connected|adj|bağlı; disconnect|v|bağlantıyı kesmek
+conquer|v|fethetmek; conquest|n|fetih; conqueror|n|fatih
+conscious|adj|bilinçli; consciousness|n|bilinç; consciously|adv|bilinçli olarak; unconscious|adj|bilinçsiz; subconscious|adj|bilinçaltı
+consensus|n|uzlaşı, fikir birliği
+consequence|n|sonuç; consequently|adv|sonuç olarak; consequent|adj|sonuçta ortaya çıkan
+conserve|v|korumak; conservation|n|koruma; conservative|adj|muhafazakâr, ihtiyatlı
+consider|v|düşünmek, saymak; consideration|n|dikkate alma; considerable|adj|hatırı sayılır; considerably|adv|önemli ölçüde; considerate|adj|düşünceli
+consist|v|oluşmak (of); consistent|adj|tutarlı; consistently|adv|tutarlı biçimde; consistency|n|tutarlılık; inconsistent|adj|tutarsız
+constant|adj|sürekli, sabit; constantly|adv|sürekli olarak
+constitute|v|oluşturmak; constitution|n|anayasa, bünye; constitutional|adj|anayasal
+constrain|v|kısıtlamak; constraint|n|kısıtlama
+construct|v|inşa etmek; construction|n|inşaat; constructive|adj|yapıcı; reconstruct|v|yeniden yapılandırmak; reconstruction|n|yeniden yapılanma
+consult|v|danışmak; consultant|n|danışman; consultation|n|danışma
+consume|v|tüketmek; consumer|n|tüketici; consumption|n|tüketim
+contact|n/v|temas; iletişime geçmek
+contagious|adj|bulaşıcı; contagion|n|bulaşma
+contain|v|içermek; container|n|kap, konteyner; containment|n|kontrol altına alma
+contaminate|v|kirletmek, bulaştırmak; contamination|n|kirlenme; contaminant|n|kirletici
+contemporary|adj/n|çağdaş
+contend|v|iddia etmek, mücadele etmek; contention|n|iddia, çekişme; contentious|adj|tartışmalı
+content|n/adj|içerik; memnun; contentment|n|hoşnutluk; discontent|n|hoşnutsuzluk
+contest|n/v|yarışma; itiraz etmek; contestant|n|yarışmacı
+context|n|bağlam; contextual|adj|bağlamsal
+continent|n|kıta; continental|adj|kıtasal
+continue|v|devam etmek; continuous|adj|sürekli; continuously|adv|sürekli olarak; continuation|n|devam; discontinue|v|durdurmak; continual|adj|sürekli tekrar eden
+contract|n/v|sözleşme; daralmak, kapmak (hastalık); contractor|n|yüklenici
+contradict|v|çelişmek; contradiction|n|çelişki; contradictory|adj|çelişkili
+contrary|adj/n|aksi, zıt; on the contrary|adv|aksine
+contrast|n/v|karşıtlık; karşılaştırmak; contrasting|adj|karşıt
+contribute|v|katkıda bulunmak; contribution|n|katkı; contributor|n|katkıda bulunan
+control|n/v|kontrol; kontrol etmek; controlled|adj|kontrollü; uncontrolled|adj|kontrolsüz; controllable|adj|kontrol edilebilir
+controversy|n|tartışma; controversial|adj|tartışmalı; controversially|adv|tartışmalı biçimde
+convenient|adj|uygun, elverişli; convenience|n|kolaylık; conveniently|adv|kolaylıkla; inconvenient|adj|elverişsiz; inconvenience|n|zahmet
+convention|n|gelenek, kongre; conventional|adj|geleneksel; conventionally|adv|geleneksel olarak; unconventional|adj|alışılmadık
+converse|v/adj|sohbet etmek; ters; conversation|n|konuşma; conversely|adv|tersine
+convert|v|dönüştürmek; conversion|n|dönüşüm; convertible|adj|dönüştürülebilir
+convey|v|iletmek, taşımak
+convince|v|ikna etmek; convincing|adj|ikna edici; convincingly|adv|ikna edici biçimde; convinced|adj|emin; unconvincing|adj|inandırıcı olmayan
+cook|v/n|pişirmek; aşçı; cooker|n|ocak; cooking|n|yemek pişirme
+cool|adj/v|serin; soğutmak; cooler|n|soğutucu
+cooperate|v|işbirliği yapmak; cooperation|n|işbirliği; cooperative|adj|işbirlikçi
+coordinate|v|koordine etmek; coordination|n|koordinasyon; coordinator|n|koordinatör
+cope|v|başa çıkmak (with)
+correct|adj/v|doğru; düzeltmek; correctly|adv|doğru şekilde; correction|n|düzeltme; incorrect|adj|yanlış
+correspond|v|karşılık gelmek, yazışmak; correspondence|n|yazışma, uygunluk; correspondent|n|muhabir; corresponding|adj|karşılık gelen
+corrupt|adj/v|yozlaşmış; yozlaştırmak; corruption|n|yolsuzluk
+cost|n/v|maliyet; mal olmak; costly|adj|pahalı
+count|v/n|saymak; sayım; countless|adj|sayısız; counter|n/v|tezgâh; karşı koymak; discount|n|indirim; account|n|hesap
+courage|n|cesaret; courageous|adj|cesur; encourage|v|cesaretlendirmek; encouragement|n|teşvik; discourage|v|cesaretini kırmak
+cover|v/n|örtmek, kapsamak; kapak; covered|adj|örtülü; covering|n|örtü; coverage|n|kapsam, haber yapma; uncover|v|ortaya çıkarmak; discover|v|keşfetmek
+crack|n/v|çatlak; çatlamak; cracked|adj|çatlak
+crash|n/v|kaza, çöküş; çarpmak
+create|v|yaratmak; creation|n|yaratma; creative|adj|yaratıcı; creativity|n|yaratıcılık; creator|n|yaratıcı; creature|n|yaratık
+credit|n/v|kredi, itibar; inandırmak; credible|adj|inanılır; credibility|n|güvenilirlik; incredible|adj|inanılmaz
+crime|n|suç; criminal|n/adj|suçlu; cezai; criminology|n|kriminoloji
+discriminate|v|ayrımcılık yapmak; discrimination|n|ayrımcılık; discriminatory|adj|ayrımcı
+crisis|n|kriz; critical|adj|kritik, eleştirel; critically|adv|eleştirel biçimde
+criterion|n|ölçüt; criteria|n|ölçütler
+criticize|v|eleştirmek; criticism|n|eleştiri; critic|n|eleştirmen
+cross|v/n|geçmek; çarpı; crossing|n|geçit
+crowd|n/v|kalabalık; toplanmak; crowded|adj|kalabalık; overcrowded|adj|aşırı kalabalık
+crucial|adj|çok önemli; crucially|adv|en önemlisi
+cruel|adj|zalim; cruelty|n|zulüm; cruelly|adv|acımasızca
+crush|v/n|ezmek; ezilme
+cultivate|v|yetiştirmek, geliştirmek; cultivation|n|tarım, yetiştirme
+culture|n|kültür; cultural|adj|kültürel; culturally|adv|kültürel olarak
+cure|n/v|tedavi, çare; iyileştirmek; curable|adj|tedavi edilebilir; incurable|adj|tedavisi olmayan
+curb|n/v|engel; dizginlemek, sınırlamak
+curious|adj|meraklı; curiously|adv|merakla, tuhaf biçimde; curiosity|n|merak
+current|adj/n|güncel; akıntı; currently|adv|şu anda; currency|n|para birimi
+recur|v|tekrarlamak; recurring|adj|tekrarlayan; recurrence|n|tekrarlama
+curtail|v|kısıtlamak; curtailed|adj|kısıtlanmış; curtailment|n|kısıtlama
+curve|n/v|eğri; kıvrılmak; curved|adj|kavisli
+custom|n|gelenek; customary|adj|alışılmış; customer|n|müşteri; customs|n|gümrük; customize|v|kişiselleştirmek
+cycle|n/v|döngü; bisiklete binmek; cyclical|adj|döngüsel
+damage|n/v|hasar; zarar vermek; damaging|adj|zararlı
+damp|adj|nemli; dampen|v|nemlendirmek, azaltmak; dampening|n|azaltma
+dance|n/v|dans; dans etmek; dancer|n|dansçı; dancing|n|dans etme
+danger|n|tehlike; dangerous|adj|tehlikeli; dangerously|adv|tehlikeli biçimde; endanger|v|tehlikeye atmak; endangered|adj|nesli tükenmekte olan
+dark|adj/n|karanlık; darkness|n|karanlık; darken|v|kararmak
+dead|adj|ölü; deadly|adj|ölümcül; death|n|ölüm; die|v|ölmek
+deal|n/v|anlaşma; ilgilenmek (with); dealer|n|satıcı
+debate|n/v|tartışma; tartışmak; debatable|adj|tartışmalı
+debt|n|borç; debtor|n|borçlu
+deceive|v|aldatmak; deception|n|aldatma; deceptive|adj|yanıltıcı; deceit|n|hile
+decay|n/v|çürüme; çürümek
+decent|adj|düzgün, makul; decently|adv|düzgünce; decency|n|ahlak, terbiye
+decide|v|karar vermek; decision|n|karar; decisive|adj|kararlı, belirleyici; indecisive|adj|kararsız
+decipher|v|şifresini çözmek; decode|v|şifre çözmek
+declare|v|ilan etmek; declaration|n|bildiri, beyan
+decline|n/v|düşüş; azalmak, reddetmek
+decorate|v|süslemek; decoration|n|dekorasyon; decorative|adj|dekoratif
+decrease|n/v|azalma; azalmak
+dedicate|v|adamak; dedication|n|bağlılık; dedicated|adj|kendini adamış
+deem|v|saymak, kabul etmek
+deep|adj|derin; deeply|adv|derinden; depth|n|derinlik; deepen|v|derinleştirmek
+defeat|n/v|yenilgi; yenmek
+defect|n|kusur; defective|adj|kusurlu
+defend|v|savunmak; defence|n|savunma; defensive|adj|savunmacı; defender|n|savunucu; defenceless|adj|savunmasız
+deficient|adj|eksik, yetersiz; deficiency|n|eksiklik; deficit|n|açık (bütçe)
+define|v|tanımlamak; definition|n|tanım; definite|adj|kesin; definitely|adv|kesinlikle; definitive|adj|kesin, nihai; indefinite|adj|belirsiz
+deforest|v|ormansızlaştırmak; deforestation|n|ormansızlaşma
+deform|v|biçimini bozmak; deformity|n|şekil bozukluğu
+degrade|v|bozmak, aşağılamak; degradation|n|bozulma, aşağılanma
+delay|n/v|gecikme; ertelemek
+deliberate|adj/v|kasıtlı; enine boyuna düşünmek; deliberately|adv|kasten; deliberation|n|müzakere
+delicate|adj|narin, hassas; delicately|adv|incelikle; delicacy|n|incelik, lezzetli yiyecek
+delight|n/v|zevk; sevindirmek; delighted|adj|çok memnun; delightful|adj|hoş
+deliver|v|teslim etmek; delivery|n|teslimat
+demand|n/v|talep; talep etmek; demanding|adj|zahmetli, talepkâr
+dementia|n|bunama
+democracy|n|demokrasi; democratic|adj|demokratik; democratically|adv|demokratik olarak
+demography|n|demografi; demographic|adj|demografik
+demonstrate|v|göstermek, kanıtlamak; demonstration|n|gösteri, kanıt; demonstrator|n|gösterici
+deny|v|inkâr etmek; denial|n|inkâr; undeniable|adj|inkâr edilemez; undeniably|adv|şüphesiz
+dense|adj|yoğun; density|n|yoğunluk; densely|adv|yoğun biçimde

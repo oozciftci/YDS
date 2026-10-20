@@ -1,0 +1,104 @@
+abandon|v|terk etmek; abandoned|adj|terk edilmiş; abandonment|n|terk etme, vazgeçme
+able|adj|yapabilen; ability|n|yetenek; inability|n|yetersizlik, yapamama; disability|n|engellilik; disabled|adj|engelli; enable|v|olanak sağlamak; unable|adj|yapamayan
+abolish|v|kaldırmak, feshetmek; abolition|n|kaldırılma
+abrupt|adj|ani, beklenmedik; abruptly|adv|aniden
+absent|adj|yok, eksik; absence|n|yokluk, devamsızlık; absently|adv|dalgın dalgın
+absolute|adj|mutlak, kesin; absolutely|adv|kesinlikle
+absorb|v|emmek, soğurmak; absorption|n|emilim; absorbent|adj|emici
+abundant|adj|bol; abundance|n|bolluk; abundantly|adv|bol bol
+abuse|n/v|kötüye kullanım; kötüye kullanmak; abusive|adj|kötü davranan, hakaret içeren
+academic|adj|akademik; academy|n|akademi; academically|adv|akademik olarak
+accelerate|v|hızlandırmak; acceleration|n|hızlanma; accelerator|n|gaz pedalı, hızlandırıcı
+accent|n|aksan, vurgu; accentuate|v|vurgulamak
+accept|v|kabul etmek; acceptable|adj|kabul edilebilir; unacceptable|adj|kabul edilemez; acceptance|n|kabul; acceptably|adv|kabul edilir biçimde
+access|n/v|erişim; erişmek; accessible|adj|erişilebilir; inaccessible|adj|erişilemez; accessibility|n|erişilebilirlik
+accident|n|kaza; accidental|adj|kazara olan; accidentally|adv|kazara, yanlışlıkla
+accommodate|v|barındırmak, uyum sağlamak; accommodation|n|konaklama
+accompany|v|eşlik etmek; accompaniment|n|eşlik
+accomplish|v|başarmak; accomplishment|n|başarı; accomplished|adj|usta, başarılı
+accord|n|uyum, anlaşma; accordance|n|uygunluk; according to|prep|-e göre; accordingly|adv|buna göre, dolayısıyla
+account|n/v|hesap; açıklamak (for); accountable|adj|sorumlu; accountability|n|hesap verebilirlik; accountant|n|muhasebeci
+accumulate|v|birikmek, biriktirmek; accumulation|n|birikim; accumulative|adj|birikimli
+accurate|adj|doğru, kesin; accuracy|n|doğruluk; accurately|adv|doğru biçimde; inaccurate|adj|hatalı; inaccuracy|n|yanlışlık
+accuse|v|suçlamak; accusation|n|suçlama; accused|n|sanık
+achieve|v|başarmak, elde etmek; achievement|n|başarı; achievable|adj|ulaşılabilir; underachieve|v|beklenenin altında kalmak
+acid|n|asit; acidic|adj|asidik; acidity|n|asitlik; acidification|n|asitlenme
+acknowledge|v|kabul etmek; acknowledgement|n|kabul, teşekkür
+acquire|v|edinmek; acquisition|n|edinim, satın alma; acquired|adj|sonradan edinilmiş
+act|n/v|eylem, yasa; davranmak; action|n|eylem; active|adj|etkin; actively|adv|etkin biçimde; activity|n|etkinlik; activate|v|harekete geçirmek; activation|n|etkinleştirme; inactive|adj|etkisiz, hareketsiz; actor|n|aktör; actress|n|aktris
+actual|adj|gerçek; actually|adv|aslında; actuality|n|gerçeklik
+acute|adj|akut, şiddetli; acutely|adv|şiddetle, keskin biçimde
+adapt|v|uyarlamak, uyum sağlamak; adaptation|n|uyum, uyarlama; adaptable|adj|uyum sağlayabilen; adaptive|adj|uyarlanabilir
+add|v|eklemek; addition|n|ekleme; additional|adj|ek, ilave; additionally|adv|ayrıca; additive|n|katkı maddesi
+addict|n|bağımlı; addiction|n|bağımlılık; addictive|adj|bağımlılık yapan; addicted|adj|bağımlı
+address|n/v|adres; ele almak, hitap etmek
+adequate|adj|yeterli; adequately|adv|yeterince; inadequate|adj|yetersiz; adequacy|n|yeterlilik
+adhere|v|bağlı kalmak, yapışmak; adherence|n|bağlılık; adherent|n|taraftar; adhesive|adj/n|yapışkan
+adjust|v|ayarlamak, uyum sağlamak; adjustment|n|ayarlama, uyum; adjustable|adj|ayarlanabilir
+administer|v|yönetmek, uygulamak; administration|n|yönetim; administrative|adj|idari; administrator|n|yönetici
+admire|v|hayran olmak; admiration|n|hayranlık; admirable|adj|takdire değer; admirably|adv|takdire değer biçimde; admirer|n|hayran
+admit|v|kabul etmek; admission|n|kabul, giriş; admittedly|adv|kabul etmek gerekir ki
+adolescent|n/adj|ergen; adolescence|n|ergenlik
+adopt|v|benimsemek, evlat edinmek; adoption|n|benimseme, evlat edinme
+adult|n/adj|yetişkin; adulthood|n|yetişkinlik
+advance|n/v|ilerleme; ilerlemek; advanced|adj|ileri, gelişmiş; advancement|n|ilerleme
+advantage|n|avantaj; disadvantage|n|dezavantaj; advantageous|adj|avantajlı; disadvantaged|adj|dezavantajlı
+adventure|n|macera; adventurous|adj|maceracı
+adverse|adj|olumsuz, ters; adversely|adv|olumsuz yönde; adversity|n|zorluk, sıkıntı
+advertise|v|reklam yapmak; advertisement|n|reklam; advertising|n|reklamcılık; advertiser|n|reklamveren
+advise|v|tavsiye etmek; advice|n|tavsiye; adviser|n|danışman; advisable|adj|tavsiye edilir; advisory|adj|danışma
+advocate|n/v|savunucu; savunmak; advocacy|n|savunuculuk
+aesthetic|adj|estetik; aesthetics|n|estetik bilimi; aesthetically|adv|estetik olarak
+affect|v|etkilemek; affection|n|şefkat; affectionate|adj|şefkatli; unaffected|adj|etkilenmemiş
+affluent|adj|varlıklı; affluence|n|bolluk, zenginlik
+afford|v|gücü yetmek; affordable|adj|uygun fiyatlı; affordability|n|satın alınabilirlik; unaffordable|adj|pahalı, karşılanamaz
+age|n/v|yaş, çağ; yaşlanmak; aged|adj|yaşlı, ... yaşında; ageing|n|yaşlanma
+agent|n|ajan, etken; agency|n|ajans, kurum
+aggression|n|saldırganlık; aggressive|adj|saldırgan; aggressively|adv|saldırganca; aggressor|n|saldırgan
+agree|v|katılmak, anlaşmak; agreement|n|anlaşma; disagree|v|katılmamak; disagreement|n|anlaşmazlık; agreeable|adj|hoş, uygun
+agriculture|n|tarım; agricultural|adj|tarımsal
+aid|n/v|yardım; yardım etmek
+ail|v|rahatsız etmek; ailment|n|rahatsızlık, hastalık; ailing|adj|hasta, sıkıntıdaki
+aim|n/v|amaç; amaçlamak; aimless|adj|amaçsız
+alarm|n/v|alarm; telaşlandırmak; alarmed|adj|telaşlı; alarming|adj|endişe verici; alarmingly|adv|endişe verici biçimde
+alcohol|n|alkol; alcoholic|adj/n|alkollü; alkolik; alcoholism|n|alkolizm
+alien|n/adj|yabancı; alienate|v|yabancılaştırmak; alienation|n|yabancılaşma
+align|v|hizalamak; alignment|n|hizalanma, uyum
+alive|adj|canlı, hayatta; live|v|yaşamak; lively|adj|canlı, hareketli
+allergy|n|alerji; allergic|adj|alerjik; allergen|n|alerjen
+alleviate|v|hafifletmek; alleviation|n|hafifletme
+ally|n/v|müttefik; ittifak kurmak; allied|adj|müttefik; alliance|n|ittifak
+allocate|v|tahsis etmek; allocation|n|tahsis
+allow|v|izin vermek; allowance|n|harçlık, ödenek; allowable|adj|izin verilebilir
+alone|adj/adv|yalnız; lonely|adj|yalnız (duygusal); loneliness|n|yalnızlık
+alphabet|n|alfabe; alphabetical|adj|alfabetik; alphabetically|adv|alfabetik sırayla
+alter|v|değiştirmek; alteration|n|değişiklik; unaltered|adj|değişmemiş
+alternative|n/adj|seçenek; alternatif; alternatively|adv|ya da, alternatif olarak; alternate|v|sırayla değişmek
+amaze|v|şaşırtmak; amazed|adj|şaşırmış; amazing|adj|şaşırtıcı; amazement|n|şaşkınlık; amazingly|adv|şaşırtıcı biçimde
+ambiguous|adj|belirsiz, çok anlamlı; ambiguity|n|belirsizlik; ambiguously|adv|belirsizce; unambiguous|adj|açık, net
+ambition|n|hırs, tutku; ambitious|adj|hırslı; ambitiously|adv|hırsla
+amuse|v|eğlendirmek; amused|adj|eğlenmiş; amusing|adj|eğlenceli; amusement|n|eğlence
+anaesthesia|n|anestezi; anaesthetic|n|uyuşturucu ilaç
+analyse|v|analiz etmek; analysis|n|analiz; analyst|n|analist; analytical|adj|analitik; analytically|adv|analitik olarak
+ancestor|n|ata; ancestral|adj|atalara ait; ancestry|n|soy
+anger|n/v|öfke; kızdırmak; angry|adj|kızgın; angrily|adv|öfkeyle
+anniversary|n|yıl dönümü; annual|adj|yıllık; annually|adv|her yıl
+announce|v|duyurmak; announcement|n|duyuru; announcer|n|spiker
+annoy|v|sinirlendirmek; annoyed|adj|sinirli; annoying|adj|sinir bozucu; annoyance|n|sıkıntı, sinirlilik
+anthropology|n|antropoloji; anthropologist|n|antropolog; anthropological|adj|antropolojik
+anticipate|v|öngörmek, beklemek; anticipation|n|beklenti, öngörü; unanticipated|adj|beklenmedik
+anxious|adj|endişeli; anxiety|n|kaygı; anxiously|adv|endişeyle
+apart|adv|ayrı; apartment|n|daire
+apologize|v|özür dilemek; apology|n|özür; apologetic|adj|özür diler bir tavırla
+appeal|n/v|çağrı, çekicilik; başvurmak, çekici gelmek; appealing|adj|çekici
+apparent|adj|belirgin, görünürdeki; apparently|adv|görünüşe göre
+appear|v|görünmek, ortaya çıkmak; appearance|n|görünüm, ortaya çıkış; disappear|v|kaybolmak; disappearance|n|kayboluş
+appetite|n|iştah; appetizing|adj|iştah açıcı
+apply|v|başvurmak, uygulamak; application|n|başvuru, uygulama; applicable|adj|uygulanabilir; applicant|n|başvuran; applied|adj|uygulamalı
+appoint|v|atamak; appointment|n|randevu, atama; disappoint|v|hayal kırıklığına uğratmak; disappointed|adj|hayal kırıklığına uğramış; disappointing|adj|hayal kırıklığı yaratan; disappointment|n|hayal kırıklığı
+appreciate|v|takdir etmek; appreciation|n|takdir; appreciative|adj|minnettar; appreciable|adj|kayda değer
+approach|n/v|yaklaşım; yaklaşmak; approachable|adj|ulaşılabilir, cana yakın
+appropriate|adj|uygun; appropriately|adv|uygun biçimde; inappropriate|adj|uygunsuz
+approve|v|onaylamak; approval|n|onay; disapprove|v|onaylamamak; disapproval|n|onaylamama; approving|adj|onaylayan
+approximate|adj|yaklaşık; approximately|adv|yaklaşık olarak; approximation|n|yaklaşık değer
+aquatic|adj|suda yaşayan

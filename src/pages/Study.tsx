@@ -35,7 +35,7 @@ import { InteractiveSentence } from '../components/InteractiveSentence'
 import { LeechHelp } from '../components/LeechHelp'
 import { MemoryHook } from '../components/MemoryHook'
 import { WriteAnswer } from '../components/WriteAnswer'
-import { familyOf } from '../data/affixes'
+import { WordFamilyBlock } from '../components/WordFamilyBlock'
 import styles from './Study.module.css'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
@@ -1441,18 +1441,7 @@ export function StudyPage() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                       {/* EŞ ANLAMLILAR & ÖRNEK CÜMLE */}
                       <div className={styles.subtleDetailsArea}>
-                        {currentQ.word.synonyms && currentQ.word.synonyms.length > 0 && (
-                          <div>
-                            <span className={styles.subtleLabel}>Eş Anlamlılar (YDS):</span>
-                            <div className={styles.synChipsRow}>
-                              {currentQ.word.synonyms.map((s, idx) => (
-                                <span key={idx} className={styles.synChip}>
-                                  {s}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+                        <WordFamilyBlock key={`fam-${currentQ.word.id}`} word={currentQ.word} />
 
                         {currentQ.word.sentences && currentQ.word.sentences.length > 0 && currentQ.word.sentences[0] && (
                           <div style={{ marginTop: '0.35rem' }}>
@@ -1469,15 +1458,6 @@ export function StudyPage() {
                             />
                           </div>
                         )}
-
-                        {(() => {
-                          const fam = familyOf(currentQ.word.term, allWords.map((w) => w.term))
-                          return fam.length > 0 ? (
-                            <div>
-                              <span className={styles.subtleLabel}>👪 Aynı aileden:</span> {fam.join(' · ')}
-                            </div>
-                          ) : null
-                        })()}
 
                         <MemoryHook key={`hook-${currentQ.word.id}`} word={currentQ.word} />
 

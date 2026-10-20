@@ -1,0 +1,139 @@
+dentist|n|diş hekimi; dental|adj|dişle ilgili
+depart|v|ayrılmak; departure|n|kalkış, ayrılış; department|n|bölüm
+depend|v|bağlı olmak (on); dependent|adj|bağımlı; dependence|n|bağımlılık; independent|adj|bağımsız; independence|n|bağımsızlık; independently|adv|bağımsız olarak; dependable|adj|güvenilir
+depict|v|tasvir etmek; depiction|n|tasvir
+deplete|v|tüketmek; depletion|n|tükenme
+deposit|n/v|mevduat, tortu; yatırmak, biriktirmek
+depress|v|bunaltmak, düşürmek; depressed|adj|bunalımlı; depressing|adj|iç karartıcı; depression|n|depresyon, durgunluk
+deprive|v|yoksun bırakmak; deprivation|n|yoksunluk; deprived|adj|yoksun
+derive|v|türetmek, elde etmek (from); derivation|n|türetme; derivative|n/adj|türev
+descend|v|inmek; descent|n|iniş, soy; descendant|n|torun, soyundan gelen
+describe|v|tanımlamak; description|n|tanım; descriptive|adj|betimleyici
+desert|n/v|çöl; terk etmek; deserted|adj|ıssız
+deserve|v|hak etmek; deserving|adj|layık
+design|n/v|tasarım; tasarlamak; designer|n|tasarımcı; designate|v|belirlemek, atamak; designation|n|atama, unvan
+desire|n/v|arzu; arzulamak; desirable|adj|arzu edilen; undesirable|adj|istenmeyen
+desperate|adj|çaresiz; desperately|adv|umutsuzca; desperation|n|çaresizlik
+destine|v|kaderinde olmak; destination|n|varış yeri; destiny|n|kader
+destroy|v|yok etmek; destruction|n|yıkım; destructive|adj|yıkıcı; indestructible|adj|yok edilemez
+detail|n/v|ayrıntı; ayrıntılandırmak; detailed|adj|ayrıntılı
+detect|v|tespit etmek; detection|n|tespit; detective|n|dedektif; detector|n|dedektör; undetectable|adj|fark edilemez
+deter|v|caydırmak; deterrent|n/adj|caydırıcı; deterrence|n|caydırıcılık
+deteriorate|v|kötüleşmek; deterioration|n|bozulma
+determine|v|belirlemek; determination|n|kararlılık; determined|adj|kararlı; determinant|n|belirleyici
+detriment|n|zarar; detrimental|adj|zararlı; detrimentally|adv|zararlı biçimde
+devastate|v|harap etmek; devastation|n|yıkım; devastating|adj|yıkıcı; devastatingly|adv|yıkıcı biçimde
+develop|v|geliştirmek; development|n|gelişme; developmental|adj|gelişimsel; developed|adj|gelişmiş; developing|adj|gelişmekte olan; developer|n|geliştirici; underdeveloped|adj|az gelişmiş
+deviate|v|sapmak; deviation|n|sapma; deviant|adj|sapkın; deviancy|n|sapkınlık
+device|n|cihaz; devise|v|tasarlamak
+devote|v|adamak; devoted|adj|sadık, adanmış; devotion|n|bağlılık
+die|v|ölmek; dying|adj|ölmekte olan; death|n|ölüm; dead|adj|ölü
+diabetes|n|diyabet; diabetic|adj/n|diyabetik
+diagnose|v|teşhis koymak; diagnosis|n|teşhis; diagnostic|adj|tanısal
+diet|n|diyet; dietary|adj|beslenmeyle ilgili
+differ|v|farklı olmak; difference|n|fark; different|adj|farklı; differently|adv|farklı biçimde; differentiate|v|ayırt etmek; differentiation|n|ayrışma; indifferent|adj|kayıtsız; indifference|n|kayıtsızlık
+difficult|adj|zor; difficulty|n|zorluk
+digest|v|sindirmek; digestion|n|sindirim; digestive|adj|sindirimsel
+digit|n|rakam; digital|adj|dijital; digitally|adv|dijital olarak
+dimension|n|boyut; dimensional|adj|boyutlu
+diminish|v|azalmak; diminution|n|azalma
+diplomacy|n|diplomasi; diplomat|n|diplomat; diplomatic|adj|diplomatik
+direct|adj/v|doğrudan; yönetmek; direction|n|yön; directly|adv|doğrudan; director|n|yönetmen; indirect|adj|dolaylı; indirectly|adv|dolaylı olarak
+dirt|n|kir; dirty|adj|kirli
+disaster|n|felaket; disastrous|adj|feci
+discipline|n/v|disiplin, bilim dalı; disipline etmek; disciplined|adj|disiplinli
+discover|v|keşfetmek; discovery|n|keşif
+discuss|v|tartışmak; discussion|n|tartışma
+disease|n|hastalık
+disguise|n/v|kılık; gizlemek
+disgust|n/v|tiksinti; iğrendirmek; disgusted|adj|iğrenmiş; disgusting|adj|iğrenç
+like|v|sevmek; dislike|v/n|sevmemek; hoşlanmama; likeable|adj|sevimli
+dismiss|v|reddetmek, kovmak; dismissal|n|işten çıkarma
+order|n/v|düzen, sipariş; emretmek; disorder|n|bozukluk, düzensizlik; orderly|adj|düzenli
+disparity|n|eşitsizlik, fark
+dispel|v|dağıtmak, gidermek
+dispense|v|dağıtmak; indispensable|adj|vazgeçilmez; dispensable|adj|vazgeçilebilir
+disperse|v|dağıtmak, dağılmak; dispersion|n|dağılım
+dispose|v|elden çıkarmak (of); disposal|n|imha; disposable|adj|tek kullanımlık
+dispute|n/v|anlaşmazlık; itiraz etmek; disputable|adj|tartışmalı; indisputable|adj|tartışılmaz
+disrupt|v|bozmak, kesintiye uğratmak; disruption|n|aksama; disruptive|adj|yıkıcı, aksatan
+distance|n|mesafe; distant|adj|uzak
+distinct|adj|belirgin, ayrı; distinction|n|ayrım; distinctive|adj|ayırt edici; distinctly|adv|açıkça; distinguish|v|ayırt etmek; distinguished|adj|seçkin
+distort|v|çarpıtmak; distortion|n|çarpıtma
+distress|n/v|sıkıntı; üzmek; distressing|adj|üzücü
+distribute|v|dağıtmak; distribution|n|dağıtım; distributor|n|distribütör
+disturb|v|rahatsız etmek; disturbance|n|rahatsızlık; disturbing|adj|rahatsız edici
+dive|v|dalmak; diver|n|dalgıç
+diverse|adj|çeşitli; diversity|n|çeşitlilik; diversify|v|çeşitlendirmek; diversion|n|saptırma, eğlence; divert|v|saptırmak
+divide|v|bölmek; division|n|bölüm, bölme; divisive|adj|bölücü
+divorce|n/v|boşanma; boşanmak; divorced|adj|boşanmış
+document|n/v|belge; belgelemek; documentary|n|belgesel; documentation|n|belgeleme
+domestic|adj|evsel, yerli; domesticate|v|evcilleştirmek
+dominate|v|egemen olmak; dominance|n|egemenlik; dominant|adj|baskın; domination|n|hükmetme
+donate|v|bağışlamak; donation|n|bağış; donor|n|bağışçı
+doubt|n/v|şüphe; şüphe etmek; doubtful|adj|şüpheli; doubtfully|adv|kuşkuyla; undoubtedly|adv|şüphesiz
+draft|n/v|taslak; taslağını hazırlamak
+drag|v|sürüklemek
+drain|v/n|boşaltmak; gider; drainage|n|drenaj
+drama|n|drama; dramatic|adj|çarpıcı; dramatically|adv|çarpıcı biçimde; dramatize|v|abartmak, sahneye uyarlamak
+drastic|adj|şiddetli, köklü; drastically|adv|büyük ölçüde
+draw|v|çizmek, çekmek; drawer|n|çekmece; drawing|n|çizim; drawback|n|dezavantaj
+dream|n/v|rüya, hayal; hayal etmek; dreamer|n|hayalperest
+dress|n/v|elbise; giyinmek; dressed|adj|giyinmiş
+drink|n/v|içecek; içmek; drunk|adj|sarhoş
+drive|v/n|sürmek; sürüş, dürtü; driver|n|sürücü; driving|n|araba kullanma
+drop|n/v|damla, düşüş; düşürmek
+drought|n|kuraklık
+drug|n|ilaç, uyuşturucu
+dry|adj/v|kuru; kurutmak; dryness|n|kuruluk; drought|n|kuraklık
+due|adj|beklenen, -den dolayı (to)
+dull|adj|sıkıcı, donuk
+dump|v/n|boşaltmak, atmak; çöplük
+duration|n|süre; durable|adj|dayanıklı; durability|n|dayanıklılık
+dust|n|toz; dusty|adj|tozlu
+duty|n|görev
+dynamic|adj|dinamik; dynamics|n|dinamikler; dynamically|adv|dinamik biçimde
+dynasty|n|hanedan
+eager|adj|istekli; eagerly|adv|hevesle; eagerness|n|heves
+early|adj/adv|erken
+earn|v|kazanmak; earnings|n|kazanç
+ease|n/v|kolaylık; hafifletmek; easy|adj|kolay; easily|adv|kolayca; uneasy|adj|huzursuz
+east|n|doğu; eastern|adj|doğulu, doğuya ait
+eccentric|adj|tuhaf, sıra dışı; eccentrically|adv|tuhaf biçimde; eccentricity|n|tuhaflık
+ecology|n|ekoloji; ecological|adj|ekolojik; ecologist|n|ekolojist; ecosystem|n|ekosistem
+economy|n|ekonomi; economic|adj|ekonomik; economical|adj|tutumlu; economically|adv|ekonomik olarak; economist|n|ekonomist
+edit|v|düzenlemek; edition|n|baskı; editor|n|editör; editorial|adj/n|yayın kurulu; başyazı
+educate|v|eğitmek; education|n|eğitim; educational|adj|eğitsel; educated|adj|eğitimli; educator|n|eğitimci
+effect|n|etki; effective|adj|etkili; effectively|adv|etkili biçimde; effectiveness|n|etkililik; ineffective|adj|etkisiz; efficacy|n|etkinlik
+efficient|adj|verimli; efficiency|n|verimlilik; efficiently|adv|verimli biçimde; inefficient|adj|verimsiz
+effort|n|çaba; effortless|adj|zahmetsiz
+elaborate|adj/v|ayrıntılı; ayrıntıya girmek; elaborately|adv|ayrıntılı biçimde; elaboration|n|ayrıntılandırma
+elder|adj/n|yaşça büyük; elderly|adj|yaşlı
+elect|v|seçmek; election|n|seçim; electoral|adj|seçimle ilgili; elector|n|seçmen
+electric|adj|elektrikli; electrical|adj|elektriksel; electricity|n|elektrik; electronic|adj|elektronik; electron|n|elektron
+elegant|adj|zarif; elegance|n|zarafet; elegantly|adv|zarifçe
+element|n|unsur, element; elementary|adj|temel, ilk
+eligible|adj|uygun, hak sahibi; eligibility|n|uygunluk; eligibly|adv|uygun biçimde
+eliminate|v|elemek, ortadan kaldırmak; elimination|n|eleme
+eloquent|adj|etkili konuşan; eloquently|adv|etkili bir dille; eloquence|n|belagat
+embark|v|başlamak (on), gemiye binmek
+embarrass|v|utandırmak; embarrassed|adj|mahcup; embarrassing|adj|utandırıcı; embarrassment|n|mahcubiyet
+embody|v|somutlaştırmak; embodiment|n|somut örnek
+embrace|v/n|kucaklamak, benimsemek; kucaklama
+emerge|v|ortaya çıkmak; emergence|n|ortaya çıkış; emergency|n|acil durum; emerging|adj|yükselen
+emigrate|v|göç etmek (dışarı); emigrated|adj|göç etmiş; emigration|n|dışa göç; emigrant|n|göçmen
+emit|v|yaymak, salmak; emission|n|salım, emisyon
+emotion|n|duygu; emotional|adj|duygusal; emotionally|adv|duygusal olarak
+empathy|n|empati; empathize|v|empati kurmak; empathetic|adj|empatik
+empire|n|imparatorluk; emperor|n|imparator; imperial|adj|imparatorluğa ait
+emphasize|v|vurgulamak; emphasis|n|vurgu; emphatic|adj|vurgulu
+empirical|adj|deneysel, gözleme dayalı; empirically|adv|deneysel olarak
+employ|v|istihdam etmek, kullanmak; employment|n|istihdam; employer|n|işveren; employee|n|çalışan; unemployed|adj|işsiz; unemployment|n|işsizlik
+empty|adj/v|boş; boşaltmak; emptiness|n|boşluk
+encompass|v|kapsamak
+encounter|n/v|karşılaşma; karşılaşmak
+encourage|v|cesaretlendirmek; encouragement|n|teşvik; encouraging|adj|cesaret verici
+end|n/v|son; bitirmek; ending|n|son, bitiş; endless|adj|sonsuz
+endanger|v|tehlikeye atmak; endangered|adj|nesli tehlikede
+endeavour|n/v|çaba; çabalamak
+endorse|v|onaylamak, desteklemek; endorsement|n|onay, destek

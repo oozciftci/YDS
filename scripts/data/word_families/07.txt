@@ -1,0 +1,129 @@
+freeze|v|donmak; frozen|adj|donmuş; freezing|adj|dondurucu; freezer|n|dondurucu
+frequent|adj|sık; frequently|adv|sık sık; frequency|n|sıklık; infrequent|adj|seyrek
+fresh|adj|taze; freshly|adv|yeni, taze olarak; refresh|v|tazelemek
+friction|n|sürtünme, anlaşmazlık
+friend|n|arkadaş; friendly|adj|arkadaş canlısı; unfriendly|adj|soğuk; friendship|n|arkadaşlık
+frighten|v|korkutmak; frightened|adj|korkmuş; frightening|adj|korkutucu
+fruit|n|meyve; fruitful|adj|verimli; fruitfully|adv|verimli biçimde; fruitless|adj|sonuçsuz
+frustrate|v|engellemek, sinirlendirmek; frustration|n|hayal kırıklığı; frustrating|adj|sinir bozucu; frustrated|adj|hüsrana uğramış
+fuel|n/v|yakıt; körüklemek
+fulfil|v|yerine getirmek; fulfilment|n|gerçekleştirme, tatmin; fulfilling|adj|tatmin edici
+full|adj|dolu; fully|adv|tamamen; fullness|n|doluluk
+fun|n|eğlence; funny|adj|komik
+function|n/v|işlev; çalışmak; functional|adj|işlevsel; dysfunction|n|işlev bozukluğu
+fund|n/v|fon; finanse etmek; funding|n|finansman
+fundamental|adj|temel; fundamentally|adv|temelde
+futile|adj|boşuna; futility|n|boşunalık
+future|n/adj|gelecek; futuristic|adj|fütüristik
+gain|n/v|kazanç; kazanmak
+gather|v|toplamak; gathering|n|toplantı
+gene|n|gen; genetic|adj|genetik; genetically|adv|genetik olarak; genetics|n|genetik bilimi; genome|n|genom
+general|adj|genel; generally|adv|genellikle; generalize|v|genellemek; generalization|n|genelleme
+generate|v|üretmek; generation|n|nesil, üretim; generator|n|jeneratör
+generous|adj|cömert; generously|adv|cömertçe; generosity|n|cömertlik
+genius|n|dahi, deha
+gentle|adj|nazik; gently|adv|nazikçe; gentleman|n|beyefendi
+genuine|adj|gerçek, samimi; genuinely|adv|içtenlikle
+geography|n|coğrafya; geographical|adj|coğrafi; geographically|adv|coğrafi olarak
+geology|n|jeoloji; geological|adj|jeolojik; geologist|n|jeolog
+globe|n|küre; global|adj|küresel; globally|adv|küresel olarak; globalization|n|küreselleşme
+glimpse|n/v|kısa bakış; bir anlığına görmek
+govern|v|yönetmek; government|n|hükümet; governmental|adj|hükümete ait; governor|n|vali; governance|n|yönetişim
+grade|n/v|not, derece; derecelendirmek; gradual|adj|kademeli; gradually|adv|yavaş yavaş
+grant|n/v|hibe; vermek, kabul etmek
+grasp|v/n|kavramak; kavrayış
+grateful|adj|minnettar; gratitude|n|minnet; ungrateful|adj|nankör
+grave|n/adj|mezar; ciddi; gravity|n|yerçekimi, ciddiyet
+great|adj|büyük, harika; greatly|adv|büyük ölçüde; greatness|n|büyüklük
+greet|v|selamlamak; greeting|n|selam
+grip|n/v|kavrama; sıkıca tutmak
+ground|n/v|zemin; temellendirmek; groundless|adj|asılsız
+grow|v|büyümek; growth|n|büyüme; grown|adj|büyümüş
+guarantee|n/v|garanti; garanti etmek
+guard|n/v|koruma; korumak; guardian|n|vasi
+guess|n/v|tahmin; tahmin etmek
+guide|n/v|rehber; yol göstermek; guidance|n|rehberlik; guideline|n|yönerge
+guilt|n|suçluluk; guilty|adj|suçlu; innocent|adj|masum
+habit|n|alışkanlık; habitual|adj|alışılmış
+inhabit|v|yaşamak, ikamet etmek; inhabitant|n|sakin; uninhabited|adj|ıssız; habitat|n|yaşam alanı
+halt|n/v|durma; durdurmak
+hamper|v|engellemek
+handle|v/n|başa çıkmak, ele almak; kulp
+happen|v|olmak, meydana gelmek
+happy|adj|mutlu; happiness|n|mutluluk; happily|adv|mutlulukla; unhappy|adj|mutsuz
+hard|adj/adv|zor, sert; sıkı; hardly|adv|neredeyse hiç; harden|v|sertleşmek; hardship|n|zorluk
+harm|n/v|zarar; zarar vermek; harmful|adj|zararlı; harmless|adj|zararsız
+harmony|n|uyum; harmonious|adj|uyumlu
+harsh|adj|sert, zalim; harshly|adv|sertçe
+harvest|n/v|hasat; hasat etmek
+hate|n/v|nefret; nefret etmek; hatred|n|nefret
+hazard|n|tehlike; hazardous|adj|tehlikeli; hazardously|adv|tehlikeli biçimde
+heal|v|iyileşmek; healing|n|iyileşme
+health|n|sağlık; healthy|adj|sağlıklı; unhealthy|adj|sağlıksız; healthily|adv|sağlıklı biçimde
+hear|v|duymak; hearing|n|işitme, duruşma
+heat|n/v|ısı; ısıtmak; heating|n|ısıtma
+heavy|adj|ağır; heavily|adv|yoğun biçimde
+hectic|adj|telaşlı, yoğun
+height|n|yükseklik; high|adj|yüksek; highly|adv|son derece; heighten|v|artırmak
+help|n/v|yardım; yardım etmek; helpful|adj|yardımsever, faydalı; helpless|adj|çaresiz
+herald|v/n|müjdelemek; haberci; heralded|adj|müjdelenen
+herb|n|bitki, ot; herbal|adj|bitkisel
+heritage|n|miras
+hero|n|kahraman; heroic|adj|kahramanca; heroism|n|kahramanlık
+hesitate|v|tereddüt etmek; hesitation|n|tereddüt; hesitant|adj|tereddütlü
+hide|v|saklamak; hidden|adj|gizli
+highlight|n/v|önemli nokta; vurgulamak
+hinder|v|engellemek; hindrance|n|engel
+history|n|tarih; historical|adj|tarihsel; historic|adj|tarihi; historically|adv|tarihsel olarak; historian|n|tarihçi
+hold|v|tutmak, düzenlemek; holder|n|sahibi
+hollow|adj|boş, oyuk
+honest|adj|dürüst; honestly|adv|dürüstçe; honesty|n|dürüstlük; dishonest|adj|sahtekâr; dishonestly|adv|sahtekârca
+honour|n/v|onur; onurlandırmak; honourable|adj|onurlu
+hope|n/v|umut; ummak; hopeful|adj|umutlu; hopeless|adj|umutsuz; hopefully|adv|umarım
+horizon|n|ufuk; horizontal|adj|yatay
+horror|n|dehşet; horrible|adj|korkunç; horrify|v|dehşete düşürmek
+hospital|n|hastane; hospitable|adj|misafirperver; hospitality|n|misafirperverlik
+host|n/v|ev sahibi; ev sahipliği yapmak
+hostile|adj|düşmanca; hostility|n|düşmanlık
+house|n/v|ev; barındırmak; housing|n|konut; household|n|hane
+huge|adj|devasa; hugely|adv|son derece
+human|n/adj|insan; humanity|n|insanlık; humane|adj|insancıl; humankind|n|insanoğlu
+humour|n|mizah; humorous|adj|komik
+hunt|n/v|av; avlamak; hunter|n|avcı; hunting|n|avcılık
+hurry|n/v|acele; acele etmek
+hurt|v|incitmek; hurtful|adj|kırıcı
+hygiene|n|hijyen; hygienic|adj|hijyenik
+hyperactive|adj|aşırı hareketli; hyperactivity|n|hiperaktivite
+hypothesis|n|hipotez; hypothetical|adj|varsayımsal; hypothesize|v|varsaymak
+idea|n|fikir; ideal|adj/n|ideal; ideally|adv|ideal olarak
+identify|v|tanımlamak, belirlemek; identification|n|kimlik tespiti; identity|n|kimlik; identical|adj|aynı, özdeş
+ideology|n|ideoloji; ideological|adj|ideolojik
+ignore|v|görmezden gelmek; ignorance|n|cehalet; ignorant|adj|cahil
+ill|adj|hasta; illness|n|hastalık
+legal|adj|yasal; illegal|adj|yasa dışı; illegally|adv|yasa dışı yoldan; legalize|v|yasallaştırmak; legislation|n|mevzuat
+illicit|adj|yasadışı; illicitly|adv|yasadışı biçimde
+illustrate|v|örneklemek, resimlemek; illustration|n|resim, örnek
+image|n|görüntü; imagine|v|hayal etmek; imagination|n|hayal gücü; imaginary|adj|hayali; imaginative|adj|yaratıcı
+imitate|v|taklit etmek; imitation|n|taklit
+immediate|adj|ani, hemen; immediately|adv|hemen
+immense|adj|muazzam; immensely|adv|son derece; immensity|n|enginlik
+immune|adj|bağışık; immunity|n|bağışıklık; immunize|v|aşılamak
+impact|n/v|etki; etkilemek
+impetus|n|itici güç
+implement|v/n|uygulamak; alet; implementation|n|uygulama
+imply|v|ima etmek; implication|n|anlam, sonuç; implicit|adj|örtük; implicitly|adv|dolaylı olarak
+important|adj|önemli; importance|n|önem; importantly|adv|önemlisi; unimportant|adj|önemsiz
+impose|v|dayatmak; imposition|n|dayatma
+poor|adj|yoksul; poverty|n|yoksulluk; impoverish|v|yoksullaştırmak; impoverished|adj|yoksullaşmış
+impress|v|etkilemek; impression|n|izlenim; impressive|adj|etkileyici; impressively|adv|etkileyici biçimde; impressed|adj|etkilenmiş
+incessant|adj|aralıksız; incessantly|adv|durmadan
+incident|n|olay; incidence|n|görülme sıklığı; incidental|adj|tesadüfi; incidentally|adv|bu arada
+include|v|içermek; including|prep|dahil; inclusion|n|dahil etme; inclusive|adj|kapsayıcı
+income|n|gelir
+incorporate|v|dahil etmek; incorporation|n|birleşme, dahil etme
+increase|n/v|artış; artmak; increasingly|adv|giderek
+incredible|adj|inanılmaz; incredibly|adv|inanılmaz derecede
+indeed|adv|gerçekten, hatta
+index|n|dizin, endeks
+indicate|v|göstermek; indication|n|işaret; indicator|n|gösterge; indicative|adj|gösteren
+indigenous|adj|yerli
