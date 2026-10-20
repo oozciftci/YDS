@@ -19,19 +19,19 @@
             "On yedinci yüzyılda Avrupa'nın dört bir yanında kahvehaneler açılmış, sohbet ve ticaret merkezi olmuştur."
           ],
           "o": [
-            "Tea is more popular than coffee in many countries.",
-            "Goats are known to be very intelligent animals.",
+            "Tea was also discovered in Asia, and it later became the most widely drunk beverage in several European countries.",
+            "Goats that eat coffee berries are known to sleep less, which led herders to avoid the plant altogether.",
             "From there, the drink spread to the Arabian Peninsula and then to the rest of the world.",
-            "Ethiopia is a country in East Africa.",
-            "Many people drink coffee in the morning."
+            "Ethiopia remained the only country that grew coffee until the seventeenth century, when it banned exports.",
+            "Many people in Ethiopia today drink coffee in the morning, as they have done for the past thirty years."
           ],
           "a": 2,
           "x": [
-            "Çay ile karşılaştırma konu dışı.",
-            "Keçilere dair genel bilgi; akışa uymuyor.",
+            "Çaya geçiş, kahvenin yayılma akışını koparır.",
+            "Keçilerin uyumaması ve yasak, metindeki 'enerjik olma' bilgisiyle çelişir.",
             "Doğru: Etiyopya → yayılma → Avrupa kahvehaneleri; akışı sürdürür.",
-            "Coğrafi bilgi akışı ilerletmez.",
-            "Genel gözlem, tarihsel akışı bozar."
+            "İhracat yasağı, 'kahvehaneler Avrupa'ya yayıldı' sonucuyla çelişir.",
+            "Günümüze atlar; tarihsel yayılma akışını bozar."
           ]
         },
         {
@@ -77,19 +77,19 @@
             "Bu nedenle kısa bir yürüyüş veya birkaç dakikalık dinlenme hem dikkati hem de belleği geliştirebilir."
           ],
           "o": [
-            "Exams are usually held at the end of a term.",
+            "Most students therefore try to study for the whole night before an exam, since long hours always guarantee better results.",
             "After about an hour of continuous effort, attention drops sharply and mistakes become more frequent.",
-            "Some students prefer studying in the library.",
-            "Teachers give advice on how to write essays.",
-            "Memory is stored in the brain."
+            "Some students prefer studying in a library because the silence helps them to continue for several hours without a break.",
+            "Teachers often advise students to write long summaries after every hour of study without any pause.",
+            "Memory, in general, is stored in the brain for much longer when students repeat information at night."
           ],
           "a": 1,
           "x": [
-            "Genel bilgi; akışı ilerletmez.",
+            "Metnin 'kısa oturumlar daha etkili' tezine ters düşer.",
             "Doğru: uzun çalışmanın sorununu açıklar ve 'therefore' sonucuna götürür.",
-            "Çalışma yeri konu dışı.",
-            "Konu dışı.",
-            "Çok genel bir bilgi."
+            "Mola vermeden uzun çalışmayı savunur; tezle çelişir.",
+            "Ara vermeden çalışmayı öğütler; tezle çelişir.",
+            "Gece tekrarını önerir; tezle ve sonraki cümleyle uyuşmaz."
           ]
         },
         {
@@ -106,19 +106,19 @@
             "Zamanla moda bile etkilendi; uzun etekler yerini daha pratik giysilere bıraktı."
           ],
           "o": [
-            "The first bicycles had no pedals.",
-            "Bicycles are now made of lightweight materials.",
-            "Many cities have introduced bicycle lanes.",
+            "It enabled the first long-distance races between cities, which soon became a popular form of entertainment among workers.",
+            "It was originally invented for the army and became available to ordinary people only in the twentieth century.",
+            "It remained too expensive for most households until the invention of cheaper materials in the early twentieth century.",
             "It allowed workers to live farther from their workplaces and widened their social circles.",
-            "Cycling races are watched by millions of viewers."
+            "It caused serious traffic problems in many towns, so several governments tried to limit its use."
           ],
           "a": 3,
           "x": [
-            "Teknik ayrıntı; toplumsal etki akışından sapar.",
-            "Modern malzeme konusu akışı bozar.",
-            "Modern bisiklet yolları akışı bozar.",
+            "Yarış konusu, 'kadınlara özgü bağımsızlık' akışına bağlanmaz.",
+            "Metinde 19. yüzyılda ucuz ulaşım olduğu söyleniyor; ordu bilgisi çelişir.",
+            "'Ucuz yol' bilgisiyle çelişir.",
             "Doğru: toplumsal etkiyi açıklar; sonraki cümlede 'kadınlar özellikle' ile bağlanır.",
-            "Yarışlar konu dışı."
+            "Trafik sorunu metinle ilgisiz ve çelişkili."
           ]
         }
       ]
@@ -170,19 +170,19 @@
             "Sonuç olarak birçok hastalık artık çok daha erken ve yönetilebilir bir aşamada tedavi ediliyor."
           ],
           "o": [
-            "The first hospitals were built in Europe.",
-            "Medical schools have become very expensive.",
-            "Nurses play an important role in hospitals.",
+            "As a result, doctors needed to wait for the patient to complain before they could offer any kind of treatment.",
+            "This usually meant that doctors had to be trained for many years in order to be able to make accurate decisions.",
+            "Therefore, the cost of medical education used to be much lower than it is in the twenty-first century.",
             "This often meant that serious conditions were only noticed when the patient was already seriously ill.",
-            "Some medicines have unpleasant side effects."
+            "For this reason, some patients preferred to be treated by their relatives rather than by trained doctors."
           ],
           "a": 3,
           "x": [
-            "Tarih bilgisi akışa uymuyor.",
-            "Eğitim maliyeti konu dışı.",
-            "Hemşireler konu dışı.",
+            "Metinde 'gözlem' yöntemi konuşuluyor; beklemek tam bağ kurmaz.",
+            "Eğitim süresi konuyu saptırır.",
+            "Maliyet konu dışı.",
             "Doğru: 'Today ...' ile zıtlık kurar ve eski yöntemin sınırını gösterir.",
-            "Yan etkiler konu dışı."
+            "Akrabalarla tedavi metinde yok."
           ]
         },
         {
@@ -199,19 +199,19 @@
             "İşte bu yüzden buzulların hızla küçülmesi bilim insanları için bu kadar endişe vericidir."
           ],
           "o": [
-            "Skiing is a popular winter sport.",
+            "Mountain glaciers, in fact, are usually found at altitudes above three thousand metres, where temperatures stay low all year.",
             "In many mountain regions, they act as natural reservoirs, storing water in winter and releasing it in summer.",
-            "The Arctic is colder than the Antarctic.",
-            "Ice is lighter than water.",
-            "Polar bears are an endangered species."
+            "In the polar regions, they cover entire continents and may be several kilometres thick in some places.",
+            "Their weight causes the ice at the bottom to melt slightly, which makes the whole mass slide downhill very slowly.",
+            "Many glaciers have been given names by the local people who live in the valleys beside them."
           ],
           "a": 1,
           "x": [
-            "Kayak konu dışı.",
+            "Yükseklik bilgisi 'su deposu' işlevine geçişi sağlamaz.",
             "Doğru: buzulların su deposu işlevini söyler; sonraki cümleye bağlanır.",
-            "Karşılaştırma akışa uymuyor.",
-            "Fizik bilgisi akışa uymuyor.",
-            "Kutup ayıları konu dışı."
+            "Kutuplardaki kalınlık, dağ bölgelerindeki su tedarikiyle ilgili değil.",
+            "Akış mekanizması önceki cümlede zaten verilmiş (tekrar).",
+            "İsimlendirme konu dışı."
           ]
         },
         {
@@ -228,18 +228,18 @@
             "Birçok durumda motive olmuş yetişkinler bu nedenle başlangıç aşamalarında daha hızlı ilerler."
           ],
           "o": [
-            "Some words are hard to pronounce.",
-            "Many people study English at school.",
-            "Language courses are available online.",
-            "Dictionaries are important learning tools.",
+            "Adults, for their part, usually have better pronunciation because they spend more time with native speakers.",
+            "Children generally learn grammar faster than adults, which makes them better translators in later life.",
+            "Many adults begin to study a language only when they need it for work, so they rarely reach a high level.",
+            "Parents often worry about their children's ability to study two languages at the same time.",
             "Children, it is true, tend to acquire a more natural accent because they absorb sounds without effort."
           ],
           "a": 4,
           "x": [
-            "Telaffuz zorluğu karşıtlık kurmaz.",
-            "Okul bilgisi karşıtlık kurmaz.",
-            "Kurs bilgisi karşıtlık kurmaz.",
-            "Sözlük bilgisi karşıtlık kurmaz.",
+            "Metin yetişkinlerin avantajlarını sonraki cümlede söylüyor; bu cümle çelişir.",
+            "Çocukların gramer üstünlüğü metinle çelişir.",
+            "Yetişkinlerin düşük seviyesi, 'faster progress' sonucuyla çelişir.",
+            "Ebeveyn kaygısı konu dışı.",
             "Doğru: 'Adults, on the other hand' karşıtlığını hazırlar (çocuklar ↔ yetişkinler)."
           ]
         }
@@ -293,18 +293,18 @@
           ],
           "o": [
             "Once places where people simply borrowed books, they have turned into centres of community life.",
-            "The oldest library in the world is in Egypt.",
-            "Reading is a good way to relax.",
-            "Some books are very expensive.",
-            "Authors often visit bookshops."
+            "Over the past twenty years, many libraries have been closed because most people now prefer to borrow books online.",
+            "Their opening hours have been shortened in several cities, which has made them less popular among older readers.",
+            "Most of their budget is spent on buying new books, and very little remains for other activities.",
+            "Many libraries still keep their old rules, which is why young people rarely visit them."
           ],
           "a": 0,
           "x": [
             "Doğru: 'Once ... they have turned' değişimi özetler; sonraki cümle örnekler verir.",
-            "En eski kütüphane bilgisi akışı bozar.",
-            "Genel görüş.",
-            "Konu dışı.",
-            "Konu dışı."
+            "Metin kütüphanelerin her zamankinden önemli olduğunu söylüyor; kapanma tezi çelişir.",
+            "Kısalan saatler, 'more important than ever' ile çelişir.",
+            "Bütçe dağılımı, 'free internet, classes' örneklerine uymaz.",
+            "Eski kurallar ve gençlerin gelmemesi sonuçla çelişir."
           ]
         },
         {
@@ -321,19 +321,19 @@
             "Bu yüzden popüler konserlerin biletleri ikinci el piyasalarda çoğu zaman nominal değerlerinin birkaç katına satılır."
           ],
           "o": [
-            "Companies advertise their products on television.",
-            "Production costs include wages and raw materials.",
+            "Production costs, such as wages and raw materials, are usually passed on to buyers in the form of higher prices.",
+            "Advertising campaigns also play a role, since well-known brands can usually charge more than unknown ones.",
             "Demand and scarcity usually have an equally strong effect on what buyers are willing to pay.",
-            "Customers prefer lower prices.",
-            "Concert halls are built in city centres."
+            "Competition between sellers is the only factor that decides whether prices rise or fall in the long run.",
+            "Customers generally prefer lower prices, so sellers rarely raise them even when costs increase."
           ],
           "a": 2,
           "x": [
-            "Reklam konu dışı.",
-            "Maliyet unsurları aynı noktada kalır; ilerletmez.",
+            "Maliyete dönüyor; oysa tez maliyet dışı etkenler.",
+            "Reklam konuyu kaydırır; sonraki cümle talep-arz.",
             "Doğru: maliyet dışındaki etkenleri (talep/kıtlık) tanıtır; sonraki cümle bunu açar.",
-            "Genel gözlem.",
-            "Konser salonu konu dışı."
+            "'Tek etken' iddiası metne uymaz.",
+            "Kıtlıkta fiyat artar; bu cümle çelişir."
           ]
         },
         {
@@ -472,19 +472,19 @@
             "Sonuç olarak birkaç hükümet nükleer santrallerini kapatma planlarını yeniden gözden geçiriyor."
           ],
           "o": [
-            "Some countries have never built a nuclear plant.",
-            "Uranium is a heavy metal found in rock.",
-            "Nuclear plants are usually built near water.",
+            "Nuclear plants, however, have also been built in several countries that have almost no history of public protest.",
+            "Most accidents have occurred in plants that were built before modern safety rules were introduced.",
+            "Some governments, nevertheless, closed their plants immediately and have never considered opening them again.",
             "Concerns about climate change, however, have led others to value it as a low-carbon source of electricity.",
-            "Opinion polls are often conducted by telephone."
+            "Experts have often disagreed about how much radiation people can safely receive in a single year."
           ],
           "a": 3,
           "x": [
-            "Ülke bilgisi konu dışı.",
-            "Uranyum bilgisi akışı ilerletmez.",
-            "Santral konumu konu dışı.",
+            "Protesto konusu kamuoyu değişimine bağlanmaz.",
+            "Güvenlik kuralları kamuoyunun yeniden değişimini açıklamaz.",
+            "'Hiç düşünmediler' sonuç cümlesiyle çelişir.",
             "Doğru: kamuoyunun yeniden değişmesini ('however') anlatır; sonuç cümlesine zemin hazırlar.",
-            "Yöntem bilgisi konu dışı."
+            "Radyasyon sınırı tartışması konu dışı."
           ]
         }
       ]
@@ -507,19 +507,19 @@
             "Bilim insanları bu nedenle böcek sayısındaki keskin düşüşün tüm ekosistemleri bozabileceği uyarısında bulunuyor."
           ],
           "o": [
-            "Butterflies have colourful wings.",
+            "Most of them live in tropical forests, where warm and humid conditions allow them to grow larger than anywhere else.",
             "More than a million species have been described so far, and many more are probably still unknown.",
-            "Some people are afraid of spiders.",
-            "Summer is the best season for observing insects.",
-            "Bees produce honey in wax hives."
+            "Butterflies and beetles are among the most popular insects with collectors, who sometimes pay very high prices.",
+            "Some insects are dangerous to humans because they carry diseases such as malaria and are therefore widely feared.",
+            "Their bodies are divided into three parts, and most of them have two pairs of wings."
           ],
           "a": 1,
           "x": [
-            "Renk bilgisi akışı ilerletmez.",
+            "'Çeşitlilik' yerine yaşam yerini anlatır; sonraki 'Despite small size'a bağlanmaz.",
             "Doğru: çeşitliliği sayıyla açıklar; 'Despite their small size' ile devam eder.",
-            "Örümcek korkusu konu dışı.",
-            "Mevsim bilgisi konu dışı.",
-            "Bal arısı özel örneği akışa uymaz (önce genel çeşitlilik)."
+            "Koleksiyon konu dışı.",
+            "Hastalık konusu olumlu rol akışını bozar.",
+            "Anatomi, çeşitlilik akışını ilerletmez."
           ]
         },
         {
@@ -536,18 +536,18 @@
             "Bu, gelişimin esas olarak insanın nasıl çalıştığına bağlı olduğunu, nasıl doğduğuna bağlı olmadığını gösterir."
           ],
           "o": [
-            "Television has made some sports very popular.",
-            "Sports stadiums are often built in the suburbs of cities.",
-            "The first modern Olympic Games were held in Athens.",
-            "Many athletes follow special diets.",
+            "Coaches, however, disagree about how many hours per week are required to reach the highest level in each sport.",
+            "The best athletes often come from families with a long sporting tradition, which gives them early access to good training.",
+            "Several studies also show that natural talent is more important in team sports than in individual ones.",
+            "Many successful athletes retire early because the pressure of competition becomes too heavy.",
             "Athletes who started with average ability often overtook more gifted rivals after a decade of disciplined training."
           ],
           "a": 4,
           "x": [
-            "Televizyonun etkisi konu dışı.",
-            "Stadyum konumu konu dışı.",
-            "Olimpiyat tarihi konu dışı.",
-            "Beslenme bilgisi akışa uymuyor.",
+            "Antrenörlerin görüş ayrılığı, 'practice matters' tezini örneklemez.",
+            "Aile geleneği, yetenek ve çalışma tartışmasını ilerletmez.",
+            "Yeteneğin önemi tezle çelişir.",
+            "Emeklilik konu dışı.",
             "Doğru: odaklı çalışmanın önemini somut bir bulguyla destekler; sonraki 'This shows' cümlesine bağlanır."
           ]
         },
@@ -629,19 +629,19 @@
             "Bu nedenle doktorlara antibiyotikleri yalnızca gerçekten gerektiğinde yazmaları çağrısı yapılıyor."
           ],
           "o": [
-            "Medicine has become more expensive over the years.",
-            "Alexander Fleming worked in a London hospital.",
+            "Today, however, doctors prescribe them less often because patients prefer natural treatments to chemical drugs.",
+            "In the first years after their discovery, they were so expensive that only wealthy patients could buy them.",
             "Today, however, overuse has allowed some bacteria to become resistant to these drugs.",
-            "Many people prefer herbal remedies.",
-            "Pharmacies are often open until late."
+            "Some of them are given as injections, while others are taken as tablets or liquids for several days.",
+            "Researchers have also used them to treat animals on farms, which has greatly increased meat production."
           ],
           "a": 2,
           "x": [
-            "Maliyet konu dışı.",
-            "Fleming ayrıntısı akışı ilerletmez.",
+            "'Bitkisel tedavi tercihi' metindeki aşırı kullanım sorunuyla çelişir.",
+            "Fiyat bilgisi, 'cured within days' ve direnç akışını bozar.",
             "Doğru: 'however' ile aşırı kullanım sorununa geçer; sonuç cümlesi ('therefore') bunu varsayar.",
-            "Bitkisel tedavi konu dışı.",
-            "Eczane saati konu dışı."
+            "Uygulama biçimi sorunu açıklamaz.",
+            "Hayvancılık, direnç sorununa geçmez."
           ]
         }
       ]

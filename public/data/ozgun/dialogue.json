@@ -71,19 +71,19 @@
             "Ali: – Biliyorum. Çoğumuzun orada çok güzel anıları var."
           ],
           "o": [
-            "Cinemas are generally larger in big cities.",
+            "Cinemas of that size are rarely profitable nowadays, so most of them in big cities are being rebuilt as shopping centres.",
             "What a pity! It has been part of the city's history for almost a hundred years.",
-            "I have never watched a film in my life.",
-            "The demolition will be finished next summer.",
-            "Why don't we buy some popcorn?"
+            "I'm not surprised; the building looked very old and the owners had not repaired it for decades.",
+            "I hope they build something better there, because the city centre has too few car parks.",
+            "Don't worry, the demolition has been postponed, and the cinema will stay open until the end of the year."
           ],
           "a": 1,
           "x": [
-            "Genel bilgi; duyguya karşılık vermez.",
+            "Konuşmacı üzüntü paylaşmak yerine genel bilgi veriyor.",
             "Doğru: üzüntü ifade eder; Ali'nin 'good memories' sözüyle uyumlu.",
-            "Konu dışı ve çelişkili.",
-            "Yalnızca bilgi, duygu yok.",
-            "Konuyu saptırır."
+            "Ali'nin 'good memories' duygusuyla çelişen soğuk tepki.",
+            "Konuyu otoparka kaydırır.",
+            "Ali'nin 'I know' cevabıyla uyuşmaz (haber doğrulanıyor)."
           ]
         },
         {
@@ -267,18 +267,18 @@
           ],
           "o": [
             "It's disappointing, but we can learn from our mistakes and do better next time.",
-            "Football is played in almost every country.",
-            "The referee was born in Brazil.",
-            "Tickets for the final were very expensive.",
-            "I don't like watching sport."
+            "It's disappointing, but we deserved to lose because the other team trained much harder than we did this year.",
+            "It's disappointing, so I think we should change the coach before the next season starts.",
+            "It's disappointing, but at least we have scored more goals than any other team in the league.",
+            "It's disappointing, and I doubt that training harder will make any difference to the results."
           ],
           "a": 0,
           "x": [
             "Doğru: teselli + gelecek planı; Paul'ün 'We'll train harder' cevabına bağlanır.",
-            "Genel bilgi.",
-            "Konu dışı.",
-            "Konu dışı.",
-            "Duyguya karşılık vermez."
+            "Paul'ün 'You're right. We'll train harder' cevabıyla uyuşmaz (suçlayıcı).",
+            "Antrenör değişimi önerisi, 'train harder' cevabına bağlanmaz.",
+            "Teselli var ama öğrenme/geliştirme önerisi yok.",
+            "Antrenmanın işe yaramayacağı iddiası Paul'ün cevabıyla çelişir."
           ]
         }
       ]
@@ -408,18 +408,18 @@
           ],
           "o": [
             "Not yet, I've only managed to read the first few pages. I'll finish it this evening.",
-            "Reports are usually written in formal English.",
-            "I sent you an email last week.",
-            "The report was written by a team of five people.",
-            "I don't like long meetings."
+            "Yes, I finished it this morning, and I have already sent you my comments by email.",
+            "Yes, I read it yesterday, and I think the second chapter should be rewritten before we send it to the manager.",
+            "No, I haven't, because I thought you wanted me to wait until the whole team had approved the budget.",
+            "Not exactly, but I've already forwarded it to my colleagues, who will give me their comments tomorrow."
           ],
           "a": 0,
           "x": [
             "Doğru: soruyu yanıtlar; Dan'in 'No problem' cevabına bağlanır.",
-            "Genel bilgi.",
-            "Yanıt değil.",
-            "Yanıt değil.",
-            "Konu dışı."
+            "'Okudum' diyor; Dan'in 'No problem, let me know when you've had a chance' cevabıyla çelişir.",
+            "'Okudum' diyor; Dan'in cevabıyla çelişir.",
+            "Gerekçe uyuşmuyor; Dan'in 'No problem' tepkisi bağlanmaz.",
+            "Başkalarına iletme, Dan'in 'go through it' ifadesiyle uyuşmaz."
           ]
         }
       ]
@@ -440,19 +440,19 @@
             "Laura: – Geçen ay galiba, güncellemeden sonra."
           ],
           "o": [
-            "I own three different phones.",
-            "Phones are made in several countries.",
-            "Batteries should be recycled.",
+            "How long have you been using this phone, and which applications do you usually keep open during the day?",
+            "Have you tried charging it with a different cable, or does it also shut down while it is connected to the charger?",
+            "Is it only this phone, or have your family members complained about the same problem with their devices?",
             "When did the problem start, and has the phone been dropped or updated recently?",
-            "Technicians usually study engineering."
+            "Did you buy it from an authorised shop, and do you still have the guarantee document with you?"
           ],
           "a": 3,
           "x": [
-            "Konu dışı.",
-            "Genel bilgi.",
-            "Genel bilgi.",
+            "Laura'nın 'Last month, after the update' cevabına bağlanmaz (zaman sorusu değil).",
+            "Şarj sorusu, 'last month' yanıtıyla örtüşmez.",
+            "Başkalarının cihazı konu dışı.",
             "Doğru: teşhis sorusu; Laura'nın 'Last month' cevabına bağlanır.",
-            "Konu dışı."
+            "Garanti sorusu, 'last month' yanıtıyla örtüşmez."
           ]
         },
         {
@@ -494,18 +494,18 @@
             "Yolcu: – Teşekkürler. O zaman bir sonraki istasyonda aktarma yapacağım."
           ],
           "o": [
-            "The next train leaves tomorrow morning.",
-            "Trains are faster than buses.",
-            "I have worked here for twelve years.",
-            "Tickets are sold at the main entrance.",
+            "Certainly. This train stops at every station on the line, including Riverside, in about ten minutes.",
+            "Yes, it does. Riverside is the next stop, so please remain seated until the doors open.",
+            "It doesn't stop there at the moment because the station is closed for repairs until the end of next month.",
+            "Certainly, but you have to buy a different ticket, which is available from the machine near the entrance.",
             "I'm afraid not. You'll need to take the local service from platform two."
           ],
           "a": 4,
           "x": [
-            "Yanıt değil.",
-            "Genel karşılaştırma.",
-            "Konu dışı.",
-            "Soruyu yanıtlamıyor.",
+            "Duruyor diyor; yolcunun 'aktarma yapacağım' kararıyla çelişir.",
+            "Duruyor diyor; aktarma kararıyla çelişir.",
+            "İstasyon kapalı; aktarma kararıyla uyuşmaz.",
+            "Duruyor diyor; aktarma kararıyla çelişir.",
             "Doğru: olumsuz yanıt + alternatif; yolcunun 'change at the next station' kararına bağlanır."
           ]
         },
@@ -521,19 +521,19 @@
             "Chloe: – İyi fikir. Bir şeyler ayarlamaya çalışacağım."
           ],
           "o": [
-            "I studied history when I was young.",
-            "Both subjects are taught in universities.",
+            "Why don't you ask your parents which career they would prefer, since they have known you for many years?",
+            "I suggest you choose engineering, because it is easier to find a well-paid job after graduation.",
             "Why not spend a day with a doctor and an engineer to see what their work is really like?",
-            "Engineers earn more than teachers.",
-            "You were always good at drawing."
+            "You should apply to both departments and wait for the results before taking any decision about it.",
+            "Both fields are demanding, so you may need to spend a few weeks reading more about each of them."
           ],
           "a": 2,
           "x": [
-            "Kendi geçmişi.",
-            "Genel bilgi; karar vermeye yardım etmez.",
+            "Chloe'nin 'I'll try to arrange something' cevabına bağlanmaz.",
+            "Mühendislik önerisi doğrudan, 'arrange' cevabıyla uyuşmaz.",
             "Doğru: somut öneri; 'I'll try to arrange something' cevabına bağlanır.",
-            "Genelleme; öneri değil.",
-            "Konu dışı."
+            "Başvuru önerisi 'arrange something' ile bağlanmaz.",
+            "Okuma önerisi 'arrange' ile bağlanmaz."
           ]
         },
         {
