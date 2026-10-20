@@ -5,6 +5,7 @@ import { notifyRouteChanged } from '../pwa/registerSW'
 import { useSyncStatus } from '../services/sync'
 import { useUserStore } from '../stores/user'
 import { isStudyPath } from '../services/studyMap'
+import { cleanPath, isSaved, labelFor, recordVisit, toggleSaved, useFavoritesVersion } from '../services/favorites'
 import { NotesDock } from './NotesDock'
 import styles from './Layout.module.css'
 
@@ -27,6 +28,15 @@ export function Layout() {
   useEffect(() => {
     notifyRouteChanged()
   }, [location.pathname])
+
+  // Sık kullanılanlar için ziyaret sayacı; ☆ bu sayfayı kaydeder
+  const activeUserId = activeUser?.id || 'user_ozgur'
+  useEffect(() => {
+    recordVisit(activeUserId, location.pathname)
+  }, [activeUserId, location.pathname])
+  useFavoritesVersion(activeUserId)
+  const herePath = cleanPath(location.pathname, location.search)
+  const hereSaved = isSaved(activeUserId, herePath)
 
   // Menü dışına tıklandığında kapat
   useEffect(() => {
@@ -73,6 +83,18 @@ export function Layout() {
         </nav>
 
         <div className={styles.headerRight}>
+          {herePath !== '/' && (
+            <button
+              type="button"
+              className={`${styles.syncBtn} ${hereSaved ? styles.starOn : ''}`}
+              onClick={() => toggleSaved(activeUserId, herePath)}
+              title={hereSaved ? 'Kaydedilenlerden çıkar' : `“${labelFor(herePath)}” sayfasını kaydet`}
+              aria-label={hereSaved ? 'Kaydedilenlerden çıkar' : 'Bu sayfayı kaydet'}
+              aria-pressed={hereSaved}
+            >
+              {hereSaved ? '★' : '☆'}
+            </button>
+          )}
           {/* Senkronizasyon butonu */}
           <button
             type="button"

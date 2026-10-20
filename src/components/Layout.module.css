@@ -383,3 +383,8 @@
     min-width: 0;
   }
 }
+
+.starOn {
+  color: var(--warning);
+  border-color: var(--warning);
+}

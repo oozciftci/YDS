@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { QuickLinks } from '../components/QuickLinks'
 import { STUDY_CATEGORIES } from '../services/studyMap'
 import styles from './StudyHub.module.css'
 
@@ -19,6 +20,8 @@ export function StudyHubPage() {
         <h1 className={styles.title}>Çalış</h1>
         <p className="muted" style={{ margin: 0 }}>Ne çalışmak istiyorsun? Bir kategori seç.</p>
       </header>
+
+      <QuickLinks showHint />
 
       <details className={styles.guide}>
         <summary>🧭 Yeni misin? Nereden başlayacağını gör</summary>

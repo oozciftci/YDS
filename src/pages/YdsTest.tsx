@@ -192,7 +192,17 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
         }}
       />
 
-      <QuestionCard key={q.no} bundle={bundle} q={q} choice={choice} revealed={revealed} onChoose={choose} ai={false}>
+      <QuestionCard
+        key={q.no}
+        bundle={bundle}
+        q={q}
+        choice={choice}
+        revealed={revealed}
+        onChoose={choose}
+        ai={false}
+        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
+        onNext={idx < questions.length - 1 ? () => setIdx(idx + 1) : undefined}
+      >
         <div className={styles.actions}>
           {!revealed ? (
             !quick && (

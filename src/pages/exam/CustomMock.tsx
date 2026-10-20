@@ -343,6 +343,8 @@ export function CustomMock() {
 
       <QuestionCard
         key={`${it.bundle.exam.id}-${it.q.no}`}
+        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
+        onNext={idx < items.length - 1 ? () => setIdx(idx + 1) : undefined}
         bundle={it.bundle}
         q={it.q}
         choice={choice}

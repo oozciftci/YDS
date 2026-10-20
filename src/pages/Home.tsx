@@ -14,6 +14,7 @@ import { summarizeBySection } from '../services/examProgress'
 import { getSection, isYokdil } from '../services/ydsSections'
 import { buildTargetPlan } from '../services/targetPlan'
 import { STUDY_CATEGORIES } from '../services/studyMap'
+import { QuickLinks } from '../components/QuickLinks'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
 
@@ -189,6 +190,8 @@ export function HomePage() {
           </div>
         </div>
       </header>
+
+      <QuickLinks />
 
       {/* 2. BUGÜNKÜ PLAN: tekrar + yeni kelime + (yerelde) soru */}
       {studyData === undefined ? (

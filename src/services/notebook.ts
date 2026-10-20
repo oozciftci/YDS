@@ -35,7 +35,9 @@ export function prettyExamId(id: string): string {
 
 const STATIC: Record<string, string> = {
   '/': 'Ana Sayfa',
-  '/study': 'Çalış',
+  '/calis': 'Çalış',
+  '/study': 'Kelime Çalış',
+  '/gece': 'Gece Modu',
   '/words': 'Kelimeler',
   '/stats': 'İstatistik',
   '/settings': 'Ayarlar',

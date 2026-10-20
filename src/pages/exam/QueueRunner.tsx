@@ -129,6 +129,9 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
         revealed={result !== null}
         onChoose={choose}
         subtitle={shortTitle(bundle.exam.title)}
+        onPrev={pos > 0 ? () => setPos(pos - 1) : undefined}
+        onNext={() => setPos(pos + 1)}
+        nextLabel={result === null ? 'Atla →' : 'Sonraki →'}
       >
         <div className={styles.actions}>
           {result === null ? (

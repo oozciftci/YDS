@@ -22,10 +22,15 @@ interface Props {
   children?: ReactNode
   /** Yapay zekâ açıklama kutusu gösterilsin mi (YDS TEST örneğinde kapalı). */
   ai?: boolean
+  /** Üstteki önceki/sonraki düğmeleri (undefined = o yönde soru yok). */
+  onPrev?: () => void
+  onNext?: () => void
+  nextLabel?: string
 }
 
 /** Bir YDS sorusunu (varsa paragrafıyla) gösterir: şıklar, çeviriler, kelime balonu, orijinal PDF sayfası. */
-export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = true, subtitle, children, ai = true }: Props) {
+export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = true, subtitle, children, ai = true, onPrev, onNext, nextLabel = 'Sonraki →' }: Props) {
+  const topNav = onPrev !== undefined || onNext !== undefined
   const { exam, tr } = bundle
   const passage = q.passage ? exam.passages.find((p) => p.id === q.passage) : undefined
   const section = sectionOf(q.no, exam.id)
@@ -68,12 +73,24 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
 
   return (
     <>
-      {assist && (
+      {(assist || topNav) && (
         <div className={styles.toolbar}>
-          <label className={styles.toggle}>
-            <input type="checkbox" checked={showAllTr} onChange={(e) => setShowAllTr(e.target.checked)} />
-            Tüm cümle çevirilerini aç
-          </label>
+          {assist && (
+            <label className={styles.toggle}>
+              <input type="checkbox" checked={showAllTr} onChange={(e) => setShowAllTr(e.target.checked)} />
+              Tüm cümle çevirilerini aç
+            </label>
+          )}
+          {topNav && (
+            <span className={styles.topNav}>
+              <button type="button" className="btn btn-ghost" disabled={!onPrev} onClick={onPrev}>
+                ← Önceki
+              </button>
+              <button type="button" className="btn btn-secondary" disabled={!onNext} onClick={onNext}>
+                {nextLabel}
+              </button>
+            </span>
+          )}
         </div>
       )}
 

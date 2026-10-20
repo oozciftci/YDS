@@ -379,6 +379,8 @@ export function MockExam() {
       <QuestionCard
         bundle={bundle}
         q={q}
+        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
+        onNext={idx < total - 1 ? () => setIdx(idx + 1) : undefined}
         choice={choice}
         revealed={review}
         assist={review}

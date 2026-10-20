@@ -63,6 +63,7 @@
 }
 
 .toolbar {
+  align-items: center;
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
@@ -1235,4 +1236,16 @@ h2 .listen {
 h2 .listen .rateSelect {
   padding: 0.1rem 0.3rem;
   font-size: 0.75rem;
+}
+
+/* Soru kartının üstündeki önceki/sonraki */
+.topNav {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.topNav :global(.btn) {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
 }

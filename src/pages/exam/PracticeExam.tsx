@@ -117,7 +117,15 @@ export function PracticeExam() {
         }}
       />
 
-      <QuestionCard bundle={bundle} q={q} choice={choice} revealed={revealed} onChoose={choose}>
+      <QuestionCard
+        bundle={bundle}
+        q={q}
+        choice={choice}
+        revealed={revealed}
+        onChoose={choose}
+        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
+        onNext={idx < total - 1 ? () => setIdx(idx + 1) : undefined}
+      >
         <div className={styles.actions}>
           {noKey ? (
             <span className="muted">Cevap anahtarı olmadığı için kontrol edilemiyor.</span>
