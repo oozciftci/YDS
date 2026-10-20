@@ -1,0 +1,636 @@
+{
+  "type": "irrelevant",
+  "sets": [
+    {
+      "id": "irrelevant-01",
+      "title": "Anlam Bütünlüğü Seti 1",
+      "qs": [
+        {
+          "s": [
+            "Bees play a vital role in the production of many of the foods we eat.",
+            "As they move from flower to flower, they carry pollen that allows plants to produce fruit and seeds.",
+            "Honey, which bees make from nectar, has been used as a natural sweetener for thousands of years.",
+            "Without bees, crops such as apples, almonds and blueberries would suffer serious losses.",
+            "For this reason, the decline of bee populations is a growing concern for farmers and scientists alike."
+          ],
+          "a": 2,
+          "t": [
+            "Arılar, yediğimiz birçok yiyeceğin üretiminde hayati rol oynar.",
+            "Çiçekten çiçeğe giderken bitkilerin meyve ve tohum üretmesini sağlayan polen taşırlar.",
+            "Arıların nektardan yaptığı bal binlerce yıldır doğal tatlandırıcı olarak kullanılmıştır.",
+            "Arılar olmasaydı elma, badem ve yaban mersini gibi ürünler ciddi kayıplar yaşardı.",
+            "Bu nedenle arı popülasyonlarındaki azalma hem çiftçiler hem de bilim insanları için artan bir endişedir."
+          ],
+          "x": [
+            "Konuya (arıların tozlaşmadaki rolü) uygun.",
+            "Tozlaşma sürecini açıklıyor; konuya uygun.",
+            "Doğru: balın kullanım tarihi, paragrafın 'tozlaşma ve tarım' akışından sapıyor.",
+            "Tozlaşmanın tarımsal önemi; konuya uygun.",
+            "Sonuç cümlesi; akışa uygun."
+          ]
+        },
+        {
+          "s": [
+            "Remote work has changed the way many companies operate.",
+            "Employees no longer need to spend hours commuting, which saves both time and money.",
+            "Many offices in city centres are built with glass walls and open spaces.",
+            "At the same time, some workers report feeling isolated because they rarely meet colleagues in person.",
+            "As a result, many firms now offer a mix of home and office working."
+          ],
+          "a": 2,
+          "t": [
+            "Uzaktan çalışma birçok şirketin işleyiş biçimini değiştirdi.",
+            "Çalışanların artık yolda saatler geçirmesi gerekmiyor; bu da hem zaman hem para tasarrufu sağlıyor.",
+            "Şehir merkezlerindeki birçok ofis cam duvarlar ve açık alanlarla inşa edilir.",
+            "Aynı zamanda bazı çalışanlar iş arkadaşlarıyla nadiren yüz yüze görüştükleri için yalnız hissettiklerini bildiriyor.",
+            "Sonuç olarak birçok şirket artık ev ve ofis çalışmasını bir arada sunuyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Uzaktan çalışmanın yararını anlatıyor.",
+            "Doğru: ofis mimarisi, uzaktan çalışma akışından sapıyor.",
+            "Olumsuz yönü anlatıyor; akışa uygun.",
+            "Sonuç cümlesi."
+          ]
+        },
+        {
+          "s": [
+            "The Great Wall of China was built over many centuries to protect the country from invasions.",
+            "Different dynasties extended and rebuilt it, so the wall is actually a series of connected walls.",
+            "Silk was one of the most valuable goods traded along the ancient Silk Road.",
+            "In some places, the wall passes through mountains so steep that it seems impossible to climb.",
+            "Today it is one of the most visited tourist attractions in the world."
+          ],
+          "a": 2,
+          "t": [
+            "Çin Seddi, ülkeyi istilalardan korumak için yüzyıllar boyunca inşa edildi.",
+            "Farklı hanedanlar onu genişletti ve yeniden inşa etti; bu yüzden sed aslında birbirine bağlı surlar dizisidir.",
+            "İpek, antik İpek Yolu boyunca ticareti yapılan en değerli mallardan biriydi.",
+            "Bazı yerlerde sed tırmanması imkânsız görünecek kadar dik dağlardan geçer.",
+            "Bugün dünyanın en çok ziyaret edilen turistik yerlerinden biridir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Surun yapısını anlatıyor.",
+            "Doğru: İpek ticareti, Çin Seddi konusundan sapıyor.",
+            "Surun coğrafyasını anlatıyor.",
+            "Surun bugünkü durumunu anlatıyor."
+          ]
+        },
+        {
+          "s": [
+            "Vitamin C is essential for the growth and repair of body tissues.",
+            "It also helps the body absorb iron from plant-based foods.",
+            "Many people believe that eating oranges is the only way to get enough of it.",
+            "Fresh fruit often tastes sweeter in summer than in winter.",
+            "In fact, peppers, broccoli and strawberries contain just as much vitamin C as oranges."
+          ],
+          "a": 3,
+          "t": [
+            "C vitamini vücut dokularının büyümesi ve onarımı için gereklidir.",
+            "Ayrıca vücudun bitkisel besinlerden demir emmesine yardımcı olur.",
+            "Birçok kişi yeterince C vitamini almanın tek yolunun portakal yemek olduğuna inanır.",
+            "Taze meyve yazın kışa göre genellikle daha tatlı olur.",
+            "Aslında biber, brokoli ve çilek de portakal kadar C vitamini içerir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "C vitamininin işlevi; konuya uygun.",
+            "Yanlış inanış; sonraki cümleyle bağlı.",
+            "Doğru: meyvenin tadı, C vitamini konusundan sapıyor.",
+            "İnanışı düzeltiyor; akışa uygun."
+          ]
+        },
+        {
+          "s": [
+            "Electric cars have become increasingly popular in recent years.",
+            "They produce no exhaust gases, which helps to reduce air pollution in large cities.",
+            "Many drivers worry, however, about the limited number of charging stations.",
+            "Horse racing has been a popular sport in Britain for centuries.",
+            "As more charging points are installed, these worries are expected to fade."
+          ],
+          "a": 3,
+          "t": [
+            "Elektrikli arabalar son yıllarda giderek popülerleşti.",
+            "Egzoz gazı üretmezler; bu da büyük şehirlerde hava kirliliğinin azaltılmasına yardımcı olur.",
+            "Ancak birçok sürücü şarj istasyonlarının sınırlı sayısı konusunda endişeli.",
+            "At yarışı yüzyıllardır İngiltere'de popüler bir spordur.",
+            "Daha fazla şarj noktası kuruldukça bu endişelerin silinmesi bekleniyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Yararını anlatıyor.",
+            "Sorunu anlatıyor.",
+            "Doğru: at yarışı, elektrikli arabalar konusundan tamamen sapıyor.",
+            "Çözümü anlatıyor."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "irrelevant-02",
+      "title": "Anlam Bütünlüğü Seti 2",
+      "qs": [
+        {
+          "s": [
+            "Sleep deprivation has serious effects on mental performance.",
+            "People who sleep too little find it harder to concentrate and often make careless mistakes.",
+            "Dreams are often connected to the memories and emotions of the previous day.",
+            "Over time, chronic lack of sleep can also weaken the immune system.",
+            "Experts therefore recommend that adults sleep between seven and nine hours a night."
+          ],
+          "a": 2,
+          "t": [
+            "Uyku yoksunluğunun zihinsel performans üzerinde ciddi etkileri vardır.",
+            "Çok az uyuyanlar dikkatini toplamakta zorlanır ve sık sık dikkatsiz hatalar yapar.",
+            "Rüyalar çoğu zaman bir önceki günün anıları ve duygularıyla bağlantılıdır.",
+            "Zamanla kronik uykusuzluk bağışıklık sistemini de zayıflatabilir.",
+            "Bu nedenle uzmanlar yetişkinlerin gecede yedi ile dokuz saat uyumasını öneriyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Uykusuzluğun etkisi.",
+            "Doğru: rüyaların içeriği, uykusuzluğun etkileri konusundan sapıyor.",
+            "Uykusuzluğun uzun vadeli etkisi.",
+            "Sonuç/tavsiye."
+          ]
+        },
+        {
+          "s": [
+            "Solar panels convert sunlight directly into electricity.",
+            "Their cost has fallen sharply over the past decade, making them affordable for ordinary households.",
+            "Wind turbines, in contrast, are usually installed in open areas with strong and steady winds.",
+            "The best football players in the world earn millions of euros every year.",
+            "Some countries now generate more than a quarter of their power from the sun."
+          ],
+          "a": 3,
+          "t": [
+            "Güneş panelleri güneş ışığını doğrudan elektriğe dönüştürür.",
+            "Maliyetleri son on yılda keskin biçimde düştü ve sıradan haneler için karşılanabilir hale geldi.",
+            "Buna karşılık rüzgâr türbinleri genellikle güçlü ve düzenli rüzgâr alan açık alanlara kurulur.",
+            "Dünyanın en iyi futbolcuları her yıl milyonlarca euro kazanır.",
+            "Bazı ülkeler artık enerjilerinin dörtte birinden fazlasını güneşten üretiyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Maliyeti anlatıyor.",
+            "Karşıt bir enerji türü; konuyla ilişkili.",
+            "Doğru: futbolcu maaşları enerji konusundan tamamen sapıyor.",
+            "Güneş enerjisi kullanımı."
+          ]
+        },
+        {
+          "s": [
+            "The Renaissance was a period of great cultural and artistic achievement in Europe.",
+            "It began in Italy in the fourteenth century and gradually spread to other countries.",
+            "Artists such as Leonardo da Vinci combined art with the study of science and anatomy.",
+            "The invention of the telephone transformed long-distance communication in the nineteenth century.",
+            "The printing press helped spread new ideas quickly across the continent."
+          ],
+          "a": 3,
+          "t": [
+            "Rönesans, Avrupa'da büyük kültürel ve sanatsal başarıların yaşandığı bir dönemdi.",
+            "On dördüncü yüzyılda İtalya'da başladı ve yavaş yavaş diğer ülkelere yayıldı.",
+            "Leonardo da Vinci gibi sanatçılar sanatı bilim ve anatomi çalışmasıyla birleştirdi.",
+            "Telefonun icadı on dokuzuncu yüzyılda uzun mesafe iletişimini dönüştürdü.",
+            "Matbaa yeni fikirlerin kıta genelinde hızla yayılmasına yardımcı oldu."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Başlangıç ve yayılma.",
+            "Dönemin sanatçıları.",
+            "Doğru: telefonun icadı farklı bir yüzyıl ve konu.",
+            "Dönemin yayılmasına katkı."
+          ]
+        },
+        {
+          "s": [
+            "Many species of birds migrate thousands of kilometres every year.",
+            "They rely on the position of the sun, the stars and the Earth's magnetic field to find their way.",
+            "Some birds, such as the Arctic tern, travel from one end of the planet to the other.",
+            "Cats are known for their ability to land on their feet when they fall.",
+            "Scientists track these journeys using tiny devices attached to the birds' legs."
+          ],
+          "a": 3,
+          "t": [
+            "Birçok kuş türü her yıl binlerce kilometre göç eder.",
+            "Yollarını bulmak için güneşin, yıldızların ve Dünya'nın manyetik alanının konumuna güvenirler.",
+            "Kuzey sumrusu gibi bazı kuşlar gezegenin bir ucundan diğerine seyahat eder.",
+            "Kediler düştüklerinde ayakları üzerine konma yetenekleriyle bilinir.",
+            "Bilim insanları bu yolculukları kuşların bacaklarına takılan küçük cihazlarla izliyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Yön bulma yöntemi.",
+            "Örnek göç.",
+            "Doğru: kedilerin düşme refleksi kuş göçü konusundan sapıyor.",
+            "Göçün izlenmesi."
+          ]
+        },
+        {
+          "s": [
+            "Inflation refers to a general rise in prices over time.",
+            "When inflation is high, each unit of money buys fewer goods and services.",
+            "Central banks often raise interest rates in order to bring inflation under control.",
+            "The Mediterranean climate is characterised by hot, dry summers and mild winters.",
+            "However, higher interest rates can also slow down economic growth."
+          ],
+          "a": 3,
+          "t": [
+            "Enflasyon, fiyatların zaman içinde genel olarak yükselmesini ifade eder.",
+            "Enflasyon yüksek olduğunda her para birimi daha az mal ve hizmet satın alır.",
+            "Merkez bankaları enflasyonu kontrol altına almak için sıklıkla faiz oranlarını artırır.",
+            "Akdeniz iklimi sıcak, kurak yazlar ve ılık kışlarla karakterizedir.",
+            "Ancak yüksek faiz oranları ekonomik büyümeyi de yavaşlatabilir."
+          ],
+          "x": [
+            "Konuyu tanımlıyor.",
+            "Etkisini anlatıyor.",
+            "Çözüm yöntemi.",
+            "Doğru: iklim bilgisi enflasyon konusundan sapıyor.",
+            "Yöntemin sakıncası."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "irrelevant-03",
+      "title": "Anlam Bütünlüğü Seti 3",
+      "qs": [
+        {
+          "s": [
+            "Marine plastic pollution threatens ocean ecosystems worldwide.",
+            "Turtles often mistake floating plastic bags for jellyfish and swallow them.",
+            "Many beaches attract visitors who enjoy swimming and sunbathing.",
+            "Over time, large pieces of plastic break down into tiny fragments that enter the food chain.",
+            "Reducing the use of single-use plastics is therefore an important step."
+          ],
+          "a": 2,
+          "t": [
+            "Deniz plastik kirliliği dünya genelinde okyanus ekosistemlerini tehdit eder.",
+            "Kaplumbağalar çoğu zaman yüzen plastik poşetleri denizanası sanıp yutar.",
+            "Birçok plaj yüzmeyi ve güneşlenmeyi seven ziyaretçileri çeker.",
+            "Zamanla büyük plastik parçaları besin zincirine giren minik parçacıklara ayrışır.",
+            "Bu nedenle tek kullanımlık plastiklerin kullanımını azaltmak önemli bir adımdır."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Plastiğin etkisinin örneği.",
+            "Doğru: plaj turizmi, plastik kirliliği akışından sapıyor.",
+            "Plastiğin etkisinin devamı.",
+            "Sonuç/çözüm."
+          ]
+        },
+        {
+          "s": [
+            "Languages change continuously as new generations adopt new words and expressions.",
+            "Technology, in particular, has introduced many new terms into everyday speech.",
+            "Mount Everest is the highest mountain above sea level in the world.",
+            "At the same time, some words fall out of use and eventually disappear.",
+            "Linguists study these changes in order to understand how societies develop."
+          ],
+          "a": 2,
+          "t": [
+            "Yeni nesiller yeni sözcükleri ve ifadeleri benimsedikçe diller sürekli değişir.",
+            "Özellikle teknoloji günlük konuşmaya birçok yeni terim kazandırmıştır.",
+            "Everest Dağı, dünyada deniz seviyesinden en yüksek dağdır.",
+            "Aynı zamanda bazı sözcükler kullanımdan düşer ve sonunda kaybolur.",
+            "Dilbilimciler toplumların nasıl geliştiğini anlamak için bu değişimleri inceler."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Yeni terimlerin kaynağı.",
+            "Doğru: Everest bilgisi dilin değişimi konusundan sapıyor.",
+            "Değişimin diğer yüzü.",
+            "Araştırma amacı."
+          ]
+        },
+        {
+          "s": [
+            "Regular exercise has many benefits for both body and mind.",
+            "It strengthens the heart and muscles and helps maintain a healthy weight.",
+            "Studies also show that physical activity can reduce stress and improve mood.",
+            "The pyramids of Giza were built more than four thousand years ago.",
+            "Even a thirty-minute walk each day can make a significant difference."
+          ],
+          "a": 3,
+          "t": [
+            "Düzenli egzersizin hem beden hem zihin için birçok yararı vardır.",
+            "Kalbi ve kasları güçlendirir ve sağlıklı kiloyu korumaya yardımcı olur.",
+            "Çalışmalar fiziksel aktivitenin stresi azaltabileceğini ve ruh halini iyileştirebileceğini de gösteriyor.",
+            "Gize piramitleri dört bin yıldan uzun süre önce inşa edildi.",
+            "Günde otuz dakikalık bir yürüyüş bile belirgin bir fark yaratabilir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Bedensel yararı.",
+            "Zihinsel yararı.",
+            "Doğru: piramitlerin yapımı egzersiz konusundan sapıyor.",
+            "Sonuç/öneri."
+          ]
+        },
+        {
+          "s": [
+            "Glass is made by heating sand at very high temperatures.",
+            "When it cools, it becomes hard and transparent, which makes it ideal for windows.",
+            "It can also be recycled again and again without losing its quality.",
+            "Mozart began composing music at the age of five.",
+            "Because of this, using recycled glass saves both energy and raw materials."
+          ],
+          "a": 3,
+          "t": [
+            "Cam, kumun çok yüksek sıcaklıklarda ısıtılmasıyla yapılır.",
+            "Soğuduğunda sert ve saydam hale gelir; bu da onu pencereler için ideal kılar.",
+            "Ayrıca kalitesini kaybetmeden tekrar tekrar geri dönüştürülebilir.",
+            "Mozart beş yaşında müzik bestelemeye başladı.",
+            "Bu nedenle geri dönüştürülmüş cam kullanmak hem enerji hem hammadde tasarrufu sağlar."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Özelliği.",
+            "Geri dönüşüm özelliği.",
+            "Doğru: Mozart camla ilgisiz.",
+            "Sonuç."
+          ]
+        },
+        {
+          "s": [
+            "The invention of the internet has transformed how people access information.",
+            "Students can now find books, articles and lectures from around the world within seconds.",
+            "However, not all information online is reliable, so users must learn to check their sources.",
+            "Giraffes are the tallest land animals and can reach leaves that other animals cannot.",
+            "Teachers therefore increasingly include digital literacy in their lessons."
+          ],
+          "a": 3,
+          "t": [
+            "İnternetin icadı insanların bilgiye ulaşma biçimini dönüştürdü.",
+            "Öğrenciler artık dünyanın dört bir yanından kitap, makale ve dersleri saniyeler içinde bulabiliyor.",
+            "Ancak çevrim içi tüm bilgiler güvenilir değildir; bu nedenle kullanıcılar kaynaklarını kontrol etmeyi öğrenmeli.",
+            "Zürafalar en uzun kara hayvanlarıdır ve diğer hayvanların ulaşamadığı yapraklara ulaşabilir.",
+            "Bu nedenle öğretmenler derslerine giderek dijital okuryazarlığı ekliyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Yararı.",
+            "Sakıncası.",
+            "Doğru: zürafalar internetle ilgisiz.",
+            "Sonuç."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "irrelevant-04",
+      "title": "Anlam Bütünlüğü Seti 4",
+      "qs": [
+        {
+          "s": [
+            "Volunteering benefits not only the community but also the volunteers themselves.",
+            "People who help others often report feeling happier and more connected to their neighbours.",
+            "Chess is a board game that requires careful planning and patience.",
+            "Volunteers can also gain new skills that improve their chances of finding a job.",
+            "For these reasons, many schools encourage students to take part in community projects."
+          ],
+          "a": 2,
+          "t": [
+            "Gönüllülük yalnızca topluma değil gönüllülerin kendisine de yarar sağlar.",
+            "Başkalarına yardım edenler çoğu zaman daha mutlu olduklarını ve komşularıyla daha bağlı hissettiklerini bildirir.",
+            "Satranç, dikkatli planlama ve sabır gerektiren bir masa oyunudur.",
+            "Gönüllüler ayrıca iş bulma şanslarını artıran yeni beceriler kazanabilir.",
+            "Bu nedenlerle birçok okul öğrencileri toplum projelerine katılmaya teşvik ediyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Duygusal yarar.",
+            "Doğru: satranç gönüllülükle ilgisiz.",
+            "Mesleki yarar.",
+            "Sonuç."
+          ]
+        },
+        {
+          "s": [
+            "Earthquakes occur when large blocks of rock beneath the surface suddenly shift.",
+            "Most of them take place along the edges of tectonic plates, such as around the Pacific Ocean.",
+            "Tea is the most widely consumed drink in the world after water.",
+            "Buildings in earthquake zones must therefore be designed to withstand strong shaking.",
+            "Modern warning systems can give people a few precious seconds to take cover."
+          ],
+          "a": 2,
+          "t": [
+            "Depremler yüzeyin altındaki büyük kaya bloklarının aniden kaymasıyla meydana gelir.",
+            "Çoğu, Pasifik Okyanusu çevresi gibi tektonik plakaların kenarlarında gerçekleşir.",
+            "Çay, sudan sonra dünyada en çok tüketilen içecektir.",
+            "Bu nedenle deprem bölgelerindeki binalar güçlü sarsıntılara dayanacak şekilde tasarlanmalıdır.",
+            "Modern uyarı sistemleri insanlara siper almak için birkaç değerli saniye verebilir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Depremlerin yeri.",
+            "Doğru: çay tüketimi depremle ilgisiz.",
+            "Önlem.",
+            "Önlem."
+          ]
+        },
+        {
+          "s": [
+            "The first modern Olympic Games were held in Athens in 1896.",
+            "Only fourteen nations took part, and all the athletes were men.",
+            "Penguins live mostly in the Southern Hemisphere and cannot fly.",
+            "Since then, the Games have grown into the largest sporting event in the world.",
+            "Women were first allowed to compete at the Games in 1900."
+          ],
+          "a": 2,
+          "t": [
+            "İlk modern Olimpiyat Oyunları 1896'da Atina'da düzenlendi.",
+            "Yalnızca on dört ülke katıldı ve tüm sporcular erkekti.",
+            "Penguenler çoğunlukla Güney Yarımküre'de yaşar ve uçamaz.",
+            "O zamandan beri Oyunlar dünyanın en büyük spor etkinliğine dönüştü.",
+            "Kadınlara Oyunlarda ilk kez 1900'de yarışma izni verildi."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "İlk oyunların özelliği.",
+            "Doğru: penguenler Olimpiyatlarla ilgisiz.",
+            "Oyunların gelişimi.",
+            "Kadınların katılımı."
+          ]
+        },
+        {
+          "s": [
+            "Antarctica is the coldest and driest continent on Earth.",
+            "It is covered by an ice sheet that is, in places, more than four kilometres thick.",
+            "Pizza is one of the most popular dishes in Italy.",
+            "No people live there permanently, although scientists stay at research stations.",
+            "The ice contains valuable information about the climate of the past."
+          ],
+          "a": 2,
+          "t": [
+            "Antarktika, Dünya'nın en soğuk ve en kurak kıtasıdır.",
+            "Yer yer dört kilometreden kalın bir buz tabakasıyla kaplıdır.",
+            "Pizza, İtalya'nın en popüler yemeklerinden biridir.",
+            "Orada kimse kalıcı olarak yaşamaz, ancak bilim insanları araştırma istasyonlarında kalır.",
+            "Buz geçmişin iklimi hakkında değerli bilgiler içerir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Buz tabakası.",
+            "Doğru: pizza Antarktika ile ilgisiz.",
+            "Yerleşim.",
+            "Buzun bilimsel değeri."
+          ]
+        },
+        {
+          "s": [
+            "Advertising influences what people buy, often without their noticing it.",
+            "Companies use colours, music and famous faces to make their products attractive.",
+            "The Amazon River is the largest river in the world by volume of water.",
+            "Children are especially affected because they cannot always tell the difference between information and persuasion.",
+            "Many countries therefore limit advertising aimed at young audiences."
+          ],
+          "a": 2,
+          "t": [
+            "Reklam, insanların çoğu zaman fark etmeden ne satın alacağını etkiler.",
+            "Şirketler ürünlerini çekici kılmak için renkler, müzik ve ünlü yüzler kullanır.",
+            "Amazon Nehri, su hacmi bakımından dünyanın en büyük nehridir.",
+            "Çocuklar bilgi ile ikna arasındaki farkı her zaman ayırt edemediği için özellikle etkilenir.",
+            "Bu nedenle birçok ülke genç kitleye yönelik reklamları sınırlıyor."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Yöntemler.",
+            "Doğru: Amazon Nehri reklamla ilgisiz.",
+            "Etki grubu.",
+            "Sonuç."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "irrelevant-05",
+      "title": "Anlam Bütünlüğü Seti 5",
+      "qs": [
+        {
+          "s": [
+            "Many cities are introducing congestion charges to reduce traffic in their centres.",
+            "Drivers must pay a fee when they enter the zone during busy hours.",
+            "Honey never spoils if it is stored in a sealed container.",
+            "As a result, more people choose to use buses, trains or bicycles.",
+            "Air quality in these areas has improved noticeably."
+          ],
+          "a": 2,
+          "t": [
+            "Birçok şehir merkezlerindeki trafiği azaltmak için sıkışıklık ücreti uyguluyor.",
+            "Sürücüler yoğun saatlerde bölgeye girerken ücret ödemek zorunda.",
+            "Bal, kapalı bir kapta saklanırsa asla bozulmaz.",
+            "Sonuç olarak daha fazla insan otobüs, tren veya bisiklet kullanmayı seçiyor.",
+            "Bu bölgelerdeki hava kalitesi gözle görülür biçimde iyileşti."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Uygulama.",
+            "Doğru: balın saklanması trafikle ilgisiz.",
+            "Sonuç.",
+            "Sonuç."
+          ]
+        },
+        {
+          "s": [
+            "The human heart beats about one hundred thousand times a day.",
+            "It pumps blood through a network of vessels that would stretch for thousands of kilometres.",
+            "Cheese is made in hundreds of varieties around the world.",
+            "A healthy diet and regular exercise can keep the heart strong.",
+            "Smoking, on the other hand, greatly increases the risk of heart disease."
+          ],
+          "a": 2,
+          "t": [
+            "İnsan kalbi günde yaklaşık yüz bin kez atar.",
+            "Kanı, binlerce kilometre uzunluğunda olabilecek bir damar ağı boyunca pompalar.",
+            "Peynir dünyada yüzlerce çeşit olarak üretilir.",
+            "Sağlıklı beslenme ve düzenli egzersiz kalbi güçlü tutabilir.",
+            "Öte yandan sigara kalp hastalığı riskini büyük ölçüde artırır."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Kalbin işlevi.",
+            "Doğru: peynir çeşitleri kalple ilgisiz.",
+            "Koruyucu etken.",
+            "Zararlı etken."
+          ]
+        },
+        {
+          "s": [
+            "Wikipedia is a free online encyclopedia written by volunteers from around the world.",
+            "Anyone can edit most of its articles, which means that errors are often corrected quickly.",
+            "Tigers are the largest members of the cat family.",
+            "Nevertheless, teachers advise students to check important facts in other sources.",
+            "Millions of people consult it every day."
+          ],
+          "a": 2,
+          "t": [
+            "Vikipedi, dünyanın dört bir yanındaki gönüllüler tarafından yazılan ücretsiz bir çevrim içi ansiklopedidir.",
+            "Maddelerinin çoğunu herkes düzenleyebilir; bu da hataların çoğu zaman hızla düzeltilmesi demektir.",
+            "Kaplanlar kedigillerin en büyük üyeleridir.",
+            "Yine de öğretmenler öğrencilere önemli bilgileri başka kaynaklarda da kontrol etmelerini öğütler.",
+            "Her gün milyonlarca kişi ona başvurur."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Düzenleme özelliği.",
+            "Doğru: kaplanlar Vikipedi ile ilgisiz.",
+            "Uyarı.",
+            "Kullanım."
+          ]
+        },
+        {
+          "s": [
+            "Deserts cover about one fifth of the Earth's land surface.",
+            "They receive very little rainfall, usually less than 250 millimetres a year.",
+            "The violin has four strings and is played with a bow.",
+            "Despite the harsh conditions, many plants and animals have adapted to survive there.",
+            "Camels, for example, can go for days without drinking water."
+          ],
+          "a": 2,
+          "t": [
+            "Çöller Dünya'nın kara yüzeyinin yaklaşık beşte birini kaplar.",
+            "Çok az yağış alırlar; genellikle yılda 250 milimetreden az.",
+            "Kemanın dört teli vardır ve yayla çalınır.",
+            "Zorlu koşullara rağmen birçok bitki ve hayvan orada hayatta kalmaya uyum sağlamıştır.",
+            "Örneğin develer günlerce su içmeden kalabilir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "İklim özelliği.",
+            "Doğru: keman çölle ilgisiz.",
+            "Uyum.",
+            "Uyum örneği."
+          ]
+        },
+        {
+          "s": [
+            "Social media has changed the way news spreads around the world.",
+            "A single post can be shared by thousands of people within a few minutes.",
+            "Mercury is the planet closest to the Sun.",
+            "Unfortunately, false stories often travel as fast as true ones.",
+            "For this reason, readers are advised to verify information before sharing it."
+          ],
+          "a": 2,
+          "t": [
+            "Sosyal medya haberlerin dünyada yayılma biçimini değiştirdi.",
+            "Tek bir gönderi birkaç dakika içinde binlerce kişi tarafından paylaşılabilir.",
+            "Merkür, Güneş'e en yakın gezegendir.",
+            "Ne yazık ki yalan haberler çoğu zaman doğrular kadar hızlı yayılır.",
+            "Bu nedenle okuyucuların paylaşmadan önce bilgiyi doğrulamaları önerilir."
+          ],
+          "x": [
+            "Konuyu tanıtıyor.",
+            "Yayılma hızı.",
+            "Doğru: Merkür sosyal medyayla ilgisiz.",
+            "Sakınca.",
+            "Sonuç/tavsiye."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}

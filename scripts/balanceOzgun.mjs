@@ -14,7 +14,7 @@ for (const f of fs.readdirSync(DIR).filter((x) => x.endsWith('.json'))) {
   let k = 0
   for (const set of data.sets)
     for (const q of set.qs) {
-      if (!q.o.length) continue
+      if (!q.o?.length) continue
       const to = ORDER[k++ % ORDER.length]
       const sw = (arr) => {
         if (!arr) return

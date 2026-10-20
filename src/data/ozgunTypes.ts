@@ -6,7 +6,7 @@ export interface OzgunQ {
   /** Soru gövdesi. Dizi ise (diyalog, paragraf, anlam bütünlüğü) her eleman bir cümle/satırdır. Boşluk: ---- */
   s?: string | string[]
   /** Şıklar (A-E sırasıyla, 5 adet). Anlam bütünlüğünde boş bırakılırsa I-V olur. */
-  o: string[]
+  o?: string[]
   /** Doğru şıkkın sırası (0 = A). */
   a: number
   /** Gövdenin Türkçesi (s ile aynı biçimde). */

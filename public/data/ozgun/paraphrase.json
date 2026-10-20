@@ -1,0 +1,416 @@
+{
+  "type": "paraphrase",
+  "sets": [
+    {
+      "id": "paraphrase-01",
+      "title": "Yakın Anlam Seti 1",
+      "qs": [
+        {
+          "s": "Because the road was blocked by fallen trees, the buses could not reach the village.",
+          "o": [
+            "Fallen trees blocked the road after the buses had reached the village.",
+            "The buses reached the village although fallen trees blocked the road.",
+            "The buses could not reach the village as fallen trees were blocking the road.",
+            "The village could be reached only by buses when trees had fallen.",
+            "The road was blocked because the buses could not reach the village."
+          ],
+          "a": 2,
+          "t": "Yol devrilen ağaçlarla kapandığı için otobüsler köye ulaşamadı.",
+          "x": [
+            "Sıra ters.",
+            "'Reached' sonucu ters.",
+            "Doğru: neden (ağaçlar yolu kapattı) ve sonuç (otobüsler ulaşamadı) korunmuş.",
+            "Anlam değişmiş.",
+            "Neden-sonuç ters."
+          ]
+        },
+        {
+          "s": "Unless the company improves its customer service, it will lose more clients.",
+          "o": [
+            "If the company improves its customer service, it will lose more clients.",
+            "The company will improve its service only after it loses more clients.",
+            "The company has improved its customer service, so it will lose clients.",
+            "Without losing clients, the company will improve its service.",
+            "The company will lose more clients if it does not improve its customer service."
+          ],
+          "a": 4,
+          "t": "Şirket müşteri hizmetini geliştirmezse daha fazla müşteri kaybedecek.",
+          "x": [
+            "Anlam ters.",
+            "Sıra yanlış.",
+            "Gerçek durum yanlış aktarılmış.",
+            "Anlam kaymış.",
+            "Doğru: 'unless' = if ... not."
+          ]
+        },
+        {
+          "s": "The film was so long that many viewers left before the end.",
+          "o": [
+            "Many viewers left the film, which was not long enough.",
+            "Many viewers left before the end because the film was extremely long.",
+            "The film ended before many viewers left.",
+            "The film was long, but viewers stayed until the end.",
+            "Viewers left early so that the film would be shorter."
+          ],
+          "a": 1,
+          "t": "Film o kadar uzundu ki birçok izleyici bitmeden salondan ayrıldı.",
+          "x": [
+            "Anlam ters (long enough).",
+            "Doğru: 'so ... that' sonuç ilişkisi korunmuş.",
+            "Sıra ters.",
+            "Sonuç ters.",
+            "Amaç yanlış."
+          ]
+        },
+        {
+          "s": "It is likely that the committee will approve the plan.",
+          "o": [
+            "The committee is unlikely to approve the plan.",
+            "The committee has already approved the plan.",
+            "The plan will be approved unless the committee agrees.",
+            "The committee will probably approve the plan.",
+            "The committee should approve the plan."
+          ],
+          "a": 3,
+          "t": "Komitenin planı onaylaması muhtemeldir.",
+          "x": [
+            "Anlam ters.",
+            "Zaman yanlış (zaten onayladı).",
+            "Koşul anlamı yanlış.",
+            "Doğru: likely = probably.",
+            "Zorunluluk anlamı eklenmiş."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paraphrase-02",
+      "title": "Yakın Anlam Seti 2",
+      "qs": [
+        {
+          "s": "Not having studied enough, she failed the exam.",
+          "o": [
+            "She failed the exam because she had not studied enough.",
+            "She studied enough, but she still failed the exam.",
+            "She did not fail the exam although she had not studied.",
+            "She failed the exam so that she could study more.",
+            "She would have failed the exam if she had studied enough."
+          ],
+          "a": 0,
+          "t": "Yeterince çalışmadığı için sınavda başarısız oldu.",
+          "x": [
+            "Doğru: neden-sonuç korunmuş.",
+            "'Studied enough' ters.",
+            "Sonuç ters.",
+            "Amaç yanlış.",
+            "Koşul anlamı değişmiş."
+          ]
+        },
+        {
+          "s": "Despite the high prices, the restaurant is always crowded.",
+          "o": [
+            "The restaurant is always crowded because its prices are high.",
+            "The restaurant's prices are high as it is always crowded.",
+            "The restaurant is crowded only when the prices are low.",
+            "Although the prices are high, the restaurant is always crowded.",
+            "The prices are high unless the restaurant is crowded."
+          ],
+          "a": 3,
+          "t": "Yüksek fiyatlara rağmen restoran her zaman kalabalıktır.",
+          "x": [
+            "Neden yanlış (zıtlık var).",
+            "Neden-sonuç ters.",
+            "Koşul anlamı yanlış.",
+            "Doğru: 'Despite' = although (zıtlık).",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "She is the best translator I have ever worked with.",
+          "o": [
+            "I have worked with better translators than her.",
+            "No other translator I have worked with is as good as she is.",
+            "She is one of many translators I have worked with.",
+            "I have never worked with a translator.",
+            "She has worked with the best translators."
+          ],
+          "a": 1,
+          "t": "O, birlikte çalıştığım en iyi çevirmendir.",
+          "x": [
+            "Anlam ters.",
+            "Doğru: üstünlük = no other ... as good as.",
+            "Anlam zayıflamış.",
+            "Anlam yanlış.",
+            "Özne-nesne karışmış."
+          ]
+        },
+        {
+          "s": "The meeting was postponed because the manager fell ill.",
+          "o": [
+            "The manager fell ill because the meeting was postponed.",
+            "The meeting was held although the manager was ill.",
+            "The meeting was cancelled since the manager was late.",
+            "The manager postponed the meeting before falling ill.",
+            "The manager's illness caused the meeting to be postponed."
+          ],
+          "a": 4,
+          "t": "Müdür hastalandığı için toplantı ertelendi.",
+          "x": [
+            "Neden-sonuç ters.",
+            "Toplantı yapıldı denmiş; ters.",
+            "İptal ve geç kalma bilgisi eklenmiş.",
+            "Sıra yanlış.",
+            "Doğru: neden-sonuç korunmuş."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paraphrase-03",
+      "title": "Yakın Anlam Seti 3",
+      "qs": [
+        {
+          "s": "No sooner had the lecture started than the power went out.",
+          "o": [
+            "The power did not go out until the lecture ended.",
+            "The lecture started after the power went out.",
+            "The power went out as soon as the lecture started.",
+            "The lecture was cancelled because of the power cut.",
+            "The power went out although the lecture had not started."
+          ],
+          "a": 2,
+          "t": "Ders başlar başlamaz elektrikler kesildi.",
+          "x": [
+            "Zaman ters.",
+            "Sıra ters.",
+            "Doğru: 'No sooner ... than' = as soon as.",
+            "İptal bilgisi eklenmiş.",
+            "Zaman yanlış."
+          ]
+        },
+        {
+          "s": "Everyone except Tom attended the ceremony.",
+          "o": [
+            "Tom was the only one who did not attend the ceremony.",
+            "Tom attended the ceremony, but nobody else did.",
+            "Tom was the only person who attended the ceremony.",
+            "Everyone including Tom attended the ceremony.",
+            "Tom and the others did not attend the ceremony."
+          ],
+          "a": 0,
+          "t": "Tom dışında herkes törene katıldı.",
+          "x": [
+            "Doğru: 'except Tom' = Tom hariç.",
+            "Anlam ters.",
+            "Anlam ters.",
+            "'Including' ters.",
+            "Anlam yanlış."
+          ]
+        },
+        {
+          "s": "He is too inexperienced to manage such a large team.",
+          "o": [
+            "He is experienced enough to manage such a large team.",
+            "He manages a large team although he is inexperienced.",
+            "He cannot manage such a large team because he lacks experience.",
+            "Such a large team is too inexperienced for him.",
+            "He has managed large teams for many years."
+          ],
+          "a": 2,
+          "t": "Bu kadar büyük bir ekibi yönetmek için fazla deneyimsiz.",
+          "x": [
+            "Anlam ters.",
+            "Anlam ters.",
+            "Doğru: too ... to = can't ... because.",
+            "Özne-nesne karışmış.",
+            "Anlam ters."
+          ]
+        },
+        {
+          "s": "The number of students applying to the programme has doubled since last year.",
+          "o": [
+            "Students applying to the programme have been doubled by the university.",
+            "The programme has half as many applicants as last year.",
+            "Last year's applicants doubled the programme's capacity.",
+            "The programme has accepted twice as many students.",
+            "There are twice as many applicants to the programme as there were last year."
+          ],
+          "a": 4,
+          "t": "Programa başvuran öğrenci sayısı geçen yıldan beri iki katına çıktı.",
+          "x": [
+            "Anlam kaymış.",
+            "Anlam ters.",
+            "Kapasite bilgisi eklenmiş.",
+            "Kabul bilgisi eklenmiş.",
+            "Doğru: doubled = twice as many."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paraphrase-04",
+      "title": "Yakın Anlam Seti 4",
+      "qs": [
+        {
+          "s": "Had the warnings been taken seriously, the disaster could have been avoided.",
+          "o": [
+            "The warnings were taken seriously, so the disaster was avoided.",
+            "The disaster happened because the warnings were not taken seriously.",
+            "The disaster could not be avoided although the warnings were taken seriously.",
+            "The warnings caused the disaster to be taken seriously.",
+            "The disaster could be avoided if the warnings are taken seriously."
+          ],
+          "a": 1,
+          "t": "Uyarılar ciddiye alınsaydı felaket önlenebilirdi.",
+          "x": [
+            "Anlam ters.",
+            "Doğru: gerçekleşmeyen koşul → uyarılar ciddiye alınmadı, felaket oldu.",
+            "Anlam ters.",
+            "Özne-nesne karışmış.",
+            "Zaman yanlış (şimdiki koşul)."
+          ]
+        },
+        {
+          "s": "She succeeded in spite of the lack of financial support.",
+          "o": [
+            "She succeeded because of financial support.",
+            "She failed due to a lack of financial support.",
+            "She lacked financial support so she succeeded.",
+            "Although she lacked financial support, she succeeded.",
+            "She succeeded without needing anyone."
+          ],
+          "a": 3,
+          "t": "Mali destek eksikliğine rağmen başarılı oldu.",
+          "x": [
+            "Anlam ters.",
+            "Sonuç ters.",
+            "Neden-sonuç yanlış.",
+            "Doğru: in spite of = although.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "The more he practised, the better he played.",
+          "o": [
+            "He played better as he practised more.",
+            "He practised less because he played better.",
+            "He played better so he practised more.",
+            "He practised more but played worse.",
+            "He played better than he practised."
+          ],
+          "a": 0,
+          "t": "Ne kadar çalışırsa o kadar iyi çaldı.",
+          "x": [
+            "Doğru: orantılı artış.",
+            "Anlam ters.",
+            "Neden-sonuç ters.",
+            "Anlam ters.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "Only when the results were announced did the students realise their mistake.",
+          "o": [
+            "The students realised their mistake before the results were announced.",
+            "The students announced the results after realising their mistake.",
+            "The results were announced when students realised their mistake.",
+            "The students did not realise their mistake until the results were announced.",
+            "The students made mistakes because the results were announced."
+          ],
+          "a": 3,
+          "t": "Öğrenciler hatalarını ancak sonuçlar açıklandığında fark etti.",
+          "x": [
+            "Zaman ters.",
+            "Özne yanlış.",
+            "Sıra ters.",
+            "Doğru: Only when = not until.",
+            "Neden-sonuç yanlış."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paraphrase-05",
+      "title": "Yakın Anlam Seti 5",
+      "qs": [
+        {
+          "s": "It is said that the manuscript was written in the twelfth century.",
+          "o": [
+            "People say that the manuscript will be written in the twelfth century.",
+            "The manuscript is said to have been written in the twelfth century.",
+            "The manuscript says that it was written in the twelfth century.",
+            "It was the twelfth century when the manuscript was said.",
+            "Somebody wrote that the twelfth century was the manuscript."
+          ],
+          "a": 1,
+          "t": "Elyazmasının on ikinci yüzyılda yazıldığı söylenir.",
+          "x": [
+            "Zaman yanlış (gelecek).",
+            "Doğru: it is said that ... = is said to have been.",
+            "Özne yanlış.",
+            "Cümle bozuk.",
+            "Cümle bozuk."
+          ]
+        },
+        {
+          "s": "She never goes to bed without checking her emails.",
+          "o": [
+            "She goes to bed before checking her emails.",
+            "She does not go to bed unless she has slept.",
+            "She sometimes checks her emails in bed.",
+            "She checks her emails because she cannot sleep.",
+            "She always checks her emails before going to bed."
+          ],
+          "a": 4,
+          "t": "E-postalarını kontrol etmeden asla yatmaz.",
+          "x": [
+            "Anlam ters.",
+            "Anlam kaymış.",
+            "Sıklık yanlış.",
+            "Neden yanlış.",
+            "Doğru: never ... without = always ... before."
+          ]
+        },
+        {
+          "s": "The exhibition attracted more visitors than the organisers had expected.",
+          "o": [
+            "The organisers expected more visitors than the exhibition attracted.",
+            "The exhibition attracted fewer visitors than expected.",
+            "The number of visitors exceeded the organisers' expectations.",
+            "The organisers expected as many visitors as came.",
+            "The visitors expected more from the exhibition."
+          ],
+          "a": 2,
+          "t": "Sergi, organizatörlerin beklediğinden daha fazla ziyaretçi çekti.",
+          "x": [
+            "Anlam ters.",
+            "Anlam ters.",
+            "Doğru: more than expected = exceeded expectations.",
+            "Anlam kaymış (eşitlik).",
+            "Özne kaymış."
+          ]
+        },
+        {
+          "s": "Few of the students understood the lecture.",
+          "o": [
+            "Almost none of the students understood the lecture.",
+            "Most of the students understood the lecture.",
+            "All the students understood the lecture well.",
+            "A few students were absent from the lecture.",
+            "The lecture was understood by many students."
+          ],
+          "a": 0,
+          "t": "Öğrencilerin çok azı dersi anladı.",
+          "x": [
+            "Doğru: few = almost none.",
+            "Anlam ters.",
+            "Anlam ters.",
+            "Devamsızlık bilgisi eklenmiş.",
+            "Anlam ters."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}

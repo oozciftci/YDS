@@ -1,0 +1,372 @@
+{
+  "type": "paragraph",
+  "sets": [
+    {
+      "id": "paragraph-01",
+      "title": "Paragraf Tamamlama Seti 1",
+      "qs": [
+        {
+          "s": [
+            "Coffee is among the most widely consumed drinks in the world.",
+            "It is believed to have originated in Ethiopia, where goat herders noticed that their animals became energetic after eating its berries.",
+            "----",
+            "By the seventeenth century, coffee houses had opened across Europe, becoming centres of conversation and trade."
+          ],
+          "t": [
+            "Kahve, dünyada en yaygın tüketilen içeceklerden biridir.",
+            "Etiyopya'da ortaya çıktığına inanılır; keçi çobanları hayvanlarının meyvelerini yedikten sonra enerjik hale geldiğini fark etmiştir.",
+            "----",
+            "On yedinci yüzyılda Avrupa'nın dört bir yanında kahvehaneler açılmış, sohbet ve ticaret merkezi olmuştur."
+          ],
+          "o": [
+            "Tea is more popular than coffee in many countries.",
+            "Goats are known to be very intelligent animals.",
+            "From there, the drink spread to the Arabian Peninsula and then to the rest of the world.",
+            "Ethiopia is a country in East Africa.",
+            "Many people drink coffee in the morning."
+          ],
+          "a": 2,
+          "x": [
+            "Çay ile karşılaştırma konu dışı.",
+            "Keçilere dair genel bilgi; akışa uymuyor.",
+            "Doğru: Etiyopya → yayılma → Avrupa kahvehaneleri; akışı sürdürür.",
+            "Coğrafi bilgi akışı ilerletmez.",
+            "Genel gözlem, tarihsel akışı bozar."
+          ]
+        },
+        {
+          "s": [
+            "Urban noise is more than an annoyance.",
+            "Studies show that people living near busy roads or airports are more likely to suffer from high blood pressure.",
+            "----",
+            "Some cities have therefore started to limit night-time traffic and build sound barriers along main roads."
+          ],
+          "t": [
+            "Kentsel gürültü sıkıntı vermenin ötesinde bir şeydir.",
+            "Çalışmalar yoğun yollar veya havalimanları yakınında yaşayanların yüksek tansiyondan muzdarip olma olasılığının daha yüksek olduğunu gösteriyor.",
+            "----",
+            "Bu nedenle bazı şehirler gece trafiğini sınırlamaya ve ana yollar boyunca ses bariyerleri kurmaya başladı."
+          ],
+          "o": [
+            "Airports are built far away from city centres.",
+            "Silence is highly valued in libraries.",
+            "Cities are growing faster than ever before.",
+            "Music can help people relax after work.",
+            "Constant noise also disturbs sleep, which can weaken the body's defences over time."
+          ],
+          "a": 4,
+          "x": [
+            "Yanlış genelleme; akışa uymuyor.",
+            "Kütüphane bağlamı konu dışı.",
+            "Genel bilgi; akışa uymuyor.",
+            "Konudan sapıyor.",
+            "Doğru: gürültünün sağlık etkisini sürdürür; 'therefore' kararına zemin hazırlar."
+          ]
+        },
+        {
+          "s": [
+            "Many students believe that studying for long hours without a break is the best way to prepare for an exam.",
+            "However, research suggests that the brain absorbs information more effectively in short sessions.",
+            "----",
+            "A short walk or a few minutes of rest can therefore improve both concentration and memory."
+          ],
+          "t": [
+            "Birçok öğrenci sınava hazırlanmanın en iyi yolunun ara vermeden uzun saatler çalışmak olduğuna inanır.",
+            "Ancak araştırmalar beynin bilgiyi kısa oturumlarda daha etkili özümsediğini gösteriyor.",
+            "----",
+            "Bu nedenle kısa bir yürüyüş veya birkaç dakikalık dinlenme hem dikkati hem de belleği geliştirebilir."
+          ],
+          "o": [
+            "Exams are usually held at the end of a term.",
+            "After about an hour of continuous effort, attention drops sharply and mistakes become more frequent.",
+            "Some students prefer studying in the library.",
+            "Teachers give advice on how to write essays.",
+            "Memory is stored in the brain."
+          ],
+          "a": 1,
+          "x": [
+            "Genel bilgi; akışı ilerletmez.",
+            "Doğru: uzun çalışmanın sorununu açıklar ve 'therefore' sonucuna götürür.",
+            "Çalışma yeri konu dışı.",
+            "Konu dışı.",
+            "Çok genel bir bilgi."
+          ]
+        },
+        {
+          "s": [
+            "The development of the bicycle in the nineteenth century gave ordinary people a cheap way of travelling.",
+            "----",
+            "Women in particular benefited, as cycling offered them a new kind of independence.",
+            "Over time, it even influenced fashion, as long skirts were replaced by more practical clothes."
+          ],
+          "t": [
+            "On dokuzuncu yüzyılda bisikletin gelişmesi sıradan insanlara ucuz bir seyahat yolu sundu.",
+            "----",
+            "Özellikle kadınlar yararlandı; çünkü bisiklet onlara yeni bir bağımsızlık sağladı.",
+            "Zamanla moda bile etkilendi; uzun etekler yerini daha pratik giysilere bıraktı."
+          ],
+          "o": [
+            "The first bicycles had no pedals.",
+            "Bicycles are now made of lightweight materials.",
+            "Many cities have introduced bicycle lanes.",
+            "It allowed workers to live farther from their workplaces and widened their social circles.",
+            "Cycling races are watched by millions of viewers."
+          ],
+          "a": 3,
+          "x": [
+            "Teknik ayrıntı; toplumsal etki akışından sapar.",
+            "Modern malzeme konusu akışı bozar.",
+            "Modern bisiklet yolları akışı bozar.",
+            "Doğru: toplumsal etkiyi açıklar; sonraki cümlede 'kadınlar özellikle' ile bağlanır.",
+            "Yarışlar konu dışı."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paragraph-02",
+      "title": "Paragraf Tamamlama Seti 2",
+      "qs": [
+        {
+          "s": [
+            "Honeybees communicate through a remarkable 'dance'.",
+            "When a worker bee finds a good source of nectar, it returns to the hive and moves in a pattern that shows the direction and distance of the flowers.",
+            "----",
+            "This system allows the colony to collect food efficiently without any leader giving orders."
+          ],
+          "t": [
+            "Bal arıları dikkat çekici bir 'dans' yoluyla iletişim kurar.",
+            "İşçi arı iyi bir nektar kaynağı bulduğunda kovana döner ve çiçeklerin yönünü ve uzaklığını gösteren bir desende hareket eder.",
+            "----",
+            "Bu sistem, hiçbir lider emir vermeden kolonin yiyeceği verimli biçimde toplamasını sağlar."
+          ],
+          "o": [
+            "Other bees watch the dance closely and then fly straight to the spot.",
+            "Honey is widely used in cooking.",
+            "Beekeepers wear special protective clothes.",
+            "The queen bee lives much longer than the workers.",
+            "Bees are found on every continent except Antarctica."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: dansı izleyen arılar → verimli toplama; akış tamam.",
+            "Bal kullanımı konu dışı.",
+            "Arıcı kıyafeti konu dışı.",
+            "Ömür bilgisi iletişimle ilgisiz.",
+            "Coğrafi dağılım konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "In the past, doctors relied mainly on their own observations to diagnose illness.",
+            "----",
+            "Today, a wide range of scanners and tests can reveal problems long before any symptoms appear.",
+            "As a result, many diseases are now treated at a much earlier and more manageable stage."
+          ],
+          "t": [
+            "Geçmişte doktorlar hastalığı teşhis etmek için çoğunlukla kendi gözlemlerine güveniyordu.",
+            "----",
+            "Bugün çok çeşitli tarayıcılar ve testler, belirtiler ortaya çıkmadan çok önce sorunları ortaya çıkarabiliyor.",
+            "Sonuç olarak birçok hastalık artık çok daha erken ve yönetilebilir bir aşamada tedavi ediliyor."
+          ],
+          "o": [
+            "The first hospitals were built in Europe.",
+            "Medical schools have become very expensive.",
+            "Nurses play an important role in hospitals.",
+            "This often meant that serious conditions were only noticed when the patient was already seriously ill.",
+            "Some medicines have unpleasant side effects."
+          ],
+          "a": 3,
+          "x": [
+            "Tarih bilgisi akışa uymuyor.",
+            "Eğitim maliyeti konu dışı.",
+            "Hemşireler konu dışı.",
+            "Doğru: 'Today ...' ile zıtlık kurar ve eski yöntemin sınırını gösterir.",
+            "Yan etkiler konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Glaciers are often described as 'rivers of ice' because they flow slowly downhill under their own weight.",
+            "----",
+            "As they melt, they release fresh water that millions of people depend on for drinking and farming.",
+            "That is why the rapid shrinking of glaciers is so alarming for scientists."
+          ],
+          "t": [
+            "Buzullar kendi ağırlıkları altında yavaşça yokuş aşağı aktıkları için sıklıkla 'buz nehirleri' olarak tanımlanır.",
+            "----",
+            "Eridikçe milyonlarca insanın içme ve tarım için bağımlı olduğu tatlı su açığa çıkarırlar.",
+            "İşte bu yüzden buzulların hızla küçülmesi bilim insanları için bu kadar endişe vericidir."
+          ],
+          "o": [
+            "Skiing is a popular winter sport.",
+            "In many mountain regions, they act as natural reservoirs, storing water in winter and releasing it in summer.",
+            "The Arctic is colder than the Antarctic.",
+            "Ice is lighter than water.",
+            "Polar bears are an endangered species."
+          ],
+          "a": 1,
+          "x": [
+            "Kayak konu dışı.",
+            "Doğru: buzulların su deposu işlevini söyler; sonraki cümleye bağlanır.",
+            "Karşılaştırma akışa uymuyor.",
+            "Fizik bilgisi akışa uymuyor.",
+            "Kutup ayıları konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Learning a second language in adulthood is widely considered difficult.",
+            "----",
+            "Adults, on the other hand, can use their knowledge of grammar and their ability to plan their study.",
+            "In many cases, motivated adults therefore make faster progress in the early stages."
+          ],
+          "t": [
+            "Yetişkinlikte ikinci bir dil öğrenmek genel olarak zor kabul edilir.",
+            "----",
+            "Öte yandan yetişkinler dil bilgisi birikimlerini ve çalışmalarını planlama becerilerini kullanabilir.",
+            "Birçok durumda motive olmuş yetişkinler bu nedenle başlangıç aşamalarında daha hızlı ilerler."
+          ],
+          "o": [
+            "Some words are hard to pronounce.",
+            "Many people study English at school.",
+            "Language courses are available online.",
+            "Dictionaries are important learning tools.",
+            "Children, it is true, tend to acquire a more natural accent because they absorb sounds without effort."
+          ],
+          "a": 4,
+          "x": [
+            "Telaffuz zorluğu karşıtlık kurmaz.",
+            "Okul bilgisi karşıtlık kurmaz.",
+            "Kurs bilgisi karşıtlık kurmaz.",
+            "Sözlük bilgisi karşıtlık kurmaz.",
+            "Doğru: 'Adults, on the other hand' karşıtlığını hazırlar (çocuklar ↔ yetişkinler)."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paragraph-03",
+      "title": "Paragraf Tamamlama Seti 3",
+      "qs": [
+        {
+          "s": [
+            "Volcanic eruptions are among the most destructive natural events.",
+            "----",
+            "Yet volcanic soil is also extremely fertile, which is why people have lived near volcanoes for thousands of years.",
+            "In this sense, the same forces that destroy can also sustain life."
+          ],
+          "t": [
+            "Volkanik patlamalar en yıkıcı doğal olaylardan biridir.",
+            "----",
+            "Ancak volkanik toprak son derece verimlidir; bu yüzden insanlar binlerce yıldır volkanların yakınında yaşamıştır.",
+            "Bu anlamda yok eden aynı güçler hayatı da besleyebilir."
+          ],
+          "o": [
+            "Geologists measure earthquakes with special instruments.",
+            "Mount Etna is located on the island of Sicily.",
+            "Ash clouds can bring air travel to a halt, and lava flows can bury entire towns within hours.",
+            "Many tourists visit volcanic islands every year.",
+            "The word 'volcano' comes from Roman mythology."
+          ],
+          "a": 2,
+          "x": [
+            "Deprem ölçümü konu dışı.",
+            "Konum bilgisi yıkıcılığı örneklemez.",
+            "Doğru: yıkıcılık örnekleri; sonra 'Yet' ile zıtlık gelir.",
+            "Turizm konu dışı.",
+            "Kelime kökeni konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Public libraries have changed dramatically in the past twenty years.",
+            "----",
+            "They now offer free internet access, language classes and meeting rooms for local communities.",
+            "Far from disappearing, they have become more important than ever."
+          ],
+          "t": [
+            "Halk kütüphaneleri son yirmi yılda köklü biçimde değişti.",
+            "----",
+            "Artık ücretsiz internet erişimi, dil kursları ve yerel topluluklar için toplantı odaları sunuyorlar.",
+            "Ortadan kalkmak şöyle dursun, her zamankinden daha önemli hale geldiler."
+          ],
+          "o": [
+            "Once places where people simply borrowed books, they have turned into centres of community life.",
+            "The oldest library in the world is in Egypt.",
+            "Reading is a good way to relax.",
+            "Some books are very expensive.",
+            "Authors often visit bookshops."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'Once ... they have turned' değişimi özetler; sonraki cümle örnekler verir.",
+            "En eski kütüphane bilgisi akışı bozar.",
+            "Genel görüş.",
+            "Konu dışı.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "The price of a product is rarely determined by its production cost alone.",
+            "----",
+            "When many people want a product and few are available, sellers can charge much more.",
+            "This is why tickets for popular concerts often cost several times their face value in resale markets."
+          ],
+          "t": [
+            "Bir ürünün fiyatı nadiren yalnızca üretim maliyetiyle belirlenir.",
+            "----",
+            "Pek çok insan bir ürünü isteyip çok azı mevcutken satıcılar çok daha fazlasını talep edebilir.",
+            "Bu yüzden popüler konserlerin biletleri ikinci el piyasalarda çoğu zaman nominal değerlerinin birkaç katına satılır."
+          ],
+          "o": [
+            "Companies advertise their products on television.",
+            "Production costs include wages and raw materials.",
+            "Demand and scarcity usually have an equally strong effect on what buyers are willing to pay.",
+            "Customers prefer lower prices.",
+            "Concert halls are built in city centres."
+          ],
+          "a": 2,
+          "x": [
+            "Reklam konu dışı.",
+            "Maliyet unsurları aynı noktada kalır; ilerletmez.",
+            "Doğru: maliyet dışındaki etkenleri (talep/kıtlık) tanıtır; sonraki cümle bunu açar.",
+            "Genel gözlem.",
+            "Konser salonu konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Antibiotics have saved countless lives since their discovery in the twentieth century.",
+            "----",
+            "When these drugs are used too often or not completed as prescribed, bacteria can develop resistance.",
+            "Doctors therefore urge patients to take antibiotics only when truly necessary."
+          ],
+          "t": [
+            "Antibiyotikler yirminci yüzyılda keşfedildiğinden beri sayısız hayat kurtardı.",
+            "----",
+            "Bu ilaçlar çok sık kullanıldığında veya reçete edildiği gibi bitirilmediğinde bakteriler direnç geliştirebilir.",
+            "Bu nedenle doktorlar hastaları antibiyotikleri yalnızca gerçekten gerektiğinde kullanmaya çağırıyor."
+          ],
+          "o": [
+            "Bacteria are found almost everywhere.",
+            "Penicillin was discovered by a Scottish scientist.",
+            "Hospitals employ thousands of nurses.",
+            "Vaccines protect people against many diseases.",
+            "However, their widespread misuse has created a new and serious medical problem."
+          ],
+          "a": 4,
+          "x": [
+            "Genel bilgi; sorunu açmaz.",
+            "Keşfeden bilgisi akışı ilerletmez.",
+            "Hemşire konu dışı.",
+            "Aşılar konu dışı.",
+            "Doğru: 'However' ile sorunu başlatır; sonraki cümle direnci açıklar."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}

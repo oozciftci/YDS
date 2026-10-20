@@ -68,7 +68,7 @@ export function toBundle(set: OzgunSet, type: SectionKey): ExamBundle {
       if (stemTr[j]) tr[id] = stemTr[j]
       return { id, en: type === 'irrelevant' ? `(${ROMAN[j]}) ${en}` : en }
     })
-    const opts = q.o.length ? q.o : ROMAN
+    const opts = q.o?.length ? q.o : ROMAN
     const options: Record<string, Seg> = {}
     opts.forEach((en, j) => {
       const id = `${qid}.${LETTERS[j]}`

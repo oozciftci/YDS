@@ -1,0 +1,570 @@
+{
+  "type": "dialogue",
+  "sets": [
+    {
+      "id": "dialogue-01",
+      "title": "Diyalog Seti 1",
+      "qs": [
+        {
+          "s": [
+            "Lena: – I'm thinking of joining a gym, but I'm not sure which one to choose.",
+            "Omar: – ----",
+            "Lena: – That sounds sensible. I'll ask for a free trial tomorrow."
+          ],
+          "t": [
+            "Lena: – Bir spor salonuna üye olmayı düşünüyorum ama hangisini seçeceğimden emin değilim.",
+            "Omar: – ----",
+            "Lena: – Mantıklı. Yarın ücretsiz deneme isteyeceğim."
+          ],
+          "o": [
+            "My brother has been a member of a library for years.",
+            "I think gyms were invented in ancient Greece.",
+            "Why don't you visit a few and compare their equipment and prices before deciding?",
+            "You should have chosen a bigger city to live in.",
+            "Swimming is more enjoyable than running."
+          ],
+          "a": 2,
+          "x": [
+            "Kütüphane üyeliği konuyla ilgisiz.",
+            "Tarihsel bilgi konuyu saptırır.",
+            "Doğru: öneri verir; Lena'nın 'sensible' ve 'free trial' cevabıyla uyumlu.",
+            "Konu dışı ve suçlayıcı.",
+            "Karşılaştırma tercih sorusu; ilerletmez."
+          ]
+        },
+        {
+          "s": [
+            "Customer: – Excuse me, I ordered this jacket online, but it's too small.",
+            "Assistant: – ----",
+            "Customer: – Great, I'd like a medium, please."
+          ],
+          "t": [
+            "Müşteri: – Pardon, bu ceketi internetten sipariş ettim ama çok küçük.",
+            "Satış görevlisi: – ----",
+            "Müşteri: – Harika, orta beden istiyorum lütfen."
+          ],
+          "o": [
+            "Online shopping has become more popular recently.",
+            "Jackets are usually made of cotton or leather.",
+            "Our shop closes at nine o'clock on Fridays.",
+            "You shouldn't buy clothes without trying them on.",
+            "I'm sorry about that. If you have the receipt, I can exchange it for a larger size."
+          ],
+          "a": 4,
+          "x": [
+            "Genel bilgi.",
+            "Genel bilgi; sorunu çözmez.",
+            "Çalışma saati konu dışı.",
+            "Suçlayıcı, çözüm sunmaz.",
+            "Doğru: soruna çözüm sunar; müşterinin 'a medium' cevabına bağlanır."
+          ]
+        },
+        {
+          "s": [
+            "Ali: – Did you see the news? The old cinema in the centre is going to be demolished.",
+            "Mia: – ----",
+            "Ali: – I know. Many of us have such good memories there."
+          ],
+          "t": [
+            "Ali: – Haberi gördün mü? Merkezdeki eski sinema yıkılacakmış.",
+            "Mia: – ----",
+            "Ali: – Biliyorum. Çoğumuzun orada çok güzel anıları var."
+          ],
+          "o": [
+            "Cinemas are generally larger in big cities.",
+            "What a pity! It has been part of the city's history for almost a hundred years.",
+            "I have never watched a film in my life.",
+            "The demolition will be finished next summer.",
+            "Why don't we buy some popcorn?"
+          ],
+          "a": 1,
+          "x": [
+            "Genel bilgi; duyguya karşılık vermez.",
+            "Doğru: üzüntü ifade eder; Ali'nin 'good memories' sözüyle uyumlu.",
+            "Konu dışı ve çelişkili.",
+            "Yalnızca bilgi, duygu yok.",
+            "Konuyu saptırır."
+          ]
+        },
+        {
+          "s": [
+            "Interviewer: – What would you say is your greatest strength?",
+            "Candidate: – ----",
+            "Interviewer: – That's exactly what we're looking for in this role."
+          ],
+          "t": [
+            "Mülakatçı: – En büyük gücünüz nedir?",
+            "Aday: – ----",
+            "Mülakatçı: – Bu görevde tam olarak aradığımız şey bu."
+          ],
+          "o": [
+            "I have never had an interview before.",
+            "I was born in a small town near the sea.",
+            "My previous office was on the third floor.",
+            "I think it's my ability to stay calm under pressure and to work well in a team.",
+            "The salary is not as important as the holiday."
+          ],
+          "a": 3,
+          "x": [
+            "Soruya uymuyor.",
+            "Soruyu yanıtlamıyor.",
+            "Soruyu yanıtlamıyor.",
+            "Doğru: soruyu doğrudan yanıtlar; mülakatçının onayıyla uyumlu.",
+            "Soruya uymuyor."
+          ]
+        },
+        {
+          "s": [
+            "Teacher: – Why was your homework late again, Daniel?",
+            "Daniel: – ----",
+            "Teacher: – All right, but please inform me earlier next time."
+          ],
+          "t": [
+            "Öğretmen: – Ödevin yine neden geç, Daniel?",
+            "Daniel: – ----",
+            "Öğretmen: – Peki, ama bir dahaki sefere lütfen beni daha önce bilgilendir."
+          ],
+          "o": [
+            "I'm sorry, I was ill last week and couldn't finish it on time.",
+            "Homework is a good way to revise at home.",
+            "The exam will take place next month.",
+            "My classmates always submit theirs early.",
+            "I prefer reading to doing exercises."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: gerekçe ve özür; öğretmenin 'All right, but...' cevabıyla uyumlu.",
+            "Genel yorum; soruyu yanıtlamıyor.",
+            "Konu dışı.",
+            "Savunma değil, kıyas.",
+            "Gerekçe değil."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue-02",
+      "title": "Diyalog Seti 2",
+      "qs": [
+        {
+          "s": [
+            "Sara: – I've been feeling really tired lately, even after a full night's sleep.",
+            "Doctor: – ----",
+            "Sara: – Not really, but I do work late most evenings."
+          ],
+          "t": [
+            "Sara: – Son zamanlarda tam bir gece uykusundan sonra bile çok yorgun hissediyorum.",
+            "Doktor: – ----",
+            "Sara: – Pek değil, ama çoğu akşam geç saate kadar çalışıyorum."
+          ],
+          "o": [
+            "Sleeping eight hours is a common recommendation.",
+            "Doctors usually work long hours in hospitals.",
+            "I studied medicine in a university abroad.",
+            "Have you changed your diet or your daily routine in the last few weeks?",
+            "You should visit a dentist about that."
+          ],
+          "a": 3,
+          "x": [
+            "Genel öneri, soru değil.",
+            "Doktorun çalışma saatleri konu dışı.",
+            "Kendi eğitimi konu dışı.",
+            "Doğru: neden araştıran soru; Sara'nın 'Not really, but I work late' cevabına bağlanır.",
+            "Diş doktoru konuyla ilgisiz."
+          ]
+        },
+        {
+          "s": [
+            "Tom: – Do you think we'll finish the project before the deadline?",
+            "Eva: – ----",
+            "Tom: – In that case, let's divide the remaining tasks right now."
+          ],
+          "t": [
+            "Tom: – Projeyi son tarihten önce bitireceğimizi düşünüyor musun?",
+            "Eva: – ----",
+            "Tom: – Öyleyse kalan işleri hemen bölüşelim."
+          ],
+          "o": [
+            "I read about deadlines in a newspaper.",
+            "Only if we all work extra hours this week, I'm afraid.",
+            "The project was started by a colleague last year.",
+            "Deadlines are always set on Mondays.",
+            "I haven't had lunch yet."
+          ],
+          "a": 1,
+          "x": [
+            "Konu dışı.",
+            "Doğru: koşullu yanıt; Tom'un 'In that case' cevabına bağlanır.",
+            "Soruyu yanıtlamıyor.",
+            "Genelleme.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Hannah: – Would you mind if I opened the window? It's quite stuffy in here.",
+            "Ben: – ----",
+            "Hannah: – Thanks. It's much better now."
+          ],
+          "t": [
+            "Hannah: – Pencereyi açmamın sakıncası var mı? Burası oldukça havasız.",
+            "Ben: – ----",
+            "Hannah: – Teşekkürler. Şimdi çok daha iyi."
+          ],
+          "o": [
+            "It will rain tomorrow.",
+            "Yes, I would like to buy a house.",
+            "I opened a window yesterday.",
+            "Windows are made of glass.",
+            "Not at all. Go ahead."
+          ],
+          "a": 4,
+          "x": [
+            "Konu dışı.",
+            "Anlam dışı.",
+            "Soruyu yanıtlamıyor.",
+            "Genel bilgi.",
+            "Doğru: 'Would you mind' sorusuna uygun izin cevabı."
+          ]
+        },
+        {
+          "s": [
+            "Guide: – This painting was completed in 1503, and it is now one of the most famous in the world.",
+            "Tourist: – ----",
+            "Guide: – Because the artist used a technique that blurs the edges and makes the expression mysterious."
+          ],
+          "t": [
+            "Rehber: – Bu tablo 1503'te tamamlandı ve bugün dünyanın en ünlülerinden biri.",
+            "Turist: – ----",
+            "Rehber: – Çünkü sanatçı kenarları bulanıklaştıran ve ifadeyi gizemli kılan bir teknik kullandı."
+          ],
+          "o": [
+            "Where is the nearest underground station?",
+            "I'd like to buy a postcard of it.",
+            "What is it about the painting that makes it so special?",
+            "Museums are closed on public holidays.",
+            "I have never been to Italy."
+          ],
+          "a": 2,
+          "x": [
+            "Konu dışı.",
+            "Postkart isteği; 'Because' ile uyumsuz.",
+            "Doğru: 'Because ...' yanıtının sorusu: neden özel?",
+            "Konu dışı.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Paul: – I can't believe we lost the match after leading for most of the game.",
+            "Jane: – ----",
+            "Paul: – You're right. We'll train harder for the next one."
+          ],
+          "t": [
+            "Paul: – Maçın çoğunda önde olduktan sonra kaybettiğimize inanamıyorum.",
+            "Jane: – ----",
+            "Paul: – Haklısın. Bir sonraki için daha sıkı çalışacağız."
+          ],
+          "o": [
+            "It's disappointing, but we can learn from our mistakes and do better next time.",
+            "Football is played in almost every country.",
+            "The referee was born in Brazil.",
+            "Tickets for the final were very expensive.",
+            "I don't like watching sport."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: teselli + gelecek planı; Paul'ün 'We'll train harder' cevabına bağlanır.",
+            "Genel bilgi.",
+            "Konu dışı.",
+            "Konu dışı.",
+            "Duyguya karşılık vermez."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue-03",
+      "title": "Diyalog Seti 3",
+      "qs": [
+        {
+          "s": [
+            "Clerk: – Good morning. How can I help you?",
+            "Customer: – ----",
+            "Clerk: – Certainly. Could you fill in this form, please?"
+          ],
+          "t": [
+            "Görevli: – Günaydın. Size nasıl yardımcı olabilirim?",
+            "Müşteri: – ----",
+            "Görevli: – Tabii. Lütfen şu formu doldurur musunuz?"
+          ],
+          "o": [
+            "My grandfather also worked in a bank.",
+            "I think the weather is lovely today.",
+            "I'd like to open a savings account, please.",
+            "The bank was built in the nineteenth century.",
+            "I have already eaten breakfast."
+          ],
+          "a": 2,
+          "x": [
+            "Talep değil.",
+            "Talep değil.",
+            "Doğru: talebi belirtir; 'fill in this form' ile bağlanır.",
+            "Talep değil.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Mira: – I'm planning a trip to Japan next spring.",
+            "Ken: – ----",
+            "Mira: – That's good to know. I'd love to see the cherry blossoms."
+          ],
+          "t": [
+            "Mira: – Gelecek ilkbaharda Japonya'ya bir gezi planlıyorum.",
+            "Ken: – ----",
+            "Mira: – İyi ki söyledin. Kiraz çiçeklerini görmeyi çok isterim."
+          ],
+          "o": [
+            "Trains are very crowded during the winter.",
+            "Japan is an island country in East Asia.",
+            "I have never learned to speak Chinese.",
+            "Spring is the shortest season in some countries.",
+            "Then you should go in early April, when the cherry trees are usually in full bloom."
+          ],
+          "a": 4,
+          "x": [
+            "Mevsim uyumsuz.",
+            "Genel bilgi; öneri yok.",
+            "Konu dışı.",
+            "Genel bilgi.",
+            "Doğru: pratik öneri; Mira'nın 'cherry blossoms' cevabına bağlanır."
+          ]
+        },
+        {
+          "s": [
+            "Landlord: – The rent will go up by ten percent from next month.",
+            "Tenant: – ----",
+            "Landlord: – I understand, but the repairs have cost me a lot of money."
+          ],
+          "t": [
+            "Ev sahibi: – Kira gelecek aydan itibaren yüzde on artacak.",
+            "Kiracı: – ----",
+            "Ev sahibi: – Anlıyorum ama onarımlar bana çok paraya mal oldu."
+          ],
+          "o": [
+            "I like living in this neighbourhood.",
+            "That's a big increase. Is there any chance of keeping it a little lower?",
+            "My flat has two bedrooms and a balcony.",
+            "Houses are generally more expensive than flats.",
+            "I'll move to another city next year."
+          ],
+          "a": 1,
+          "x": [
+            "Konuyu geçiştirir.",
+            "Doğru: itiraz eder; ev sahibinin savunmasıyla uyumlu.",
+            "Konuya yanıt değil.",
+            "Genel bilgi.",
+            "İtiraz değil."
+          ]
+        },
+        {
+          "s": [
+            "Teacher: – Can anyone tell me what the capital of Australia is?",
+            "Student: – ----",
+            "Teacher: – Exactly! Many people think it's Sydney, but it is Canberra."
+          ],
+          "t": [
+            "Öğretmen: – Avustralya'nın başkentinin ne olduğunu söyleyebilecek var mı?",
+            "Öğrenci: – ----",
+            "Öğretmen: – Kesinlikle! Çoğu kişi Sydney sanır ama Canberra'dır."
+          ],
+          "o": [
+            "The lesson is too long today.",
+            "Australia has many kangaroos.",
+            "I have been to Sydney twice.",
+            "Is it Canberra?",
+            "Geography is my favourite subject."
+          ],
+          "a": 3,
+          "x": [
+            "Konu dışı.",
+            "Soruyu yanıtlamıyor.",
+            "Soruyu yanıtlamıyor.",
+            "Doğru: soruyu doğrudan yanıtlar; öğretmen onaylar.",
+            "Soruyu yanıtlamıyor."
+          ]
+        },
+        {
+          "s": [
+            "Dan: – Have you finished reading the report I sent you yesterday?",
+            "Rosa: – ----",
+            "Dan: – No problem. Just let me know when you've had a chance to go through it."
+          ],
+          "t": [
+            "Dan: – Dün sana gönderdiğim raporu okumayı bitirdin mi?",
+            "Rosa: – ----",
+            "Dan: – Sorun değil. Gözden geçirme fırsatı bulduğunda haber ver."
+          ],
+          "o": [
+            "Not yet, I've only managed to read the first few pages. I'll finish it this evening.",
+            "Reports are usually written in formal English.",
+            "I sent you an email last week.",
+            "The report was written by a team of five people.",
+            "I don't like long meetings."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: soruyu yanıtlar; Dan'in 'No problem' cevabına bağlanır.",
+            "Genel bilgi.",
+            "Yanıt değil.",
+            "Yanıt değil.",
+            "Konu dışı."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dialogue-04",
+      "title": "Diyalog Seti 4",
+      "qs": [
+        {
+          "s": [
+            "Laura: – My phone keeps shutting down suddenly, even when the battery is full.",
+            "Technician: – ----",
+            "Laura: – Last month, I think, after the update."
+          ],
+          "t": [
+            "Laura: – Telefonum pil doluyken bile aniden kapanıp duruyor.",
+            "Teknisyen: – ----",
+            "Laura: – Geçen ay galiba, güncellemeden sonra."
+          ],
+          "o": [
+            "I own three different phones.",
+            "Phones are made in several countries.",
+            "Batteries should be recycled.",
+            "When did the problem start, and has the phone been dropped or updated recently?",
+            "Technicians usually study engineering."
+          ],
+          "a": 3,
+          "x": [
+            "Konu dışı.",
+            "Genel bilgi.",
+            "Genel bilgi.",
+            "Doğru: teşhis sorusu; Laura'nın 'Last month' cevabına bağlanır.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Nina: – I got the job at the publishing house!",
+            "Max: – ----",
+            "Nina: – Thanks! I start on the first of next month."
+          ],
+          "t": [
+            "Nina: – Yayınevindeki işi aldım!",
+            "Max: – ----",
+            "Nina: – Teşekkürler! Gelecek ayın birinde başlıyorum."
+          ],
+          "o": [
+            "Publishing houses print books and magazines.",
+            "Congratulations! You really deserve it after all your hard work.",
+            "I applied for a different job last year.",
+            "Books are cheaper in secondhand shops.",
+            "Where did you buy that dress?"
+          ],
+          "a": 1,
+          "x": [
+            "Genel bilgi.",
+            "Doğru: tebrik; 'Thanks!' cevabıyla uyumlu.",
+            "Kendi durumu; tebrik değil.",
+            "Konu dışı.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Passenger: – Excuse me, does this train stop at Riverside?",
+            "Conductor: – ----",
+            "Passenger: – Thank you. I'll change at the next station then."
+          ],
+          "t": [
+            "Yolcu: – Pardon, bu tren Riverside'da duruyor mu?",
+            "Kondüktör: – ----",
+            "Yolcu: – Teşekkürler. O zaman bir sonraki istasyonda aktarma yapacağım."
+          ],
+          "o": [
+            "The next train leaves tomorrow morning.",
+            "Trains are faster than buses.",
+            "I have worked here for twelve years.",
+            "Tickets are sold at the main entrance.",
+            "I'm afraid not. You'll need to take the local service from platform two."
+          ],
+          "a": 4,
+          "x": [
+            "Yanıt değil.",
+            "Genel karşılaştırma.",
+            "Konu dışı.",
+            "Soruyu yanıtlamıyor.",
+            "Doğru: olumsuz yanıt + alternatif; yolcunun 'change at the next station' kararına bağlanır."
+          ]
+        },
+        {
+          "s": [
+            "Chloe: – I'm not sure whether to study medicine or engineering.",
+            "Uncle: – ----",
+            "Chloe: – That's a good idea. I'll try to arrange something."
+          ],
+          "t": [
+            "Chloe: – Tıp mı mühendislik mi okuyacağıma karar veremiyorum.",
+            "Amca: – ----",
+            "Chloe: – İyi fikir. Bir şeyler ayarlamaya çalışacağım."
+          ],
+          "o": [
+            "I studied history when I was young.",
+            "Both subjects are taught in universities.",
+            "Why not spend a day with a doctor and an engineer to see what their work is really like?",
+            "Engineers earn more than teachers.",
+            "You were always good at drawing."
+          ],
+          "a": 2,
+          "x": [
+            "Kendi geçmişi.",
+            "Genel bilgi; karar vermeye yardım etmez.",
+            "Doğru: somut öneri; 'I'll try to arrange something' cevabına bağlanır.",
+            "Genelleme; öneri değil.",
+            "Konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Waiter: – Are you ready to order, madam?",
+            "Guest: – ----",
+            "Waiter: – Of course. I'll bring you a menu without nuts straight away."
+          ],
+          "t": [
+            "Garson: – Sipariş vermeye hazır mısınız, hanımefendi?",
+            "Misafir: – ----",
+            "Garson: – Elbette. Hemen size fındıksız bir menü getireceğim."
+          ],
+          "o": [
+            "Not yet, I'm allergic to nuts. Could you tell me which dishes are safe?",
+            "The restaurant looks very elegant.",
+            "I come from a small village near the coast.",
+            "Menus are always printed in two languages.",
+            "I'd like to speak to the manager about the prices."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: alerji bilgisi; garsonun 'menu without nuts' cevabına bağlanır.",
+            "Yanıt değil.",
+            "Konu dışı.",
+            "Genelleme.",
+            "Cevapla uyumsuz."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}
