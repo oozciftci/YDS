@@ -6,6 +6,7 @@ import styles from '../ExamStudy.module.css'
 import { shortTitle, type ExamBundle, type Question } from './examData'
 import { QuestionCard } from './QuestionCard'
 import { ReasonPicker } from './ReasonPicker'
+import { SimilarQuestion } from './SimilarQuestion'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
 
 export interface QueueItem {
@@ -159,6 +160,7 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
           </button>
         </div>
         {result === false && <ReasonPicker answerId={answerId(userId, bundle.exam.id, q.no)} />}
+        {result === false && <SimilarQuestion key={`${bundle.exam.id}-${q.no}`} bundle={bundle} q={q} />}
         <QuickAnswerToggle value={quick} onChange={setQuick} />
       </QuestionCard>
     </section>
