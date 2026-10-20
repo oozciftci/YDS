@@ -56,6 +56,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 20.10.2026 | **Faz 8.3 – Özgün okuma metinleri** | 6 özgün metin (mercan resifleri, kentsel ısı adaları, iki dilli beyin, haritalar, uzaktan eğitim, mikroplastikler) × 4 soru; cümle çevirileri, kelime dokunma ve şık açıklamalarıyla Alıştırma Merkezi’nde (“Okuma” tipi). |
 | 20.10.2026 | **Faz 8.4 – YÖKDİL alan terimi paketleri** | Fen (62), Sağlık (55), Sosyal (51) temel terim; özgün derleme `scripts/data/yokdil_alan_terimleri.txt` → `scripts/buildYokdilTerms.mjs` → `public/data/yokdil_<alan>.json` (kelime + anlam + eş anlamlı + o alandaki YÖKDİL sınavlarında kaç kez geçtiği; sınav cümlesi yok). Kelime paketleri penceresinde “🧪 YÖKDİL Alan Terimleri” kartı. |
 | 20.10.2026 | **Faz 10.1 – Yayın güvenlik denetimi** | `npm run build` sonrası `npm run check:dist` (`scripts/checkDist.mjs`): yerel sınav metinlerinden 169 bin 8-kelimelik parça çıkarılıp `dist/` içinde aranır (≥10 kelimelik ortak dizi = HATA, çıkış kodu 1); yasak dosya adları ve yol anmaları listelenir. Zararsız ortaklıklar `scripts/data/checkDist_allow.txt`. İlk koşu temiz. Not: `Coach` paketi YOL_HARITASI özetini içerdiği için “local-data/”, “cikmis2.pdf” **adları** anılıyor (içerik yok; UYARI). |
+| 20.10.2026 | **Faz 10.2 – Birim testleri** | Vitest kuruldu (`npm test`); `src/services/core.test.ts` 15 test: soru tipi eşleme, YDS/YÖKDİL aralıkları, puan, tarih/seri, hedef puan planı, deneme süre analizi, deneme sıklığı/karşılaştırma, yanlış nedeni, Bugünkü Plan. FSRS/Dexie bağımlı servisler (veritabanı gerektirir) henüz kapsanmadı. |
 | 19.10.2026 | **YÖKDİL kelime etiketleri** | `scripts/tagYokdil.mjs` YÖKDİL-Çok-Sık / Sık / Ara etiketlerini YDS etiketlerinden ayrı üretir (kelime başına etiket havuzda). Ayarlar → Hedef Sınav’da “yeni kelimeler hangi sınavın sıklığına göre sıralansın” seçimi: YDS, YÖKDİL ya da ikisi birlikte. |
 | 19.10.2026 | **YÖKDİL çevirileri tamam** (yerel) | 12 sınavın tüm İngilizce segmentleri Türkçeye çevrildi (`local-data/yds/yokdil-*.tr.json`, ~6.000 segment; Türkçe olan 42-53. soru parçaları çevrilmedi). PDF metin katmanındaki kusurlar (2019 Mart Sosyal 9. soru E şıkkı, 54-59. sorularda bazı boşluklar, 2019 Kasım Sağlık 53-54. E şıkları, 68. soruya karışan okuma metni) olduğu gibi bırakıldı. |
 | 19.10.2026 | **“60 Günde YDS Kelimeleri” paketi** (yerel) | Modadil kitabından 1663 girdi (1586 benzersiz kelime): 54 günlük kelime kartları (anlam, örnek cümle + çeviri, eş/zıt anlamlı), phrasal verb ve edat tabloları, son sınavların sık kelimeleri. Telifli olduğu için PDF ve paket `local-data/paketler/` altında (gitignore + şifreli kasa); Hazır Paketler’de yalnızca `npm run dev`’de görünür. |
@@ -200,7 +201,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | # | İş | Durum | Açıklama |
 | :--- | :--- | :---: | :--- |
 | 10.1 | Yayın güvenlik denetimi | ✅ | `dist` içinde telifli metin sızıntısı taraması (komut dosyası). |
-| 10.2 | Birim testleri | ⏳ | FSRS sarmalayıcı, `sectionOf`, `ydsScore`, havuz süzgeci, normalleştirme. |
+| 10.2 | Birim testleri | ✅ | FSRS sarmalayıcı, `sectionOf`, `ydsScore`, havuz süzgeci, normalleştirme. |
 | 10.3 | Temizlik | ⏳ | `oxlint` uyarıları, erişilebilirlik, bundle boyutu. |
 
 ---
