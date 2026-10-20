@@ -1,6 +1,7 @@
 import { useState, useMemo, type ReactNode } from 'react'
 import { speakWord } from '../services/tts'
 import { useLiveQuery } from 'dexie-react-hooks'
+import { useSearchParams } from 'react-router-dom'
 import { db } from '../db'
 import { BulkImportModal } from '../components/BulkImportModal'
 import { TransferWordsModal } from '../components/TransferWordsModal'
@@ -107,7 +108,9 @@ export function WordsPage() {
   )
 
   // Filtre State'leri
-  const [searchQuery, setSearchQuery] = useState('')
+  // Hızlı aramadan gelince (?q=kelime) arama kutusu dolu açılır
+  const [searchParams] = useSearchParams()
+  const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') ?? '')
   const [selectedPos, setSelectedPos] = useState<string>('all')
   const [selectedTag, setSelectedTag] = useState<string>('all')
   const [selectedDiff, setSelectedDiff] = useState<string>('all')

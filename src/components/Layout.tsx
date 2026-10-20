@@ -7,6 +7,7 @@ import { useUserStore } from '../stores/user'
 import { isStudyPath } from '../services/studyMap'
 import { cleanPath, isSaved, labelFor, recordVisit, toggleSaved, useFavoritesVersion } from '../services/favorites'
 import { NotesDock } from './NotesDock'
+import { CommandPalette } from './CommandPalette'
 import styles from './Layout.module.css'
 
 const NAV_ITEMS = [
@@ -83,6 +84,15 @@ export function Layout() {
         </nav>
 
         <div className={styles.headerRight}>
+          <button
+            type="button"
+            className={styles.syncBtn}
+            onClick={() => window.dispatchEvent(new Event('yds-open-palette'))}
+            title="Hızlı arama (Ctrl+K)"
+            aria-label="Hızlı arama"
+          >
+            🔍
+          </button>
           {herePath !== '/' && (
             <button
               type="button"
@@ -184,6 +194,7 @@ export function Layout() {
 
 
       <NotesDock />
+      <CommandPalette />
     </div>
   )
 }
