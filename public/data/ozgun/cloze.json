@@ -1,0 +1,820 @@
+{
+  "type": "cloze",
+  "sets": [
+    {
+      "id": "cloze-01",
+      "title": "Cloze Seti 1: Uyku ve Sağlık",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "Sleep is far more than a period of rest; it is an active process during which the body repairs itself.",
+          "Adults who regularly sleep [[1]] than six hours a night are more likely to develop heart problems.",
+          "This is [[2]] the brain uses the night to clear out harmful waste that builds up during the day.",
+          "[[3]] a few sleepless nights may seem harmless, the effects add up quickly.",
+          "Researchers have found that tired drivers are as dangerous [[4]] drunk ones.",
+          "Students, in particular, tend to underestimate [[5]] important sleep is for learning.",
+          "Memories formed during the day are [[6]] into long-term storage while we sleep.",
+          "People who skip sleep before an exam often perform worse [[7]] those who rest properly.",
+          "Doctors therefore advise [[8]] a regular bedtime and avoiding screens late in the evening.",
+          "Small changes in habit can [[9]] a real difference to sleep quality.",
+          "[[10]] it may be tempting to work late, a good night's rest is usually the better investment."
+        ],
+        "tr": [
+          "Uyku dinlenme döneminden çok daha fazlasıdır; vücudun kendini onardığı aktif bir süreçtir.",
+          "Geceleri düzenli olarak altı saatten az uyuyan yetişkinlerin kalp sorunları geliştirme olasılığı daha yüksektir.",
+          "Bunun nedeni beynin geceyi gün içinde biriken zararlı atıkları temizlemek için kullanmasıdır.",
+          "Birkaç uykusuz gece zararsız görünse de etkiler hızla birikir.",
+          "Araştırmacılar yorgun sürücülerin sarhoş sürücüler kadar tehlikeli olduğunu buldu.",
+          "Özellikle öğrenciler, uykunun öğrenme için ne kadar önemli olduğunu hafife alma eğilimindedir.",
+          "Gün içinde oluşan anılar biz uyurken uzun süreli belleğe aktarılır.",
+          "Sınavdan önce uykusuz kalanlar çoğu zaman düzgün dinlenenlerden daha kötü performans gösterir.",
+          "Bu nedenle doktorlar düzenli bir yatma saatini korumayı ve akşam geç saatlerde ekrandan kaçınmayı öneriyor.",
+          "Alışkanlıklardaki küçük değişiklikler uyku kalitesinde gerçek bir fark yaratabilir.",
+          "Geç saate kadar çalışmak cazip gelebilir, ancak iyi bir gece uykusu genellikle daha iyi bir yatırımdır."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "least",
+            "fewer",
+            "less",
+            "little",
+            "lesser"
+          ],
+          "a": 2,
+          "x": [
+            "least üstünlük; 'than' ile olmaz.",
+            "fewer sayılabilir çoğul isimle kullanılır; saat bir süre ölçüsüdür.",
+            "Doğru: 'less than six hours' — süre ölçüsünde less kullanılır.",
+            "little 'than' ile karşılaştırma kuramaz.",
+            "lesser 'than' ile bu anlamda kullanılmaz."
+          ]
+        },
+        {
+          "o": [
+            "why",
+            "unless",
+            "so",
+            "although",
+            "because"
+          ],
+          "a": 4,
+          "x": [
+            "why 'This is why' derdi ama sonrasında 'the brain uses' neden değil sonuç olurdu; anlam tersine.",
+            "unless koşul; uymaz.",
+            "so 'This is so' bu bağlamda anlamsız.",
+            "although zıtlık; burada neden açıklanıyor.",
+            "Doğru: 'This is because' = Bunun nedeni, ..."
+          ]
+        },
+        {
+          "o": [
+            "Because",
+            "Although",
+            "Unless",
+            "Since",
+            "Whereas"
+          ],
+          "a": 1,
+          "x": [
+            "Because: 'zararsız görünür' ile neden ilişkisi kurmaz.",
+            "Doğru: Although = ...olsa da (zıtlık).",
+            "Unless koşul bildirir; anlam bozulur.",
+            "Since neden/zaman; uymaz.",
+            "Whereas karşıtlık ama iki yargıyı karşılaştırır; burada verilen sıfat-cümle 'although' ister."
+          ]
+        },
+        {
+          "o": [
+            "than",
+            "like",
+            "that",
+            "as",
+            "so"
+          ],
+          "a": 3,
+          "x": [
+            "than 'as dangerous' ile olmaz.",
+            "like 'as dangerous like' olmaz.",
+            "that bu yapıda olmaz.",
+            "Doğru: as dangerous as.",
+            "so 'as ... so' kalıbı uymaz."
+          ]
+        },
+        {
+          "o": [
+            "how",
+            "what",
+            "which",
+            "that",
+            "whether"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: how important = ne kadar önemli.",
+            "what 'what important' olmaz.",
+            "which 'which important' olmaz.",
+            "that 'that important' bu anlamda olmaz.",
+            "whether 'olup olmadığı' anlamı verir; uymaz."
+          ]
+        },
+        {
+          "o": [
+            "transfer",
+            "transferring",
+            "to transfer",
+            "transferred",
+            "being transferring"
+          ],
+          "a": 3,
+          "x": [
+            "transfer: fiil biçimi hatalı.",
+            "transferring: 'are transferring' aktif olur; özne 'memories'.",
+            "to transfer: uymaz.",
+            "Doğru: are + V3 (edilgen): are transferred.",
+            "Biçim hatalı."
+          ]
+        },
+        {
+          "o": [
+            "from",
+            "than",
+            "to",
+            "with",
+            "against"
+          ],
+          "a": 1,
+          "x": [
+            "from 'worse from' olmaz (different from).",
+            "Doğru: worse than.",
+            "to 'worse to' olmaz.",
+            "with uymaz.",
+            "against uymaz."
+          ]
+        },
+        {
+          "o": [
+            "keep",
+            "to keep",
+            "keeps",
+            "kept",
+            "keeping"
+          ],
+          "a": 4,
+          "x": [
+            "keep: 'advise' sonrası V-ing gerekir (advise + V-ing).",
+            "to keep: 'advise sb to V' olurdu, nesne yok.",
+            "keeps: biçim hatalı.",
+            "kept: biçim hatalı.",
+            "Doğru: advise + V-ing; 'and avoiding' ile paralel."
+          ]
+        },
+        {
+          "o": [
+            "do",
+            "have",
+            "make",
+            "give",
+            "take"
+          ],
+          "a": 2,
+          "x": [
+            "do 'a difference' kalıbı yok.",
+            "have a difference bu anlamda kullanılmaz.",
+            "Doğru: make a difference = fark yaratmak.",
+            "give a difference kalıbı yok.",
+            "take a difference kalıbı yok."
+          ]
+        },
+        {
+          "o": [
+            "While",
+            "Because",
+            "Since",
+            "Unless",
+            "Therefore"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: While = ...olsa da (zıtlık).",
+            "Because: neden bildirir, cümle zıtlık kuruyor.",
+            "Since neden bildirir.",
+            "Unless koşul.",
+            "Therefore sonuç bağlacı; cümle başında tek başına yan cümle kurmaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloze-02",
+      "title": "Cloze Seti 2: Şehir Bahçeleri",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "Urban gardens have become increasingly popular in recent years, [[1]] more city dwellers look for ways to grow their own food.",
+          "These small green spaces can be found on rooftops, in abandoned lots, and [[2]] in the corners of busy car parks.",
+          "Gardeners say the activity helps them relax and [[3]] them closer to nature.",
+          "In addition, community gardens bring together neighbours [[4]] would otherwise never meet.",
+          "Growing vegetables locally also reduces the energy [[5]] to transport food over long distances.",
+          "Some city councils have therefore started to [[6]] unused land for this purpose at very low cost.",
+          "[[7]] the benefits, urban gardening is not without problems.",
+          "Soil in cities is often polluted, [[8]] it must be tested before anything is planted.",
+          "Water can also be a problem, especially [[9]] long dry periods in summer.",
+          "Even so, most gardeners [[10]] that the rewards far outweigh the difficulties."
+        ],
+        "tr": [
+          "Kentsel bahçeler, daha fazla şehirli kendi yiyeceğini yetiştirmenin yollarını aradıkça son yıllarda giderek popüler hale geldi.",
+          "Bu küçük yeşil alanlar çatılarda, terk edilmiş arsalarda ve hatta yoğun otoparkların köşelerinde bulunabilir.",
+          "Bahçıvanlar bu etkinliğin rahatlamalarına ve onları doğaya yaklaştırmasına yardımcı olduğunu söylüyor.",
+          "Ayrıca topluluk bahçeleri, aksi halde hiç tanışmayacak komşuları bir araya getiriyor.",
+          "Sebzeyi yerel olarak yetiştirmek, yiyeceği uzun mesafelere taşımak için gereken enerjiyi de azaltır.",
+          "Bu nedenle bazı belediyeler kullanılmayan araziyi bu amaçla çok düşük maliyetle tahsis etmeye başladı.",
+          "Yararlarına rağmen kentsel bahçecilik sorunsuz değildir.",
+          "Şehirlerdeki toprak çoğu zaman kirlidir, bu nedenle bir şey ekilmeden önce test edilmelidir.",
+          "Su da özellikle yazın uzun kurak dönemlerde bir sorun olabilir.",
+          "Buna rağmen çoğu bahçıvan ödüllerin zorlukları çok aştığını söylüyor."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "although",
+            "unless",
+            "as",
+            "whether",
+            "than"
+          ],
+          "a": 2,
+          "x": [
+            "although zıtlık; burada zıtlık yok.",
+            "unless koşul; anlam uymaz.",
+            "Doğru: as = ...dıkça (eşzamanlı artış).",
+            "whether 'olup olmadığı'; uymaz.",
+            "than karşılaştırma; uymaz."
+          ]
+        },
+        {
+          "o": [
+            "ever",
+            "yet",
+            "still",
+            "so",
+            "even"
+          ],
+          "a": 4,
+          "x": [
+            "ever 'and ever' uymaz.",
+            "yet 'and yet' zıtlık verir.",
+            "still 'and still' bu anlamda uymaz.",
+            "so 'and so' sonuç; uymaz.",
+            "Doğru: and even = hatta (vurgulu ekleme)."
+          ]
+        },
+        {
+          "o": [
+            "make",
+            "bring",
+            "put",
+            "let",
+            "send"
+          ],
+          "a": 1,
+          "x": [
+            "make them closer bu yapıda olmaz.",
+            "Doğru: bring sb closer to = yaklaştırmak.",
+            "put sb closer to kalıbı bu anlamda doğal değil.",
+            "let them closer olmaz.",
+            "send them closer olmaz."
+          ]
+        },
+        {
+          "o": [
+            "whose",
+            "whom",
+            "which",
+            "who",
+            "what"
+          ],
+          "a": 3,
+          "x": [
+            "whose bir isim ister.",
+            "whom nesne konumunda kullanılır; burada 'would never meet' öznesiz kalır.",
+            "which kişiler için kullanılmaz.",
+            "Doğru: neighbours who would never meet — kişiler için özne konumunda ilgi zamiri.",
+            "what ilgi zamiri olarak isme bağlanamaz."
+          ]
+        },
+        {
+          "o": [
+            "required",
+            "requiring",
+            "requires",
+            "to require",
+            "require"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: the energy (which is) required to transport — edilgen sıfat fiil.",
+            "requiring aktif ve 'to transport' ile anlam bozulur.",
+            "requires zaten fiil, cümlede ana fiil var.",
+            "to require anlamsız.",
+            "require yalın fiil olamaz."
+          ]
+        },
+        {
+          "o": [
+            "to allocate",
+            "allocating",
+            "allocated",
+            "allocate",
+            "allocation"
+          ],
+          "a": 3,
+          "x": [
+            "to allocate: 'started to to allocate' olur.",
+            "allocating: 'started to allocating' olmaz.",
+            "allocated: biçim hatalı.",
+            "Doğru: started to + V1.",
+            "allocation isim."
+          ]
+        },
+        {
+          "o": [
+            "Because of",
+            "Despite",
+            "Unless",
+            "Whereas",
+            "Owing to"
+          ],
+          "a": 1,
+          "x": [
+            "Because of neden bildirir; 'is not without problems' ile çelişir.",
+            "Doğru: Despite the benefits = yararlarına rağmen.",
+            "Unless bağlaç, isim öbeği almaz.",
+            "Whereas bağlaç, isim öbeği almaz.",
+            "Owing to neden bildirir."
+          ]
+        },
+        {
+          "o": [
+            "whereas",
+            "although",
+            "unless",
+            "since",
+            "so"
+          ],
+          "a": 4,
+          "x": [
+            "whereas karşıtlık bildirir.",
+            "although zıtlık kurar; anlam bozulur.",
+            "unless koşul; anlam bozulur.",
+            "since nedeni verir ama 'must be tested' bir sonuçtur; neden-sonuç yönü tersine döner.",
+            "Doğru: ..., so it must be tested = bu nedenle."
+          ]
+        },
+        {
+          "o": [
+            "when",
+            "while",
+            "during",
+            "for",
+            "since"
+          ],
+          "a": 2,
+          "x": [
+            "when bağlaç.",
+            "while bağlaç; isim öbeği almaz.",
+            "Doğru: during + isim öbeği (long dry periods).",
+            "for + süre; 'long dry periods' bir olay dönemi.",
+            "since + başlangıç noktası."
+          ]
+        },
+        {
+          "o": [
+            "agree",
+            "regret",
+            "deny",
+            "wonder",
+            "pretend"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: agree that = ...konusunda hemfikir olmak.",
+            "regret that = üzülmek; 'rewards outweigh' ile çelişir.",
+            "deny that = inkâr etmek; 'Even so' sonrası anlam bozulur.",
+            "wonder that bu anlamda olmaz.",
+            "pretend that = rol yapmak; anlam uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloze-03",
+      "title": "Cloze Seti 3: Yazının Tarihi",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "Writing is one of the most important inventions in human history, yet nobody knows exactly [[1]] it began.",
+          "The earliest known writing system was developed in Mesopotamia around 3200 BC, [[2]] scribes pressed symbols into wet clay.",
+          "At first, these symbols were used [[3]] to keep records of goods such as grain and cattle.",
+          "[[4]] time, however, they came to represent sounds and words, which made it possible to record stories and laws.",
+          "A similar development took place [[5]] in Egypt, where hieroglyphs appeared at about the same time.",
+          "Historians believe that writing [[6]] have been invented independently in several parts of the world.",
+          "In China, for instance, early characters were carved into animal bones [[7]] predict the future.",
+          "The alphabet, which is the basis of many modern scripts, was [[8]] by the Phoenicians.",
+          "Because it used a small number of signs, it was much easier to learn [[9]] earlier systems.",
+          "As a result, literacy gradually [[10]] from a small elite to ordinary people."
+        ],
+        "tr": [
+          "Yazı, insanlık tarihinin en önemli icatlarından biridir; ancak kimse nasıl başladığını tam olarak bilmiyor.",
+          "Bilinen en eski yazı sistemi, yazıcıların ıslak kile semboller bastığı Mezopotamya'da MÖ 3200 civarında geliştirildi.",
+          "Başlangıçta bu semboller yalnızca tahıl ve sığır gibi malların kaydını tutmak için kullanılıyordu.",
+          "Ancak zamanla sesleri ve sözcükleri temsil etmeye başladılar; bu da hikâyelerin ve yasaların kaydedilmesini mümkün kıldı.",
+          "Benzer bir gelişme, hiyerogliflerin yaklaşık aynı dönemde ortaya çıktığı Mısır'da da yaşandı.",
+          "Tarihçiler yazının dünyanın birkaç yerinde birbirinden bağımsız olarak icat edilmiş olabileceğine inanıyor.",
+          "Örneğin Çin'de erken karakterler geleceği tahmin etmek amacıyla hayvan kemiklerine oyuldu.",
+          "Birçok modern yazının temeli olan alfabe Fenikeliler tarafından geliştirildi.",
+          "Az sayıda işaret kullandığı için önceki sistemlerden öğrenmesi çok daha kolaydı.",
+          "Sonuç olarak okuryazarlık, küçük bir seçkin kesimden sıradan insanlara doğru yavaş yavaş yayıldı."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "which",
+            "what",
+            "how",
+            "whom",
+            "those"
+          ],
+          "a": 2,
+          "x": [
+            "which 'which it began' olmaz.",
+            "what 'what it began' olmaz.",
+            "Doğru: nobody knows how it began = nasıl başladığını.",
+            "whom nesne zamiri; olay için olmaz.",
+            "those bu yapıda olmaz."
+          ]
+        },
+        {
+          "o": [
+            "who",
+            "which",
+            "when",
+            "whose",
+            "where"
+          ],
+          "a": 4,
+          "x": [
+            "who yer için kullanılmaz.",
+            "which 'scribes' öznesini bırakır; yapı hatalı.",
+            "when zaman bildirir; önceki ifade yer.",
+            "whose isim ister.",
+            "Doğru: Mesopotamia, where scribes... — yer zarfı."
+          ]
+        },
+        {
+          "o": [
+            "ever",
+            "only",
+            "hardly",
+            "almost",
+            "rarely"
+          ],
+          "a": 1,
+          "x": [
+            "ever 'used ever' olmaz.",
+            "Doğru: used only to keep records = yalnızca.",
+            "hardly olumsuz anlam verir.",
+            "almost 'used almost to' olmaz.",
+            "rarely anlam bozulur."
+          ]
+        },
+        {
+          "o": [
+            "On",
+            "In",
+            "At",
+            "Over",
+            "By"
+          ],
+          "a": 3,
+          "x": [
+            "On time 'zamanında'.",
+            "In time 'zamanında/sonunda'; farklı.",
+            "At time kalıbı yok.",
+            "Doğru: Over time = zamanla.",
+            "By time kalıbı yok."
+          ]
+        },
+        {
+          "o": [
+            "too",
+            "either",
+            "neither",
+            "then",
+            "yet"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: took place too in Egypt = Mısır'da da.",
+            "either olumsuz cümlede kullanılır.",
+            "neither olumsuz anlam verir.",
+            "then 'o zaman' anlamıdır; anlam bozulur.",
+            "yet bu yapıda olmaz."
+          ]
+        },
+        {
+          "o": [
+            "will",
+            "cannot",
+            "should",
+            "might",
+            "ought"
+          ],
+          "a": 3,
+          "x": [
+            "will have been 'olmuş olacak'; zaman uyumsuz.",
+            "cannot have been invented independently cümleyi tersine çevirir ('Historians believe' ile çelişir).",
+            "should have been = yapılmalıydı; anlam uymaz.",
+            "Doğru: might have been invented = icat edilmiş olabilir (olasılık).",
+            "ought 'to' almadığı için hatalı."
+          ]
+        },
+        {
+          "o": [
+            "for",
+            "to",
+            "in order",
+            "so",
+            "as"
+          ],
+          "a": 1,
+          "x": [
+            "for predict biçimi hatalı.",
+            "Doğru: carved ... to predict = amaç (-mek için).",
+            "in order tek başına hatalı (in order to).",
+            "so tek başına hatalı (so as to / so that).",
+            "as uymaz."
+          ]
+        },
+        {
+          "o": [
+            "develop",
+            "developing",
+            "to develop",
+            "develops",
+            "developed"
+          ],
+          "a": 4,
+          "x": [
+            "develop: hatalı.",
+            "developing: was developing aktif.",
+            "to develop: hatalı.",
+            "develops: was ile olmaz.",
+            "Doğru: was developed (edilgen)."
+          ]
+        },
+        {
+          "o": [
+            "that",
+            "as",
+            "than",
+            "to",
+            "of"
+          ],
+          "a": 2,
+          "x": [
+            "that olmaz.",
+            "as: easier as olmaz.",
+            "Doğru: much easier to learn than earlier systems.",
+            "to olmaz.",
+            "of olmaz."
+          ]
+        },
+        {
+          "o": [
+            "spread",
+            "spreading",
+            "to spread",
+            "was spread",
+            "had spread"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: gradually spread (past simple).",
+            "spreading: 'gradually spreading' fiil eksik.",
+            "to spread: hatalı.",
+            "was spread: edilgen, 'from ... to' ile anlamlı ama aktif özne 'literacy' yayıldı.",
+            "had spread: past perfect, 'As a result' ile uymaz."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloze-04",
+      "title": "Cloze Seti 4: Plastik Atıklar",
+      "passage": {
+        "kind": "cloze",
+        "sentences": [
+          "Every year, millions of tonnes of plastic end up in the oceans, [[1]] serious harm to marine life.",
+          "Many animals mistake plastic for food, [[2]] often leads to illness or death.",
+          "Scientists have recently discovered tiny pieces of plastic even [[3]] the deepest parts of the sea.",
+          "Despite growing awareness, only about nine percent of all plastic ever produced [[4]] recycled.",
+          "Most of the rest [[5]] up in landfills or in the natural environment.",
+          "Governments have started [[6]] stricter rules on single-use plastic bags and bottles.",
+          "[[7]] some countries have banned plastic bags altogether, others rely on small taxes.",
+          "Experts, however, warn that bans alone [[8]] be enough to solve the problem.",
+          "Companies also need to design products that are easier to recycle, [[9]] consumers must learn to reduce their waste.",
+          "If nothing [[10]] soon, the amount of plastic in the oceans could outweigh the fish by 2050."
+        ],
+        "tr": [
+          "Her yıl milyonlarca ton plastik okyanuslara karışıyor ve deniz yaşamına ciddi zarar veriyor.",
+          "Birçok hayvan plastiği yiyecek sanıyor; bu da çoğu zaman hastalığa veya ölüme yol açıyor.",
+          "Bilim insanları denizin en derin kısımlarında bile minik plastik parçacıkları keşfetti.",
+          "Artan farkındalığa rağmen şimdiye kadar üretilen tüm plastiğin yalnızca yaklaşık yüzde dokuzu geri dönüştürüldü.",
+          "Geri kalanın çoğu çöp sahalarında veya doğal çevrede son buluyor.",
+          "Hükümetler tek kullanımlık plastik poşet ve şişelere daha sıkı kurallar getirmeye başladı.",
+          "Bazı ülkeler plastik poşetleri tamamen yasaklarken diğerleri küçük vergilere başvuruyor.",
+          "Ancak uzmanlar yalnızca yasakların sorunu çözmeye yetmeyebileceği konusunda uyarıyor.",
+          "Şirketlerin de geri dönüştürülmesi daha kolay ürünler tasarlaması gerekiyor; tüketiciler ise atıklarını azaltmayı öğrenmeli.",
+          "Yakında hiçbir şey yapılmazsa 2050'ye kadar okyanuslardaki plastik miktarı balıkları aşabilir."
+        ]
+      },
+      "qs": [
+        {
+          "o": [
+            "to cause",
+            "caused",
+            "causing",
+            "cause",
+            "causes"
+          ],
+          "a": 2,
+          "x": [
+            "to cause amaç; anlam bozulur.",
+            "caused edilgen; anlam 'neden olunan' olurdu.",
+            "Doğru: V-ing sonuç: ..., causing serious harm.",
+            "cause yalın fiil hatalı.",
+            "causes: ikinci ana fiil, bağlaçsız hatalı."
+          ]
+        },
+        {
+          "o": [
+            "whose",
+            "what",
+            "that",
+            "who",
+            "which"
+          ],
+          "a": 4,
+          "x": [
+            "whose isim ister.",
+            "what ilgi zamiri olarak olmaz.",
+            "that virgülden sonra olmaz.",
+            "who hayvan/olay için olmaz.",
+            "Doğru: , which = ve bu (tüm cümleye atıf)."
+          ]
+        },
+        {
+          "o": [
+            "on",
+            "in",
+            "at",
+            "by",
+            "to"
+          ],
+          "a": 1,
+          "x": [
+            "on yüzey üzerini belirtir.",
+            "Doğru: in the deepest parts.",
+            "at nokta belirtir.",
+            "by yanında demektir.",
+            "to yönelim."
+          ]
+        },
+        {
+          "o": [
+            "had been",
+            "have been",
+            "is being",
+            "has been",
+            "was"
+          ],
+          "a": 3,
+          "x": [
+            "had been: past perfect.",
+            "have been: çoğul özne.",
+            "is being: şimdiki sürekli edilgen, anlam uymaz.",
+            "Doğru: only about nine percent ... has been recycled — özne tekil (percent), perfect + edilgen.",
+            "was: perfect anlamı yok ('ever produced')."
+          ]
+        },
+        {
+          "o": [
+            "end",
+            "ends",
+            "ending",
+            "ended",
+            "to end"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: end up = sonunda ...ye varmak/düşmek; çoğul özne için yalın biçim.",
+            "ends: özne 'the rest' (geri kalanlar) çoğul anlamlıdır; fiil çoğul gelir.",
+            "ending: ana fiil yok.",
+            "ended: 'Most of the rest' genel bir durumu anlatır; geçmiş zaman uyumsuz.",
+            "to end: ana fiil yok."
+          ]
+        },
+        {
+          "o": [
+            "introduces",
+            "introduce",
+            "introduced",
+            "to introduce",
+            "to introducing"
+          ],
+          "a": 3,
+          "x": [
+            "introduces: biçim hatalı.",
+            "introduce: 'started' sonrası to ya da -ing gerekir; yalın biçim olmaz.",
+            "introduced: biçim hatalı.",
+            "Doğru: started + to-infinitive (to introduce).",
+            "to introducing: hatalı birleşim."
+          ]
+        },
+        {
+          "o": [
+            "Because",
+            "While",
+            "Unless",
+            "Since",
+            "Therefore"
+          ],
+          "a": 1,
+          "x": [
+            "Because neden bildirir.",
+            "Doğru: While = ...iken, karşıtlık (some ... others).",
+            "Unless koşul.",
+            "Since neden bildirir.",
+            "Therefore bağlaç değil."
+          ]
+        },
+        {
+          "o": [
+            "have to",
+            "must",
+            "should",
+            "will",
+            "may not"
+          ],
+          "a": 4,
+          "x": [
+            "have to be enough: anlam uymaz.",
+            "must be enough = kesin yeterli; anlam çelişir.",
+            "should be enough: olumlu yargı.",
+            "will be enough: kesin yargı.",
+            "Doğru: may not be enough = yeterli olmayabilir."
+          ]
+        },
+        {
+          "o": [
+            "because",
+            "unless",
+            "while",
+            "so",
+            "if"
+          ],
+          "a": 2,
+          "x": [
+            "because neden.",
+            "unless koşul.",
+            "Doğru: ..., while consumers must learn = ...iken, ayrıca.",
+            "so sonuç.",
+            "if koşul."
+          ]
+        },
+        {
+          "o": [
+            "is done",
+            "does",
+            "will be done",
+            "done",
+            "did"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: If nothing is done soon (edilgen, 1. tip koşul).",
+            "does: aktif, 'nothing does' anlamsız.",
+            "will be done: if cümlesinde will olmaz.",
+            "done: fiil yok.",
+            "did: geçmiş, 'could' ile uyumsuz."
+          ]
+        }
+      ]
+    }
+  ],
+  "balanced": true
+}
