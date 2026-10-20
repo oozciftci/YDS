@@ -25,7 +25,7 @@ Gece boyunca Faz 7–10’dan aşağıdaki işler yapıldı. Hepsi commit’li (
 | 7.10 | **Haftalık rapor** (+ isteğe bağlı koç yorumu) ve **Metinden kelime çıkar** | İstatistik sayfasının başı; Kelimeler → “📄 Metinden Kelime” |
 
 ### Özgün içerik (Faz 8 — yayına girebilir, çıkmış soru içermez)
-- **Alıştırma Merkezi** (`/yds-test`, eski “YDS TEST”): **389 özgün soru, 63 set** — kelime 50, dilbilgisi 50, cloze 70, cümle tamamlama 51, çeviri 42, yakın anlam 20, paragraf tamamlama 21, anlam bütünlüğü 25, diyalog 20 + **okuma 10 metin / 40 soru**. Her şıkkın Türkçe açıklaması, cümle çevirisi ve kelime dokunma var.
+- **Alıştırma Merkezi** (`/yds-test`, eski “YDS TEST”): **407 özgün soru, 66 set** — kelime 50, dilbilgisi 50, cloze 70, cümle tamamlama 51, çeviri 60, yakın anlam 20, paragraf tamamlama 21, anlam bütünlüğü 25, diyalog 20 + **okuma 10 metin / 40 soru**. Her şıkkın Türkçe açıklaması, cümle çevirisi ve kelime dokunma var.
 - **8.2** Gramer alıştırmaları konu başına 5 → **10**.
 - **8.4** YÖKDİL alan terimleri: Fen 62, Sağlık 55, Sosyal 51 (Kelimeler → Hazır Paketler → “🧪 YÖKDİL Alan Terimleri”).
 - **8.5** Çeviri cümleleri 24 (Çeviri Atölyesi için).

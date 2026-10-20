@@ -798,6 +798,348 @@
           ]
         }
       ]
+    },
+    {
+      "id": "translation-08",
+      "title": "Çeviri Seti 8",
+      "qs": [
+        {
+          "s": "Unless urgent measures are taken, the number of endangered species will continue to rise.",
+          "o": [
+            "Acil önlemler alındığı için nesli tehlike altındaki türlerin sayısı artıyor.",
+            "Acil önlemler alınmadıkça nesli tehlike altındaki türlerin sayısı artmaya devam edecek.",
+            "Nesli tehlike altındaki türlerin artması, acil önlemlerin alınmasını engelliyor.",
+            "Acil önlemler alınsa bile türlerin sayısı artmayacak.",
+            "Türlerin sayısı artarsa acil önlemler alınacak."
+          ],
+          "a": 1,
+          "x": [
+            "Gerçek durum yanlış aktarılmış.",
+            "Doğru: 'Unless' = ...madıkça.",
+            "Neden-sonuç ters.",
+            "Anlam ters.",
+            "Koşul yönü ters."
+          ]
+        },
+        {
+          "s": "Her success owes less to natural talent than to the discipline with which she has trained for years.",
+          "o": [
+            "Doğal yeteneği ve disiplini olmasaydı yıllarca çalışamazdı.",
+            "Başarısı, yıllardır disiplinle çalışmasından çok doğal yeteneğine borçludur.",
+            "Yıllardır disiplinli çalışması, doğal yeteneği sayesinde başarılı oldu.",
+            "Başarısı, doğal yeteneğinden çok yıllardır disiplinle çalışmasına borçludur.",
+            "Disiplinle çalıştığı için doğal yeteneğini kaybetti."
+          ],
+          "a": 3,
+          "x": [
+            "Koşul anlamı eklenmiş.",
+            "Karşılaştırma ters.",
+            "Neden-sonuç yanlış.",
+            "Doğru: owes less to A than to B = A'dan çok B'ye borçlu.",
+            "Anlam ters."
+          ]
+        },
+        {
+          "s": "What makes this discovery remarkable is not its scale but the speed at which it was made.",
+          "o": [
+            "Bu keşfi dikkat çekici kılan, boyutundan çok yapılma hızıdır.",
+            "Bu keşfi dikkat çekici kılan şey hem boyutu hem de yapılma hızıdır.",
+            "Bu keşif, boyutu küçük olduğu için çok hızlı yapılmıştır.",
+            "Hızla yapılan bu keşfin boyutu dikkat çekici değildir.",
+            "Keşfin boyutu, yapılma hızını dikkat çekici kılmıştır."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: not A but B = A değil B.",
+            "'Not ... but' anlamı kaybolmuş.",
+            "Neden-sonuç yanlış.",
+            "Anlam kaymış.",
+            "Neden-sonuç ters."
+          ]
+        },
+        {
+          "s": "Hasta, ameliyattan önce doktorun söylediklerini dikkatle dinlemiş olsaydı, komplikasyonlardan kaçınabilirdi.",
+          "o": [
+            "Although the patient listened carefully, he could not avoid the complications.",
+            "If the patient listens carefully to the doctor before the operation, he can avoid the complications.",
+            "The patient avoided the complications because he had listened to the doctor carefully.",
+            "Had the patient listened carefully to what the doctor said before the operation, he could have avoided the complications.",
+            "The doctor told the patient to listen carefully so that he would avoid the complications."
+          ],
+          "a": 3,
+          "x": [
+            "Zıtlık anlamı eklenmiş.",
+            "Zaman/koşul tipi yanlış.",
+            "Gerçek durum yanlış aktarılmış (olsaydı = olmadı).",
+            "Doğru: 3. tip koşul, geçmişe dönük.",
+            "Neden/amaç yanlış."
+          ]
+        },
+        {
+          "s": "Teknolojik gelişmeler sayesinde artık kitapların çoğuna internet üzerinden ücretsiz erişmek mümkün.",
+          "o": [
+            "Because of technological developments, most books are no longer available on the internet.",
+            "Thanks to technological developments, it is now possible to access most books free of charge on the internet.",
+            "Technological developments make it impossible to read most books online.",
+            "Most books are now free because technology has developed rapidly.",
+            "Thanks to the internet, technological developments have been given away free of charge."
+          ],
+          "a": 1,
+          "x": [
+            "Anlam ters.",
+            "Doğru: sayesinde = thanks to; erişmek mümkün.",
+            "Anlam ters.",
+            "Ücretsiz erişim ile ücretsiz olmak farklı; sonuç değişmiş.",
+            "Özne-nesne karışmış."
+          ]
+        },
+        {
+          "s": "Bu kadar önemli bir kararın yalnızca birkaç kişi tarafından alınması hiç kimseyi memnun etmedi.",
+          "o": [
+            "Only a few people were displeased with the important decision that was made.",
+            "Such an important decision pleased only a few people because they made it.",
+            "Everyone was pleased that only a few people were involved in the important decision.",
+            "Nobody made such an important decision because only a few people were pleased.",
+            "It pleased nobody that such an important decision was made by only a few people."
+          ],
+          "a": 4,
+          "x": [
+            "Anlam kaymış.",
+            "Anlam ters (yalnızca birkaç kişi).",
+            "Anlam ters.",
+            "Özne-nesne karışmış.",
+            "Doğru: hiç kimseyi memnun etmedi = pleased nobody."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-09",
+      "title": "Çeviri Seti 9",
+      "qs": [
+        {
+          "s": "Scarcely had the experiment started when an unexpected fault in the equipment forced the team to stop.",
+          "o": [
+            "Ekipmanın arızalanması deneyin başlamasını engelledi ve ekip durdu.",
+            "Deney ekibin durmasından hemen sonra ekipmandaki bir arıza yüzünden başladı.",
+            "Deney başlar başlamaz ekipmandaki beklenmedik bir arıza ekibi durmaya zorladı.",
+            "Ekip, deneyin başlamasına rağmen beklenmedik bir arıza çıkmayınca durmadı.",
+            "Beklenmedik bir arıza çıkmasaydı ekip deneyi başlatacaktı."
+          ],
+          "a": 2,
+          "x": [
+            "Deney başlamıştı; engellenmedi.",
+            "Sıra ters.",
+            "Doğru: Scarcely ... when = ...r ...maz.",
+            "Anlam ters.",
+            "Koşul anlamı eklenmiş."
+          ]
+        },
+        {
+          "s": "It is not until a language disappears that people fully realise what has been lost.",
+          "o": [
+            "İnsanlar, kaybolanın ne olduğunu ancak bir dil yok olduktan sonra tam olarak fark eder.",
+            "Bir dil yok olmadan insanlar neyin kaybolduğunu tam olarak anlayabilir.",
+            "İnsanlar dil yok olduğu için kaybolanı tamamen unutur.",
+            "Bir dilin yok olması, insanların kaybolanı fark etmesini engeller.",
+            "Kaybolan dil, insanlar tam olarak fark ettiği için yok olur."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: not until = ancak ...dikten sonra.",
+            "Anlam ters.",
+            "Anlam kaymış.",
+            "Anlam ters.",
+            "Neden-sonuç ters."
+          ]
+        },
+        {
+          "s": "Much as I admire her work, I cannot agree with the conclusions she has reached.",
+          "o": [
+            "Vardığı sonuçlara katılmadığım için çalışmasına hayran değilim.",
+            "Çalışmasına hayran olduğum için vardığı sonuçlara katılıyorum.",
+            "Çalışmasına ne kadar hayran olsam da vardığı sonuçlara katılamıyorum.",
+            "Çalışmasına hayran olmasam da vardığı sonuçlar doğru.",
+            "Hayranlığım, vardığı sonuçlara katılmama yardımcı oldu."
+          ],
+          "a": 2,
+          "x": [
+            "Anlam ters.",
+            "Anlam ters.",
+            "Doğru: Much as = ne kadar ... olsam da (zıtlık).",
+            "Anlam kaymış.",
+            "Neden-sonuç yanlış."
+          ]
+        },
+        {
+          "s": "Dilin yalnızca bir iletişim aracı değil, aynı zamanda bir kimlik göstergesi olduğu sıklıkla vurgulanır.",
+          "o": [
+            "Language, as a means of communication, always emphasises identity.",
+            "Language is emphasised often as an identity that is not a means of communication.",
+            "It is often emphasised that communication is both language and identity.",
+            "Emphasising identity is not a means of communication in any language.",
+            "It is often emphasised that language is not only a means of communication but also a marker of identity."
+          ],
+          "a": 4,
+          "x": [
+            "Mutlaklık ve özne kaymış.",
+            "Anlam ters.",
+            "Özne-nesne karışmış.",
+            "Anlam kaymış.",
+            "Doğru: yalnızca ... değil, aynı zamanda = not only ... but also."
+          ]
+        },
+        {
+          "s": "Kullanıcıların çoğu, uygulamanın yeni sürümünün eskisinden daha kullanışlı olduğunu düşünüyor.",
+          "o": [
+            "Most users think that the old version of the application is more convenient than the new one.",
+            "Most users think that the new version of the application is more convenient than the old one.",
+            "The new version of the application is thought to be as convenient as most users.",
+            "Most users who think it is more convenient prefer the old application.",
+            "The application's users are more convenient than the new version."
+          ],
+          "a": 1,
+          "x": [
+            "Karşılaştırma ters.",
+            "Doğru: daha kullanışlı = more convenient; yeni > eski.",
+            "Özne-nesne karışmış.",
+            "Anlam kaymış.",
+            "Özne-nesne karışmış."
+          ]
+        },
+        {
+          "s": "Bu araştırmanın bulgularının ne kadar genellenebileceği henüz kesin olarak bilinmiyor.",
+          "o": [
+            "Nobody knows who generalised the findings of this study first.",
+            "It is certain that the findings of this study can be generalised to a large extent.",
+            "The findings of this study are known to be too general for any certain conclusion.",
+            "How far the findings of this study can be generalised is not yet known for certain.",
+            "The findings of this study are not known for certain because they are general."
+          ],
+          "a": 3,
+          "x": [
+            "Anlam kaymış.",
+            "Anlam ters (kesin değil).",
+            "Anlam kaymış.",
+            "Doğru: ne kadar genellenebileceği = how far ... can be generalised.",
+            "Neden-sonuç yanlış."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "translation-10",
+      "title": "Çeviri Seti 10",
+      "qs": [
+        {
+          "s": "Few would deny that education plays a decisive role in reducing inequality within a society.",
+          "o": [
+            "Çok az kişi, eğitimin bir toplumdaki eşitsizliği azaltmada belirleyici bir rol oynadığını yadsır.",
+            "Birçok kişi, eğitimin bir toplumdaki eşitsizliği azaltmada belirleyici rol oynadığını savunur.",
+            "Eğitimin eşitsizliği azalttığını savunanların sayısı toplumda çok azdır.",
+            "Eşitsizliği azaltmak için eğitime belirleyici rol verilmesini çok az kişi önerir.",
+            "Eğitim, toplumdaki eşitsizliği azaltmayı savunanları belirleyici bir role taşır."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: Few would deny that ... = çok az kişi ...ı yadsır (yani çoğu kabul eder).",
+            "Anlam ters ('Few' = çok az).",
+            "Anlam ters: azınlık fikri değil, yaygın kabul.",
+            "Anlam kaymış (öneri).",
+            "Özne-nesne karışmış."
+          ]
+        },
+        {
+          "s": "The harder the government tried to control prices, the more shortages appeared in the markets.",
+          "o": [
+            "Hükümet, kıtlığı önlemek için fiyatları kontrol etmeye çok çalıştı.",
+            "Hükümet fiyatları kontrol edemediği için piyasalarda kıtlık ortaya çıktı.",
+            "Piyasalarda kıtlık arttıkça hükümet fiyatları kontrol etmeye daha az çalıştı.",
+            "Hükümet fiyatları kontrol etmeye ne kadar çok çalıştıysa piyasalarda o kadar çok kıtlık ortaya çıktı.",
+            "Fiyatların kontrolü, piyasalardaki kıtlığın azalmasını sağladı."
+          ],
+          "a": 3,
+          "x": [
+            "Amaç yanlış.",
+            "Neden-sonuç yanlış.",
+            "Yön ters.",
+            "Doğru: the harder ..., the more ... orantılı artış.",
+            "Sonuç ters."
+          ]
+        },
+        {
+          "s": "Had it not been for the generous donations of local businesses, the school would have been closed years ago.",
+          "o": [
+            "Yerel işletmelerin cömert bağışları sayesinde okul yıllar önce kapandı.",
+            "Yerel işletmelerin cömert bağışları olmasaydı okul yıllar önce kapatılmış olurdu.",
+            "Okul kapatıldığı için yerel işletmeler cömert bağışlarda bulundu.",
+            "Yerel işletmeler bağış yapmasaydı okul açılmayacaktı.",
+            "Okul yıllar önce kapatılmasaydı işletmeler bağış yapmazdı."
+          ],
+          "a": 1,
+          "x": [
+            "Gerçek durum ters aktarılmış.",
+            "Doğru: 3. tip koşul: olmasaydı kapatılırdı.",
+            "Neden-sonuç ters.",
+            "'Açılmayacaktı' anlamı farklı.",
+            "Koşul ters."
+          ]
+        },
+        {
+          "s": "Çocukların ekran karşısında geçirdiği süre arttıkça, uyku sorunlarının da arttığı gözlemleniyor.",
+          "o": [
+            "Time spent in front of screens increases because children have sleep problems.",
+            "It is observed that children who sleep less spend more time in front of screens than others.",
+            "Sleep problems are observed to decrease as children spend more time on screens.",
+            "Children observe that sleep problems are caused by the screens they spend time on.",
+            "It is observed that as the time children spend in front of screens increases, sleep problems increase as well."
+          ],
+          "a": 4,
+          "x": [
+            "Neden-sonuç ters.",
+            "Yön/ilişki yanlış.",
+            "Anlam ters.",
+            "Özne kaymış.",
+            "Doğru: arttıkça ... da arttığı = as ... increases, ... increase as well."
+          ]
+        },
+        {
+          "s": "Yatırımcılar, şirketin zarar etmesine rağmen hisse senetlerinin değerinin yükseleceğine inanıyor.",
+          "o": [
+            "Although the value of the shares will rise, investors believe the company will make a loss.",
+            "Investors believe that the company is making a loss because its shares are rising in value.",
+            "Investors believe that the value of the company's shares will rise even though the company is making a loss.",
+            "The company makes a loss, so investors believe that the value of its shares will fall.",
+            "Investors who believe the value will rise have made a loss on the company's shares."
+          ],
+          "a": 2,
+          "x": [
+            "Zıtlık yeri kaymış.",
+            "Neden-sonuç ters.",
+            "Doğru: rağmen = even though; hisse değeri yükselecek.",
+            "Anlam ters.",
+            "Anlam kaymış."
+          ]
+        },
+        {
+          "s": "Eleştirmenler, bu romanın yazarın önceki eserlerinden hem biçim hem de içerik bakımından ayrıldığını belirtiyor.",
+          "o": [
+            "Critics point out that this novel differs from the author's earlier works in both form and content.",
+            "Critics point out that the author's earlier works differ from this novel neither in form nor in content.",
+            "Critics have noted that the author's novel has the same form but a different content.",
+            "According to critics, this novel is either formal or content-based unlike earlier works.",
+            "Critics differ in their views on the form and content of the author's earlier works."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: hem ... hem de = both ... and; ayrılmak = differ from.",
+            "'Neither...nor' anlamı ters.",
+            "Biçim aynı denmiş; yanlış.",
+            "Either ... or anlamı yanlış.",
+            "Eleştirmenlerin görüş ayrılığı anlamı eklenmiş."
+          ]
+        }
+      ]
     }
   ],
   "balanced": true
