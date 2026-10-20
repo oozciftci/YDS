@@ -5,6 +5,7 @@ import { dayKey, daysUntil, streakFromDays } from './dates'
 import { mockAdvice, mockCadence, compareMocks } from './mockPlan'
 import { summarizeTimes } from './mockTime'
 import { buildTargetPlan } from './targetPlan'
+import { extractWordsFromText } from './textWords'
 import { buildWeeklyReport, reportToText } from './weeklyReport'
 import { reasonCounts } from './wrongReasons'
 import { isYokdil, rangeIn, sectionOf, ydsScore } from './ydsSections'
@@ -217,5 +218,20 @@ describe('weeklyReport', () => {
     expect(r.weakest?.key).toBe('vocab')
     expect(r.weakest?.pct).toBe(40)
     expect(reportToText(r)).toContain('En zayıf soru tipi')
+  })
+})
+
+describe('textWords', () => {
+  const dict = [
+    { term: 'abandon', definition: 'terk etmek', partOfSpeech: 'verb', tags: ['B2', 'YDS-Sık'] },
+    { term: 'cat', definition: 'kedi', partOfSpeech: 'noun', tags: ['A1'] },
+    { term: 'scrutinize', definition: 'incelemek', partOfSpeech: 'verb', tags: ['C1', 'YDS-Çok-Sık'] },
+  ] as never[]
+  it('çekimli biçimleri bulur, havuzdakini atlar, sıklığa göre sıralar', () => {
+    const r = extractWordsFromText('They abandoned the cat. Experts scrutinize results; abandoning is rare. Zorbax appears.', dict, new Set(['cat']))
+    expect(r.found.map((f) => f.word.term)).toEqual(['scrutinize', 'abandon'])
+    expect(r.found.find((f) => f.word.term === 'abandon')?.count).toBe(2)
+    expect(r.owned).toBe(1)
+    expect(r.unknown).toBeGreaterThan(0)
   })
 })

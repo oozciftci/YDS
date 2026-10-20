@@ -6,6 +6,7 @@ import { TransferWordsModal } from '../components/TransferWordsModal'
 import { WordCard } from '../components/WordCard'
 import { WordModal } from '../components/WordModal'
 import { WordPacksModal } from '../components/WordPacksModal'
+import { TextWordsModal } from '../components/TextWordsModal'
 import { WordTable } from '../components/WordTable'
 import { AssignGroupModal } from '../components/AssignGroupModal'
 import { BUILT_IN_GROUPS } from '../services/groups'
@@ -67,6 +68,7 @@ export function WordsPage() {
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false)
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false)
   const [isPacksModalOpen, setIsPacksModalOpen] = useState(false)
+  const [isTextWordsOpen, setIsTextWordsOpen] = useState(false)
 
   function toggleViewMode(mode: 'cards' | 'table') {
     setViewMode(mode)
@@ -193,6 +195,15 @@ export function WordsPage() {
             title="Hazır Seviye ve YDS Kelime Paketleri"
           >
             📦 Hazır Paketler
+          </button>
+          <button
+            id="btn-text-words"
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => setIsTextWordsOpen(true)}
+            title="Yapıştırdığın metindeki yeni sınav kelimelerini bul"
+          >
+            📄 Metinden Kelime
           </button>
           <button
             id="btn-bulk-import"
@@ -438,6 +449,10 @@ export function WordsPage() {
           onClose={() => setIsTransferModalOpen(false)}
           onSuccess={() => setIsTransferModalOpen(false)}
         />
+      )}
+
+      {isTextWordsOpen && (
+        <TextWordsModal activeUserId={activeUserId} onClose={() => setIsTextWordsOpen(false)} onSuccess={() => undefined} />
       )}
 
       {/* Hazır Kelime Paketleri Modalı */}
