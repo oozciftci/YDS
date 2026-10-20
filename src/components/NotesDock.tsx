@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useEffect, useMemo, useRef, useState, type ClipboardEvent, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type ClipboardEvent, type KeyboardEvent } from 'react'
 import { useLocation } from 'react-router-dom'
 import { db } from '../db'
 import { addGeneralEntry, deleteEntry, pageLabel, pageNoteId, savePageNote, updateEntry } from '../services/notebook'
@@ -165,7 +165,8 @@ function GeneralPane({ userId, pageKey, onClose }: { userId: string; pageKey: st
   }
 
   function onKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    // Enter gönderir; Shift+Enter yeni satır açar
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault()
       void addText()
     }
@@ -216,7 +217,7 @@ function GeneralPane({ userId, pageKey, onClose }: { userId: string; pageKey: st
           value={draft}
           autoFocus
           rows={2}
-          placeholder={`Not yaz… (${pageLabel(pageKey)})`}
+          placeholder={`Not yaz, Enter ile ekle… (${pageLabel(pageKey)})`}
           onChange={(e) => setDraft(e.target.value)}
           onPaste={onPaste}
           onKeyDown={onKeyDown}
@@ -245,7 +246,7 @@ function GeneralPane({ userId, pageKey, onClose }: { userId: string; pageKey: st
               e.target.value = ''
             }}
           />
-          <button type="button" className="btn btn-primary" disabled={!draft.trim()} onClick={() => void addText()} title="Ekle (Ctrl+Enter)">
+          <button type="button" className="btn btn-primary" disabled={!draft.trim()} onClick={() => void addText()} title="Ekle (Enter) · yeni satır: Shift+Enter">
             Ekle
           </button>
         </div>
@@ -260,11 +261,17 @@ function GeneralPane({ userId, pageKey, onClose }: { userId: string; pageKey: st
   )
 }
 
+/** Blob için geçici adres. Adres efekt içinde oluşturulur ki temizlik (iptal) her zaman kendi adresini iptal etsin. */
 function useBlobUrl(blob?: Blob) {
-  const url = useMemo(() => (blob ? URL.createObjectURL(blob) : null), [blob])
-  useEffect(() => () => {
-    if (url) URL.revokeObjectURL(url)
-  }, [url])
+  const [url, setUrl] = useState<string | null>(null)
+  useEffect(() => {
+    if (!blob) return
+    const u = URL.createObjectURL(blob)
+    // Dış kaynak (Blob) ile eşitleme; adres yalnızca burada oluşturulabilir
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setUrl(u)
+    return () => URL.revokeObjectURL(u)
+  }, [blob])
   return url
 }
 
@@ -273,26 +280,42 @@ function EntryRow({ entry, onZoom }: { entry: NoteEntry; onZoom: (url: string) =
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(entry.text ?? '')
   const [playing, setPlaying] = useState(false)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [playError, setPlayError] = useState('')
+  const audioRef = useRef<{ el: HTMLAudioElement; src: string } | null>(null)
+
+  function release() {
+    const a = audioRef.current
+    if (!a) return
+    a.el.pause()
+    URL.revokeObjectURL(a.src)
+    audioRef.current = null
+  }
 
   function togglePlay() {
-    if (!url) return
-    if (!audioRef.current) {
-      audioRef.current = new Audio(url)
-      audioRef.current.onended = () => setPlaying(false)
-    }
     if (playing) {
-      audioRef.current.pause()
-      audioRef.current.currentTime = 0
+      release()
       setPlaying(false)
-    } else {
-      audioRef.current
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => setPlaying(false))
+      return
     }
+    if (!entry.blob) return
+    setPlayError('')
+    release()
+    const src = URL.createObjectURL(entry.blob)
+    const el = new Audio(src)
+    el.onended = () => {
+      release()
+      setPlaying(false)
+    }
+    audioRef.current = { el, src }
+    el.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        release()
+        setPlaying(false)
+        setPlayError('Bu sesli not oynatılamadı.')
+      })
   }
-  useEffect(() => () => audioRef.current?.pause(), [])
+  useEffect(() => () => release(), [])
 
   function rename() {
     const t = prompt('Not başlığı', entry.title ?? '')
@@ -321,6 +344,7 @@ function EntryRow({ entry, onZoom }: { entry: NoteEntry; onZoom: (url: string) =
           Sesli not · {fmtDur(entry.durationSec ?? 0)}
         </button>
       )}
+      {playError && <span className={styles.error}>{playError}</span>}
       {entry.kind === 'image' && url && (
         <button type="button" className={styles.thumbBtn} onClick={() => onZoom(url)} aria-label="Görseli büyüt">
           <img src={url} alt="Ekran görüntüsü" className={styles.thumb} />
