@@ -24,5 +24,6 @@ Başlangıç: 19.10.2026 22:35. Hedef bitiş: 20.10.2026 06:05.
 - 8.2 tamam: gramer alıştırmaları 10’a çıktı (grammarExtra.ts)
 - 8.3 tamam: 6 okuma metni
 - 8.4 tamam: YÖKDİL alan terimleri (168 terim)
-- Şu an: 8.5 Çeviri cümleleri, sonra Faz 9
+- 10.1 tamam: scripts/checkDist.mjs (`npm run check:dist`)
+- Şu an: 10.2 Vitest, sonra Faz 9 (yerel veri)
 - Sıradaki: 8.3 okuma metinleri, 8.4 YÖKDİL terimleri, 8.5 çeviri cümleleri, Faz 9, Faz 10.
