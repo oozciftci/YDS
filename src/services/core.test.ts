@@ -5,6 +5,7 @@ import { dayKey, daysUntil, streakFromDays } from './dates'
 import { mockAdvice, mockCadence, compareMocks } from './mockPlan'
 import { summarizeTimes } from './mockTime'
 import { buildTargetPlan } from './targetPlan'
+import { isLeech, LEECH_LAPSES } from './leech'
 import { extractWordsFromText } from './textWords'
 import { buildWeeklyReport, reportToText } from './weeklyReport'
 import { reasonCounts } from './wrongReasons'
@@ -233,5 +234,13 @@ describe('textWords', () => {
     expect(r.found.find((f) => f.word.term === 'abandon')?.count).toBe(2)
     expect(r.owned).toBe(1)
     expect(r.unknown).toBeGreaterThan(0)
+  })
+})
+
+describe('leech', () => {
+  it('5 ve üzeri unutma inatçı kelime sayılır', () => {
+    expect(isLeech({ lapses: LEECH_LAPSES - 1 })).toBe(false)
+    expect(isLeech({ lapses: LEECH_LAPSES })).toBe(true)
+    expect(isLeech(undefined)).toBe(false)
   })
 })
