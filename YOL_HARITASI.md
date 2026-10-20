@@ -59,6 +59,7 @@ Bu dosya, uygulamayı kelime odaklı bir araçtan tam kapsamlı bir YDS / dil ç
 | 20.10.2026 | **Faz 10.2 – Birim testleri** | Vitest kuruldu (`npm test`); `src/services/core.test.ts` 15 test: soru tipi eşleme, YDS/YÖKDİL aralıkları, puan, tarih/seri, hedef puan planı, deneme süre analizi, deneme sıklığı/karşılaştırma, yanlış nedeni, Bugünkü Plan. FSRS/Dexie bağımlı servisler (veritabanı gerektirir) henüz kapsanmadı. |
 | 20.10.2026 | **Faz 10.3 – Temizlik (kısmen)** | Yeni kodda uyarı yok; betiklerdeki kullanılmayan değişkenler silindi, Alıştırma Merkezi’ndeki efekt uyarısı giderildi. Eski sayfalardaki (Study, Words, Suggestions, SynonymMatch, ExamQuiz vb.) ~17 React uyarısı (saf olmayan `Date`, efektte setState) duruyor; davranışı değiştirebileceği için gözle test edilerek ayrıca ele alınmalı. |
 | 20.10.2026 | **Faz 9 – Yerel veri hazırlığı** | **9.1** `scripts/tagQuestions.mjs` → `local-data/analiz/soru_etiketleri.json` (3.120 soru: tip, dilbilgisi konusu tahmini, bağlaç/ipucu sınıfı, çeviri yönü, okuma soru türü; elle düzeltme için `soru_etiketleri_duzeltme.json`). **9.2** `scripts/mapWordsToQuestions.mjs` → `kelime_soru_eslesme.json` (havuzdaki 3.895 kelimeden 3.657’si sorularda geçiyor; YÖKDİL dâhil). **9.3** `local-data/analiz/dogrulama_notlari.md`: 2018 Aralık’ta 6 farktan 3’ü düzeltildi (29→A, 67→E, 69→D), 3’ü gerekçeyle korundu (65, 68, 70); PDF’te eksik 5 yer listelendi. Tümü yerel; yayına girmez. |
+| 20.10.2026 | **Faz 7.7 + 8.5 – Çeviri Atölyesi** | Alıştırma Merkezi → “🔁 Çeviri Atölyesi” (`/yds-test/ceviri`): 24 özgün cümle (12 EN→TR, 12 TR→EN; `public/data/ozgun/ceviri_cumleleri.json`, yapı ipucuyla). Kullanıcı çevirir, Gemini örnek çeviriyle karşılaştırıp 0-10 puan + iyi yönü + hataları + düzeltilmiş çeviriyi verir (`ai.ts`, JSON şeması). Aynı metin için sonuç `aiNotes`’ta önbelleklenir (ikinci ücret yok); en iyi puanlar tarayıcı deposunda. Sahte yanıtla test edildi; **gerçek Gemini ile denenmedi** (anahtar yok). |
 | 19.10.2026 | **YÖKDİL kelime etiketleri** | `scripts/tagYokdil.mjs` YÖKDİL-Çok-Sık / Sık / Ara etiketlerini YDS etiketlerinden ayrı üretir (kelime başına etiket havuzda). Ayarlar → Hedef Sınav’da “yeni kelimeler hangi sınavın sıklığına göre sıralansın” seçimi: YDS, YÖKDİL ya da ikisi birlikte. |
 | 19.10.2026 | **YÖKDİL çevirileri tamam** (yerel) | 12 sınavın tüm İngilizce segmentleri Türkçeye çevrildi (`local-data/yds/yokdil-*.tr.json`, ~6.000 segment; Türkçe olan 42-53. soru parçaları çevrilmedi). PDF metin katmanındaki kusurlar (2019 Mart Sosyal 9. soru E şıkkı, 54-59. sorularda bazı boşluklar, 2019 Kasım Sağlık 53-54. E şıkları, 68. soruya karışan okuma metni) olduğu gibi bırakıldı. |
 | 19.10.2026 | **“60 Günde YDS Kelimeleri” paketi** (yerel) | Modadil kitabından 1663 girdi (1586 benzersiz kelime): 54 günlük kelime kartları (anlam, örnek cümle + çeviri, eş/zıt anlamlı), phrasal verb ve edat tabloları, son sınavların sık kelimeleri. Telifli olduğu için PDF ve paket `local-data/paketler/` altında (gitignore + şifreli kasa); Hazır Paketler’de yalnızca `npm run dev`’de görünür. |
@@ -175,7 +176,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 7.4 | Özel deneme oluşturucu | ✅ | Tip / yıl / YDS-YÖKDİL-alan / soru sayısı / süre seç → mini deneme. |
 | 7.5 | Denemeler arası tablo + sıklık önerisi | ✅ | Tip bazlı karşılaştırma tablosu; sınava kalan zamana göre deneme sıklığı (6+ ay: ayda 1 … son 2 hafta: haftada 2). |
 | 7.6 | Gramer konusu sınav sıklığı | ✅ | 39 sınavdan sayısal istatistik (yayına girebilir); Dilbilgisi Rehberi sırası/rozeti. |
-| 7.7 | Çeviri atölyesi | 💡 | Kendin çevir → Gemini referansla puanlasın (37-42 / 42-53). |
+| 7.7 | Çeviri atölyesi | ✅ | Kendin çevir → Gemini referansla puanlasın (37-42 / 42-53). |
 | 7.8 | Benzer özgün soru üret | 💡 | Yanlıştan sonra aynı kalıpta yeni özgün soru + açıklama; bütçe sınırına bağlı, yerelde saklanır. |
 | 7.9 | Kelime: leech yönetimi + sınav cümlesinden boşluk kartı | 💡 | Çok unutulan kelimeye farklı ipuçları; sınav yılı/alan etiketi. |
 | 7.10 | Metinden kelime çıkar + haftalık koç raporu | 💡 | Paragraf yapıştır → bilinmeyenleri toplu ekle; Gemini ile haftalık özet. |
@@ -188,7 +189,7 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 | 8.2 | Gramer mikro-alıştırma genişletme | ✅ | Konu başına 5 → 10 özgün soru. |
 | 8.3 | Özgün okuma metinleri | ✅ (6 metin) | Seviyeli kısa metinler + sorular. |
 | 8.4 | YÖKDİL alan terimi paketleri | ✅ | Fen / Sağlık / Sosyal en sık terimler (kelime + anlam + sayısal sıklık). |
-| 8.5 | Çeviri cümleleri | ⏳ | Özgün EN→TR / TR→EN cümleler (çeviri atölyesi için). |
+| 8.5 | Çeviri cümleleri | ✅ (24 cümle) | Özgün EN→TR / TR→EN cümleler (çeviri atölyesi için). |
 
 ## Faz 9 — Veri hazırlama (yerel)
 

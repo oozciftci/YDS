@@ -3,6 +3,7 @@ import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import { YDS_DEMO, YDS_DEMO_HINTS } from '../data/ydsDemo'
 import { ALL_SECTIONS, getSection, sectionOf, type SectionKey } from '../services/ydsSections'
 import { useUserStore } from '../stores/user'
+import { TranslationWorkshop } from './TranslationWorkshop'
 import { QuestionCard } from './exam/QuestionCard'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './exam/answerControls'
 import type { ExamBundle } from './exam/examData'
@@ -66,6 +67,13 @@ function Hub() {
         <strong>🚀 Başlangıç: 3 örnek soru</strong>
         <p className="muted" style={{ margin: '0.2rem 0 0' }}>
           Kelime, çeviri ve paragraf: sınavın nasıl işlediğini gör.
+        </p>
+      </article>
+
+      <article className="card" style={{ cursor: 'pointer' }} onClick={() => navigate('ceviri')} role="button" tabIndex={0}>
+        <strong>🔁 Çeviri Atölyesi</strong>
+        <p className="muted" style={{ margin: '0.2rem 0 0' }}>
+          Cümleyi kendin çevir, yapay zekâ puanlasın ve hatalarını söylesin.
         </p>
       </article>
 
@@ -308,6 +316,7 @@ export function YdsTestPage() {
     <Routes>
       <Route index element={<Hub />} />
       <Route path={DEMO_ID} element={<Runner setId={DEMO_ID} bundle={YDS_DEMO} hints={YDS_DEMO_HINTS} />} />
+      <Route path="ceviri" element={<TranslationWorkshop />} />
       <Route path=":setId" element={<SetPage />} />
     </Routes>
   )

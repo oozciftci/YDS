@@ -24,6 +24,7 @@ export function appLinks(): AppLink[] {
     { href: '/words', label: 'Kelime havuzu', desc: 'tüm kelimeler, ekleme, içe/dışa aktarma' },
     { href: '/stats', label: 'İstatistik', desc: 'çalışma takvimi, kilometre taşları, seviye dağılımı' },
     { href: '/yds-test', label: 'Alıştırma Merkezi', desc: 'özgün ÖSYM tarzı sorular: kelime, dilbilgisi, cloze, cümle tamamlama, çeviri, paragraf, diyalog (set set, açıklamalı)' },
+    { href: '/yds-test/ceviri', label: 'Çeviri Atölyesi', desc: 'özgün cümleleri kendin çevir, yapay zekâ puanlasın (EN↔TR)' },
     { href: '/dilbilgisi', label: 'Dilbilgisi rehberi', desc: '14 YDS dilbilgisi konusu, anlatım ve alıştırma' },
     ...GRAMMAR_TOPICS.map((t) => ({ href: `/dilbilgisi/${t.id}`, label: t.title, desc: 'dilbilgisi konusu + 10 alıştırma' })),
     { href: '/koc', label: 'İngilizce pratik', desc: 'YZ ile İngilizce sohbet ve rol yapma' },
