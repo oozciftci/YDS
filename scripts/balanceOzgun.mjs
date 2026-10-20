@@ -10,7 +10,7 @@ const ORDER = [2, 4, 1, 3, 0, 3, 1, 4, 2, 0] // sabit, karışık görünen hede
 for (const f of fs.readdirSync(DIR).filter((x) => x.endsWith('.json'))) {
   const p = path.join(DIR, f)
   const data = JSON.parse(fs.readFileSync(p, 'utf8'))
-  if (data.balanced) continue
+  if (data.balanced || !Array.isArray(data.sets)) continue
   let k = 0
   for (const set of data.sets)
     for (const q of set.qs) {

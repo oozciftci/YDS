@@ -17,6 +17,7 @@ const err = (m) => {
 }
 for (const f of fs.readdirSync(DIR).filter((x) => x.endsWith('.json'))) {
   const data = JSON.parse(fs.readFileSync(path.join(DIR, f), 'utf8'))
+  if (!Array.isArray(data.sets)) continue // ör. ceviri_cumleleri.json (set dosyası değil)
   const dist = [0, 0, 0, 0, 0]
   let n = 0
   for (const set of data.sets) {

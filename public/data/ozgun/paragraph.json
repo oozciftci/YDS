@@ -366,6 +366,285 @@
           ]
         }
       ]
+    },
+    {
+      "id": "paragraph-04",
+      "title": "Paragraf Tamamlama Seti 4",
+      "qs": [
+        {
+          "s": [
+            "Bats are often feared, yet they play an essential role in nature.",
+            "Many species feed on insects, and a single bat can eat thousands of mosquitoes in one night.",
+            "----",
+            "Without them, farmers would need far more chemicals to protect their crops."
+          ],
+          "t": [
+            "Yarasalar sık sık korkulan hayvanlardır, ancak doğada vazgeçilmez bir rol oynarlar.",
+            "Birçok türü böceklerle beslenir ve tek bir yarasa bir gecede binlerce sivrisinek yiyebilir.",
+            "----",
+            "Onlar olmasaydı çiftçilerin ürünlerini korumak için çok daha fazla kimyasala ihtiyacı olurdu."
+          ],
+          "o": [
+            "Bats sleep upside down in caves during the day.",
+            "Other species pollinate flowers and spread seeds, which helps entire forests to grow back.",
+            "Some people keep bats as unusual pets in their homes.",
+            "Their wings are actually modified hands with long fingers.",
+            "There are more than a thousand species of bats worldwide."
+          ],
+          "a": 1,
+          "x": [
+            "Uyku düzeni, işlevden bahsetmez.",
+            "Doğru: yarasaların doğadaki ikinci önemli işlevini (tozlaşma, tohum yayma) ekler; sonraki cümle çiftçilere faydayı vurgular.",
+            "Evcil hayvan olarak tutulması konu dışı.",
+            "Anatomik ayrıntı, ekolojik rolü ilerletmez.",
+            "Tür sayısı bilgisi, akışı ilerletmez."
+          ]
+        },
+        {
+          "s": [
+            "The first mechanical clocks appeared in European towns in the fourteenth century.",
+            "----",
+            "Soon, public clocks began to organise the working day, replacing the rhythm set by sunrise and sunset.",
+            "This gradually changed the way people thought about time itself."
+          ],
+          "t": [
+            "İlk mekanik saatler on dördüncü yüzyılda Avrupa şehirlerinde ortaya çıktı.",
+            "----",
+            "Kısa sürede halka açık saatler, gün doğumu ve batımının belirlediği ritmin yerini alarak çalışma gününü düzenlemeye başladı.",
+            "Bu, insanların zaman anlayışını giderek değiştirdi."
+          ],
+          "o": [
+            "Time zones were introduced only in the nineteenth century.",
+            "Many modern watches use batteries instead of springs.",
+            "Sundials had been used in ancient Egypt for centuries.",
+            "Church towers and town halls were the usual places to install them, so that everyone could hear the bells.",
+            "Some clocks are made of gold and are very expensive."
+          ],
+          "a": 3,
+          "x": [
+            "Saat dilimleri daha sonraki bir dönem.",
+            "Modern saatler konu dışı.",
+            "Güneş saati bilgisi kronolojiyi bozar.",
+            "Doğru: saatlerin nereye kurulduğunu açıklar ve 'Soon, public clocks' cümlesine bağlanır.",
+            "Fiyat/malzeme bilgisi konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Volunteers at a local food bank sort and distribute donated food to families in need.",
+            "Most of the work is physical, and they often spend hours lifting heavy boxes.",
+            "----",
+            "For many of them, this sense of purpose is the main reason they return every week."
+          ],
+          "t": [
+            "Yerel bir gıda bankasındaki gönüllüler bağışlanan yiyecekleri ayırıp ihtiyaç sahibi ailelere dağıtır.",
+            "İşin çoğu fiziksel olup çoğu zaman saatlerce ağır kutular taşırlar.",
+            "----",
+            "Birçoğu için bu amaç duygusu her hafta geri dönmelerinin ana nedenidir."
+          ],
+          "o": [
+            "Still, they say that seeing a family leave with a full bag of groceries makes the effort worthwhile.",
+            "Food prices have risen in many countries.",
+            "Heavy boxes should always be lifted with a straight back.",
+            "The food bank was opened more than ten years ago.",
+            "Supermarkets throw away large amounts of food every day."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 'Still' ile zorluğa rağmen motivasyonu anlatır; sonraki cümle 'sense of purpose'a bağlanır.",
+            "Fiyat bilgisi akışa uymuyor.",
+            "kaldırma tekniği konu dışı; gönüllülerin motivasyonunu açıklamaz.",
+            "Açılış tarihi konu dışı.",
+            "Marketlerin israfı konuyu saptırır."
+          ]
+        },
+        {
+          "s": [
+            "Public opinion about nuclear power has changed several times over the past fifty years.",
+            "After a series of accidents, many people came to see it as too dangerous.",
+            "----",
+            "As a result, several governments are now reconsidering plans to close their nuclear plants."
+          ],
+          "t": [
+            "Nükleer enerjiye ilişkin kamuoyu son elli yılda birkaç kez değişti.",
+            "Bir dizi kazadan sonra birçok kişi onu fazla tehlikeli görmeye başladı.",
+            "----",
+            "Sonuç olarak birkaç hükümet nükleer santrallerini kapatma planlarını yeniden gözden geçiriyor."
+          ],
+          "o": [
+            "Some countries have never built a nuclear plant.",
+            "Uranium is a heavy metal found in rock.",
+            "Nuclear plants are usually built near water.",
+            "Concerns about climate change, however, have led others to value it as a low-carbon source of electricity.",
+            "Opinion polls are often conducted by telephone."
+          ],
+          "a": 3,
+          "x": [
+            "Ülke bilgisi konu dışı.",
+            "Uranyum bilgisi akışı ilerletmez.",
+            "Santral konumu konu dışı.",
+            "Doğru: kamuoyunun yeniden değişmesini ('however') anlatır; sonuç cümlesine zemin hazırlar.",
+            "Yöntem bilgisi konu dışı."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paragraph-05",
+      "title": "Paragraf Tamamlama Seti 5",
+      "qs": [
+        {
+          "s": [
+            "Insects are the most diverse group of animals on Earth.",
+            "----",
+            "Despite their small size, they pollinate crops and recycle nutrients in the soil.",
+            "Scientists warn that a sharp decline in insect numbers could therefore disturb entire ecosystems."
+          ],
+          "t": [
+            "Böcekler Dünya'daki en çeşitli hayvan grubudur.",
+            "----",
+            "Küçük boyutlarına rağmen ürünleri tozlaştırır ve topraktaki besinleri geri dönüştürürler.",
+            "Bilim insanları bu nedenle böcek sayısındaki keskin düşüşün tüm ekosistemleri bozabileceği uyarısında bulunuyor."
+          ],
+          "o": [
+            "Butterflies have colourful wings.",
+            "More than a million species have been described so far, and many more are probably still unknown.",
+            "Some people are afraid of spiders.",
+            "Summer is the best season for observing insects.",
+            "Bees produce honey in wax hives."
+          ],
+          "a": 1,
+          "x": [
+            "Renk bilgisi akışı ilerletmez.",
+            "Doğru: çeşitliliği sayıyla açıklar; 'Despite their small size' ile devam eder.",
+            "Örümcek korkusu konu dışı.",
+            "Mevsim bilgisi konu dışı.",
+            "Bal arısı özel örneği akışa uymaz (önce genel çeşitlilik)."
+          ]
+        },
+        {
+          "s": [
+            "Many people believe that talent alone determines success in sport.",
+            "However, studies of top athletes suggest that years of focused practice matter even more.",
+            "----",
+            "This shows that improvement depends mainly on how one trains, not on how one is born."
+          ],
+          "t": [
+            "Birçok kişi sporda başarıyı yalnızca yeteneğin belirlediğine inanır.",
+            "Ancak üst düzey sporcular üzerine yapılan çalışmalar yıllarca süren odaklı çalışmanın daha da önemli olduğunu gösteriyor.",
+            "----",
+            "Bu, gelişimin esas olarak insanın nasıl çalıştığına bağlı olduğunu, nasıl doğduğuna bağlı olmadığını gösterir."
+          ],
+          "o": [
+            "Television has made some sports very popular.",
+            "Sports stadiums are often built in the suburbs of cities.",
+            "The first modern Olympic Games were held in Athens.",
+            "Many athletes follow special diets.",
+            "Athletes who started with average ability often overtook more gifted rivals after a decade of disciplined training."
+          ],
+          "a": 4,
+          "x": [
+            "Televizyonun etkisi konu dışı.",
+            "Stadyum konumu konu dışı.",
+            "Olimpiyat tarihi konu dışı.",
+            "Beslenme bilgisi akışa uymuyor.",
+            "Doğru: odaklı çalışmanın önemini somut bir bulguyla destekler; sonraki 'This shows' cümlesine bağlanır."
+          ]
+        },
+        {
+          "s": [
+            "Cities consume enormous amounts of water, most of which comes from distant rivers and reservoirs.",
+            "----",
+            "Some cities now collect rainwater from rooftops and reuse it for cleaning and for flushing toilets.",
+            "Such measures reduce the pressure on natural water sources."
+          ],
+          "t": [
+            "Şehirler büyük kısmı uzaktaki nehirlerden ve barajlardan gelen muazzam miktarda su tüketir.",
+            "----",
+            "Bazı şehirler artık çatılardan yağmur suyu toplayıp temizlik ve tuvalet sifonu için yeniden kullanıyor.",
+            "Bu tür önlemler doğal su kaynakları üzerindeki baskıyı azaltır."
+          ],
+          "o": [
+            "Reservoirs are sometimes surrounded by beautiful forests.",
+            "Rivers are often used for transport and for tourism.",
+            "Population growth and longer droughts are making this supply increasingly uncertain.",
+            "Cold water is considered healthier than hot water.",
+            "Fishing is a common activity near rivers."
+          ],
+          "a": 2,
+          "x": [
+            "Orman manzarası konu dışı.",
+            "Nehirlerin ulaşım işlevi akışa uymuyor.",
+            "Doğru: kaynak belirsizliğini söyler; 'Some cities now...' çözüm cümlesine zemin hazırlar.",
+            "Su sıcaklığı konu dışı.",
+            "Balıkçılık konu dışı."
+          ]
+        },
+        {
+          "s": [
+            "Fairy tales have been told for centuries, often passing from parents to children by word of mouth.",
+            "----",
+            "For example, stories about a poor girl helped by a magical friend exist in dozens of cultures.",
+            "Such similarities suggest that people everywhere share certain hopes and fears."
+          ],
+          "t": [
+            "Peri masalları yüzyıllardır, çoğu zaman ebeveynlerden çocuklara ağızdan ağza aktarılarak anlatılıyor.",
+            "----",
+            "Örneğin yoksul bir kıza sihirli bir dostun yardım ettiği hikâyeler düzinelerce kültürde bulunur.",
+            "Bu tür benzerlikler, her yerdeki insanların belirli umutları ve korkuları paylaştığını düşündürür."
+          ],
+          "o": [
+            "Remarkably, the same basic plots appear in places that had no contact with each other.",
+            "Many fairy tales have been made into animated films.",
+            "Printing made books cheaper in the nineteenth century.",
+            "Some stories are told at bedtime.",
+            "Brothers Grimm were German scholars."
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: ortak kurguların farklı kültürlerde görülmesini söyler; 'For example'a bağlanır.",
+            "Film uyarlamaları akışı bozar.",
+            "baskı tarihi konu dışı.",
+            "Uyku vakti konu dışı.",
+            "Yazar bilgisi konu dışı."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paragraph-06",
+      "title": "Paragraf Tamamlama Seti 6",
+      "qs": [
+        {
+          "s": [
+            "The development of antibiotics in the twentieth century transformed medicine.",
+            "Infections that once killed thousands of people could suddenly be cured within days.",
+            "----",
+            "Doctors are therefore being urged to prescribe them only when they are truly needed."
+          ],
+          "t": [
+            "Yirminci yüzyılda antibiyotiklerin geliştirilmesi tıbbı dönüştürdü.",
+            "Bir zamanlar binlerce insanı öldüren enfeksiyonlar birdenbire günler içinde tedavi edilebilir hale geldi.",
+            "----",
+            "Bu nedenle doktorlara antibiyotikleri yalnızca gerçekten gerektiğinde yazmaları çağrısı yapılıyor."
+          ],
+          "o": [
+            "Medicine has become more expensive over the years.",
+            "Alexander Fleming worked in a London hospital.",
+            "Today, however, overuse has allowed some bacteria to become resistant to these drugs.",
+            "Many people prefer herbal remedies.",
+            "Pharmacies are often open until late."
+          ],
+          "a": 2,
+          "x": [
+            "Maliyet konu dışı.",
+            "Fleming ayrıntısı akışı ilerletmez.",
+            "Doğru: 'however' ile aşırı kullanım sorununa geçer; sonuç cümlesi ('therefore') bunu varsayar.",
+            "Bitkisel tedavi konu dışı.",
+            "Eczane saati konu dışı."
+          ]
+        }
+      ]
     }
   ],
   "balanced": true
