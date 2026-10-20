@@ -27,3 +27,4 @@ local-data/
 
 # Telifli PDF kaynakları kökte unutulursa da girmesin
 /*.pdf
+kaynaklar/

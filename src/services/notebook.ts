@@ -79,6 +79,12 @@ export function pageLabel(pathname: string): string {
     if (seg[1] === 'okuma') return seg[2] ? `Okuma Modu · ${prettyExamId(seg[2])}` : 'Okuma Modu'
     return 'Soru Merkezi'
   }
+  if (seg[0] === 'kitap') {
+    if (!seg[1]) return 'Kitaptan Çalış'
+    const name = seg[1].split('-').map((w) => (w === 'in' ? w : w[0].toUpperCase() + w.slice(1))).join(' ')
+    if (seg[2] === 's' && seg[3]) return `${name} · s. ${seg[3]}`
+    return seg[2] === 'notlar' ? `${name} · Defter` : name
+  }
   if (seg[0] === 'koc') return 'YZ Koç'
   return seg.join(' / ') || 'Ana Sayfa'
 }

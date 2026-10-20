@@ -48,6 +48,7 @@ const ALL: StudyCategory[] = [
     title: 'Dilbilgisi',
     desc: 'Sınavda sorulan konular, kısa anlatım ve alıştırma.',
     links: [
+      { to: '/kitap', label: 'Kitaptan çalış', hint: 'Murphy: ünite ünite, sayfa sayfa', dev: true },
       { to: '/dilbilgisi', label: 'Dilbilgisi Rehberi', hint: 'Konu konu anlatım' },
       { to: '/yds-sorular/bankalar', label: 'Gramer soru bankası', hint: 'Test test, kitabın çözümüyle', dev: true },
       { to: '/yds-sorular/taktik', label: 'Taktik Kitabı', hint: 'Soru tiplerine göre ipuçları', dev: true },
@@ -83,5 +84,5 @@ export const STUDY_CATEGORIES: StudyCategory[] = ALL.map((c) => ({
 
 /** Bu yollar "Çalış" menüsünün altında sayılır (menüde Çalış seçili görünür). */
 export function isStudyPath(pathname: string): boolean {
-  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece)(\/|$)/.test(pathname)
+  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap)(\/|$)/.test(pathname)
 }

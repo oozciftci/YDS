@@ -20,6 +20,8 @@ const YdsTestPage = lazy(() => import('./pages/YdsTest'))
 const NightModePage = lazy(() => import('./pages/NightMode'))
 
 const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
+// Kitaptan çalış: telifli kitap görüntüleri yalnızca yerelde (yayında sayfa yok)
+const BooksPage = import.meta.env.DEV ? lazy(() => import('./pages/Books')) : null
 
 export default function App() {
   return (
@@ -45,6 +47,16 @@ export default function App() {
               element={
                 <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                   <ExamStudyPage />
+                </Suspense>
+              }
+            />
+          )}
+          {BooksPage && (
+            <Route
+              path="kitap/*"
+              element={
+                <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                  <BooksPage />
                 </Suspense>
               }
             />

@@ -157,6 +157,66 @@ function localPacks(): Plugin {
   }
 }
 
+// Kitaptan çalış (local-data/kitaplar): telifli kitapların sayfa görüntüleri, YALNIZCA geliştirme sunucusunda ve localhost'tan.
+//   GET /local-api/kitap/                 -> kitap listesi (başlık, sayfa ve ünite sayısı)
+//   GET /local-api/kitap/<kitap>          -> kitap.json (sayfa metinleri hariç)
+//   GET /local-api/kitap/<kitap>/p001.webp -> sayfa görüntüsü
+function localBooks(): Plugin {
+  const dir = path.resolve(import.meta.dirname, 'local-data/kitaplar')
+  const readBook = (id: string) => JSON.parse(fs.readFileSync(path.join(dir, id, 'kitap.json'), 'utf8'))
+  return {
+    name: 'local-books',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/local-api/kitap', (req, res, next) => {
+        const remote = req.socket.remoteAddress || ''
+        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        const url = decodeURIComponent((req.url || '/').replace(/[?#].*$/, ''))
+        const parts = url.split('/').filter(Boolean)
+        if (parts.length === 0) {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.setHeader('Cache-Control', 'no-store')
+          const list = fs.existsSync(dir)
+            ? fs
+                .readdirSync(dir)
+                .filter((id) => fs.existsSync(path.join(dir, id, 'kitap.json')))
+                .map((id) => {
+                  const b = readBook(id)
+                  return { id, title: b.title, short: b.short, level: b.level, pageCount: b.pageCount, unitCount: b.units.length }
+                })
+            : []
+          res.end(JSON.stringify(list))
+          return
+        }
+        const id = parts[0]
+        if (!/^[a-z0-9-]+$/.test(id) || !fs.existsSync(path.join(dir, id, 'kitap.json'))) return next()
+        if (parts.length === 1) {
+          const b = readBook(id)
+          b.pages = b.pages.map(({ text, ...p }: { text?: string }) => (void text, p))
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.setHeader('Cache-Control', 'no-store')
+          res.end(JSON.stringify(b))
+          return
+        }
+        if (parts.length === 2 && /^p\d{3}\.webp$/.test(parts[1])) {
+          const file = path.join(dir, id, parts[1])
+          if (!fs.existsSync(file)) return next()
+          res.setHeader('Content-Type', 'image/webp')
+          // Görüntüler değişmez; tarayıcı önbelleğe alabilir
+          res.setHeader('Cache-Control', 'private, max-age=86400')
+          fs.createReadStream(file).pipe(res)
+          return
+        }
+        next()
+      })
+    },
+  }
+}
+
 // Hoca kitapları ve Taktik Kitabı (local-data/kaynaklar): telifli, YALNIZCA geliştirme sunucusunda ve localhost'tan.
 //   GET  /local-api/kaynak/harita              -> harita.json (kitaplar + konu -> sayfa aralıkları)
 //   GET  /local-api/kaynak/taktik              -> taktik-kitabi.json (soru tipine göre kurallar)
@@ -234,6 +294,7 @@ export default defineConfig({
   plugins: [
     react(),
     localExamData(),
+    localBooks(),
     localSources(),
     localPacks(),
     VitePWA({

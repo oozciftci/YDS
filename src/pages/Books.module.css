@@ -1,0 +1,196 @@
+.page {
+  display: grid;
+  gap: 1rem;
+}
+
+.back {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.title {
+  margin: 0.2rem 0;
+  font-size: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.85rem;
+}
+
+.bookCard {
+  display: grid;
+  gap: 0.75rem;
+  align-content: space-between;
+}
+
+.bookCard h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.bookCard p {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+}
+
+.lastPos {
+  color: var(--primary);
+}
+
+.cardActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ---- Okuyucu ---- */
+.reader {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.barTitle {
+  font-size: 0.95rem;
+}
+
+.unitSelect {
+  flex: 1;
+  min-width: 160px;
+  max-width: 360px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.modeToggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.modeToggle button {
+  padding: 0.3rem 0.65rem;
+  border: 0;
+  background: var(--surface);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.modeToggle .on {
+  background: var(--primary-subtle);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.notesLink {
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.progress {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+}
+
+.where {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  user-select: none;
+  touch-action: pan-y pinch-zoom;
+}
+
+.frame img {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+/* ---- Kitap defteri ---- */
+.noteList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.noteHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.noteText {
+  margin: 0.4rem 0 0;
+  white-space: pre-wrap;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 559px) {
+  .unitSelect {
+    order: 5;
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .frame {
+    border-radius: 0;
+    margin: 0 -1rem;
+    width: calc(100% + 2rem);
+  }
+}
