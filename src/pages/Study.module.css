@@ -1198,3 +1198,31 @@
   font-size: 1.4rem;
   color: var(--primary);
 }
+
+.writeField {
+  position: relative;
+  width: min(420px, 100%);
+}
+
+.writeField .writeInput {
+  width: 100%;
+}
+
+.writeTick {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--success);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  animation: tickIn 0.2s ease-out;
+}
+
+@keyframes tickIn {
+  from {
+    transform: translateY(-50%) scale(0.4);
+    opacity: 0;
+  }
+}
