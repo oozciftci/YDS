@@ -29,5 +29,6 @@ Başlangıç: 19.10.2026 22:35. Hedef bitiş: 20.10.2026 06:05.
 - Faz 9 tamam (9.1 etiket, 9.2 kelime-soru eşleme, 9.3 doğrulama notları) — local-data değişti: kasa kilitleme gerek
 - 7.7 + 8.5 tamam: Çeviri Atölyesi (/yds-test/ceviri)
 - 7.8 tamam: SimilarQuestion
-- Şu an: 7.9 Leech + boşluk kartı → 7.10 metinden kelime / haftalık koç raporu
+- 7.10 (haftalık rapor) tamam; 17 test geçiyor
+- Şu an: 7.9 leech + boşluk kartı, 7.10 metinden kelime çıkar (kalanlar) ve sabah raporu
 - Sıradaki: 8.3 okuma metinleri, 8.4 YÖKDİL terimleri, 8.5 çeviri cümleleri, Faz 9, Faz 10.

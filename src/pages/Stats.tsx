@@ -10,6 +10,7 @@ import {
   type PartOfSpeech,
 } from '../types/database'
 import { ActivityHeatmap } from '../components/ActivityHeatmap'
+import { WeeklyReportCard } from '../components/WeeklyReportCard'
 import { computeMilestones } from '../services/milestones'
 import { useSettings } from '../stores/settings'
 import styles from './Stats.module.css'
@@ -187,6 +188,8 @@ export function StatsPage() {
           {activeUser?.displayName || 'Kullanıcı'} için kelime öğrenme performansı ve aralıklı tekrar analizi.
         </p>
       </header>
+
+      <WeeklyReportCard />
 
       {/* 1. ÖZET METRİKLER */}
       <div className={styles.overviewGrid}>

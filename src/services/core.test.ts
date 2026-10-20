@@ -5,6 +5,7 @@ import { dayKey, daysUntil, streakFromDays } from './dates'
 import { mockAdvice, mockCadence, compareMocks } from './mockPlan'
 import { summarizeTimes } from './mockTime'
 import { buildTargetPlan } from './targetPlan'
+import { buildWeeklyReport, reportToText } from './weeklyReport'
 import { reasonCounts } from './wrongReasons'
 import { isYokdil, rangeIn, sectionOf, ydsScore } from './ydsSections'
 
@@ -185,5 +186,36 @@ describe('dailyPlan', () => {
   it('soru görevi yalnızca havuz bilinirse çıkar', () => {
     const tasks = buildDailyPlan({ cards: [], logs: [], answers: [], daysLeft: 10, newWordCap: 20, unansweredQuestions: 300 })
     expect(tasks.find((t) => t.key === 'questions')!.target).toBe(30)
+  })
+})
+
+describe('weeklyReport', () => {
+  const now = new Date('2026-10-19T12:00:00Z').getTime()
+  const log = (wordId: string, at: string, rating: number) => ({ id: wordId + at, wordId, userId: 'u', rating, reviewedAt: at }) as unknown as ReviewLog
+  const answer = (section: string, correct: boolean, at: string) =>
+    ({ id: section + at + correct, userId: 'u', examId: 'e', no: 1, section, choice: 'A', correct, attempts: 1, wrongCount: 0, inWrongBook: false, firstAnsweredAt: at, answeredAt: at }) as ExamAnswer
+  it('bu hafta ve geçen hafta ayrı sayılır', () => {
+    const logs = [
+      log('a', '2026-10-18T10:00:00Z', 3),
+      log('a', '2026-10-17T10:00:00Z', 1),
+      log('b', '2026-10-10T10:00:00Z', 4),
+    ]
+    const r = buildWeeklyReport(logs, [], [], now)
+    expect(r.thisWeek.reviews).toBe(2)
+    expect(r.thisWeek.successRate).toBe(50)
+    expect(r.lastWeek.reviews).toBe(1)
+    expect(r.thisWeek.activeDays).toBe(2)
+    expect(r.thisWeek.newWords).toBe(1)
+  })
+  it('en zayıf tip en az 5 soruyla belirlenir', () => {
+    const answers = [
+      ...Array.from({ length: 5 }, (_, i) => answer('grammar', i < 4, '2026-10-18T10:00:00Z')),
+      ...Array.from({ length: 5 }, (_, i) => answer('vocab', i < 2, '2026-10-18T11:00:00Z')),
+      answer('reading', false, '2026-10-18T12:00:00Z'),
+    ]
+    const r = buildWeeklyReport([], answers, [], now)
+    expect(r.weakest?.key).toBe('vocab')
+    expect(r.weakest?.pct).toBe(40)
+    expect(reportToText(r)).toContain('En zayıf soru tipi')
   })
 })
