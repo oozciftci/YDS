@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getFrequent, getSaved, toggleSaved, useFavoritesVersion } from '../services/favorites'
+import { getFrequent, getSaved, hideFrequent, toggleSaved, useFavoritesVersion } from '../services/favorites'
 import { useUserStore } from '../stores/user'
 import styles from './QuickLinks.module.css'
 
@@ -49,6 +49,14 @@ export function QuickLinks({ showHint = false }: { showHint?: boolean }) {
           {frequent.map((f) => (
             <span key={f.path} className={styles.chip}>
               <Link to={f.path}>{f.label}</Link>
+              <button
+                type="button"
+                onClick={() => hideFrequent(userId, f.path)}
+                aria-label={`${f.label} sık kullanılanlardan kaldır`}
+                title="Bu listeden kaldır"
+              >
+                ×
+              </button>
             </span>
           ))}
         </div>

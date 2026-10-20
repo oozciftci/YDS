@@ -916,6 +916,7 @@
 }
 
 .resumeGo {
+  margin-right: 1.6rem;
   color: var(--primary);
   font-weight: 700;
   white-space: nowrap;

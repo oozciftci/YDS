@@ -15,6 +15,7 @@ import { getSection, isYokdil } from '../services/ydsSections'
 import { buildTargetPlan } from '../services/targetPlan'
 import { STUDY_CATEGORIES } from '../services/studyMap'
 import { QuickLinks } from '../components/QuickLinks'
+import { dismiss, useDismissed } from '../services/dismissed'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
 
@@ -69,6 +70,8 @@ export function HomePage() {
     [],
   )
 
+  // × ile kaldırılanlar (Kelime çalışmasındaki "Son çalışılanlar" ile ortak liste)
+  const isDismissed = useDismissed(activeUserId, 'recent-levels')
   const inProgressLevels = useMemo(() => {
     return levelProgressList
       .filter((p) => p.status === 'in_progress')
@@ -265,12 +268,12 @@ export function HomePage() {
       )}
 
       {/* 3. KALDIĞIN YERDEN DEVAM (yalnızca yarıda bırakılan varsa) */}
-      {inProgressLevels.length > 0 && (
+      {inProgressLevels.some((p) => !isDismissed(p.subGroupId, p.lastStudiedAt)) && (
         <section className={styles.sectionBlock}>
           <h2 className={styles.sectionTitle}>⏳ Kaldığın yerden devam et</h2>
           <ul className={styles.resumeList}>
-            {inProgressLevels.slice(0, 3).map((p) => (
-              <li key={p.subGroupId}>
+            {inProgressLevels.filter((p) => !isDismissed(p.subGroupId, p.lastStudiedAt)).slice(0, 3).map((p) => (
+              <li key={p.subGroupId} style={{ position: 'relative' }}>
                 <button
                   type="button"
                   className={styles.resumeRow}
@@ -281,6 +284,16 @@ export function HomePage() {
                     {p.completedQuestions}/{p.totalQuestions}
                   </span>
                   <span className={styles.resumeGo}>Devam →</span>
+                </button>
+                <button
+                  type="button"
+                  className="dismiss-x"
+                  style={{ top: '50%', transform: 'translateY(-50%)' }}
+                  onClick={() => dismiss(activeUserId, 'recent-levels', p.subGroupId)}
+                  title="Listeden kaldır (ilerleme silinmez)"
+                  aria-label="Listeden kaldır"
+                >
+                  ×
                 </button>
               </li>
             ))}

@@ -15,6 +15,12 @@ const EVENT = 'yds-favorites-changed'
 
 const savedKey = (userId: string) => `yds-saved:${userId}`
 const visitsKey = (userId: string) => `yds-visits:${userId}`
+const hiddenKey = (userId: string) => `yds-frequent-hidden:${userId}`
+
+/** Sık kullanılanlardan kaldır (×): o sayfa bu listede bir daha önerilmez. */
+export function hideFrequent(userId: string, path: string): void {
+  write(hiddenKey(userId), [...new Set([...read<string[]>(hiddenKey(userId), []), path])])
+}
 
 function read<T>(key: string, fallback: T): T {
   try {
@@ -82,8 +88,9 @@ export function recordVisit(userId: string, pathname: string): void {
 /** En çok açılan sayfalar (en az 2 kez, kaydedilmiş olanlar hariç). */
 export function getFrequent(userId: string, limit = 6): { path: string; label: string }[] {
   const saved = new Set(getSaved(userId).map((s) => s.path))
+  const hidden = read<string[]>(hiddenKey(userId), [])
   return Object.entries(read<Record<string, number>>(visitsKey(userId), {}))
-    .filter(([path, n]) => n >= 2 && !saved.has(path))
+    .filter(([path, n]) => n >= 2 && !saved.has(path) && !hidden.includes(path))
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit)
     .map(([path]) => ({ path, label: labelFor(path) }))
@@ -102,7 +109,7 @@ function subscribe(cb: () => void) {
 export function useFavoritesVersion(userId: string): string {
   return useSyncExternalStore(subscribe, () => {
     try {
-      return `${localStorage.getItem(savedKey(userId))}|${localStorage.getItem(visitsKey(userId))}`
+      return `${localStorage.getItem(savedKey(userId))}|${localStorage.getItem(visitsKey(userId))}|${localStorage.getItem(hiddenKey(userId))}`
     } catch {
       return ''
     }

@@ -1098,3 +1098,35 @@
   font-size: 1.5rem;
   color: var(--text);
 }
+
+/* Son çalışılanlar: × düğmesi için konum ve süzgeçler */
+.recentCard {
+  position: relative;
+  padding-right: 1.9rem;
+}
+
+.recentFilters {
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.recentFilters select {
+  padding: 0.25rem 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.reverseToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}

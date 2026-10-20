@@ -330,3 +330,25 @@ textarea {
     transform: none;
   }
 }
+
+/* Listelerden kaldırma düğmesi (×): kartın sağ üst köşesi */
+.dismiss-x {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dismiss-x:hover {
+  background: var(--danger-subtle, rgba(220, 38, 38, 0.12));
+  color: var(--danger, #dc2626);
+}

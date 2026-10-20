@@ -25,6 +25,7 @@ import {
 } from '../services/groups'
 import { canSpeak, speakWord } from '../services/tts'
 import { useUserStore } from '../stores/user'
+import { dismiss, useDismissed } from '../services/dismissed'
 import {
   MASTERY_CONFIG,
   type MasteryLevel,
@@ -90,6 +91,27 @@ export function StudyPage() {
 
   // Çalışma Modu (Flaşkart / Test)
   // ?mode=cloze gibi bağlantılar çalışma türünü önceden seçer
+  // Tersten çalış: kartın ön yüzünde Türkçe, arkasında İngilizce
+  const [reverseMode, setReverseMode] = useState(() => {
+    try {
+      return localStorage.getItem('yds-study-reverse') === '1'
+    } catch {
+      return false
+    }
+  })
+  function toggleReverse(on: boolean) {
+    setReverseMode(on)
+    try {
+      localStorage.setItem('yds-study-reverse', on ? '1' : '0')
+    } catch {
+      // yoksay
+    }
+  }
+  // Son çalışılanlar: × ile gizleme ve süzgeç
+  const isDismissed = useDismissed(activeUserId, 'recent-levels')
+  const [recentStatus, setRecentStatus] = useState<'all' | 'in_progress' | 'completed'>('all')
+  const [recentCat, setRecentCat] = useState('all')
+  const [recentAll, setRecentAll] = useState(false)
   const [mode, setMode] = useState<QuestionMode>(() => {
     const m = searchParams.get('mode')
     return m === 'multiple_choice' || m === 'synonym' || m === 'cloze' || (m === 'listen' && canSpeak()) ? m : 'flashcard'
@@ -220,6 +242,7 @@ export function StudyPage() {
     const weekList = withProgress.filter((p) => p.lastStudiedAt >= sevenDaysAgo)
 
     return {
+      all: withProgress,
       allRecent: withProgress.slice(0, 6),
       inProgress: inProgressList,
       today: todayList,
@@ -613,6 +636,58 @@ export function StudyPage() {
     }
   }
 
+  // Puanlama düğmeleri: kartın iki yüzünde de görünür (çevirmeden de puanlanabilir)
+  const grading = currentQ ? (
+    <>
+        {/* YENİLENMİŞ PUANLAMA BÖLÜMÜ (ÖĞRENDİM / ÖĞRENMEDİM + SADE 1-5 BARI) */}
+        <div className={styles.gradingContainer}>
+          {/* Hızlı İkili Butonlar */}
+          <div className={styles.dualActionRow}>
+            <button
+              type="button"
+              className={styles.actionBtnFail}
+              onClick={() => void handleScoreCard(1)}
+              id="btn-not-learned"
+              title="Öğrenmedim (Tekrar karşıma çıksın - Kısayol: 1)"
+            >
+              <span>❌</span>
+              <span>Öğrenmedim (1)</span>
+              {intervals && <small className={styles.nextHint}>{intervals[1]} sonra</small>}
+            </button>
+    
+            <button
+              type="button"
+              className={styles.actionBtnSuccess}
+              onClick={() => void handleScoreCard(4)}
+              id="btn-learned"
+              title="Öğrendim (Biliyorum, pekiştirildi - Kısayol: 4)"
+            >
+              <span>✅</span>
+              <span>Öğrendim (4)</span>
+              {intervals && <small className={styles.nextHint}>{intervals[4]} sonra</small>}
+            </button>
+          </div>
+    
+          {/* Sade 1-5 Puan Barı */}
+          <div className={styles.numericGradeRow}>
+            <span className={styles.numericGradeLabel}>Öğrenme Düzeyi (1 - 5):</span>
+            {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => (
+              <button
+                key={score}
+                type="button"
+                className={`${styles.numericBtn} ${styles[`numericBtn_${score}` as keyof typeof styles]}`}
+                onClick={() => void handleScoreCard(score)}
+                id={`grade-btn-${score}`}
+                title={`${score}: ${MASTERY_CONFIG[score].label}${intervals ? ` — sonraki tekrar ${intervals[score]} sonra` : ""}`}
+              >
+                {score}
+              </button>
+            ))}
+          </div>
+        </div>
+    </>
+  ) : null
+
   return (
     <section className={styles.container}>
       {/* ========================================================
@@ -640,6 +715,11 @@ export function StudyPage() {
             </>
           )}
         </div>
+
+        <label className={styles.reverseToggle} title="Kartın ön yüzünde Türkçe anlam, arkasında İngilizce kelime">
+          <input type="checkbox" checked={reverseMode} onChange={(e) => toggleReverse(e.target.checked)} />
+          Tersten çalış (TR → EN)
+        </label>
       </div>
 
       {/* ========================================================
@@ -687,21 +767,43 @@ export function StudyPage() {
           </div>
 
           {/* 🕒 BÖLÜM 1: SON ÇALIŞILANLAR & YARIDA BIRAKILANLAR */}
-          {recentLevels.allRecent.length > 0 && (
+          {recentLevels.all.length > 0 && (() => {
+            const visible = recentLevels.all.filter(
+              (p) =>
+                !isDismissed(p.subGroupId, p.lastStudiedAt) &&
+                (recentStatus === 'all' || p.status === recentStatus) &&
+                (recentCat === 'all' || p.categoryGroupId === recentCat),
+            )
+            const filtering = recentStatus !== 'all' || recentCat !== 'all'
+            const shown = recentAll || filtering ? visible : visible.slice(0, 6)
+            const cats = [...new Set(recentLevels.all.map((p) => p.categoryGroupId))]
+            return (
             <div className={styles.recentSection}>
               <div className={styles.sectionHeaderRow}>
                 <h3 className={styles.sectionHeading}>
                   <span>🕒 Son Çalışılanlar & Yarıda Bırakılanlar</span>
                 </h3>
-                <span className="muted" style={{ fontSize: '0.8rem' }}>
-                  {recentLevels.inProgress.length > 0
-                    ? `⚠️ ${recentLevels.inProgress.length} seviye yarıda bırakıldı`
-                    : 'Tüm son oturumlar tamamlandı'}
+                <span className={styles.recentFilters}>
+                  <select value={recentStatus} onChange={(e) => setRecentStatus(e.target.value as typeof recentStatus)} aria-label="Duruma göre süz">
+                    <option value="all">Tümü</option>
+                    <option value="in_progress">Yarıda kalanlar</option>
+                    <option value="completed">Tamamlananlar</option>
+                  </select>
+                  <select value={recentCat} onChange={(e) => setRecentCat(e.target.value)} aria-label="Gruba göre süz">
+                    <option value="all">Tüm gruplar</option>
+                    {cats.map((id) => (
+                      <option key={id} value={id}>
+                        {allCategories.find((c) => c.id === id)?.name ?? id}
+                      </option>
+                    ))}
+                  </select>
                 </span>
               </div>
+              {shown.length === 0 && <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>Bu süzgeçte çalışma yok.</p>
+              }
 
               <div className={styles.recentGrid}>
-                {recentLevels.allRecent.map((prog) => {
+                {shown.map((prog) => {
                   const isInProgress = prog.status === 'in_progress'
                   const cat = allCategories.find((c) => c.id === prog.categoryGroupId)
 
@@ -712,6 +814,15 @@ export function StudyPage() {
                         isInProgress ? styles.recentCard_in_progress : styles.recentCard_completed
                       }`}
                     >
+                      <button
+                        type="button"
+                        className="dismiss-x"
+                        onClick={() => dismiss(activeUserId, 'recent-levels', prog.subGroupId)}
+                        title="Bu listeden kaldır (ilerleme silinmez)"
+                        aria-label="Listeden kaldır"
+                      >
+                        ×
+                      </button>
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
                           <span
@@ -752,8 +863,14 @@ export function StudyPage() {
                   )
                 })}
               </div>
+              {!filtering && visible.length > 6 && (
+                <button type="button" className="btn btn-ghost" style={{ fontSize: '0.82rem' }} onClick={() => setRecentAll((v) => !v)}>
+                  {recentAll ? 'Daha az göster' : `Tümünü göster (${visible.length})`}
+                </button>
+              )}
             </div>
-          )}
+            )
+          })()}
 
           {/* 📅 BÖLÜM 2: GÜNÜN & HAFTANIN TEKRARLARI */}
           {(recentLevels.today.length > 0 || recentLevels.week.length > 0) && (
@@ -1148,7 +1265,7 @@ export function StudyPage() {
                   {/* SİMETRİK VE SABİT YÜKSEKLİKLİ ORTAK ÜST ALAN */}
                   <div className={styles.topPromptBlock}>
                     <div className={styles.mainPromptCenter}>
-                      {!isFlipped ? (
+                      {isFlipped === reverseMode ? (
                         <>
                           <h2 className={styles.promptMainWord}>{currentQ.word.term}</h2>
                           <div className={styles.promptSubWord}>
@@ -1285,6 +1402,8 @@ export function StudyPage() {
                         })}
                       </div>
 
+                      {grading}
+
                       <span className={styles.flipHint}>
                         İpucu: Klavyeden <strong>Boşluk</strong> ile kartı çevirebilir, doğrudan <strong>1-5</strong> tuşlarıyla puanlayabilirsiniz.
                       </span>
@@ -1331,52 +1450,7 @@ export function StudyPage() {
                         )}
                       </div>
 
-                      {/* YENİLENMİŞ PUANLAMA BÖLÜMÜ (ÖĞRENDİM / ÖĞRENMEDİM + SADE 1-5 BARI) */}
-                      <div className={styles.gradingContainer}>
-                        {/* Hızlı İkili Butonlar */}
-                        <div className={styles.dualActionRow}>
-                          <button
-                            type="button"
-                            className={styles.actionBtnFail}
-                            onClick={() => void handleScoreCard(1)}
-                            id="btn-not-learned"
-                            title="Öğrenmedim (Tekrar karşıma çıksın - Kısayol: 1)"
-                          >
-                            <span>❌</span>
-                            <span>Öğrenmedim (1)</span>
-                            {intervals && <small className={styles.nextHint}>{intervals[1]} sonra</small>}
-                          </button>
-
-                          <button
-                            type="button"
-                            className={styles.actionBtnSuccess}
-                            onClick={() => void handleScoreCard(4)}
-                            id="btn-learned"
-                            title="Öğrendim (Biliyorum, pekiştirildi - Kısayol: 4)"
-                          >
-                            <span>✅</span>
-                            <span>Öğrendim (4)</span>
-                            {intervals && <small className={styles.nextHint}>{intervals[4]} sonra</small>}
-                          </button>
-                        </div>
-
-                        {/* Sade 1-5 Puan Barı */}
-                        <div className={styles.numericGradeRow}>
-                          <span className={styles.numericGradeLabel}>Öğrenme Düzeyi (1 - 5):</span>
-                          {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => (
-                            <button
-                              key={score}
-                              type="button"
-                              className={`${styles.numericBtn} ${styles[`numericBtn_${score}` as keyof typeof styles]}`}
-                              onClick={() => void handleScoreCard(score)}
-                              id={`grade-btn-${score}`}
-                              title={`${score}: ${MASTERY_CONFIG[score].label}${intervals ? ` — sonraki tekrar ${intervals[score]} sonra` : ""}`}
-                            >
-                              {score}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                      {grading}
                     </div>
                   )}
                 </div>
