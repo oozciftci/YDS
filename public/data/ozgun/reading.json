@@ -640,6 +640,425 @@
           ]
         }
       ]
+    },
+    {
+      "id": "reading-07",
+      "title": "Okuma Metni 7: Ahtapotların Zekâsı",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "Octopuses are widely regarded as the most intelligent invertebrates, even though their brains are very different from ours.",
+          "About two thirds of their neurons are located not in the head but in the arms, which can move and react almost independently.",
+          "In laboratory tests, octopuses have learned to unscrew jars to reach food and to find their way through simple mazes.",
+          "In the wild, some individuals have been seen carrying coconut shells to use later as portable shelters.",
+          "Such behaviour suggests that these animals can plan ahead, something once thought to be limited to a few vertebrates.",
+          "Despite this ability, octopuses live very short lives, usually only one to three years, and most never meet their parents.",
+          "Researchers therefore wonder how so much learning can take place without the knowledge being passed on from one generation to the next."
+        ],
+        "tr": [
+          "Ahtapotlar, beyinleri bizimkinden çok farklı olsa da omurgasızlar arasında en zeki canlılar olarak kabul edilir.",
+          "Nöronlarının yaklaşık üçte ikisi başta değil, neredeyse bağımsız hareket edip tepki verebilen kollarındadır.",
+          "Laboratuvar testlerinde ahtapotlar yiyeceğe ulaşmak için kavanoz kapaklarını açmayı ve basit labirentlerde yollarını bulmayı öğrendi.",
+          "Doğada bazı bireylerin, sonradan taşınabilir barınak olarak kullanmak üzere hindistan cevizi kabuklarını taşıdığı görüldü.",
+          "Bu tür davranışlar, bu hayvanların önceden plan yapabildiğini düşündürüyor; bu da bir zamanlar yalnızca birkaç omurgalıya özgü sanılırdı.",
+          "Bu yeteneğe rağmen ahtapotlar çok kısa yaşar; genellikle yalnızca bir ila üç yıl, çoğu da ebeveynleriyle hiç tanışmaz.",
+          "Bu nedenle araştırmacılar, bilgi bir nesilden diğerine aktarılmadan bu kadar çok öğrenmenin nasıl gerçekleşebildiğini merak ediyor."
+        ]
+      },
+      "qs": [
+        {
+          "s": "Where is most of an octopus's nervous system located?",
+          "t": "Bir ahtapotun sinir sisteminin büyük kısmı nerededir?",
+          "o": [
+            "In its arms",
+            "In its head",
+            "In its eyes",
+            "In its shell",
+            "In its heart"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 2. cümle: nöronların yaklaşık üçte ikisi kollarda.",
+            "Baş değil; 2. cümle 'not in the head' der.",
+            "Gözler anılmıyor.",
+            "Ahtapotun kabuğu yoktur ve metinde anılmıyor.",
+            "Kalp anılmıyor."
+          ]
+        },
+        {
+          "s": "According to the passage, a coconut shell is used by some octopuses as ----.",
+          "t": "Parçaya göre bazı ahtapotlar hindistan cevizi kabuğunu ---- olarak kullanır.",
+          "o": [
+            "a tool for opening jars",
+            "a source of food",
+            "a weapon against predators",
+            "a movable hiding place",
+            "a signal for other octopuses"
+          ],
+          "a": 3,
+          "x": [
+            "Kavanoz açma deneyleri laboratuvarda ve kabukla ilgisiz.",
+            "Yiyecek olarak anılmıyor.",
+            "Silah olarak anılmıyor.",
+            "Doğru: 4. cümle: portable shelter = taşınabilir barınak.",
+            "Sinyal olarak anılmıyor."
+          ]
+        },
+        {
+          "s": "What can be inferred from the passage about planning ahead?",
+          "t": "Parçadan önceden plan yapma hakkında ne çıkarılabilir?",
+          "o": [
+            "It is found only in mammals.",
+            "It is not restricted to animals with backbones.",
+            "It is impossible to observe in the wild.",
+            "It is learned from parents.",
+            "It requires a large brain in the head."
+          ],
+          "a": 1,
+          "x": [
+            "Memelilerle sınırlı olmadığı anlaşılıyor.",
+            "Doğru: 5. cümle: bir zamanlar omurgalılara özgü sanılırdı; ahtapot omurgasız.",
+            "Doğada gözlendiği söyleniyor (4. cümle).",
+            "Ebeveynlerle tanışmadıkları söyleniyor (6. cümle).",
+            "Nöronların çoğu başta değil kollarda."
+          ]
+        },
+        {
+          "s": "What puzzles the researchers mentioned in the last sentence?",
+          "t": "Son cümlede anılan araştırmacıları ne şaşırtıyor?",
+          "o": [
+            "How octopuses breathe underwater",
+            "Why octopuses live in warm water",
+            "How octopuses find food in mazes",
+            "Why octopuses have three hearts",
+            "How octopuses learn so much although they do not learn from their parents"
+          ],
+          "a": 4,
+          "x": [
+            "Solunum anılmıyor.",
+            "Su sıcaklığı anılmıyor.",
+            "Labirent bulma açıklanmış bir bulgu, şaşırtan konu değil.",
+            "Kalp sayısı anılmıyor.",
+            "Doğru: 6-7. cümleler: kısa ömür ve ebeveynle tanışmama + öğrenme."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-08",
+      "title": "Okuma Metni 8: Roma Yolları",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "The Roman road network, which eventually covered more than 80,000 kilometres, was one of the greatest engineering achievements of the ancient world.",
+          "Its original purpose was military: roads allowed soldiers to move quickly to troubled regions of the empire.",
+          "Builders dug a deep trench, filled it with layers of stones, gravel and sand, and covered the top with large, flat stones.",
+          "This construction method kept water from collecting on the surface, which is why some roads are still visible today.",
+          "Over time, traders and ordinary travellers also began to use the roads, and goods and ideas spread across the empire more quickly than ever before.",
+          "Along the main routes, stations were built where messengers could change horses, so that a message could travel up to 80 kilometres in a day.",
+          "When the empire declined, however, the roads were no longer maintained, and many of them were gradually covered by soil and plants."
+        ],
+        "tr": [
+          "Sonunda 80.000 kilometreden fazlasını kaplayan Roma yol ağı, antik dünyanın en büyük mühendislik başarılarından biriydi.",
+          "Asıl amacı askeriydi: yollar askerlerin imparatorluğun sorunlu bölgelerine hızla ulaşmasına olanak tanıyordu.",
+          "İnşaatçılar derin bir hendek kazar, onu taş, çakıl ve kum katmanlarıyla doldurur ve üstünü büyük, düz taşlarla kaplardı.",
+          "Bu yöntem suyun yüzeyde birikmesini önlerdi; bu yüzden bazı yollar bugün hâlâ görülebilir.",
+          "Zamanla tüccarlar ve sıradan yolcular da yolları kullanmaya başladı; mallar ve fikirler imparatorluk boyunca eskisinden çok daha hızlı yayıldı.",
+          "Ana güzergâhlar boyunca ulakların at değiştirebileceği istasyonlar kuruldu; böylece bir mesaj günde 80 kilometreye kadar yol alabiliyordu.",
+          "Ancak imparatorluk gerileyince yollar artık bakımsız kaldı ve birçoğu yavaş yavaş toprak ve bitkilerle örtüldü."
+        ]
+      },
+      "qs": [
+        {
+          "s": "What was the original purpose of the Roman roads?",
+          "t": "Roma yollarının asıl amacı neydi?",
+          "o": [
+            "To make travel pleasant for ordinary people",
+            "To help traders sell more goods",
+            "To let soldiers reach distant regions quickly",
+            "To protect the empire from floods",
+            "To connect villages with markets"
+          ],
+          "a": 2,
+          "x": [
+            "Sıradan yolcular sonradan kullandı.",
+            "Ticaret sonradan eklendi (5. cümle).",
+            "Doğru: 2. cümle.",
+            "Sel koruması anılmıyor (su birikmemesi inşaat tekniği).",
+            "Köy-pazar bağlantısı anılmıyor."
+          ]
+        },
+        {
+          "s": "According to the passage, some Roman roads are still visible because ----.",
+          "t": "Parçaya göre bazı Roma yolları ---- için hâlâ görülebiliyor.",
+          "o": [
+            "their construction prevented water from collecting on them",
+            "they were built with modern materials",
+            "they were repaired by later empires",
+            "they were covered with soil on purpose",
+            "they were used by messengers"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 4. cümle.",
+            "Modern malzeme anılmıyor.",
+            "Sonraki imparatorluklar anılmıyor.",
+            "Toprakla örtülmeleri bilinçli değil, bakımsızlıktan (7. cümle).",
+            "Ulaklar görünürlüğü açıklamaz."
+          ]
+        },
+        {
+          "s": "It can be understood from the passage that the roads ----.",
+          "t": "Parçadan yolların ---- anlaşılır.",
+          "o": [
+            "were used only in summer",
+            "were built only for traders",
+            "also helped trade and the spread of ideas",
+            "made the empire poorer",
+            "were closed to ordinary travellers"
+          ],
+          "a": 2,
+          "x": [
+            "Mevsim anılmıyor.",
+            "Yalnızca tüccar için değil; asıl amaç askeri.",
+            "Doğru: 5. cümle.",
+            "İmparatorluğu fakirleştirdiği söylenmiyor.",
+            "Sıradan yolcuların kullandığı söyleniyor."
+          ]
+        },
+        {
+          "s": "According to the writer, what happened to many roads after the empire declined?",
+          "t": "Yazara göre imparatorluk gerileyince birçok yola ne oldu?",
+          "o": [
+            "They were extended to new regions.",
+            "They were rebuilt with better materials.",
+            "They were closed by the new rulers.",
+            "They were used mainly by the army.",
+            "They were left without maintenance and slowly disappeared under soil and plants."
+          ],
+          "a": 4,
+          "x": [
+            "Genişleme anılmıyor.",
+            "Yeniden inşa söylenmiyor.",
+            "Yeni yöneticilerin kapatması anılmıyor.",
+            "Ordu kullanımı gerileme sonrası anılmıyor.",
+            "Doğru: 7. cümle."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-09",
+      "title": "Okuma Metni 9: Rüzgâr Enerjisi",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "Wind power is one of the fastest-growing sources of electricity in the world, and in several countries it already supplies more than a fifth of the demand.",
+          "Modern turbines convert the movement of air into electricity without producing any greenhouse gases while they operate.",
+          "Their main disadvantage is that wind is not constant: on calm days, turbines produce little or no electricity.",
+          "For this reason, wind farms are usually combined with other sources or with batteries that store the extra power produced on windy days.",
+          "Some people also object to turbines because of the noise they make and the way they change the appearance of the landscape.",
+          "Offshore wind farms, built in the sea, avoid many of these complaints because they are far from homes, and the winds there are stronger and steadier.",
+          "However, building and maintaining turbines at sea is considerably more expensive than doing so on land."
+        ],
+        "tr": [
+          "Rüzgâr enerjisi dünyada en hızlı büyüyen elektrik kaynaklarından biridir ve birçok ülkede talebin beşte birinden fazlasını şimdiden karşılıyor.",
+          "Modern türbinler havanın hareketini, çalışırken hiçbir sera gazı üretmeden elektriğe dönüştürür.",
+          "Başlıca dezavantajları rüzgârın sabit olmamasıdır: sakin günlerde türbinler çok az elektrik üretir veya hiç üretmez.",
+          "Bu nedenle rüzgâr çiftlikleri genellikle başka kaynaklarla ya da rüzgârlı günlerde üretilen fazla enerjiyi depolayan pillerle birleştirilir.",
+          "Bazı insanlar da türbinlerin çıkardığı gürültü ve manzarayı değiştirme biçimi yüzünden onlara itiraz eder.",
+          "Denizde kurulan açık deniz rüzgâr çiftlikleri evlerden uzak oldukları ve oradaki rüzgârlar daha güçlü ve düzenli olduğu için bu şikâyetlerin çoğunu önler.",
+          "Ancak denizde türbin kurmak ve bakımını yapmak karada yapmaktan belirgin biçimde daha pahalıdır."
+        ]
+      },
+      "qs": [
+        {
+          "s": "What is the main disadvantage of wind power mentioned in the passage?",
+          "t": "Parçada anılan rüzgâr enerjisinin başlıca dezavantajı nedir?",
+          "o": [
+            "It produces greenhouse gases.",
+            "Wind is not always blowing.",
+            "It is too expensive on land.",
+            "It can only be used in cities.",
+            "It damages the sea."
+          ],
+          "a": 1,
+          "x": [
+            "Sera gazı üretmediği söyleniyor (2. cümle).",
+            "Doğru: 3. cümle.",
+            "Karada pahalı olduğu söylenmiyor; denizde pahalı.",
+            "Yalnızca şehirlerde kullanım anılmıyor.",
+            "Denize zarar anılmıyor."
+          ]
+        },
+        {
+          "s": "Why are wind farms often combined with batteries?",
+          "t": "Rüzgâr çiftlikleri neden sıklıkla pillerle birleştirilir?",
+          "o": [
+            "To protect the turbines from storms",
+            "To reduce the noise of the turbines",
+            "To make the turbines look better",
+            "To store the extra power produced on windy days",
+            "To produce greenhouse gases"
+          ],
+          "a": 3,
+          "x": [
+            "Fırtına koruması anılmıyor.",
+            "Gürültüyü azaltmak için değil.",
+            "Görünümle ilgisiz.",
+            "Doğru: 4. cümle.",
+            "Sera gazı üretmiyorlar."
+          ]
+        },
+        {
+          "s": "According to the passage, offshore wind farms ----.",
+          "t": "Parçaya göre açık deniz rüzgâr çiftlikleri ----.",
+          "o": [
+            "avoid some complaints but are more costly to build and maintain",
+            "are cheaper than wind farms on land",
+            "produce less electricity than wind farms on land",
+            "are not affected by weather conditions",
+            "are located close to cities"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 6-7. cümleler.",
+            "Daha pahalı olduğu söyleniyor.",
+            "Rüzgâr daha güçlü olduğu için tersi.",
+            "Hava koşullarından etkilenmedikleri söylenmiyor.",
+            "Evlerden uzak oldukları söyleniyor."
+          ]
+        },
+        {
+          "s": "The word 'steadier' in the sixth sentence is closest in meaning to ----.",
+          "t": "Altıncı cümledeki 'steadier' sözcüğü ---- ile anlamca en yakındır.",
+          "o": [
+            "noisier",
+            "more dangerous",
+            "colder",
+            "more regular",
+            "weaker"
+          ],
+          "a": 3,
+          "x": [
+            "noisier daha gürültülü.",
+            "dangerous tehlikeli.",
+            "colder daha soğuk.",
+            "Doğru: steadier = daha düzenli/istikrarlı.",
+            "weaker daha zayıf; 'stronger' ile çelişir."
+          ],
+          "ot": [
+            "daha gürültülü",
+            "daha tehlikeli",
+            "daha soğuk",
+            "daha düzenli",
+            "daha zayıf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-10",
+      "title": "Okuma Metni 10: Tüketim Alışkanlıkları",
+      "passage": {
+        "kind": "reading",
+        "sentences": [
+          "In recent years, a growing number of people have begun to question the habit of buying more than they need.",
+          "Advocates of minimalism argue that owning fewer things frees both space and time, since there is less to clean, repair and replace.",
+          "Psychologists note that the pleasure of buying something new usually fades quickly, a process they call hedonic adaptation.",
+          "Experiences, such as travelling or learning a skill, tend to produce longer-lasting satisfaction than objects do.",
+          "Critics, however, point out that minimalism is easier for people who already own enough, and that it can become another form of status symbol.",
+          "They also remind us that economies depend on spending, so a sudden fall in consumption could cost many people their jobs.",
+          "Most experts therefore suggest a middle path: buying fewer but better-made products that last longer."
+        ],
+        "tr": [
+          "Son yıllarda giderek artan sayıda insan ihtiyaçtan fazlasını satın alma alışkanlığını sorgulamaya başladı.",
+          "Minimalizmin savunucuları, daha az eşyaya sahip olmanın hem yer hem zaman kazandırdığını savunuyor; çünkü temizlenecek, onarılacak ve değiştirilecek daha az şey vardır.",
+          "Psikologlar, yeni bir şey satın almanın verdiği hazzın genellikle çabuk geçtiğini belirtir ve buna hedonik uyum adını verir.",
+          "Seyahat etmek veya bir beceri öğrenmek gibi deneyimler, nesnelerden daha kalıcı bir memnuniyet üretme eğilimindedir.",
+          "Eleştirmenler ise minimalizmin zaten yeterince şeye sahip olanlar için daha kolay olduğuna ve başka bir statü sembolüne dönüşebileceğine dikkat çekiyor.",
+          "Ayrıca ekonomilerin harcamaya dayandığını, bu yüzden tüketimdeki ani bir düşüşün birçok kişiye işlerine mal olabileceğini hatırlatıyorlar.",
+          "Bu nedenle çoğu uzman orta bir yol öneriyor: daha az ama daha uzun ömürlü, daha iyi yapılmış ürünler satın almak."
+        ]
+      },
+      "qs": [
+        {
+          "s": "According to the passage, why do advocates of minimalism think owning fewer things is beneficial?",
+          "t": "Parçaya göre minimalizm savunucuları daha az eşyaya sahip olmanın neden yararlı olduğunu düşünüyor?",
+          "o": [
+            "It makes people richer in the long run",
+            "It saves space and time because there is less to look after",
+            "It helps economies to grow faster",
+            "It makes people more popular",
+            "It is a way of avoiding all spending"
+          ],
+          "a": 1,
+          "x": [
+            "Zenginleşme anılmıyor.",
+            "Doğru: 2. cümle.",
+            "Ekonomi büyümesi eleştirmenlerin kaygısıyla ters.",
+            "Popülerlik anılmıyor.",
+            "Tüm harcamalardan kaçınma söylenmiyor."
+          ]
+        },
+        {
+          "s": "What does the term 'hedonic adaptation' refer to?",
+          "t": "'Hedonik uyum' terimi neye işaret ediyor?",
+          "o": [
+            "The tendency to follow fashion",
+            "The habit of buying more than one needs",
+            "The satisfaction produced by learning a skill",
+            "The ability to live with fewer objects",
+            "The quick fading of pleasure after buying something new"
+          ],
+          "a": 4,
+          "x": [
+            "Modaya uyma anılmıyor.",
+            "Bu, çok satın alma alışkanlığı; terim hazzın sönmesi.",
+            "Beceri öğrenmenin kalıcı memnuniyeti 4. cümlede.",
+            "Minimalizmin tanımı.",
+            "Doğru: 3. cümle."
+          ]
+        },
+        {
+          "s": "Critics of minimalism claim that it ----.",
+          "t": "Minimalizm eleştirmenleri onun ---- iddia ediyor.",
+          "o": [
+            "is cheaper than traditional life",
+            "is harmful for the environment",
+            "is easier for the wealthy and may harm employment if it spreads too fast",
+            "is suitable only for young people",
+            "makes people unhappier"
+          ],
+          "a": 2,
+          "x": [
+            "Ucuzluk iddiası yok.",
+            "Çevreye zarar iddiası yok.",
+            "Doğru: 5-6. cümleler.",
+            "Yalnızca gençler için iddiası yok.",
+            "Mutsuzluk iddiası yok."
+          ]
+        },
+        {
+          "s": "What do most experts recommend?",
+          "t": "Çoğu uzman ne öneriyor?",
+          "o": [
+            "Buying fewer products of better quality",
+            "Giving up shopping completely",
+            "Spending more on experiences than on food",
+            "Buying the cheapest products available",
+            "Replacing old products as often as possible"
+          ],
+          "a": 0,
+          "x": [
+            "Doğru: 7. cümle.",
+            "Tamamen bırakmak orta yola ters.",
+            "Yiyecek karşılaştırması yok.",
+            "Ucuz ürün önerisi yok; kaliteli ürün öneriliyor.",
+            "Sık yenileme önerisi tersi."
+          ]
+        }
+      ]
     }
   ],
   "balanced": true

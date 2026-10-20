@@ -899,7 +899,7 @@
             "shield",
             "expose",
             "deprive",
-            "distract",
+            "suspend",
             "release"
           ],
           "a": 0,
@@ -908,14 +908,14 @@
             "korumak",
             "maruz bırakmak",
             "mahrum bırakmak",
-            "dikkatini dağıtmak",
+            "askıya almak",
             "serbest bırakmak"
           ],
           "x": [
             "Doğru: shield sb from = ...den korumak.",
             "expose amaçla çelişir (expose to).",
             "deprive of kalıbı 'of' alır.",
-            "distract from dikkat dağıtır; amaca uymaz.",
+            "suspend from kalıbı çocukları zararlı içerikten korumak anlamı vermez.",
             "release from serbest bırakmak; uymaz."
           ]
         },
@@ -1082,7 +1082,7 @@
           ]
         },
         {
-          "s": "Their sales have ---- steadily since the company introduced its online store.",
+          "s": "Their sales have ---- steadily since the company introduced its online store, and it has had to hire extra staff to cope.",
           "o": [
             "surrendered",
             "vanished",
@@ -1091,7 +1091,7 @@
             "soared"
           ],
           "a": 4,
-          "t": "Şirket çevrim içi mağazasını açtığından beri satışları istikrarlı biçimde fırladı.",
+          "t": "Şirket çevrim içi mağazasını açtığından beri satışları istikrarlı biçimde fırladı ve idare etmek için ek personel almak zorunda kaldı.",
           "ot": [
             "teslim olmak",
             "yok olmak",
