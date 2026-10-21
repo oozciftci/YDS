@@ -794,8 +794,45 @@ function BundleCard() {
       })
       .catch(() => setParts(null))
   }, [])
+
+  // İndirme durumu: sunucu dosyayı hazırlar, sonra gönderir; sayfa ilerlemeyi ve sonucu gösterir
+  const [job, setJob] = useState<{ id: string; phase: string; done: number; total: number; error?: string } | null>(null)
+  const jobId = job?.id
+  const active = job?.phase === 'baslatiliyor' || job?.phase === 'hazirlaniyor' || job?.phase === 'gonderiliyor'
+  useEffect(() => {
+    if (!jobId || !active) return
+    const t = setInterval(() => {
+      fetch(`/local-api/kaynak-paketi/durum?id=${jobId}`)
+        .then((r) => r.json())
+        .then((s: { phase: string; done: number; total: number; error?: string }) => {
+          if (s.phase !== 'yok') setJob({ id: jobId, ...s })
+        })
+        .catch(() => undefined)
+    }, 700)
+    return () => clearInterval(t)
+  }, [jobId, active])
+
+  function startDownload() {
+    const id = Math.random().toString(36).slice(2, 12)
+    setJob({ id, phase: 'baslatiliyor', done: 0, total: 0 })
+    const a = document.createElement('a')
+    a.href = `/local-api/kaynak-paketi?parcalar=${[...chosen].join(',')}&id=${id}`
+    a.download = ''
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
+
   if (!parts) return null
   const total = parts.filter((p) => chosen.has(p.id)).reduce((n, p) => n + p.bytes, 0)
+  const pct = job && job.total ? Math.round((job.done / job.total) * 100) : 0
+  const status =
+    !job ? null
+    : job.phase === 'baslatiliyor' ? 'İndirme başlatılıyor…'
+    : job.phase === 'hazirlaniyor' ? `Bilgisayar dosyayı hazırlıyor… %${pct}`
+    : job.phase === 'gonderiliyor' ? `Telefona gönderiliyor… %${pct} (${formatBytes(job.done)} / ${formatBytes(job.total)})`
+    : job.phase === 'tamam' ? `✓ İndirildi (${formatBytes(job.total)}). Dosya telefonun İndirilenler klasöründe: “yds-kaynaklar-….ydsk”.`
+    : `✗ ${job.error || 'İndirme başarısız.'} Tekrar dene.`
   const toggle = (id: string) =>
     setChosen((s) => {
       const n = new Set(s)
@@ -824,13 +861,25 @@ function BundleCard() {
         ))}
       </div>
       {chosen.size > 0 ? (
-        <a className="btn btn-primary" href={`/local-api/kaynak-paketi?parcalar=${[...chosen].join(',')}`} download>
-          ⬇️ İndir ({formatBytes(total)})
-        </a>
+        <button type="button" className="btn btn-primary" disabled={active} onClick={startDownload}>
+          {active ? 'İndiriliyor…' : `⬇️ İndir (${formatBytes(total)})`}
+        </button>
       ) : (
         <p className="muted" style={{ margin: 0 }}>
           En az bir parça seç.
         </p>
+      )}
+      {job && (
+        <div role="status" aria-live="polite" style={{ marginTop: '0.75rem', display: 'grid', gap: '0.4rem' }}>
+          {active && (
+            <div className={styles.meter} aria-hidden="true">
+              <span style={{ width: `${Math.max(2, pct)}%` }} />
+            </div>
+          )}
+          <p className={job.phase === 'tamam' ? styles.ok : job.phase === 'hata' ? styles.error : 'muted'} style={{ margin: 0 }}>
+            {status}
+          </p>
+        </div>
       )}
     </section>
   )

@@ -5,9 +5,11 @@ import path from 'node:path'
 import { trusted } from './vite.phone.ts'
 
 // Kaynak paketi (.ydsk): telifli yerel içeriği tek dosyada toplar; yayın sürümündeki uygulama (GitHub Pages) bu dosyayı
-// cihaza yükler ve bilgisayar olmadan açar (src/services/localContent.ts). Dosya yalnızca istenince üretilir, diske yazılmaz.
-//   GET /local-api/kaynak-paketi/parcalar             -> [{ id, title, bytes }]
-//   GET /local-api/kaynak-paketi?parcalar=sorular,…   -> .ydsk indirme
+// cihaza yükler ve bilgisayar olmadan açar (src/services/localContent.ts). Dosya istenince local-data/telefon/'da geçici
+// olarak üretilir (boyut baştan bilinsin), gönderilince silinir.
+//   GET /local-api/kaynak-paketi/parcalar                 -> [{ id, title, bytes }]
+//   GET /local-api/kaynak-paketi?parcalar=sorular,…&id=x  -> .ydsk indirme
+//   GET /local-api/kaynak-paketi/durum?id=x               -> { phase: hazirlaniyor|gonderiliyor|tamam|hata, done, total, error? }
 // Her kayıt, sunucunun /local-api yanıtının aynısıdır (sunucu kendine sorar), böylece iki taraf aynı biçimi görür.
 
 const ROOT = path.resolve(import.meta.dirname, 'local-data')
@@ -78,6 +80,14 @@ function parts(): Part[] {
   return out
 }
 
+interface Job {
+  phase: 'hazirlaniyor' | 'gonderiliyor' | 'tamam' | 'hata'
+  done: number
+  total: number
+  error?: string
+}
+const jobs = new Map<string, Job>()
+
 const sizeOf = (files: string[]) => files.reduce((n, f) => n + (fs.existsSync(f) ? fs.statSync(f).size : 0), 0)
 
 export function localBundle(): Plugin {
@@ -97,26 +107,38 @@ export function localBundle(): Plugin {
           res.setHeader('Cache-Control', 'no-store')
           return res.end(JSON.stringify(all.map((p) => ({ id: p.id, title: p.title, bytes: sizeOf(p.files) }))))
         }
+        // İndirmenin durumu (sayfa ilerlemeyi ve sonucu gösterebilsin): GET /durum?id=…
+        if (url.pathname === '/durum') {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.setHeader('Cache-Control', 'no-store')
+          return res.end(JSON.stringify(jobs.get(url.searchParams.get('id') || '') ?? { phase: 'yok' }))
+        }
+
         const want = new Set((url.searchParams.get('parcalar') || '').split(',').filter(Boolean))
         const chosen = all.filter((p) => want.has(p.id))
         if (!chosen.length) {
           res.statusCode = 400
           return res.end('Parça seçilmedi')
         }
+        const jobId = /^[a-z0-9]{1,32}$/.test(url.searchParams.get('id') || '') ? url.searchParams.get('id')! : `j${Date.now()}`
+        const job: Job = { phase: 'hazirlaniyor', done: 0, total: chosen.reduce((n, p) => n + p.paths().length, 0) }
+        jobs.set(jobId, job)
+        setTimeout(() => jobs.delete(jobId), 60 * 60_000)
 
+        // Önce geçici dosyaya yazılır: boyut baştan bilinir (telefonun indirme bildiriminde ilerleme görünür)
         const port = (server.httpServer?.address() as AddressInfo | null)?.port ?? server.config.server.port
-        const date = new Date().toISOString().slice(0, 10)
-        res.setHeader('Content-Type', 'application/octet-stream')
-        res.setHeader('Content-Disposition', `attachment; filename="yds-kaynaklar-${date}.ydsk"`)
-        res.setHeader('Cache-Control', 'no-store')
-        const write = (chunk: string | Buffer) => new Promise<void>((ok) => (res.write(chunk) ? ok() : res.once('drain', () => ok())))
-        await write('YDSK1\n')
-        await write(JSON.stringify({ manifest: { parts: chosen.map(({ id, title }) => ({ id, title })), createdAt: new Date().toISOString() } }) + '\n')
-        let count = 0
+        const tmp = path.join(ROOT, 'telefon', `paket-${jobId}.ydsk`)
+        fs.mkdirSync(path.dirname(tmp), { recursive: true })
+        const out = fs.createWriteStream(tmp)
+        const write = (chunk: string | Buffer) => new Promise<void>((ok) => (out.write(chunk) ? ok() : out.once('drain', () => ok())))
         try {
+          await write('YDSK1\n')
+          await write(JSON.stringify({ manifest: { parts: chosen.map(({ id, title }) => ({ id, title })), createdAt: new Date().toISOString() } }) + '\n')
+          let count = 0
           for (const part of chosen) {
             const bookId = part.id.startsWith('kitap:') ? part.id.slice(6) : null
             for (const p of part.paths()) {
+              job.done++
               const r = await fetch(`http://localhost:${port}/local-api/${p}`)
               if (!r.ok) continue
               let data = Buffer.from(await r.arrayBuffer())
@@ -129,10 +151,32 @@ export function localBundle(): Plugin {
             }
           }
           await write(JSON.stringify({ end: true, count }) + '\n')
+          await new Promise<void>((ok, fail) => out.end((e?: Error | null) => (e ? fail(e) : ok())))
         } catch (e) {
-          server.config.logger.error(`Kaynak paketi yarıda kaldı: ${String(e)}`)
+          out.destroy()
+          fs.rmSync(tmp, { force: true })
+          Object.assign(job, { phase: 'hata', error: `Paket hazırlanamadı: ${String(e)}` })
+          server.config.logger.error(job.error!)
+          res.statusCode = 500
+          return res.end(job.error)
         }
-        res.end()
+
+        const size = fs.statSync(tmp).size
+        Object.assign(job, { phase: 'gonderiliyor', done: 0, total: size })
+        const date = new Date().toISOString().slice(0, 10)
+        res.setHeader('Content-Type', 'application/octet-stream')
+        res.setHeader('Content-Disposition', `attachment; filename="yds-kaynaklar-${date}.ydsk"`)
+        res.setHeader('Content-Length', size)
+        res.setHeader('Cache-Control', 'no-store')
+        const src = fs.createReadStream(tmp)
+        src.on('data', (c) => (job.done += c.length))
+        res.on('finish', () => Object.assign(job, { phase: 'tamam', done: size }))
+        res.on('close', () => {
+          if (job.phase !== 'tamam') Object.assign(job, { phase: 'hata', error: 'İndirme yarıda kesildi (bağlantı koptu ya da iptal edildi).' })
+          src.destroy()
+          fs.rmSync(tmp, { force: true })
+        })
+        src.pipe(res)
       })
     },
   }
