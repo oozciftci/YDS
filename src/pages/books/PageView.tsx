@@ -12,7 +12,7 @@ import {
 import { db } from '../../db'
 import type { BookPage, Frame } from './bookData'
 import { PEN_COLORS, addStroke, inkId, type Pen } from './ink'
-import { constrainCorner, curl, polygonCss } from './pageCurl'
+import { constrainCorner, curl, polygonCss, type Pt } from './pageCurl'
 import styles from './Reading.module.css'
 
 // Kitap sayfası görünümü: görüntü + kalem katmanı + sayfa çevirme hissi.
@@ -29,6 +29,19 @@ function InkLayer({ userId, bookId, page, pen }: { userId: string; bookId: strin
   const [cur, setCur] = useState<number[] | null>(null)
   const pts = useRef<number[] | null>(null)
   const svg = useRef<SVGSVGElement>(null)
+  // İki parmak = yakınlaştırma: çizilen çizgi atılır, parmaklar kalkana kadar çizim yok (tarayıcı yakınlaştırır)
+  const fingers = useRef(new Set<number>())
+  const drawId = useRef<number | null>(null)
+  const pinching = useRef(false)
+  const drop = () => {
+    pts.current = null
+    drawId.current = null
+    setCur(null)
+  }
+  const release = (id: number) => {
+    fingers.current.delete(id)
+    if (!fingers.current.size) pinching.current = false
+  }
 
   const width = pen.kind === 'marker' ? page.w * 0.016 : page.w * 0.0035
   const opacity = pen.kind === 'marker' ? 0.38 : 1
@@ -45,33 +58,44 @@ function InkLayer({ userId, bookId, page, pen }: { userId: string; bookId: strin
       preserveAspectRatio="none"
       onPointerDown={(e) => {
         if (!pen.on) return
-        e.preventDefault()
         e.stopPropagation()
-        e.currentTarget.setPointerCapture(e.pointerId)
+        fingers.current.add(e.pointerId)
+        if (fingers.current.size > 1 || pinching.current) {
+          pinching.current = true
+          drop()
+          return
+        }
+        if (e.pointerType !== 'touch') e.preventDefault()
+        drawId.current = e.pointerId
         pts.current = at(e)
         setCur(pts.current)
       }}
       onPointerMove={(e) => {
         const d = pts.current
-        if (!pen.on || !d) return
+        if (!pen.on || !d || e.pointerId !== drawId.current) return
         const [x, y] = at(e)
         // Çok sık noktaları atla (kayıt küçük kalsın)
         if (Math.hypot(x - d[d.length - 2], y - d[d.length - 1]) < page.w * 0.003) return
         pts.current = [...d, x, y]
         setCur(pts.current)
       }}
-      onPointerUp={() => {
+      onPointerUp={(e) => {
+        release(e.pointerId)
+        if (e.pointerId !== drawId.current) return
         const d = pts.current
-        pts.current = null
-        setCur(null)
+        drop()
         if (!d) return
         // Tek dokunuş: küçük nokta
         const stroke = { c: pen.color, w: Math.round(width * 10) / 10, o: opacity, d: d.length === 2 ? [...d, d[0] + 1, d[1]] : d }
         void addStroke(userId, bookId, page.n, stroke)
       }}
-      onPointerCancel={() => {
-        pts.current = null
-        setCur(null)
+      onPointerCancel={(e) => {
+        // Tarayıcı yakınlaştırmayı devraldığında da gelir: yarım çizgi kaydedilmez
+        release(e.pointerId)
+        if (e.pointerId === drawId.current) drop()
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'touch') release(e.pointerId)
       }}
       onClick={(e) => pen.on && e.stopPropagation()}
     >
@@ -108,6 +132,16 @@ function SheetContent({ side, userId, bookId, pen, alt }: { side: Side; userId: 
 }
 
 type Anim = { dir: 1 | -1; kind: 'curl' | 'slide'; corner: 'top' | 'bottom' }
+
+/** Kalkan köşe: ileri çevirmede sağ, geri çevirmede sol (alt ya da üst). */
+const cornerOf = (a: Anim, W: number, H: number) => ({ x: a.dir === 1 ? W : 0, y: a.corner === 'bottom' ? H : 0 })
+
+/** Kâğıt esnemez: ileri çevirmede sırt sol kenar, geri çevirmede sağ kenar (aynalanarak aynı sınır). */
+function constrainTurn(a: Anim, P: Pt, C: Pt, W: number, H: number): Pt {
+  if (a.dir === 1) return constrainCorner(P, C, W, H)
+  const q = constrainCorner({ x: W - P.x, y: P.y }, { x: W - C.x, y: C.y }, W, H)
+  return { x: W - q.x, y: q.y }
+}
 const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2)
 
 /**
@@ -176,12 +210,11 @@ export function PageView({
       return
     }
     if (!flap || !shadow || !shade) return
-    const C = { x: W, y: a.corner === 'bottom' ? H : 0 }
+    // İleri: sağ köşe kalkıp sola katlanır (altta sonraki sayfa); geri: aynası — sol köşe kalkıp sağa katlanır (altta önceki)
+    const C = cornerOf(a, W, H)
     const lift = a.corner === 'bottom' ? -1 : 1
-    // İleri: köşe C'den (-W) tarafına; geri: (-W)'den C'ye (önceki sayfa açılarak kapanır)
-    const u = a.dir === 1 ? t : 1 - t
-    let P = at ? { ...at } : { x: W - 2 * W * u, y: C.y + lift * Math.sin(Math.PI * u) * 0.12 * H }
-    P = constrainCorner(P, C, W, H)
+    let P = at ? { ...at } : { x: a.dir === 1 ? W - 2 * W * t : 2 * W * t, y: C.y + lift * Math.sin(Math.PI * t) * 0.12 * H }
+    P = constrainTurn(a, P, C, W, H)
     const g = curl(P, C, W, H)
     if (!g) {
       top.style.clipPath = ''
@@ -227,8 +260,8 @@ export function PageView({
     cancelAnimationFrame(raf.current)
     busy.current = true
     const { W, H } = size()
-    const C = { x: W, y: a.corner === 'bottom' ? H : 0 }
-    const end = a.kind === 'curl' ? ((a.dir === 1 ? t1 : 1 - t1) >= 1 ? { x: -W, y: C.y } : C) : undefined
+    const C = cornerOf(a, W, H)
+    const end = a.kind === 'curl' ? (t1 >= 1 ? { x: a.dir === 1 ? -W : 2 * W, y: C.y } : C) : undefined
     const start = performance.now()
     const step = (now: number) => {
       const k = Math.min(1, (now - start) / ms)
@@ -291,23 +324,22 @@ export function PageView({
 
   useEffect(() => () => cancelAnimationFrame(raf.current), [])
 
-  /** Parmak konumunu (ekran) kutu koordinatında köşe noktasına çevir. */
-  function toPoint(a: Anim, client: { x: number; y: number }) {
+  /** Parmak konumu (ekran) → kutu koordinatı: kalkan köşe parmağı izler. */
+  function toPoint(_a: Anim, client: { x: number; y: number }) {
     const r = box.current!.getBoundingClientRect()
-    const fx = client.x - r.left
-    const fy = client.y - r.top
-    return a.dir === 1 ? { x: fx, y: fy } : { x: 2 * fx - r.width, y: fy }
+    return { x: client.x - r.left, y: client.y - r.top }
   }
   function progressOf(a: Anim, client: { x: number; y: number }, startX: number) {
     const { W } = size()
     if (a.kind === 'slide') return Math.max(0, Math.min(1, (Math.abs(client.x - startX) / W) * 1.3))
     const P = toPoint(a, client)
-    const u = (W - P.x) / (2 * W)
-    return Math.max(0, Math.min(1, a.dir === 1 ? u : 1 - u))
+    const u = a.dir === 1 ? (W - P.x) / (2 * W) : P.x / (2 * W)
+    return Math.max(0, Math.min(1, u))
   }
 
-  const topSide = anim?.dir === -1 && anim.kind === 'curl' ? prev! : cur
-  const underSide = anim ? (anim.kind === 'curl' ? (anim.dir === 1 ? next! : cur) : anim.dir === 1 ? next! : prev!) : null
+  // Üstte hep mevcut sayfa kalkar; altta yöne göre sonraki ya da önceki
+  const topSide = cur
+  const underSide = anim ? (anim.dir === 1 ? next! : prev!) : null
 
   return (
     <div

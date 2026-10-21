@@ -27,7 +27,8 @@
 
 .inkOn {
   pointer-events: auto;
-  touch-action: none;
+  /* Tek parmak çizer (kaydırma yok), iki parmak yakınlaştırır */
+  touch-action: pinch-zoom;
   cursor: crosshair;
 }
 
