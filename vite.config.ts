@@ -3,9 +3,11 @@ import { defineConfig, type Plugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
+import { phoneAccess, trusted } from './vite.phone.ts'
 
-// YDS soru çalışma verisi (local-data/yds) YALNIZCA geliştirme sunucusunda, localhost üzerinden
-// sunulur. Üretim derlemesine (dist) ve GitHub'a asla girmez: apply:'serve' sadece `npm run dev`.
+// YDS soru çalışma verisi (local-data/yds) YALNIZCA geliştirme sunucusunda, localhost üzerinden (ya da
+// `npm run telefon` ile şifreyle girilmiş telefondan; vite.phone.ts) sunulur. Üretim derlemesine (dist) ve
+// GitHub'a asla girmez: apply:'serve' sadece geliştirme sunucusu.
 function localExamData(): Plugin {
   const dir = path.resolve(import.meta.dirname, 'local-data/yds')
   return {
@@ -13,8 +15,7 @@ function localExamData(): Plugin {
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/local-api/yds', (req, res, next) => {
-        const remote = req.socket.remoteAddress || ''
-        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+        if (!trusted(req)) {
           res.statusCode = 403
           res.end('Yalnızca yerel erişim')
           return
@@ -61,8 +62,7 @@ function localExamData(): Plugin {
       // Orijinal PDF'ler (cikmis_sorular): doğrulama için tarayıcının PDF görüntüleyicisinde açılır
       const pdfDir = path.resolve(import.meta.dirname, 'cikmis_sorular')
       server.middlewares.use('/local-api/pdf', (req, res, next) => {
-        const remote = req.socket.remoteAddress || ''
-        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+        if (!trusted(req)) {
           res.statusCode = 403
           res.end('Yalnızca yerel erişim')
           return
@@ -97,8 +97,7 @@ function localExamData(): Plugin {
       // "Yeni YDS Kelimeleri" paketine eklenecek gerçek sınav cümleleri (scripts/analyzeYdsCorpus.mjs üretir)
       const examplesFile = path.resolve(import.meta.dirname, 'local-data/analiz/kelime_ornekleri.json')
       server.middlewares.use('/local-api/kelime-ornekleri', (req, res) => {
-        const remote = req.socket.remoteAddress || ''
-        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+        if (!trusted(req)) {
           res.statusCode = 403
           res.end('Yalnızca yerel erişim')
           return
@@ -125,8 +124,7 @@ function localPacks(): Plugin {
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/local-api/paket', (req, res, next) => {
-        const remote = req.socket.remoteAddress || ''
-        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+        if (!trusted(req)) {
           res.statusCode = 403
           res.end('Yalnızca yerel erişim')
           return
@@ -170,8 +168,7 @@ function localBooks(): Plugin {
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/local-api/kitap', (req, res, next) => {
-        const remote = req.socket.remoteAddress || ''
-        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+        if (!trusted(req)) {
           res.statusCode = 403
           res.end('Yalnızca yerel erişim')
           return
@@ -239,8 +236,7 @@ function localSources(): Plugin {
     apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/local-api/kaynak', (req, res, next) => {
-        const remote = req.socket.remoteAddress || ''
-        if (!['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(remote)) {
+        if (!trusted(req)) {
           res.statusCode = 403
           res.end('Yalnızca yerel erişim')
           return
@@ -299,9 +295,11 @@ function localSources(): Plugin {
 const base = process.env.BASE_PATH || '/'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   base,
   plugins: [
+    // İlk sırada: telefondan gelen isteklerin şifre kapısı (npm run telefon)
+    phoneAccess(mode === 'telefon'),
     react(),
     localExamData(),
     localBooks(),
@@ -350,4 +348,4 @@ export default defineConfig({
       },
     }),
   ],
-})
+}))

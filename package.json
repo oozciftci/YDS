@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "telefon": "vite --mode telefon",
     "build": "tsc -b && vite build",
     "check:dist": "node scripts/checkDist.mjs",
     "test": "vitest run",
@@ -30,6 +31,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vite-pwa/assets-generator": "^2.0.0",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",

@@ -8,7 +8,7 @@ YDS Kelime projesinde (C:\Projeler\YDS_Proje) çalışmaya devam ediyoruz. Önce
 
 **Kurallar (değişmedi):** Tüm kullanıcıya dönük metin Türkçe. Her adımdan sonra YOL_HARITASI.md güncellenir. Sade arayüz. `git add` dosya dosya (asla `-A`); commit yap, push yapma; commit mesajı "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" ile biter. API anahtarı isteme/kullanma; betiklerden Gemini çağırma; testlerde `generativelanguage` sahte yanıtla. Telifli içerik (`kaynaklar/`, `cikmis_sorular/`, `local-data/`) yalnızca yerelde kalır, gitignore'da; `npm run check:dist` yayında sızıntı olmadığını kontrol eder. Tarayıcıda denemede yüklenen deneme verilerini sonra sil.
 
-**Kullanıcı:** YDS'ye neredeyse sıfırdan hazırlanıyor (önceki puan 30). Sınav tarihi ve günlük süre henüz netleşmedi — sorulacak.
+**Kullanıcı:** YDS'ye neredeyse sıfırdan hazırlanıyor (önceki puan 30). Sınav tarihi henüz belli değil; günde ~1 saat çalışabiliyor (21.10.2026).
 
 **Kaynaklar (hepsi yerel):**
 - `kaynaklar/Essential Grammar in Use.pdf` (Murphy, A1–A2) ve `English Grammar in Use 5th` (B1–B2) → "Kitaptan çalış" (`/kitap`), görüntüler `local-data/kitaplar/`, `scripts/buildBooks.py`.
@@ -23,7 +23,7 @@ YDS Kelime projesinde (C:\Projeler\YDS_Proje) çalışmaya devam ediyoruz. Önce
 
 **Doğrulanmamış / açık işler:**
 1. Gerçek Gemini anahtarıyla denenmedi: günün hikâyesi, hafıza kancası önerisi, koç modu (Sınav Stratejileri 1-2 kaynaklı açıklama).
-2. Telefondan erişim yok: kitaplar, MODADİL testleri, çıkmış sorular, Gece Modu yalnızca bu bilgisayarın dev sunucusunda (`npm run dev`, localhost). Ev ağı üzerinden şifreli erişim büyük iş olarak bekliyor.
+2. Telefondan erişim (21.10.2026, ev ağı): `npm run telefon` → telefonda https://<IP>:5180 + şifre (Ayarlar › Telefondan aç; `vite.phone.ts`). Gerçek telefonda denenmedi; telefondaki ilerleme bilgisayardakinden ayrı; ev dışından erişim yok.
 3. Kişisel çalışma planı: sınav tarihi + günlük süre öğrenilince haftalık plan ve ana sayfa planına bağlama.
 4. Kullanıcıya "Yenilikler" sayfası önerildi (cevap bekliyor).
 5. Yazarak cevapta "neredeyse doğru" otomatik geçmiyor (kullanıcı isterse değişecek).

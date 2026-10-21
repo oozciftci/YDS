@@ -344,6 +344,8 @@ export function SettingsPage() {
 
       <AiCard />
 
+      {import.meta.env.DEV && <PhoneCard />}
+
       {/* 3. SENKRONİZASYON VE SUNUCU AYARLARI */}
       <form className="card" onSubmit={onSave} noValidate>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -649,6 +651,56 @@ function ReminderCard() {
 }
 
 /** Yapay zekâ (Gemini) ayarları: ücretli + yedek ücretsiz anahtar, model, aylık üst sınır. */
+/** Telefondan aç (yalnızca geliştirme sunucusu, bu bilgisayarda): `npm run telefon` ile ev ağına açılan adres ve şifre. */
+function PhoneCard() {
+  const [info, setInfo] = useState<{ active: boolean; urls?: string[]; password?: string } | null>(null)
+  useEffect(() => {
+    fetch('/local-api/telefon')
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setInfo)
+      .catch(() => setInfo(null))
+  }, [])
+  // Telefondan açıldığında (ya da sunucu eskiyse) kart görünmez
+  if (!info) return null
+
+  return (
+    <section id="telefon" className="card">
+      <h2 className={styles.cardTitle}>📱 Telefondan aç</h2>
+      {info.active ? (
+        <>
+          <p className="muted" style={{ margin: '0 0 0.75rem' }}>
+            Telefon bu bilgisayarla aynı Wi-Fi ağında olmalı. Adresi telefonun tarayıcısına yaz, şifreyi gir (bir kez
+            sorulur). İlk açılışta “bağlantı gizli değil” uyarısı çıkar: <b>Gelişmiş › Devam et</b> de.
+          </p>
+          <dl className={styles.dl}>
+            <div>
+              <dt>Adres</dt>
+              <dd>{info.urls?.length ? info.urls.map((u) => <div key={u}><code>{u}</code></div>) : 'Ev ağı bulunamadı'}</dd>
+            </div>
+            <div>
+              <dt>Şifre</dt>
+              <dd>
+                <div>
+                  <code>{info.password}</code>
+                </div>
+              </dd>
+            </div>
+          </dl>
+          <p className="muted" style={{ margin: '0.75rem 0 0', fontSize: '0.85rem' }}>
+            Telefondaki ilerleme ve Gemini anahtarı telefonda ayrı tutulur. Bilgisayar kapanınca ya da sunucu durunca
+            telefondan da açılmaz.
+          </p>
+        </>
+      ) : (
+        <p className="muted" style={{ margin: 0 }}>
+          Kitapları ve çıkmış soruları telefonda da açmak için sunucuyu <code>npm run dev</code> yerine{' '}
+          <code>npm run telefon</code> ile başlat. İlk seferde Windows izin sorarsa <b>Özel ağlar</b> için izin ver.
+        </p>
+      )}
+    </section>
+  )
+}
+
 function AiCard() {
   const ai = useSettings((s) => s.ai)
   const setAi = useSettings((s) => s.setAi)
