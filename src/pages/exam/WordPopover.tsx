@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { cleanToken, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
 import { EXAM_COLLECTED_TAG } from '../../services/groups'
 import { speakWord } from '../../services/tts'
@@ -89,6 +89,19 @@ export function useWordPopover(note: string): { onWord: OnWord; close: () => voi
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  // Balonun dışına dokununca kapanır; ama dokunuş yutulmaz: başka bir kelimeye ya da çeviri düğmesine
+  // dokunmak tek seferde o işi yapar (önceden görünmez bir katman ilk dokunuşu alıp yalnızca kapatıyordu)
+  const popRef = useRef<HTMLDivElement>(null)
+  const isOpen = pop !== null
+  useEffect(() => {
+    if (!isOpen) return
+    const onDown = (e: PointerEvent) => {
+      if (!popRef.current?.contains(e.target as Node)) setPop(null)
+    }
+    document.addEventListener('pointerdown', onDown, true)
+    return () => document.removeEventListener('pointerdown', onDown, true)
+  }, [isOpen])
+
   const onWord: OnWord = useCallback(
     async (word, e) => {
       e.stopPropagation()
@@ -132,8 +145,7 @@ export function useWordPopover(note: string): { onWord: OnWord; close: () => voi
 
   const popover = pop && (
     <>
-      <div className={styles.popBackdrop} onClick={() => setPop(null)} aria-hidden="true" />
-      <div className={styles.pop} style={{ top: pop.top, left: pop.left }} role="dialog">
+      <div ref={popRef} className={styles.pop} style={{ top: pop.top, left: pop.left }} role="dialog">
         <div className={styles.popHead}>
           <strong>{lookup?.term || cleanToken(pop.word)}</strong>
           <button type="button" className={styles.popIcon} onClick={() => speakWord(lookup?.term || pop.word)} aria-label="Dinle">
