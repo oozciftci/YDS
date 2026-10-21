@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { phoneAccess, trusted } from './vite.phone.ts'
@@ -292,12 +293,33 @@ function localSources(): Plugin {
   }
 }
 
+// Sürüm etiketi (üst çubukta küçük): derleme zamanı (İstanbul) + kısa commit; güncellemenin gelip gelmediği anlaşılsın
+function appVersion(command: string): string {
+  let sha = (process.env.GITHUB_SHA || '').slice(0, 7)
+  if (!sha) {
+    try {
+      sha = execSync('git rev-parse --short HEAD').toString().trim()
+    } catch {
+      sha = '?'
+    }
+  }
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat('tr-TR', { timeZone: 'Europe/Istanbul', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date())
+      .map((x) => [x.type, x.value]),
+  )
+  return command === 'serve' ? `yerel
+${sha}` : `${p.day}.${p.month} ${p.hour}:${p.minute}
+${sha}`
+}
+
 // GitHub Pages alt dizinde yayınlanır (/YDS/); yerelde '/' kalır.
 const base = process.env.BASE_PATH || '/'
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, command }) => ({
   base,
+  define: { __APP_VERSION__: JSON.stringify(appVersion(command)) },
   plugins: [
     // İlk sırada: telefondan gelen isteklerin şifre kapısı (npm run telefon)
     phoneAccess(mode === 'telefon'),

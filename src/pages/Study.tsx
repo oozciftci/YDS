@@ -1259,15 +1259,6 @@ export function StudyPage() {
               >
                 ✕ Oturumu Bitir
               </button>
-              <button
-                type="button"
-                className="btn btn-ghost"
-                style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem' }}
-                onClick={() => window.dispatchEvent(new Event('yds-focus'))}
-                title="Odak modu: üst/alt menü ve not pencereleri gizlenir; çıkmak için sağ üstteki ✕"
-              >
-                ⛶ Odak
-              </button>
             </div>
           </div>
 

@@ -358,7 +358,7 @@ export function MockExam() {
               {answeredCount}/{total} cevaplandı
             </span>
             <span className={styles.spacer} />
-            <button type="button" className="btn btn-primary" onClick={askFinish}>
+            <button type="button" className="btn btn-primary" onClick={askFinish} data-focus-keep>
               Bitir
             </button>
           </>

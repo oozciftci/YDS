@@ -363,19 +363,20 @@ textarea {
 }
 
 /* ---- Odak modu (Layout, html.app-focus) ----
-   Sayfada ana alan ([data-focus-stage]: soru, kelime kartı …) varsa yalnızca o (ve [data-focus-keep]: süre vb.) görünür,
-   ekrana sığar ve ortalanır; sayfa yukarı-aşağı kaymaz (alan uzunsa yalnızca kendi içinde kayar). */
-html.app-focus:has([data-focus-stage]),
-html.app-focus:has([data-focus-stage]) body {
+   Sayfada ana alan ([data-focus-stage]: soru, kelime kartı …) varsa yalnızca o, [data-focus-keep] (süre vb.) ve açık
+   balonlar görünür; gizlenecekleri src/services/focusStage.ts işaretler (data-focus-off). Alan ekrana sığar ve ortalanır,
+   sayfa yukarı-aşağı kaymaz (alan uzunsa yalnızca kendi içinde kayar). */
+html.app-focus.focus-has-stage,
+html.app-focus.focus-has-stage body {
   overflow: hidden;
   overscroll-behavior: none;
 }
 
-html.app-focus main:has([data-focus-stage]) :not([data-focus-stage], [data-focus-stage] *, :has([data-focus-stage]), [data-focus-keep], [data-focus-keep] *, :has([data-focus-keep])) {
+html.app-focus [data-focus-off] {
   display: none !important;
 }
 
-html.app-focus main:has([data-focus-stage]) {
+html.app-focus.focus-has-stage main {
   box-sizing: border-box;
   height: 100dvh;
   display: flex;

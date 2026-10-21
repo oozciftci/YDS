@@ -320,6 +320,7 @@ export function CustomMock() {
             <button
               type="button"
               className="btn btn-primary"
+              data-focus-keep
               onClick={() => {
                 const empty = items.length - answered
                 const msg = empty > 0 ? `${empty} soru boş. Denemeyi bitirmek istiyor musun?` : 'Denemeyi bitirmek istiyor musun?'

@@ -29,6 +29,11 @@ export const useSyncStatus = create<SyncState>((set, get) => ({
   lastError: null,
 
   async refreshPendingCounts() {
+    // Sunucu ayarlı değilse gönderilecek bir şey yok: üst çubukta sayı gösterme
+    if (!getSupabase()) {
+      set({ pendingOutboxCount: 0, pendingLogsCount: 0 })
+      return
+    }
     try {
       const outbox = await db.syncQueue.count()
       const logs = await db.logs.where('synced').equals(0).count()
@@ -150,6 +155,8 @@ export async function queueChange(
   payload: Record<string, unknown>,
   targetUserId?: string,
 ) {
+  // Bulut sunucusu ayarlı değilse kuyruğa yazma: hiç gönderilmeyeceği için yalnızca telefonda yer kaplıyordu
+  if (!getSupabase()) return
   const userId = targetUserId || useUserStore.getState().activeUserId
   const item: SyncQueueItem = {
     id: crypto.randomUUID(),
@@ -179,7 +186,7 @@ export async function queueBulkChanges(
     userId?: string
   }>,
 ) {
-  if (items.length === 0) return
+  if (items.length === 0 || !getSupabase()) return
   const activeUserId = useUserStore.getState().activeUserId
   const now = new Date().toISOString()
   const syncItems: SyncQueueItem[] = items.map((i) => ({
@@ -376,6 +383,10 @@ export function initAutoSync() {
     }
   }, 5 * 60 * 1000)
 
-  // Sayfa ilk yüklendiğinde sayaçları tazele
-  void useSyncStatus.getState().refreshPendingCounts()
+  // Sunucu ayarlı değilse önceden biriken kuyruğu boşalt (veriler zaten cihazda; kuyruk yalnızca gönderim içindi)
+  void (async () => {
+    if (!getSupabase()) await db.syncQueue.clear().catch(() => undefined)
+    // Sayfa ilk yüklendiğinde sayaçları tazele
+    void useSyncStatus.getState().refreshPendingCounts()
+  })()
 }

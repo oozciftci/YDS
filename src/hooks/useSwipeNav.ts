@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, type CSSProperties } from 'react'
+import { realStage } from '../services/focusStage'
 import { startTurn, type Turn } from '../services/pageTurn'
 import { useAppearance } from '../stores/appearance'
 
@@ -35,7 +36,8 @@ function blocked(target: EventTarget | null, container: HTMLElement | null): boo
 
 const reduced = () => useAppearance.getState().appearance.motion === 'reduce' || matchMedia('(prefers-reduced-motion: reduce)').matches
 const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())))
-const stageOf = (el: HTMLElement) => el.querySelector<HTMLElement>('[data-focus-stage]') ?? el
+// Sayfa çevirmenin kopyaları (aria-hidden) değil, gerçek ana alan
+const stageOf = (el: HTMLElement) => realStage(el) ?? el
 
 export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, enabled = true }: SwipeNavOptions) {
   const ref = useRef<HTMLElement | null>(null)

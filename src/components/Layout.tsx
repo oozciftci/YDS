@@ -10,6 +10,7 @@ import { NotesDock } from './NotesDock'
 import { CommandPalette } from './CommandPalette'
 import styles from './Layout.module.css'
 import { Avatar } from './Avatar'
+import { watchFocusStage } from '../services/focusStage'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Ana Sayfa', icon: 'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
@@ -58,15 +59,18 @@ export function Layout() {
       window.removeEventListener('yds-focus-off', off)
     }
   })
-  // Genel odak sınıfı (index.css: yalnızca [data-focus-stage] görünür); açılınca sayfa başına
+  // Genel odak sınıfı; ana alan varsa yalnızca o görünür (services/focusStage.ts); açılınca sayfa başına
+  const mainRef = useRef<HTMLElement>(null)
   useEffect(() => {
     document.documentElement.classList.toggle('app-focus', focus)
     if (focus) window.scrollTo(0, 0)
+    if (!focus || !mainRef.current) return
+    return watchFocusStage(mainRef.current)
   }, [focus, location.pathname])
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement
-      if (e.ctrlKey || e.metaKey || e.altKey || t.closest('input, textarea, select, [contenteditable]')) return
+      const t = e.target
+      if (e.ctrlKey || e.metaKey || e.altKey || (t instanceof Element && t.closest('input, textarea, select, [contenteditable]'))) return
       if (e.key === 'f' || e.key === 'F') setFocusState((f) => {
         try {
           localStorage.setItem('yds-focus', f ? '0' : '1')
@@ -108,7 +112,7 @@ export function Layout() {
     <div className={`${styles.shell} ${focus ? styles.focus : ''}`}>
       {focus && (
         <button type="button" className={styles.focusExit} onClick={() => setFocus(false)} title="Odak modundan çık (F)">
-          ✕ Odak modu
+          ✕ Odak
         </button>
       )}
       <header className={styles.header}>
@@ -117,6 +121,10 @@ export function Layout() {
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width={32} height={32} />
             <span className={styles.brandText}>YDS Kelime</span>
           </NavLink>
+          {/* Sürüm (derleme zamanı · commit): güncellemenin gelip gelmediği buradan anlaşılır */}
+          <span className={styles.version} title="Uygulama sürümü">
+            {__APP_VERSION__}
+          </span>
         </div>
 
         <nav className={styles.nav} aria-label="Ana menü">
@@ -139,15 +147,6 @@ export function Layout() {
         </nav>
 
         <div className={styles.headerRight}>
-          <button
-            type="button"
-            className={`${styles.syncBtn} ${styles.focusBtn}`}
-            onClick={() => setFocus(true)}
-            title="Odak modu: menü ve not pencereleri gizlenir (F)"
-            aria-label="Odak modu"
-          >
-            ⛶<span className={styles.focusLabel}>Odak</span>
-          </button>
           <button
             type="button"
             className={styles.syncBtn}
@@ -244,10 +243,20 @@ export function Layout() {
               </div>
             )}
           </div>
+          {/* Odak modu her sayfada sağ üstte; açıkken çıkış düğmesi de tam bu yerde */}
+          <button
+            type="button"
+            className={`${styles.syncBtn} ${styles.focusBtn}`}
+            onClick={() => setFocus(true)}
+            title="Odak modu: menü ve not pencereleri gizlenir (F)"
+            aria-label="Odak modu"
+          >
+            ⛶<span className={styles.focusLabel}>Odak</span>
+          </button>
         </div>
       </header>
 
-      <main className={styles.main}>
+      <main ref={mainRef} className={styles.main}>
         <div key={location.pathname} className="page-enter">
           <Outlet />
         </div>

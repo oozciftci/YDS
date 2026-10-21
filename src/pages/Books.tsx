@@ -227,8 +227,8 @@ function Reader() {
   // Klavye: ← → (yazı yazarken değil)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement
-      if (t.closest('input, textarea, select, [contenteditable]')) return
+      const t = e.target
+      if (t instanceof Element && t.closest('input, textarea, select, [contenteditable]')) return
       if (e.key === 'ArrowRight') go(idx + 1)
       if (e.key === 'ArrowLeft') go(idx - 1)
       if (e.key === 'Escape' && focus) setFocus(false)
@@ -285,11 +285,11 @@ function Reader() {
     const ratio = page.w / (page.h * span)
     return createPortal(
       <div className={reading.focus}>
+        <button type="button" className={reading.focusExit} onClick={() => setFocus(false)} aria-label="Odak modundan çık" title="Odak modundan çık (Esc)">
+          ✕ Odak
+        </button>
         <PageView {...pageProps} className={reading.focusFrame} style={{ width: `min(100vw, calc(100dvh * ${ratio}))` }} />
         <div className={reading.pill}>
-          <button type="button" onClick={() => setFocus(false)} aria-label="Odak modundan çık" title="Odak modundan çık (Esc)">
-            ✕
-          </button>
           <button type="button" className={reading.pageNoBtn} onClick={() => setTocOpen(true)} title="İçindekiler / sayfaya git">
             {where}
           </button>
@@ -343,9 +343,7 @@ function Reader() {
         <Link to={`/kitap/${bookId}/notlar`} className={styles.notesLink}>
           📓 Defter
         </Link>
-        <button type="button" className={styles.focusBtn} onClick={() => setFocus(true)} title="Sayfa tüm ekranı kaplasın; kalemle çiz">
-          ⛶ Odak
-        </button>
+
       </div>
 
       <div className={styles.progress} aria-hidden="true">
@@ -394,7 +392,7 @@ function Reader() {
         </button>
       </div>
       <p className={styles.hint}>
-        Telefonda sola/sağa kaydır, bilgisayarda ← → tuşları. Tam ekran ve kalem için <strong>⛶ Odak</strong>; not için sağ alttaki <strong>📄 Bu sayfa</strong>.
+        Telefonda sola/sağa kaydır, bilgisayarda ← → tuşları. Tam ekran ve kalem için sağ üstteki <strong>⛶ Odak</strong>; not için sağ alttaki <strong>📄 Bu sayfa</strong>.
       </p>
     </section>
   )

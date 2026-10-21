@@ -306,3 +306,23 @@
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
+
+/* Tam ekrandan çıkış: uygulamanın her yerindeki Odak düğmesiyle aynı yer (sağ üst) */
+.focusExit {
+  position: fixed;
+  top: max(0.85rem, env(safe-area-inset-top));
+  right: calc(env(safe-area-inset-right) + clamp(1rem, 4vw, 2rem));
+  z-index: 1004;
+  height: 34px;
+  padding: 0 0.7rem;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: 999px;
+  background: rgb(20 20 22 / 0.72);
+  color: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}

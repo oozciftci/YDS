@@ -3,6 +3,9 @@ import { useUserStore } from '../stores/user'
 import type { AppLog, LogCategory, LogLevel } from '../types/database'
 
 const PRUNE_THRESHOLD_BYTES = 200 * 1024 * 1024 // 200 MB kuralı
+// Cihazda tutulan uygulama kayıtları sınırı (telefon depolaması şişmesin): son 14 gün, en fazla 2000 kayıt
+const KEEP_LOG_DAYS = 14
+const KEEP_LOG_MAX = 2000
 
 class LoggerService {
   private isInitialized = false
@@ -29,6 +32,9 @@ class LoggerService {
         stack: reason?.stack,
       })
     })
+
+    // Eski kayıtları kırp (açılışta bir kez, arayüzü bekletmeden)
+    setTimeout(() => void this.trimLocalLogs(), 5000)
 
     // Ağ durumu değişimlerini logla
     window.addEventListener('online', () => {
@@ -107,6 +113,23 @@ class LoggerService {
    */
   public interaction(category: LogCategory, message: string, details?: Record<string, unknown> | string) {
     void this.writeLog('interaction', category, message, details)
+  }
+
+  /** Cihazdaki uygulama kayıtlarını sınırla: KEEP_LOG_DAYS günden eskiler ve en yeni KEEP_LOG_MAX dışındakiler silinir. */
+  public async trimLocalLogs(): Promise<number> {
+    try {
+      const cutoff = new Date(Date.now() - KEEP_LOG_DAYS * 86_400_000).toISOString()
+      let removed = await db.logs.where('timestamp').below(cutoff).delete()
+      const extra = (await db.logs.count()) - KEEP_LOG_MAX
+      if (extra > 0) {
+        const oldest = await db.logs.orderBy('timestamp').limit(extra).primaryKeys()
+        await db.logs.bulkDelete(oldest)
+        removed += oldest.length
+      }
+      return removed
+    } catch {
+      return 0
+    }
   }
 
   /**

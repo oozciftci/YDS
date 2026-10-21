@@ -405,6 +405,15 @@
   line-height: 1;
 }
 
+.version {
+  font-size: 0.6rem;
+  line-height: 1.15;
+  color: var(--text-subtle);
+  font-variant-numeric: tabular-nums;
+  white-space: pre-line;
+  max-width: 4.6rem;
+}
+
 /* Dar telefonda kullanıcı düğmesinde yalnızca profil resmi/rengi (ad gizli) ve çevrimiçi noktası yok: üst çubuk tek satır kalsın */
 @media (max-width: 420px) {
   .userName,
@@ -430,12 +439,16 @@
   padding-bottom: calc(2rem + env(safe-area-inset-bottom));
 }
 
+/* Üst çubuktaki Odak düğmesiyle aynı yer ve boyut (sağ üst) */
 .focusExit {
   position: fixed;
-  top: calc(env(safe-area-inset-top) + 8px);
-  right: calc(env(safe-area-inset-right) + 10px);
+  top: calc(max(0.85rem, env(safe-area-inset-top)) + 0px);
+  right: calc(env(safe-area-inset-right) + clamp(1rem, 4vw, 2rem));
   z-index: 20;
-  padding: 0.4rem 0.8rem;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.7rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
