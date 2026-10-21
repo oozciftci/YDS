@@ -3,8 +3,8 @@ import { syncThemeColor } from './theme'
 
 // Görünüm tercihleri (Ayarlar › Görünüm): vurgu rengi, zemin tonu, yazı boyutu/tipi, köşeler, kontrast, hareket.
 // index.css'teki tasarım değişkenlerinin üzerine <style id="yds-appearance"> ile yazılır; açık ve koyu tema için
-// ayrı değerler üretilir (data-theme ve sistem ayarı aynı seçicilerle). Varsayılanlar index.css'in kendisidir:
-// her şey varsayılandaysa hiçbir şey yazılmaz. Tercih cihaza özeldir (tarayıcı deposu).
+// ayrı değerler üretilir (data-theme ve sistem ayarı aynı seçicilerle). Yalnızca index.css'teki temel değerlerden
+// (CSS_BASE: mavi vurgu, nötr zemin) farklı olanlar yazılır. Tercih cihaza özeldir (tarayıcı deposu).
 
 export type Tone = 'neutral' | 'accent' | 'warm' | 'cool' | 'green' | 'paper'
 export type FontChoice = 'inter' | 'system' | 'serif' | 'readable'
@@ -28,13 +28,17 @@ export interface Appearance {
   motion: 'normal' | 'reduce'
 }
 
+/** index.css'teki vurgu rengi (bundan farklıysa vurgu değişkenleri yazılır) */
+const CSS_BASE = { hue: 221, sat: 70 }
+
+// Kullanıcının seçtiği varsayılan (21.10.2026): "Gece" (turkuaz, koyu temada tam siyah), kırmızı ana başlık, yeşil alt başlık
 export const DEFAULT_APPEARANCE: Appearance = {
-  hue: 221,
-  sat: 70,
-  heading: 'text',
-  subheading: 'text',
+  hue: 174,
+  sat: 65,
+  heading: '355,70',
+  subheading: '148,60',
   tone: 'neutral',
-  black: false,
+  black: true,
   scale: 100,
   font: 'inter',
   radius: 1,
@@ -66,7 +70,7 @@ export const TONES: { value: Tone; label: string }[] = [
 
 /** Hazır görünümler: tek dokunuşla renk + zemin (diğer tercihler korunur) */
 export const PRESETS: { name: string; set: Partial<Appearance> }[] = [
-  { name: 'Varsayılan', set: { hue: 221, sat: 70, tone: 'neutral', black: false } },
+  { name: 'Klasik mavi', set: { hue: 221, sat: 70, tone: 'neutral', black: false } },
   { name: 'Okyanus', set: { hue: 197, sat: 80, tone: 'cool', black: false } },
   { name: 'Orman', set: { hue: 148, sat: 60, tone: 'green', black: false } },
   { name: 'Gün batımı', set: { hue: 22, sat: 85, tone: 'warm', black: false } },
@@ -126,7 +130,7 @@ function palette(a: Appearance): Palette {
   const light: Record<string, string> = {}
   const dark: Record<string, string> = {}
 
-  if (H !== DEFAULT_APPEARANCE.hue || a.sat !== DEFAULT_APPEARANCE.sat) {
+  if (H !== CSS_BASE.hue || a.sat !== CSS_BASE.sat) {
     Object.assign(light, {
       '--primary': `hsl(${H} ${S}% ${L}%)`,
       '--primary-hover': `hsl(${H} ${S}% ${L - 6}%)`,
