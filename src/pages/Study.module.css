@@ -1062,6 +1062,39 @@
     flex-wrap: wrap;
     gap: 0.5rem;
   }
+
+  /* Telefonda kart ekrana sığsın (puan düğmeleri sayfayı yana taşırmasın, kart ortada kalsın) */
+  .dualActionRow {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .actionBtnFail,
+  .actionBtnSuccess {
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.4rem;
+    padding: 0.7rem 0.5rem;
+    font-size: 0.92rem;
+    text-align: center;
+  }
+
+  .numericGradeRow {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .numericGradeLabel {
+    flex-basis: 100%;
+    text-align: center;
+    margin: 0;
+  }
+
+  .numericBtn {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+  }
 }
 
 /* Puan düğmesinde sonraki tekrar zamanı (FSRS önizlemesi) */

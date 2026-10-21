@@ -47,6 +47,12 @@ export function Layout() {
       // yoksay
     }
   }
+  // Sayfa içinden açma (ör. kelime çalışmasındaki “⛶ Odak” düğmesi): window.dispatchEvent(new Event('yds-focus'))
+  useEffect(() => {
+    const on = () => setFocus(true)
+    window.addEventListener('yds-focus', on)
+    return () => window.removeEventListener('yds-focus', on)
+  })
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement
@@ -125,12 +131,12 @@ export function Layout() {
         <div className={styles.headerRight}>
           <button
             type="button"
-            className={styles.syncBtn}
+            className={`${styles.syncBtn} ${styles.focusBtn}`}
             onClick={() => setFocus(true)}
             title="Odak modu: menü ve not pencereleri gizlenir (F)"
             aria-label="Odak modu"
           >
-            ⛶
+            ⛶<span className={styles.focusLabel}>Odak</span>
           </button>
           <button
             type="button"
