@@ -103,3 +103,29 @@
   margin: 0.4rem 0 0;
   line-height: 1.6;
 }
+
+/* Kitap okuyucu: bölüm seçici ve ilerleme çubuğu */
+.bookBar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bookBar select {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.progress {
+  flex: 0 0 30%;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--surface-strong);
+  overflow: hidden;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+}

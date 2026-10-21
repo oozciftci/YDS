@@ -19,6 +19,7 @@ const YdsTestPage = lazy(() => import('./pages/YdsTest'))
 const NightModePage = lazy(() => import('./pages/NightMode'))
 const WordFamiliesPage = lazy(() => import('./pages/WordFamilies').then((m) => ({ default: m.WordFamiliesPage })))
 const ReadingLibraryPage = lazy(() => import('./pages/ReadingLibrary').then((m) => ({ default: m.ReadingLibraryPage })))
+const ReadingBookPage = lazy(() => import('./pages/ReadingBook').then((m) => ({ default: m.ReadingBookPage })))
 const LibraryReader = lazy(() => import('./pages/ReadingLibrary').then((m) => ({ default: m.LibraryReader })))
 
 // YDS soru çalışma ve Kitaptan çalış sayfaları telifli yerel içerik ister: geliştirmede yerel sunucudan, yayında cihaza
@@ -39,6 +40,22 @@ export default function App() {
             element={
               <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                 <ReadingLibraryPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="okuma/kitap/:bookId"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <ReadingBookPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="okuma/kitap/:bookId/:page"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <ReadingBookPage />
               </Suspense>
             }
           />

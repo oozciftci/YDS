@@ -66,6 +66,18 @@ function parts(): Part[] {
       ],
     },
   ]
+  // Okuma kitapları (metin; birkaç MB): telefona ayrı ve küçük bir paket olarak da yüklenebilir
+  const reading = path.join(ROOT, 'okuma', 'kitaplar')
+  const readingIds = ls(reading)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => f.replace(/\.json$/, ''))
+  if (readingIds.length)
+    out.push({
+      id: 'okuma',
+      title: `Okuma kitapları (${readingIds.length} kitap)`,
+      files: readingIds.map((id) => path.join(reading, `${id}.json`)),
+      paths: () => ['okuma-kitap/', ...readingIds.map((id) => `okuma-kitap/${id}`)],
+    })
   for (const id of ls(books).filter((d) => fs.existsSync(path.join(books, d, 'kitap.json')))) {
     const dir = path.join(books, id)
     const meta = JSON.parse(fs.readFileSync(path.join(dir, 'kitap.json'), 'utf8')) as { title: string }

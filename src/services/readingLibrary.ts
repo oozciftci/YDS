@@ -2,7 +2,7 @@
 // Her metinde cümle cümle Türkçe, metne özgü kelime anlamları, Türkçe özet ve anlama soruları vardır; yayında da açılır.
 // Denetim: node scripts/qcOkuma.mjs
 
-export type ReadingLevel = 'A2' | 'B1' | 'B2' | 'C1'
+export type ReadingLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1'
 
 export interface LibQuestion {
   /** Soru (İngilizce) ve Türkçesi */
@@ -33,6 +33,7 @@ export interface LibEntry extends LibText {
 
 /** Seviyeler (kolaydan zora). Dosyası olmayan seviye listede görünmez. */
 export const READING_LEVELS: { level: ReadingLevel; file: string; label: string; hint: string }[] = [
+  { level: 'A1', file: 'a1', label: 'A1 · Başlangıç öncesi', hint: 'Çok kısa cümleler, en sık 500–1000 kelime' },
   { level: 'A2', file: 'a2', label: 'A2 · Başlangıç', hint: 'Kısa cümleler, günlük kelimeler' },
   { level: 'B1', file: 'b1', label: 'B1 · Orta', hint: 'Uzun cümleler, bağlaçlar, akademik kelimelere giriş' },
   { level: 'B2', file: 'b2', label: 'B2 · İyi', hint: 'YDS paragraflarına yaklaşan metinler' },

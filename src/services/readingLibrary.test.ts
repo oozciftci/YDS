@@ -42,3 +42,28 @@ describe('readingLibrary', () => {
     expect(ids.size).toBeGreaterThanOrEqual(8)
   })
 })
+
+describe('okuma kitapları', () => {
+  it('cümlelere böler: kısaltma, baş harf ve tırnak cümleyi yanlış yerden bölmez', async () => {
+    const { splitSentences, splitDialogue } = await import('./sentenceSplit')
+    expect(splitSentences('Mr. Holmes met Dr. Watson. They talked. "Is it true?" he asked. Yes!')).toEqual([
+      'Mr. Holmes met Dr. Watson.',
+      'They talked.',
+      '"Is it true?" he asked.',
+      'Yes!',
+    ])
+    expect(splitSentences('H. G. Wells wrote it in 1895. It was short.')).toEqual(['H. G. Wells wrote it in 1895.', 'It was short.'])
+    expect(splitDialogue('"Frequently." "How often?" "Well, some hundreds of times."')).toEqual(['"Frequently."', '"How often?"', '"Well, some hundreds of times."'])
+  })
+
+  it('sayfalara böler: bölüm başı yeni sayfa, paragraf bölünmez', async () => {
+    const { paginate } = await import('./readingBooks')
+    const para = (n: number) => [Array.from({ length: n }, () => 'word').join(' ')]
+    const pages = paginate({ chapters: [{ title: 'A', paras: [para(210), para(200), para(50)] }, { title: 'B', paras: [{ h: 'x' }, para(100)] }] }, 320)
+    expect(pages.map((p) => [p.chapter, p.from, p.to, p.lastOfChapter])).toEqual([
+      [0, 0, 1, false],
+      [0, 1, 3, true],
+      [1, 0, 2, true],
+    ])
+  })
+})

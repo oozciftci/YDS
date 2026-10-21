@@ -149,7 +149,19 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
   metnin altında → odak modunda da görünür. Kaydırılan kapsayıcı dışarıda kalır, okuyucu metin kimliğiyle anahtarlanır (§4.3).
 - Kayıtlar `src/services/readingLog.ts`; Okuma Modu `<sınav>/<paragraf>`, kütüphane `lib/<id>`.
 
-### 4.6 Diğerleri
+### 4.6 Okuma kitapları
+- İki kaynak, tek biçim (`src/services/readingBooks.ts`): özgün uyarlamalar yayında (`public/data/okuma/kitap/`), ücretsiz
+  dış kitaplar **yalnızca yerelde** (`local-data/okuma/kitaplar/`, telefona kaynak paketinin “okuma” parçasıyla). Lisansları
+  ücretsiz dağıtıma izin verse de kural gereği yayına konmaz.
+- Yeni özgün uyarlama: `scripts/okuma/uyarlamalar/<id>.md` yaz (biçim `uyarlama.mjs` başında) → `node scripts/okuma/uyarlama.mjs`.
+- Yeni yerel kitap (kullanıcının taradığı kitaplar dâhil): `local-data/okuma/indirilen/<dizin>/` → `metin_cikar.py` (ya da OCR +
+  `ocr_duzelt.py`) → `kaynaklar.json`'a girdi (bölüm başlığı düzeni: `chapterRe`, `marks`, `markRe` + `titles`, `single`) →
+  `kitap_yap.mjs`. Telifli kitaplar yalnızca kişisel kullanım için ve yalnızca yerel pakette.
+- OCR: Tesseract yok; Windows'un yerleşik OCR'ı PowerShell ile kullanıldı (yalnızca Türkçe dil paketi kurulu → İngilizce metinde
+  ı/İ ve "Ido" hataları; `ocr_duzelt.py` düzeltir). İngilizce OCR dili kurulursa (Ayarlar › Dil › İngilizce › OCR) daha temiz olur.
+- Kaynaklar ve lisans notları: `scripts/okuma/kaynaklar.json`; indirme bağlantıları YOL_HARITASI günlüğünde.
+
+### 4.7 Diğerleri
 - Kelime balonu (`exam/WordPopover.tsx`): ekranı kaplayan arka plan yerine "dışarıya dokununca kapan" dinleyicisi → başka kelimeye tek dokunuş.
 - Profil resmi/rengi (`components/Avatar.tsx`, `services/avatar.ts`): ~256 px kare JPEG data URL `users.avatarImage`.
 - Dar telefonda üst çubuk: kullanıcı adı ve çevrimiçi noktası gizli; büyük yazıda iki satıra sarar.
@@ -198,5 +210,6 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 - Kişisel çalışma planı (sınav tarihi + günde 1 saat) kurulmadı; tarih netleşince haftalık plan + ana sayfa planına bağla.
 - Kaydırırken alttaki içerik boş kâğıt (bilinçli tasarım, §4.3).
 - Strateji 3'te 9 sorunun kutusu yok (tam sayfa); kitap bölme yerleri bazen bölüm ortasına düşebilir.
-- Okuma Kütüphanesi: B2 ve C1 metinleri, “kendi metnini ekle” (cihazda kalır), konuya göre süzgeç henüz yok.
+- Okuma Kütüphanesi: daha çok özgün uyarlama (A1–B1 ağırlıklı), B2/C1 kısa metinler, “kendi metnini ekle”, konu süzgeci;
+  kitaplarda okunan sayfa istatistiği yok (yalnızca kaldığın yer). Free Graded Readers’taki 1. Sherlock öyküsü (Empty House) sitede yok (404).
 - YOL_HARITASI eski bekleyenler: 6.2 Yazma pratiği, 6.7b, 6.3 senkron, File Search; "Yenilikler" sayfası önerisi.

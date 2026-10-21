@@ -29,9 +29,19 @@ interface Props {
   glossFor?: (word: string) => string | undefined
   /** Bitirince sonucun altında (anlama soruları, sonraki metin düğmesi …) */
   after?: ReactNode
+  /** Paragraf düzeni (kitaplar): her paragrafın cümle sayısı ya da ara başlık; yoksa tek paragraf */
+  paras?: (number | { h: string })[]
+  /** Metnin üstünde (kitap: içindekiler/bölüm seçici) */
+  before?: ReactNode
 }
 
-export function ReaderBody({ back, title, info, sentences, tr, words, logId, note, glossFor, after }: Props) {
+/** Paragraf düzenini cümle aralıklarına çevirir */
+function layout(paras: (number | { h: string })[]): ({ h: string } | { from: number; to: number })[] {
+  let at = 0
+  return paras.map((p) => (typeof p === 'number' ? { from: at, to: (at += p) } : p))
+}
+
+export function ReaderBody({ back, title, info, sentences, tr, words, logId, note, glossFor, after, paras, before }: Props) {
   const userId = useUserStore((s) => s.activeUserId)
   const [showTr, setShowTr] = useState(false)
   const [speaking, setSpeaking] = useState<number | null>(null)
@@ -100,12 +110,30 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
         )}
       </div>
 
+      {before}
+
       <article className="card" data-focus-stage>
-        <p className={styles.readText}>
-          {sentences.map((s, i) => (
-            <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === i} />
-          ))}
-        </p>
+        {paras ? (
+          layout(paras).map((b, k) =>
+            'h' in b ? (
+              <h3 key={k} className={styles.readHeading}>
+                {b.h}
+              </h3>
+            ) : (
+              <p key={k} className={`${styles.readText} ${styles.readPara}`}>
+                {sentences.slice(b.from, b.to).map((s, j) => (
+                  <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === b.from + j} />
+                ))}
+              </p>
+            ),
+          )
+        ) : (
+          <p className={styles.readText}>
+            {sentences.map((s, i) => (
+              <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === i} />
+            ))}
+          </p>
+        )}
 
         {/* Metnin sonunda da: telefonda üst çubuk sabit değil, okuyup bitiren yukarı dönmesin */}
         {finishedSec === null && (

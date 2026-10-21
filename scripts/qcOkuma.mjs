@@ -4,13 +4,13 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const DIR = path.join(import.meta.dirname, '..', 'public', 'data', 'okuma')
-const LEVELS = { A2: [80, 220], B1: [150, 320], B2: [220, 420], C1: [280, 520] }
+const LEVELS = { A1: [40, 180], A2: [80, 220], B1: [150, 320], B2: [220, 420], C1: [280, 520] }
 const WORD = /[A-Za-z]+(?:['’][A-Za-z]+)?/g
 const problems = []
 const ids = new Set()
 const bad = (id, msg) => problems.push(`${id}: ${msg}`)
 
-for (const file of fs.readdirSync(DIR).filter((f) => f.endsWith('.json'))) {
+for (const file of fs.readdirSync(DIR).filter((f) => /^[abc][12]\.json$/.test(f))) {
   const data = JSON.parse(fs.readFileSync(path.join(DIR, file), 'utf8'))
   if (!LEVELS[data.level]) bad(file, `bilinmeyen seviye ${data.level}`)
   const answers = []

@@ -1,0 +1,106 @@
+{
+  "_aciklama": "Yerel okuma kitapları (local-data/okuma/kitaplar, yalnızca yerel pakette). Metin: scripts/okuma/metin_cikar.py → local-data/okuma/indirilen/<dizin>/metin.txt; kitap: node scripts/okuma/kitap_yap.mjs. Lisanslar ücretsiz dağıtıma izin verir, satış yasak; kullanıcı kuralı gereği yayına girmez.",
+  "kitaplar": [
+    {
+      "id": "fire-on-the-mountain",
+      "dir": "fire-on-the-mountain",
+      "title": "Fire on the Mountain",
+      "author": "Gerry Meister & Paul Nation",
+      "level": "A1",
+      "levelNote": "500 kelime düzeyi",
+      "source": "Free Graded Readers (freegradedreaders.com)",
+      "license": "Telifi bitmiş / ücretsiz dağıtılabilir, satılamaz",
+      "single": "Fire on the Mountain"
+    },
+    {
+      "id": "indonesian-love-story",
+      "dir": "indonesian-love-story",
+      "title": "Indonesian Love Story",
+      "author": "Paul Nation & Gerry Meister",
+      "level": "A2",
+      "levelNote": "1200 kelime düzeyi · OCR ile çıkarıldı (küçük hatalar olabilir)",
+      "source": "Paul Nation, Victoria University of Wellington (Longman 1981, yazarlar ücretsiz dağıtıma açtı)",
+      "license": "Ücretsiz dağıtılabilir, satılamaz",
+      "markRe": "Chapter\\s*[0-9lI]\\s+(?=[A-Z])",
+      "titles": [
+        "Joni",
+        "Widi",
+        "Joni and Widi",
+        "Love",
+        "Widi and Agus",
+        "Heru",
+        "Agus and Heru",
+        "The Concert"
+      ],
+      "endMark": "Questions and Exercises A. COMPREHENSION"
+    },
+    {
+      "id": "mf-jekyll-4000",
+      "dir": "mf-jekyll-4000",
+      "title": "The Strange Case of Dr Jekyll and Mr Hyde",
+      "author": "Robert Louis Stevenson (uyarlayan: Joseph Hope)",
+      "level": "B2",
+      "levelNote": "Mid-frequency Reader · 4000 kelime ailesi",
+      "source": "Paul Nation, Victoria University of Wellington",
+      "license": "Ücretsiz, her amaçla kullanılabilir; satılamaz",
+      "startRe": "^STORY OF THE DOOR$",
+      "chapterRe": "^(STORY OF THE DOOR|SEARCH FOR MR\\. HYDE|DR\\. JEKYLL WAS QUITE AT EASE|THE CAREW MURDER CASE|INCIDENT OF THE LETTER|INCIDENT OF DR\\. LANYON|INCIDENT AT THE WINDOW|THE LAST NIGHT|DR\\. LANYON.S NARRATIVE|HENRY JEKYLL.S FULL STATEMENT OF THE CASE)$"
+    },
+    {
+      "id": "mf-time-machine-4000",
+      "dir": "mf-time-machine-4000",
+      "title": "The Time Machine",
+      "author": "H. G. Wells (uyarlayan: Joseph Hope)",
+      "level": "B2",
+      "levelNote": "Mid-frequency Reader · 4000 kelime ailesi",
+      "source": "Paul Nation, Victoria University of Wellington",
+      "license": "Ücretsiz, her amaçla kullanılabilir; satılamaz",
+      "startRe": "^I\\. Introduction$",
+      "chapterRe": "^([IVX]+\\. [A-Z][A-Za-z ’'-]+|Epilogue)$"
+    },
+    {
+      "id": "mf-sherlock-4000",
+      "dir": "mf-sherlock-4000",
+      "title": "The Adventures of Sherlock Holmes",
+      "author": "Arthur Conan Doyle (uyarlayan: Sonia Millett)",
+      "level": "C1",
+      "levelNote": "Mid-frequency Reader · 4000 kelime ailesi (uzun, 12 macera)",
+      "source": "Paul Nation, Victoria University of Wellington",
+      "license": "Ücretsiz, her amaçla kullanılabilir; satılamaz",
+      "startRe": "^ADVENTURE I\\.",
+      "marks": [
+        "ADVENTURE I. A SCANDAL IN BOHEMIA",
+        "ADVENTURE II. THE RED - HEADED LEAGUE",
+        "ADVENTURE III. A CASE OF IDENTITY",
+        "ADVENTURE IV. THE BOSCOMBE VALLEY MYSTERY",
+        "ADVENTURE V. THE FIVE ORANGE PIPS",
+        "ADVENTURE VI. THE MAN WITH THE TWISTED LIP",
+        "VII. THE ADVENTURE OF THE BLUE CARBUNCLE",
+        "VIII. THE ADVENTURE OF THE SPECKLED BAND",
+        "IX. THE ADVENTURE OF THE ENGINEER'S THUMB",
+        "X. THE ADVENTURE OF THE NOBLE BACHELOR",
+        "XI. THE ADVENTURE OF THE BERYL CORONET",
+        "XII. THE ADVENTURE OF THE COPPER BEECHES"
+      ]
+    }
+  ],
+  "sherlockA2B1": {
+    "author": "Arthur Conan Doyle (yapay zekâ ile sadeleştirilmiş)",
+    "source": "Free Graded Readers: Thirteen Short Stories from The Return of Sherlock Holmes",
+    "license": "Kamu malı öyküden uyarlama; ücretsiz dağıtılabilir, satılamaz",
+    "stories": {
+      "sh02": "The Norwood Builder",
+      "sh03": "The Dancing Men",
+      "sh04": "The Solitary Cyclist",
+      "sh05": "The Priory School",
+      "sh06": "Black Peter",
+      "sh07": "Charles Augustus Milverton",
+      "sh08": "The Six Napoleons",
+      "sh09": "The Three Students",
+      "sh10": "The Golden Pince-Nez",
+      "sh11": "The Missing Three-Quarter",
+      "sh12": "The Abbey Grange",
+      "sh13": "The Second Stain"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { hasLocalContent } from '../services/localContent'
+import { listBooks, readProgress, type BookMeta } from '../services/readingBooks'
 import { countWords, glossFor, loadLibrary, READING_LEVELS, type LibEntry, type LibQuestion, type ReadingLevel } from '../services/readingLibrary'
 import { patchLog, readingStats, readLogs, wpmOf } from '../services/readingLog'
 import { useUserStore } from '../stores/user'
@@ -30,13 +31,19 @@ export function ReadingLibraryPage() {
   const [texts, setTexts] = useState<LibEntry[] | null>(null)
   const [level, setLevel] = useState<LevelFilter>(readLevel)
   const [logs] = useState(() => readLogs(userId))
+  const [books, setBooks] = useState<BookMeta[]>([])
+  const [progress] = useState(() => readProgress(userId))
 
   useEffect(() => {
     void loadLibrary().then(setTexts)
+    // Seviyeye göre (A1 → C1), aynı seviyede özgün uyarlamalar önce
+    const rank = (b: BookMeta) => READING_LEVELS.findIndex((l) => l.level === b.level) * 2 + (b.origin === 'ozgun' ? 0 : 1)
+    void listBooks().then((list) => setBooks([...list].sort((a, b) => rank(a) - rank(b))))
   }, [])
 
   const stats = useMemo(() => readingStats((texts ?? []).map((t) => logs[`lib/${t.id}`]).filter(Boolean)), [texts, logs])
-  const levels = READING_LEVELS.filter((l) => texts?.some((t) => t.level === l.level))
+  const levels = READING_LEVELS.filter((l) => texts?.some((t) => t.level === l.level) || books.some((b) => b.level === l.level))
+  const shownBooks = books.filter((b) => level === 'all' || b.level === level)
 
   function pick(l: LevelFilter) {
     setLevel(l)
@@ -56,8 +63,8 @@ export function ReadingLibraryPage() {
           </Link>
           <h1 className={ex.title}>📖 Okuma Kütüphanesi</h1>
           <p className="muted" style={{ margin: 0, fontSize: '0.88rem' }}>
-            Seviyene uygun kısa metinler. Bilmediğin kelimeye dokun (anlamı bu metne göre), 🌐 cümlenin Türkçesini açar.
-            Bitirince okuma hızını görür, 3 kısa soruyla anladığını yoklarsın.
+            Seviyene uygun kitaplar ve kısa metinler. Bilmediğin kelimeye dokun, 🌐 cümlenin Türkçesini açar. Kitaplarda
+            kaldığın yerden devam edersin; kısa metinlerde bitirince okuma hızını görür, sorularla anladığını yoklarsın.
             {stats.count > 0 && ` Şimdiye kadar ${stats.count} metin okudun${stats.wpm ? `, ortalama ${stats.wpm} kelime/dk` : ''}.`}
           </p>
         </div>
@@ -77,8 +84,35 @@ export function ReadingLibraryPage() {
             ))}
           </div>
 
+          {shownBooks.length > 0 && (
+            <div className={ex.passageGroup}>
+              <h3>
+                📚 Kitaplar <span className={styles.levelHint}>· uzun okumalar; kaldığın yerden devam edersin</span>
+              </h3>
+              {shownBooks.map((b) => {
+                const pr = progress[b.id]
+                return (
+                  <Link key={b.id} to={`/okuma/kitap/${b.id}`} className={ex.passageRow}>
+                    <span style={{ minWidth: 0 }}>
+                      <strong>
+                        <span className={styles.level}>{b.level}</span> {b.title}
+                      </strong>
+                      <small>
+                        {[b.titleTr, b.author, b.levelNote, `${b.words.toLocaleString('tr-TR')} kelime`, `~${minutes(b.words)} dk`].filter(Boolean).join(' · ')}
+                      </small>
+                    </span>
+                    <span className={pr ? ex.okText : 'muted'} style={{ fontSize: '0.8rem', textAlign: 'right' }}>
+                      {pr ? (pr.page + 1 >= pr.pages ? '✓ bitti' : `%${Math.round(((pr.page + 1) / pr.pages) * 100)}`) : 'Başlanmadı'}
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
+
           {levels
             .filter((l) => level === 'all' || l.level === level)
+            .filter((l) => texts.some((t) => t.level === l.level))
             .map((l) => (
               <div key={l.level} className={ex.passageGroup}>
                 <h3>
@@ -209,7 +243,7 @@ function TextReader({ text, next, onNext }: { text: LibEntry; next?: LibEntry; o
 }
 
 /** Anlama soruları: şık seçince doğru/yanlış ve metindeki dayanağı (Türkçe) görünür. */
-function Quiz({ qs, onDone }: { qs: LibQuestion[]; onDone: (ok: number, all: number) => void }) {
+export function Quiz({ qs, onDone }: { qs: LibQuestion[]; onDone: (ok: number, all: number) => void }) {
   const [picks, setPicks] = useState<(number | null)[]>(() => qs.map(() => null))
   const [showTr, setShowTr] = useState<boolean[]>(() => qs.map(() => false))
   const ok = picks.filter((p, i) => p === qs[i].a).length

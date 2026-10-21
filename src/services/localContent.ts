@@ -100,7 +100,7 @@ export function useLocalUrl(apiPath: string | null): string | undefined {
 
 
 // Liste yanıtları birden çok paketle gelebilir: kimliğe göre birleştirilir
-const LIST_KEYS = new Set(['yds/', 'kitap/', 'paket'])
+const LIST_KEYS = new Set(['yds/', 'kitap/', 'paket', 'okuma-kitap/'])
 
 async function mergeList(key: string, blob: Blob): Promise<Blob> {
   const old = await store().files.get(key)

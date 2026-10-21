@@ -226,6 +226,45 @@ function localBooks(): Plugin {
   }
 }
 
+// Okuma kitapları (local-data/okuma/kitaplar/<id>.json; scripts/okuma/kitap_yap.mjs üretir): ücretsiz ama yalnızca yerel
+// tutulan kitaplar, YALNIZCA geliştirme sunucusunda ve localhost'tan (yayında kaynak paketinden).
+//   GET /local-api/okuma-kitap/      -> [{ id, title, author, level, words, chapters, origin: 'yerel' … }]
+//   GET /local-api/okuma-kitap/<id>  -> kitabın tamamı (src/services/readingBooks.ts)
+function localReadingBooks(): Plugin {
+  const dir = path.resolve(import.meta.dirname, 'local-data/okuma/kitaplar')
+  return {
+    name: 'local-reading-books',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/local-api/okuma-kitap', (req, res, next) => {
+        if (!trusted(req)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store')
+        const id = decodeURIComponent((req.url || '/').replace(/^\//, '').replace(/[?#].*$/, ''))
+        if (!id) {
+          const list = fs.existsSync(dir)
+            ? fs
+                .readdirSync(dir)
+                .filter((f) => f.endsWith('.json'))
+                .map((f) => {
+                  const { chapters, ...meta } = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))
+                  return { ...meta, chapters: chapters.length, origin: 'yerel' }
+                })
+            : []
+          res.end(JSON.stringify(list))
+          return
+        }
+        if (!/^[a-z0-9-]+$/.test(id) || !fs.existsSync(path.join(dir, id + '.json'))) return next()
+        fs.createReadStream(path.join(dir, id + '.json')).pipe(res)
+      })
+    },
+  }
+}
+
 // Hoca kitapları ve Taktik Kitabı (local-data/kaynaklar): telifli, YALNIZCA geliştirme sunucusunda ve localhost'tan.
 //   GET  /local-api/kaynak/harita              -> harita.json (kitaplar + konu -> sayfa aralıkları)
 //   GET  /local-api/kaynak/taktik              -> taktik-kitabi.json (soru tipine göre kurallar)
@@ -326,6 +365,7 @@ export default defineConfig(({ mode, command }) => ({
     react(),
     localExamData(),
     localBooks(),
+    localReadingBooks(),
     localSources(),
     localPacks(),
     localBundle(),

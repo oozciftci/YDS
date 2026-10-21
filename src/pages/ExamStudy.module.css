@@ -1352,3 +1352,18 @@ h2 .listen .rateSelect {
     position: static;
   }
 }
+
+/* Kitap okuyucu: paragraflar ve ara başlıklar */
+.readPara + .readPara {
+  margin-top: 0.9rem;
+}
+
+.readHeading {
+  margin: 1.1rem 0 0.4rem;
+  font-size: 1rem;
+  color: var(--subheading, var(--text));
+}
+
+.readHeading:first-child {
+  margin-top: 0;
+}
