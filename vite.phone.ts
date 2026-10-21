@@ -144,16 +144,58 @@ export function phoneAccess(enabled: boolean): Plugin {
         res.end('Giriş gerekli')
       })
 
-      // Bilgisayardaki Ayarlar kartı için: adres + şifre (yalnızca localhost)
+      // Ayarlar kartı için: bilgisayarda adres + şifre; telefonda yalnızca "telefondasın" bilgisi
       server.middlewares.use('/local-api/telefon', (req, res) => {
         res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.setHeader('Cache-Control', 'no-store')
-        if (viaPhone.has(req) || !isLoopback(req)) {
-          res.statusCode = 403
-          res.end('{}')
-          return
-        }
+        if (viaPhone.has(req) || !isLoopback(req)) return res.end('{"phone":true}')
         res.end(JSON.stringify(enabled ? { active: true, urls: lanAddresses().map((ip) => `https://${ip}:${PHONE_PORT}`), password: loadState().password } : { active: false }))
+      })
+
+      // Cihazlar arası eşitleme: ortak kopya local-data/telefon/esitleme.json (birleştirme tarayıcıda, src/services/deviceSync.ts).
+      //   GET -> { rev, savedAt, data } (yoksa rev 0) · PUT { baseRev, data } -> { rev } (araya başka cihaz girdiyse 409)
+      const syncFile = path.join(DIR, 'esitleme.json')
+      server.middlewares.use('/local-api/esitle', (req, res) => {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store')
+        if (!trusted(req)) {
+          res.statusCode = 403
+          return res.end('{}')
+        }
+        const current = () => (fs.existsSync(syncFile) ? (JSON.parse(fs.readFileSync(syncFile, 'utf8')) as { rev: number }) : null)
+        if (req.method === 'GET') {
+          if (!fs.existsSync(syncFile)) return res.end('{"rev":0}')
+          return void fs.createReadStream(syncFile).pipe(res)
+        }
+        if (req.method !== 'PUT') {
+          res.statusCode = 405
+          return res.end('{}')
+        }
+        const chunks: Buffer[] = []
+        let size = 0
+        req.on('data', (c: Buffer) => {
+          size += c.length
+          if (size > 300 * 1024 * 1024) req.destroy()
+          else chunks.push(c)
+        })
+        req.on('end', () => {
+          try {
+            const body = JSON.parse(Buffer.concat(chunks).toString('utf8')) as { baseRev: number; data: unknown }
+            const rev = current()?.rev ?? 0
+            if (body.baseRev !== rev) {
+              res.statusCode = 409
+              return res.end(JSON.stringify({ rev }))
+            }
+            fs.mkdirSync(DIR, { recursive: true })
+            if (fs.existsSync(syncFile)) fs.copyFileSync(syncFile, path.join(DIR, 'esitleme.bak.json'))
+            const next = { rev: rev + 1, savedAt: new Date().toISOString(), data: body.data }
+            fs.writeFileSync(syncFile, JSON.stringify(next))
+            res.end(JSON.stringify({ rev: next.rev, savedAt: next.savedAt }))
+          } catch (e) {
+            res.statusCode = 400
+            res.end(JSON.stringify({ error: String(e) }))
+          }
+        })
       })
 
       if (!enabled || !server.httpServer) return

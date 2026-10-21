@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { exportDatabaseToJson, importDatabaseFromJson } from '../services/backup'
+import { lastDeviceSync, syncDevices } from '../services/deviceSync'
 import { testBackendConnection, type ConnectionTestResult } from '../services/backend'
 import { logger } from '../services/logger'
 import { notificationsSupported, requestReminderPermission, showReminder } from '../services/reminder'
@@ -201,6 +202,8 @@ export function SettingsPage() {
         </div>
       </section>
 
+      {import.meta.env.DEV && <PhoneCard />}
+
       {/* 1. KULLANICI PROFİLLERİ */}
       <section className="card" id="users">
         <h2 className={styles.cardTitle}>Kullanıcı Profilleri</h2>
@@ -344,7 +347,6 @@ export function SettingsPage() {
 
       <AiCard />
 
-      {import.meta.env.DEV && <PhoneCard />}
 
       {/* 3. SENKRONİZASYON VE SUNUCU AYARLARI */}
       <form className="card" onSubmit={onSave} noValidate>
@@ -651,22 +653,22 @@ function ReminderCard() {
 }
 
 /** Yapay zekâ (Gemini) ayarları: ücretli + yedek ücretsiz anahtar, model, aylık üst sınır. */
-/** Telefondan aç (yalnızca geliştirme sunucusu, bu bilgisayarda): `npm run telefon` ile ev ağına açılan adres ve şifre. */
+/** Telefondan aç (yalnızca geliştirme sunucusu): bilgisayarda `npm run telefon` adresi + şifre; iki cihazda da "Eşitle". */
 function PhoneCard() {
-  const [info, setInfo] = useState<{ active: boolean; urls?: string[]; password?: string } | null>(null)
+  const [info, setInfo] = useState<{ phone?: boolean; active?: boolean; urls?: string[]; password?: string } | null>(null)
   useEffect(() => {
     fetch('/local-api/telefon')
       .then((r) => (r.ok ? r.json() : null))
       .then(setInfo)
       .catch(() => setInfo(null))
   }, [])
-  // Telefondan açıldığında (ya da sunucu eskiyse) kart görünmez
+  // Sunucu eskiyse kart görünmez
   if (!info) return null
 
   return (
     <section id="telefon" className="card">
-      <h2 className={styles.cardTitle}>📱 Telefondan aç</h2>
-      {info.active ? (
+      <h2 className={styles.cardTitle}>{info.phone ? '🔄 Bilgisayarla eşitle' : '📱 Telefondan aç'}</h2>
+      {info.phone ? null : info.active ? (
         <>
           <p className="muted" style={{ margin: '0 0 0.75rem' }}>
             Telefon bu bilgisayarla aynı Wi-Fi ağında olmalı. Adresi telefonun tarayıcısına yaz, şifreyi gir (bir kez
@@ -686,10 +688,6 @@ function PhoneCard() {
               </dd>
             </div>
           </dl>
-          <p className="muted" style={{ margin: '0.75rem 0 0', fontSize: '0.85rem' }}>
-            Telefondaki ilerleme ve Gemini anahtarı telefonda ayrı tutulur. Bilgisayar kapanınca ya da sunucu durunca
-            telefondan da açılmaz.
-          </p>
         </>
       ) : (
         <p className="muted" style={{ margin: 0 }}>
@@ -697,7 +695,58 @@ function PhoneCard() {
           <code>npm run telefon</code> ile başlat. İlk seferde Windows izin sorarsa <b>Özel ağlar</b> için izin ver.
         </p>
       )}
+      <DeviceSyncRow phone={!!info.phone} />
     </section>
+  )
+}
+
+function DeviceSyncRow({ phone }: { phone: boolean }) {
+  const [busy, setBusy] = useState(false)
+  const [msg, setMsg] = useState<{ ok: boolean; text: string; reload?: boolean } | null>(null)
+  const [last, setLast] = useState(lastDeviceSync)
+
+  async function run() {
+    setBusy(true)
+    setMsg(null)
+    try {
+      const r = await syncDevices()
+      const got = r.received + r.storageReceived
+      setMsg({
+        ok: true,
+        text: got ? `✓ Eşitlendi: ${got} yeni ya da güncel kayıt alındı.` : '✓ Eşitlendi: iki taraf zaten aynı.',
+        reload: got > 0,
+      })
+      setLast(lastDeviceSync())
+    } catch (e) {
+      setMsg({ ok: false, text: e instanceof Error ? e.message : String(e) })
+    }
+    setBusy(false)
+  }
+
+  return (
+    <div style={{ marginTop: '1rem', display: 'grid', gap: '0.5rem' }}>
+      <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+        {phone
+          ? 'Telefonda çalıştıklarını bilgisayara göndermek ve bilgisayardakileri almak için eşitle.'
+          : 'Telefonda ilerleme ayrı tutulur. Önce çalıştığın cihazda, sonra öbüründe “Eşitle”ye bas: kelimeler, kartlar, çözülen sorular, notlar ve kitapta kaldığın yer birleşir.'}
+      </p>
+      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <button type="button" className="btn btn-primary" disabled={busy} onClick={() => void run()}>
+          {busy ? 'Eşitleniyor…' : '🔄 Eşitle'}
+        </button>
+        {last && <span className="muted" style={{ fontSize: '0.85rem' }}>Son: {new Date(last).toLocaleString('tr-TR')}</span>}
+      </div>
+      {msg && (
+        <p role="status" className={msg.ok ? styles.ok : styles.error} style={{ margin: 0 }}>
+          {msg.text}{' '}
+          {msg.reload && (
+            <button type="button" className={`btn btn-ghost ${styles.inlineBtn}`} onClick={() => location.reload()}>
+              Sayfayı yenile
+            </button>
+          )}
+        </p>
+      )}
+    </div>
   )
 }
 

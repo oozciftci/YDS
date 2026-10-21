@@ -23,7 +23,7 @@ YDS Kelime projesinde (C:\Projeler\YDS_Proje) çalışmaya devam ediyoruz. Önce
 
 **Doğrulanmamış / açık işler:**
 1. Gerçek Gemini anahtarıyla denenmedi: günün hikâyesi, hafıza kancası önerisi, koç modu (Sınav Stratejileri 1-2 kaynaklı açıklama).
-2. Telefondan erişim (21.10.2026, ev ağı): `npm run telefon` → telefonda https://<IP>:5180 + şifre (Ayarlar › Telefondan aç; `vite.phone.ts`). Gerçek telefonda denenmedi; telefondaki ilerleme bilgisayardakinden ayrı; ev dışından erişim yok.
+2. Telefondan erişim (21.10.2026, ev ağı): `npm run telefon` → telefonda https://<IP>:5180 + şifre (Ayarlar › Telefondan aç; `vite.phone.ts`). İlerleme Ayarlar'daki “🔄 Eşitle” ile iki cihaz arasında birleşir (`src/services/deviceSync.ts`). Gerçek telefonda denenmedi; ev dışından erişim yok.
 3. Kişisel çalışma planı: sınav tarihi + günlük süre öğrenilince haftalık plan ve ana sayfa planına bağlama.
 4. Kullanıcıya "Yenilikler" sayfası önerildi (cevap bekliyor).
 5. Yazarak cevapta "neredeyse doğru" otomatik geçmiyor (kullanıcı isterse değişecek).
