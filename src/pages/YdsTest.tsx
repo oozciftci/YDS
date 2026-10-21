@@ -168,7 +168,7 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
   const letters = Object.keys(q.options)
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <header className={styles.head}>
         <div>
           <Link to="/yds-test" className={styles.backLink}>
@@ -201,8 +201,8 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
         revealed={revealed}
         onChoose={choose}
         ai={false}
-        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
-        onNext={idx < questions.length - 1 ? () => setIdx(idx + 1) : undefined}
+        onPrev={idx > 0 ? () => void swipe.turn(-1) : undefined}
+        onNext={idx < questions.length - 1 ? () => void swipe.turn(1) : undefined}
       >
         <div className={styles.actions}>
           {!revealed ? (
@@ -217,10 +217,10 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
             </span>
           )}
           <span className={styles.spacer} />
-          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
-          <button type="button" className="btn btn-secondary" disabled={idx === questions.length - 1} onClick={() => setIdx(idx + 1)}>
+          <button type="button" className="btn btn-secondary" disabled={idx === questions.length - 1} onClick={() => void swipe.turn(1)} data-focus-hide>
             Sonraki →
           </button>
         </div>

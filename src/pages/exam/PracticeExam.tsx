@@ -89,7 +89,7 @@ export function PracticeExam() {
   }
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <header className={styles.compactHead}>
         {examId.startsWith('banka-') ? (
           <Link to="/yds-sorular/bankalar" className={styles.backLink}>
@@ -130,8 +130,8 @@ export function PracticeExam() {
         choice={choice}
         revealed={revealed}
         onChoose={choose}
-        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
-        onNext={idx < total - 1 ? () => setIdx(idx + 1) : undefined}
+        onPrev={idx > 0 ? () => void swipe.turn(-1) : undefined}
+        onNext={idx < total - 1 ? () => void swipe.turn(1) : undefined}
       >
         <div className={styles.actions}>
           {noKey ? (
@@ -148,14 +148,15 @@ export function PracticeExam() {
             </span>
           )}
           <span className={styles.spacer} />
-          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
           <button
             type="button"
             className="btn btn-secondary"
             disabled={idx === total - 1}
-            onClick={() => setIdx(idx + 1)}
+            onClick={() => void swipe.turn(1)}
+            data-focus-hide
           >
             Sonraki →
           </button>

@@ -141,7 +141,7 @@ export function TranslationWorkshop() {
   })
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <header className={styles.head}>
         <div>
           <Link to="/yds-test" className={styles.backLink}>
@@ -183,7 +183,7 @@ export function TranslationWorkshop() {
             ))}
           </div>
 
-          <article className="card" style={{ display: 'grid', gap: '0.7rem' }}>
+          <article className="card" style={{ display: 'grid', gap: '0.7rem' }} data-focus-stage>
             <div className="muted" style={{ fontSize: '0.82rem' }}>
               Cümle {(idx % list.length) + 1} / {list.length} · {cur.dir === 'en-tr' ? 'İngilizce → Türkçe' : 'Türkçe → İngilizce'}
               {progress[cur.id] !== undefined && ` · en iyi puanın ${progress[cur.id]}/10`}

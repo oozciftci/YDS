@@ -94,6 +94,8 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
         </div>
       )}
 
+      {/* Odak modunda yalnızca bu alan görünür; sayfa çevirme de bu alanı çevirir */}
+      <div data-focus-stage className={styles.qStage}>
       {passage && (
         <article className={`card ${styles.passage}`}>
           <h2 className={styles.sectionTitle}>
@@ -186,6 +188,7 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
 
         {revealed && assist && ai && <AiExplain key={`${exam.id}-${q.no}`} bundle={bundle} q={q} choice={choice} />}
       </article>
+      </div>
 
       {assist && (
         <article className={`card ${styles.translations}`}>

@@ -28,7 +28,7 @@ export function useQuickAnswer(): [boolean, (v: boolean) => void] {
 
 export function QuickAnswerToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
   return (
-    <label className={styles.quickToggle} title="Şıkka dokunduğun anda cevap kontrol edilir">
+    <label className={styles.quickToggle} title="Şıkka dokunduğun anda cevap kontrol edilir" data-focus-hide>
       <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} />
       Hızlı cevap modu
       <small>şıkka dokununca cevap hemen kontrol edilir · ← → tuşları ya da kaydırma ile soru değiştir</small>
@@ -45,13 +45,16 @@ function isEditable(el: EventTarget | null): boolean {
 /**
  * ← / → tuşları ve yatay kaydırma ile önceki / sonraki soru (kaydırma: src/hooks/useSwipeNav.ts — içerik parmağı izler).
  * Sola kaydırma (parmak sağdan sola) sonraki soruya, sağa kaydırma önceki soruya geçer.
- * Dönen nesne, kaydırmanın algılanacağı kapsayıcıya yayılır: <section {...swipe}>.
+ * Dönen `props` kaydırmanın algılanacağı kapsayıcıya yayılır (<section {...swipe.props}>); `turn(±1)` düğmeler için.
  * `edges`: ilk/son sorudaysa o yöne çekince yaylanıp geri döner.
  */
 export function useQuestionNav(onPrev?: () => void, onNext?: () => void, edges?: { canPrev?: boolean; canNext?: boolean }) {
+  const swipe = useSwipeNav({ onPrev, onNext, canPrev: edges?.canPrev, canNext: edges?.canNext })
   const handlers = useRef({ onPrev, onNext })
+  const turnRef = useRef(swipe.turn)
   useEffect(() => {
     handlers.current = { onPrev, onNext }
+    turnRef.current = swipe.turn
   })
 
   useEffect(() => {
@@ -60,15 +63,15 @@ export function useQuestionNav(onPrev?: () => void, onNext?: () => void, edges?:
       if (document.querySelector('[role="dialog"][aria-modal="true"]')) return
       if (e.key === 'ArrowLeft' && handlers.current.onPrev) {
         e.preventDefault()
-        handlers.current.onPrev()
+        void turnRef.current(-1)
       } else if (e.key === 'ArrowRight' && handlers.current.onNext) {
         e.preventDefault()
-        handlers.current.onNext()
+        void turnRef.current(1)
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  return useSwipeNav({ onPrev, onNext, canPrev: edges?.canPrev, canNext: edges?.canNext })
+  return swipe
 }

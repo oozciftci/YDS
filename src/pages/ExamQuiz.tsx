@@ -217,7 +217,7 @@ export function ExamQuizPage() {
 
       {!isFinished ? (
         /* AKTİF SINAV ALANI */
-        <main className={styles.examArea} {...swipe}>
+        <main className={styles.examArea} {...swipe.props}>
           {/* Soru Gezinim Numaraları (1 - 10) */}
           <nav className={styles.questionNav} aria-label="Soru gezinimi">
             {questions.map((q, idx) => {
@@ -240,7 +240,7 @@ export function ExamQuizPage() {
 
           {/* Aktif Soru Kartı */}
           {currentQ && (
-            <article className={styles.questionCard}>
+            <article className={styles.questionCard} data-focus-stage>
               <div className={styles.questionMeta}>
                 <span className={styles.qBadge}>Soru {currentQ.id} / 10</span>
                 <span className={styles.typeBadge}>
@@ -281,7 +281,8 @@ export function ExamQuizPage() {
                   type="button"
                   className="btn"
                   disabled={currentIndex === 0}
-                  onClick={() => setCurrentIndex((i) => i - 1)}
+                  onClick={() => void swipe.turn(-1)}
+                  data-focus-hide
                 >
                   ← Önceki Soru
                 </button>
@@ -290,7 +291,8 @@ export function ExamQuizPage() {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={() => setCurrentIndex((i) => i + 1)}
+                    onClick={() => void swipe.turn(1)}
+                    data-focus-hide
                   >
                     Sonraki Soru →
                   </button>

@@ -561,7 +561,7 @@ export function StudyPage() {
   }, [currentIndex, questions.length])
 
   // Kaydırarak önceki / sonraki kart (← → tuşlarıyla aynı)
-  const swipe = useSwipeNav({ onPrev: handlePrevCard, onNext: handleNextCard, canPrev: currentIndex > 0, enabled: phase === 'studying' })
+  const swipe = useSwipeNav({ onPrev: handlePrevCard, onNext: handleNextCard, canPrev: currentIndex > 0, canNext: currentIndex + 1 < questions.length, enabled: phase === 'studying' })
 
   // Çoktan Seçmeli Seçenek Tıklaması
   function handleSelectOption(optIdx: number) {
@@ -622,12 +622,12 @@ export function StudyPage() {
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
-        handlePrevCard()
+        void swipe.turn(-1)
       }
 
       if (e.key === 'ArrowRight') {
         e.preventDefault()
-        handleNextCard()
+        void swipe.turn(1)
       }
 
       if (['1', '2', '3', '4', '5'].includes(e.key)) {
@@ -638,7 +638,7 @@ export function StudyPage() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [phase, currentQ, handleScoreCard, handlePrevCard, handleNextCard])
+  }, [phase, currentQ, handleScoreCard, swipe])
 
   // Yeni Grup Oluşturma Formu
   async function handleCreateGroupSubmit(e: React.FormEvent) {
@@ -1212,7 +1212,7 @@ export function StudyPage() {
           AŞAMA 2: AKTİF ÇALIŞMA EKRANI (FLAŞKART & TEST)
           ======================================================== */}
       {phase === 'studying' && currentQ && (
-        <div className={styles.activeArea} {...swipe}>
+        <div className={styles.activeArea} {...swipe.props}>
           {/* Üst Durum Çubuğu */}
           <div className={styles.statusBar}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
@@ -1221,7 +1221,7 @@ export function StudyPage() {
                 className="btn btn-ghost"
                 style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem' }}
                 disabled={currentIndex === 0}
-                onClick={handlePrevCard}
+                onClick={() => void swipe.turn(-1)}
                 title="Önceki Soru (Sol Ok Tuşu)"
               >
                 ← Önceki Soru
@@ -1233,7 +1233,7 @@ export function StudyPage() {
                 type="button"
                 className="btn btn-ghost"
                 style={{ padding: '0.25rem 0.6rem', fontSize: '0.82rem' }}
-                onClick={handleNextCard}
+                onClick={() => (currentIndex + 1 < questions.length ? void swipe.turn(1) : handleNextCard())}
                 title="Sonraki Soru (Sağ Ok Tuşu)"
               >
                 {currentIndex + 1 < questions.length ? 'Sonraki Soru →' : 'Sonuçları Gör 🏁'}
@@ -1280,7 +1280,7 @@ export function StudyPage() {
           </div>
 
           {/* Soru / Flaşkart Alanı */}
-          <div className={styles.cardStage}>
+          <div className={styles.cardStage} data-focus-stage>
             <div className={styles.cardFlip}>
               {/* ÜST BİLGİ BARI */}
               <div className={styles.cardHeadRow}>
@@ -1447,7 +1447,7 @@ export function StudyPage() {
 
                       {grading}
 
-                      <span className={styles.flipHint}>
+                      <span className={styles.flipHint} data-focus-hide>
                         İpucu: Klavyeden <strong>Boşluk</strong> ile kartı çevirebilir, doğrudan <strong>1-5</strong> tuşlarıyla puanlayabilirsiniz.
                       </span>
                     </div>
@@ -1560,12 +1560,12 @@ export function StudyPage() {
             </div>
 
             {/* ALT İLERİ - GERİ NAVİGASYON BARI */}
-            <div className={styles.navRow}>
+            <div className={styles.navRow} data-focus-hide>
               <button
                 type="button"
                 className={styles.navBtn}
                 disabled={currentIndex === 0}
-                onClick={handlePrevCard}
+                onClick={() => void swipe.turn(-1)}
                 title="Önceki Soru (Sol Ok Tuşu)"
               >
                 ← Önceki Soru
@@ -1578,7 +1578,7 @@ export function StudyPage() {
               <button
                 type="button"
                 className={styles.navBtn}
-                onClick={handleNextCard}
+                onClick={() => (currentIndex + 1 < questions.length ? void swipe.turn(1) : handleNextCard())}
                 title="Sonraki Soru (Sağ Ok Tuşu)"
               >
                 {currentIndex + 1 < questions.length ? 'Sonraki Soru →' : 'Sonuçları Gör 🏁'}

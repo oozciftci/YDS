@@ -26,6 +26,7 @@ import { PageView, PenPalette, type PageViewHandle, type Side } from './books/Pa
 import { clearPage, readPen, savePen, undoStroke, type Pen } from './books/ink'
 import reading from './books/Reading.module.css'
 import { TocPanel } from './books/TocPanel'
+import { useGlobalFocus } from '../hooks/useGlobalFocus'
 
 // Kitaptan çalış: kitabı sayfa sayfa (telefonda yarım sayfa yarım sayfa) oku; kaldığın yer hatırlanır.
 // Sayfa notları sağ alttaki "📄 Bu sayfa" penceresinden (her sayfanın kendi notu), kitabın defteri bu sayfada toplanır.
@@ -122,13 +123,16 @@ function Reader() {
   const view = useRef<PageViewHandle>(null)
   const [tocOpen, setTocOpen] = useState(false)
   const [pen, setPenState] = useState<Pen>(readPen)
-  const [focus, setFocusState] = useState(() => {
+  const [focusLocal, setFocusState] = useState(() => {
     try {
       return localStorage.getItem(FOCUS_KEY) === '1'
     } catch {
       return false
     }
   })
+  // Üst çubuktaki genel “⛶ Odak” da kitabı tam ekran açar
+  const globalFocus = useGlobalFocus()
+  const focus = focusLocal || globalFocus
 
   useEffect(() => {
     loadBook(bookId)
@@ -197,7 +201,10 @@ function Reader() {
       // yoksay
     }
     setFocusState(on)
-    if (!on) setPen({ ...pen, on: false })
+    if (!on) {
+      setPen({ ...pen, on: false })
+      window.dispatchEvent(new Event('yds-focus-off'))
+    }
     // Destekleyen tarayıcılarda gerçek tam ekran (iPhone Safari desteklemez; orada ana ekrana eklemek gerekir)
     try {
       if (on && !document.fullscreenElement) void document.documentElement.requestFullscreen?.().catch(() => undefined)

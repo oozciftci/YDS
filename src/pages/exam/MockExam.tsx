@@ -339,7 +339,7 @@ export function MockExam() {
   const choice = choices[q.no] ?? null
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <div className={styles.mockBar}>
         {review ? (
           <>
@@ -351,7 +351,7 @@ export function MockExam() {
           </>
         ) : (
           <>
-            <span className={`${styles.timer} ${remaining < 600 ? styles.timerLow : ''}`} aria-live="off">
+            <span className={`${styles.timer} ${remaining < 600 ? styles.timerLow : ''}`} aria-live="off" data-focus-keep>
               ⏱ {fmt(remaining)}
             </span>
             <span className="muted">
@@ -380,8 +380,8 @@ export function MockExam() {
       <QuestionCard
         bundle={bundle}
         q={q}
-        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
-        onNext={idx < total - 1 ? () => setIdx(idx + 1) : undefined}
+        onPrev={idx > 0 ? () => void swipe.turn(-1) : undefined}
+        onNext={idx < total - 1 ? () => void swipe.turn(1) : undefined}
         choice={choice}
         revealed={review}
         assist={review}
@@ -394,10 +394,10 @@ export function MockExam() {
             </span>
           )}
           <span className={styles.spacer} />
-          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
-          <button type="button" className="btn btn-secondary" disabled={idx === total - 1} onClick={() => setIdx(idx + 1)}>
+          <button type="button" className="btn btn-secondary" disabled={idx === total - 1} onClick={() => void swipe.turn(1)} data-focus-hide>
             Sonraki →
           </button>
         </div>

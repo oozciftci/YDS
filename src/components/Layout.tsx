@@ -47,12 +47,22 @@ export function Layout() {
       // yoksay
     }
   }
-  // Sayfa içinden açma (ör. kelime çalışmasındaki “⛶ Odak” düğmesi): window.dispatchEvent(new Event('yds-focus'))
+  // Sayfa içinden açma/kapama (ör. kelime çalışmasındaki “⛶ Odak”, kitap okuyucunun ✕): yds-focus / yds-focus-off olayları
   useEffect(() => {
     const on = () => setFocus(true)
+    const off = () => setFocus(false)
     window.addEventListener('yds-focus', on)
-    return () => window.removeEventListener('yds-focus', on)
+    window.addEventListener('yds-focus-off', off)
+    return () => {
+      window.removeEventListener('yds-focus', on)
+      window.removeEventListener('yds-focus-off', off)
+    }
   })
+  // Genel odak sınıfı (index.css: yalnızca [data-focus-stage] görünür); açılınca sayfa başına
+  useEffect(() => {
+    document.documentElement.classList.toggle('app-focus', focus)
+    if (focus) window.scrollTo(0, 0)
+  }, [focus, location.pathname])
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement

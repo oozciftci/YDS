@@ -109,7 +109,7 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
   }
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       {head}
       <div className={styles.progressLine}>
         <span>
@@ -130,8 +130,8 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
         revealed={result !== null}
         onChoose={choose}
         subtitle={shortTitle(bundle.exam.title)}
-        onPrev={pos > 0 ? () => setPos(pos - 1) : undefined}
-        onNext={() => setPos(pos + 1)}
+        onPrev={pos > 0 ? () => void swipe.turn(-1) : undefined}
+        onNext={() => void swipe.turn(1)}
         nextLabel={result === null ? 'Atla →' : 'Sonraki →'}
       >
         <div className={styles.actions}>
@@ -156,10 +156,10 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
               Defterden çıkar
             </button>
           )}
-          <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => setPos(pos - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
-          <button type="button" className="btn btn-secondary" onClick={() => setPos(pos + 1)}>
+          <button type="button" className="btn btn-secondary" onClick={() => void swipe.turn(1)} data-focus-hide>
             {result === null ? 'Atla →' : 'Sonraki →'}
           </button>
         </div>

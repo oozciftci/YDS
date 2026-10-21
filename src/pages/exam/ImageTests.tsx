@@ -242,7 +242,7 @@ export function ImageTestRunner() {
   const pagesForQ = q.page ? [q.page] : test.pages
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <header className={styles.compactHead}>
         <Link to=".." relative="path" className={styles.backLink}>
           ← {test.section}
@@ -271,7 +271,7 @@ export function ImageTestRunner() {
         }}
       />
 
-      <article className={`card ${styles.question}`}>
+      <article className={`card ${styles.question}`} data-focus-stage>
         <h2 className={styles.sectionTitle}>
           Soru {q.n}
           <span className={styles.sectionChip}>
@@ -323,10 +323,10 @@ export function ImageTestRunner() {
             </span>
           )}
           <span className={styles.spacer} />
-          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
-          <button type="button" className="btn btn-secondary" disabled={idx === count - 1} onClick={() => setIdx(idx + 1)}>
+          <button type="button" className="btn btn-secondary" disabled={idx === count - 1} onClick={() => void swipe.turn(1)} data-focus-hide>
             Sonraki →
           </button>
         </div>
@@ -410,7 +410,7 @@ export function ImageWrongBook() {
   }
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <header className={styles.compactHead}>
         <Link to="/yds-sorular/yanlislar" className={styles.backLink}>
           ← Yanlış Defteri
@@ -420,7 +420,7 @@ export function ImageWrongBook() {
           {pos + 1} / {items.length}
         </span>
       </header>
-      <article className={`card ${styles.question}`}>
+      <article className={`card ${styles.question}`} data-focus-stage>
         <h2 className={styles.sectionTitle}>
           {test.section} · Test {test.no} · Soru {q.n}
           <span className={styles.sectionChip}>
@@ -451,10 +451,10 @@ export function ImageWrongBook() {
             </span>
           )}
           <span className={styles.spacer} />
-          <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => go(pos - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
-          <button type="button" className="btn btn-secondary" onClick={() => go(pos + 1)}>
+          <button type="button" className="btn btn-secondary" onClick={() => void swipe.turn(1)} data-focus-hide>
             {result === null ? 'Atla →' : 'Sonraki →'}
           </button>
         </div>

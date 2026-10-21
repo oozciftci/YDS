@@ -361,3 +361,36 @@ textarea {
   background: var(--danger-subtle, rgba(220, 38, 38, 0.12));
   color: var(--danger, #dc2626);
 }
+
+/* ---- Odak modu (Layout, html.app-focus) ----
+   Sayfada ana alan ([data-focus-stage]: soru, kelime kartı …) varsa yalnızca o (ve [data-focus-keep]: süre vb.) görünür,
+   ekrana sığar ve ortalanır; sayfa yukarı-aşağı kaymaz (alan uzunsa yalnızca kendi içinde kayar). */
+html.app-focus:has([data-focus-stage]),
+html.app-focus:has([data-focus-stage]) body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html.app-focus main:has([data-focus-stage]) :not([data-focus-stage], [data-focus-stage] *, :has([data-focus-stage]), [data-focus-keep], [data-focus-keep] *, :has([data-focus-keep])) {
+  display: none !important;
+}
+
+html.app-focus main:has([data-focus-stage]) {
+  box-sizing: border-box;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(env(safe-area-inset-top) + 3rem) 12px calc(env(safe-area-inset-bottom) + 12px) !important;
+}
+
+html.app-focus [data-focus-stage] {
+  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Ana alanın içinde de odakta gereksiz olanlar (önceki/sonraki düğmeleri, ipuçları): kaydırma ve dokunma yeterli */
+html.app-focus [data-focus-hide] {
+  display: none !important;
+}

@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useRef, type CSSProperties, type TouchEvent } from 'react'
+import { useCallback, useEffect, useRef, type CSSProperties } from 'react'
+import { startTurn, type Turn } from '../services/pageTurn'
 import { useAppearance } from '../stores/appearance'
 
-// Uygulama genelinde kaydırarak önceki/sonraki (soru, kart, cümle, paragraf …).
-// İçerik parmağı izler; bırakınca yeterince kaydırıldıysa kayarak geçer, değilse yerine döner. Dikey kaydırma, yazı
-// alanları, metin seçimi, açık pencereler ve yana kayan tablolar etkilenmez. Kitap okuyucunun kendi sayfa çevirmesi var.
+// Uygulama genelinde önceki/sonraki (soru, kart, cümle …) — kitap gibi sayfa çevirme.
+// Kaydırırken çevrilecek alanın ([data-focus-stage], yoksa kapsayıcı) köşesi parmağı izleyerek katlanır, altında yeni içerik
+// görünür; bırakınca tamamlanır ya da geri kapanır. Yatay hareket başlayınca dikey kaydırma kilitlenir (kart oynamaz).
+// Dikey kaydırma, yazı alanları, metin seçimi, açık balon/pencere ve yana kayan tablolar etkilenmez. Kitap okuyucunun
+// kendi sayfa çevirmesi var (books/PageView).
 
 export interface SwipeNavOptions {
   onPrev?: () => void
@@ -21,7 +24,7 @@ function blocked(target: EventTarget | null, container: HTMLElement | null): boo
   const dlg = target.closest('[role="dialog"]')
   if (dlg && dlg !== container && !dlg.contains(container)) return true
   // Yana kayan bir alanın (tablo, şerit) içindeyse onun kaydırması bozulmasın
-  for (let el: Element | null = target; el && el !== document.body; el = el.parentElement) {
+  for (let el: Element | null = target; el && el !== container && el !== document.body; el = el.parentElement) {
     if (el.scrollWidth > el.clientWidth + 2) {
       const ox = getComputedStyle(el).overflowX
       if (ox === 'auto' || ox === 'scroll') return true
@@ -32,103 +35,159 @@ function blocked(target: EventTarget | null, container: HTMLElement | null): boo
 
 const reduced = () => useAppearance.getState().appearance.motion === 'reduce' || matchMedia('(prefers-reduced-motion: reduce)').matches
 const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())))
+const stageOf = (el: HTMLElement) => el.querySelector<HTMLElement>('[data-focus-stage]') ?? el
 
 export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, enabled = true }: SwipeNavOptions) {
   const ref = useRef<HTMLElement | null>(null)
-  // Geri çağırmalı ref: hangi öğeye (section, div …) yayılırsa yayılsın tür uyar
-  const setRef = useCallback((el: HTMLElement | null) => {
-    ref.current = el
-  }, [])
-  const opts = useRef({ onPrev, onNext, canPrev, canNext })
+  const opts = useRef({ onPrev, onNext, canPrev, canNext, enabled })
   useEffect(() => {
-    opts.current = { onPrev, onNext, canPrev, canNext }
+    opts.current = { onPrev, onNext, canPrev, canNext, enabled }
   })
-  const drag = useRef<{ x: number; y: number; t: number; dx: number; horizontal: boolean | null } | null>(null)
   const busy = useRef(false)
 
-  const set = (dx: number) => {
+  /** Düğme / ok tuşu: sayfa çevirme animasyonuyla geç */
+  const turn = useCallback(async (dir: 1 | -1) => {
+    const o = opts.current
+    const h = dir === 1 ? o.onNext : o.onPrev
+    if (busy.current || !h || !(dir === 1 ? o.canNext : o.canPrev)) return
     const el = ref.current
-    if (!el) return
-    const w = el.offsetWidth || 1
-    el.style.transform = dx ? `translateX(${dx}px)` : ''
-    el.style.opacity = dx ? String(1 - Math.min(0.35, (Math.abs(dx) / w) * 0.5)) : ''
-  }
-
-  async function go(dir: 1 | -1, from: number) {
-    const el = ref.current
-    const handler = dir === 1 ? opts.current.onNext : opts.current.onPrev
-    if (!el || !handler) return
-    if (reduced()) {
-      set(0)
-      handler()
+    const t = el && !reduced() ? startTurn(stageOf(el), dir, 'bottom') : null
+    if (!t) {
+      h()
       return
     }
     busy.current = true
-    const w = el.offsetWidth || 1
-    await el.animate([{ transform: `translateX(${from}px)`, opacity: el.style.opacity || '1' }, { transform: `translateX(${-dir * w * 0.35}px)`, opacity: 0 }], {
-      duration: 130,
-      easing: 'ease-in',
-    }).finished
-    el.style.transform = ''
-    el.style.opacity = '0'
-    handler()
-    await nextFrame()
-    el.style.opacity = ''
-    await el.animate([{ transform: `translateX(${dir * w * 0.35}px)`, opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], {
-      duration: 200,
-      easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-    }).finished
+    h()
+    await t.animate(1, 620)
+    t.remove()
     busy.current = false
-  }
+  }, [])
 
-  function back(from: number) {
-    const el = ref.current
-    if (!el) return
-    set(0)
-    if (!reduced()) el.animate([{ transform: `translateX(${from}px)` }, { transform: 'translateX(0)' }], { duration: 180, easing: 'ease-out' })
-  }
+  // Dokunma: yerli dinleyiciler (touchmove pasif değil: yatay harekette dikey kaydırmayı durdurmak için)
+  const attach = useCallback((el: HTMLElement) => {
+    type Drag = { x: number; y: number; t: number; horizontal: boolean | null; turn: Turn | null; dir: 1 | -1; rubber: number; last: { x: number; y: number } }
+    let d: Drag | null = null
+    const handler = (dir: 1 | -1) => (dir === 1 ? opts.current.onNext : opts.current.onPrev)
+    const allowed = (dir: 1 | -1) => Boolean(handler(dir)) && (dir === 1 ? opts.current.canNext : opts.current.canPrev)
 
-  return {
-    ref: setRef,
-    style: { touchAction: 'pan-y pinch-zoom' } as CSSProperties,
-    onTouchStart(e: TouchEvent) {
-      if (!enabled || busy.current || e.touches.length !== 1 || blocked(e.target, ref.current) || window.getSelection()?.toString()) {
-        drag.current = null
+    const rubber = (dx: number, animate: boolean) => {
+      const s = stageOf(el)
+      s.style.transition = animate ? 'transform 0.18s ease-out' : 'none'
+      s.style.transform = dx ? `translateX(${dx}px)` : ''
+    }
+
+    const finish = (s: Drag) => {
+      const dx = s.last.x - s.x
+      const fast = Math.abs(dx) / Math.max(1, Date.now() - s.t) > 0.45 && Math.abs(dx) > 30
+      if (s.turn) {
+        const t = s.turn
+        const commit = t.progress > 0.18 || fast
+        busy.current = true
+        const from = { x: t.corner.x + 2 * dx, y: t.corner.y + (s.last.y - s.y) * 0.5 }
+        void t.animate(commit ? 1 : 0, commit ? 260 + 300 * (1 - t.progress) : 220, from).then(async () => {
+          if (!commit) {
+            // Vazgeçildi: kopya tamamen örterken eski içeriğe dön
+            handler(s.dir === 1 ? -1 : 1)?.()
+            await nextFrame()
+          }
+          t.remove()
+          busy.current = false
+        })
         return
       }
-      const t = e.touches[0]
-      drag.current = { x: t.clientX, y: t.clientY, t: Date.now(), dx: 0, horizontal: null }
+      if (s.rubber) rubber(0, true)
+      // Hareketi azalt açıkken: animasyonsuz geç
+      if (reduced() && allowed(s.dir) && (Math.abs(dx) > 50 || fast)) handler(s.dir)!()
+    }
+
+    const onStart = (e: TouchEvent) => {
+      if (!opts.current.enabled || busy.current || e.touches.length !== 1 || blocked(e.target, el) || window.getSelection()?.toString()) {
+        d = null
+        return
+      }
+      const p = e.touches[0]
+      d = { x: p.clientX, y: p.clientY, t: Date.now(), horizontal: null, turn: null, dir: 1, rubber: 0, last: { x: p.clientX, y: p.clientY } }
+    }
+
+    const onMove = (e: TouchEvent) => {
+      if (!d) return
+      if (e.touches.length !== 1) {
+        // İkinci parmak (yakınlaştırma): çevirmeyi geri al
+        const s = d
+        d = null
+        if (s.turn) {
+          s.last = { x: s.x, y: s.y }
+          finish(s)
+        } else if (s.rubber) rubber(0, true)
+        return
+      }
+      const p = e.touches[0]
+      const dx = p.clientX - d.x
+      const dy = p.clientY - d.y
+      if (d.horizontal === null) {
+        if (Math.hypot(dx, dy) < 7) return
+        d.horizontal = Math.abs(dx) > Math.abs(dy) * 1.2
+        if (!d.horizontal) {
+          d = null
+          return
+        }
+        d.dir = dx < 0 ? 1 : -1
+        if (allowed(d.dir) && !reduced()) {
+          const s = stageOf(el)
+          const r = s.getBoundingClientRect()
+          d.turn = startTurn(s, d.dir, d.y - r.top > r.height / 2 ? 'bottom' : 'top')
+          // Yeni içerik hemen altta hazırlanır; vazgeçilirse geri alınır
+          if (d.turn) handler(d.dir)!()
+        }
+      }
+      // Yatay hareket: sayfa yukarı-aşağı oynamasın
+      if (e.cancelable) e.preventDefault()
+      d.last = { x: p.clientX, y: p.clientY }
+      if (d.turn) {
+        const t = d.turn
+        const P = { x: t.corner.x + 2 * dx, y: t.corner.y + dy * 0.5 }
+        const u = d.dir === 1 ? (t.W - P.x) / (2 * t.W) : P.x / (2 * t.W)
+        t.paint(Math.max(0, Math.min(1, u)), P)
+      } else if (!allowed(d.dir)) {
+        // Kenarda: yay gibi direnç
+        d.rubber = reduced() ? 0 : dx * 0.15
+        rubber(d.rubber, false)
+      }
+    }
+
+    const onEnd = () => {
+      const s = d
+      d = null
+      if (s?.horizontal) finish(s)
+    }
+
+    el.addEventListener('touchstart', onStart, { passive: true })
+    el.addEventListener('touchmove', onMove, { passive: false })
+    el.addEventListener('touchend', onEnd)
+    el.addEventListener('touchcancel', onEnd)
+    return () => {
+      el.removeEventListener('touchstart', onStart)
+      el.removeEventListener('touchmove', onMove)
+      el.removeEventListener('touchend', onEnd)
+      el.removeEventListener('touchcancel', onEnd)
+    }
+  }, [])
+
+  const detach = useRef<(() => void) | null>(null)
+  const setRef = useCallback(
+    (el: HTMLElement | null) => {
+      detach.current?.()
+      detach.current = null
+      ref.current = el
+      if (el) detach.current = attach(el)
     },
-    onTouchMove(e: TouchEvent) {
-      const d = drag.current
-      if (!d || e.touches.length !== 1) return
-      const t = e.touches[0]
-      const dx = t.clientX - d.x
-      const dy = t.clientY - d.y
-      if (d.horizontal === null && Math.hypot(dx, dy) > 10) d.horizontal = Math.abs(dx) > Math.abs(dy) * 1.3
-      if (!d.horizontal) return
-      // Geçilemeyen yöne yay gibi direnç
-      const allowed = dx < 0 ? opts.current.canNext && opts.current.onNext : opts.current.canPrev && opts.current.onPrev
-      d.dx = allowed ? dx * 0.6 : dx * 0.15
-      set(d.dx)
-    },
-    onTouchEnd() {
-      const d = drag.current
-      drag.current = null
-      if (!d?.horizontal) return
-      const el = ref.current
-      const w = el?.offsetWidth || 1
-      const raw = d.dx / 0.6
-      const fast = Math.abs(raw) / Math.max(1, Date.now() - d.t) > 0.45 && Math.abs(raw) > 30
-      const dir: 1 | -1 = raw < 0 ? 1 : -1
-      const allowed = dir === 1 ? opts.current.canNext && opts.current.onNext : opts.current.canPrev && opts.current.onPrev
-      if (allowed && (Math.abs(raw) > Math.max(50, w * 0.18) || fast)) void go(dir, d.dx)
-      else back(d.dx)
-    },
-    onTouchCancel() {
-      const d = drag.current
-      drag.current = null
-      if (d?.horizontal) back(d.dx)
-    },
+    [attach],
+  )
+
+  return {
+    /** Kaydırmanın algılanacağı kapsayıcıya yayılır: <section {...swipe.props}> */
+    props: { ref: setRef, style: { touchAction: 'pan-y pinch-zoom' } as CSSProperties },
+    /** Önceki/sonraki düğmeleri ve ok tuşları için: sayfa çevirerek geç */
+    turn,
   }
 }

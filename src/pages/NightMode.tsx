@@ -393,7 +393,7 @@ function Player({ units, cfg, onExit }: { units: Unit[]; cfg: NightSettings; onE
   const swipe = useSwipeNav({ onPrev: () => skip(-1), onNext: () => skip(1), enabled: units.length > 1 })
 
   return (
-    <div className={styles.night} role="dialog" aria-label="Gece modu oynatıcı" {...swipe}>
+    <div className={styles.night} role="dialog" aria-label="Gece modu oynatıcı" {...swipe.props}>
       <div className={styles.nightTop}>
         <span>
           {idx + 1} / {units.length}

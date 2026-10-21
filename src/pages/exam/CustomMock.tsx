@@ -300,7 +300,7 @@ export function CustomMock() {
   const choice = choices[idx] ?? null
 
   return (
-    <section className={styles.page} {...swipe}>
+    <section className={styles.page} {...swipe.props}>
       <div className={styles.mockBar}>
         {review ? (
           <>
@@ -312,7 +312,7 @@ export function CustomMock() {
           </>
         ) : (
           <>
-            <span className={`${styles.timer} ${remaining < 120 ? styles.timerLow : ''}`}>⏱ {fmt(remaining)}</span>
+            <span className={`${styles.timer} ${remaining < 120 ? styles.timerLow : ''}`} data-focus-keep>⏱ {fmt(remaining)}</span>
             <span className="muted">
               {answered}/{items.length} cevaplandı
             </span>
@@ -344,8 +344,8 @@ export function CustomMock() {
 
       <QuestionCard
         key={`${it.bundle.exam.id}-${it.q.no}`}
-        onPrev={idx > 0 ? () => setIdx(idx - 1) : undefined}
-        onNext={idx < items.length - 1 ? () => setIdx(idx + 1) : undefined}
+        onPrev={idx > 0 ? () => void swipe.turn(-1) : undefined}
+        onNext={idx < items.length - 1 ? () => void swipe.turn(1) : undefined}
         bundle={it.bundle}
         q={it.q}
         choice={choice}
@@ -369,10 +369,10 @@ export function CustomMock() {
             </span>
           )}
           <span className={styles.spacer} />
-          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
+          <button type="button" className="btn btn-ghost" disabled={idx === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
             ← Önceki
           </button>
-          <button type="button" className="btn btn-secondary" disabled={idx === items.length - 1} onClick={() => setIdx(idx + 1)}>
+          <button type="button" className="btn btn-secondary" disabled={idx === items.length - 1} onClick={() => void swipe.turn(1)} data-focus-hide>
             Sonraki →
           </button>
         </div>
