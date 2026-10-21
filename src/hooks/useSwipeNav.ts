@@ -4,8 +4,8 @@ import { startTurn, type Turn } from '../services/pageTurn'
 import { useAppearance } from '../stores/appearance'
 
 // Uygulama genelinde önceki/sonraki (soru, kart, cümle …) — kitap gibi sayfa çevirme.
-// Kaydırırken çevrilecek alanın ([data-focus-stage], yoksa kapsayıcı) köşesi parmağı izleyerek katlanır, altında yeni içerik
-// görünür; bırakınca tamamlanır ya da geri kapanır. Yatay hareket başlayınca dikey kaydırma kilitlenir (kart oynamaz).
+// Kaydırırken çevrilecek alanın ([data-focus-stage], yoksa kapsayıcı) köşesi parmağı izleyerek katlanır (altında boş kâğıt);
+// bırakınca yeni içerik yerleşir ve çevirme onu açarak tamamlanır, yarıda bırakılırsa sayfa geri kapanır (hiçbir şey değişmez). Yatay hareket başlayınca dikey kaydırma kilitlenir (kart oynamaz).
 // Dikey kaydırma, yazı alanları, metin seçimi, açık balon/pencere ve yana kayan tablolar etkilenmez. Kitap okuyucunun
 // kendi sayfa çevirmesi var (books/PageView).
 
@@ -24,8 +24,10 @@ function blocked(target: EventTarget | null, container: HTMLElement | null): boo
   // Üstte açık bir pencere (kelime balonu vb.); kaydırılan alanın kendisi pencereyse (Gece Modu) sorun değil
   const dlg = target.closest('[role="dialog"]')
   if (dlg && dlg !== container && !dlg.contains(container)) return true
-  // Yana kayan bir alanın (tablo, şerit) içindeyse onun kaydırması bozulmasın
+  // Yana kayan bir alanın (tablo, şerit) içindeyse onun kaydırması bozulmasın. Ana alanın kendisi sayılmaz: odak modunda
+  // dikey kayabilsin diye overflow-y verilince yatay da "auto" görünür ve birkaç piksellik taşma kaydırmayı kapatıyordu.
   for (let el: Element | null = target; el && el !== container && el !== document.body; el = el.parentElement) {
+    if (el.hasAttribute('data-focus-stage')) break
     if (el.scrollWidth > el.clientWidth + 2) {
       const ox = getComputedStyle(el).overflowX
       if (ox === 'auto' || ox === 'scroll') return true
@@ -46,6 +48,8 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
     opts.current = { onPrev, onNext, canPrev, canNext, enabled }
   })
   const busy = useRef(false)
+  // Süren çevirme (düğme, ok tuşu ya da bırakılmış kaydırma): yeni dokunuşta beklemeden bitirilir
+  const active = useRef<Turn | null>(null)
 
   /** Düğme / ok tuşu: sayfa çevirme animasyonuyla geç */
   const turn = useCallback(async (dir: 1 | -1) => {
@@ -59,10 +63,15 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
       return
     }
     busy.current = true
-    h()
-    await t.animate(1, 620)
-    t.remove()
-    busy.current = false
+    active.current = t
+    try {
+      h()
+      await t.animate(1, 620)
+    } finally {
+      t.remove()
+      if (active.current === t) active.current = null
+      busy.current = false
+    }
   }, [])
 
   // Dokunma: yerli dinleyiciler (touchmove pasif değil: yatay harekette dikey kaydırmayı durdurmak için)
@@ -85,16 +94,24 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
         const t = s.turn
         const commit = t.progress > 0.18 || fast
         busy.current = true
+        active.current = t
         const from = { x: t.corner.x + 2 * dx, y: t.corner.y + (s.last.y - s.y) * 0.5 }
-        void t.animate(commit ? 1 : 0, commit ? 260 + 300 * (1 - t.progress) : 220, from).then(async () => {
-          if (!commit) {
-            // Vazgeçildi: kopya tamamen örterken eski içeriğe dön
-            handler(s.dir === 1 ? -1 : 1)?.()
-            await nextFrame()
+        void (async () => {
+          try {
+            if (commit) {
+              // Bırakınca geçilir: yeni içerik altta yerleşir, kâğıt kalkar, çevirme onu açarak tamamlanır
+              handler(s.dir)?.()
+              await nextFrame()
+              t.uncover()
+            }
+            await t.animate(commit ? 1 : 0, commit ? 260 + 300 * (1 - t.progress) : 220, from)
+          } finally {
+            // Ne olursa olsun kopya ekranda kalmasın
+            t.remove()
+            if (active.current === t) active.current = null
+            busy.current = false
           }
-          t.remove()
-          busy.current = false
-        })
+        })()
         return
       }
       if (s.rubber) rubber(0, true)
@@ -102,21 +119,44 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
       if (reduced() && allowed(s.dir) && (Math.abs(dx) > 50 || fast)) handler(s.dir)!()
     }
 
-    const onStart = (e: TouchEvent) => {
-      if (!opts.current.enabled || busy.current || e.touches.length !== 1 || blocked(e.target, el) || window.getSelection()?.toString()) {
-        d = null
-        return
-      }
-      const p = e.touches[0]
-      d = { x: p.clientX, y: p.clientY, t: Date.now(), horizontal: null, turn: null, dir: 1, rubber: 0, last: { x: p.clientX, y: p.clientY } }
+    // Parmak olayları dokunulan öğeden dinlenir: kaydırma başlayınca yeni içerik hazırlandığında o öğe sayfadan kalkabilir;
+    // iPhone Safari sonraki olayları yalnızca o (artık sayfada olmayan) öğeye gönderir, kapsayıcıya ulaşmaz. Önceden bu
+    // yüzden parmak kalkınca çevirme bitmiyor, kopya ekranda takılı kalıyordu.
+    let target: EventTarget | null = null
+    const unbind = () => {
+      if (!target) return
+      target.removeEventListener('touchmove', onMove as EventListener)
+      target.removeEventListener('touchend', onEnd)
+      target.removeEventListener('touchcancel', onEnd)
+      target = null
     }
 
-    const onMove = (e: TouchEvent) => {
+    const onStart = (e: TouchEvent) => {
+      // Bitmemiş bir önceki sürükleme kaldıysa (olay kaybı): kopyasını kaldır (sayfa değişmemişti)
+      if (d) {
+        d.turn?.remove()
+        if (d.rubber) rubber(0, false)
+        d = null
+        unbind()
+      }
+      // Önceki çevirme hâlâ oynuyorsa hemen bitir: hızlı art arda kaydırmada hiçbir hareket boşa gitmesin
+      active.current?.skip()
+      if (!opts.current.enabled || e.touches.length !== 1 || blocked(e.target, el) || window.getSelection()?.toString()) return
+      const p = e.touches[0]
+      d = { x: p.clientX, y: p.clientY, t: Date.now(), horizontal: null, turn: null, dir: 1, rubber: 0, last: { x: p.clientX, y: p.clientY } }
+      target = e.target
+      target?.addEventListener('touchmove', onMove as EventListener, { passive: false })
+      target?.addEventListener('touchend', onEnd)
+      target?.addEventListener('touchcancel', onEnd)
+    }
+
+    function onMove(e: TouchEvent) {
       if (!d) return
       if (e.touches.length !== 1) {
         // İkinci parmak (yakınlaştırma): çevirmeyi geri al
         const s = d
         d = null
+        unbind()
         if (s.turn) {
           s.last = { x: s.x, y: s.y }
           finish(s)
@@ -131,15 +171,17 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
         d.horizontal = Math.abs(dx) > Math.abs(dy) * 1.2
         if (!d.horizontal) {
           d = null
+          unbind()
           return
         }
         d.dir = dx < 0 ? 1 : -1
-        if (allowed(d.dir) && !reduced()) {
+        // Önceki çevirme (bir kare önce bitirildi) henüz temizlenmediyse bu hareket yalnızca yaylanır
+        if (allowed(d.dir) && !reduced() && !busy.current) {
           const s = stageOf(el)
           const r = s.getBoundingClientRect()
-          d.turn = startTurn(s, d.dir, d.y - r.top > r.height / 2 ? 'bottom' : 'top')
-          // Yeni içerik hemen altta hazırlanır; vazgeçilirse geri alınır
-          if (d.turn) handler(d.dir)!()
+          // Sürüklerken sayfa değiştirilmez (parmağın altındaki öğe yerinde kalsın; aksi hâlde iPhone parmak olaylarını
+          // kaybediyordu): kalkan sayfanın altında boş kâğıt, geçiş bırakınca
+          d.turn = startTurn(s, d.dir, d.y - r.top > r.height / 2 ? 'bottom' : 'top', { cover: true })
         }
       }
       // Yatay hareket: sayfa yukarı-aşağı oynamasın
@@ -157,21 +199,19 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
       }
     }
 
-    const onEnd = () => {
+    function onEnd() {
       const s = d
       d = null
+      unbind()
       if (s?.horizontal) finish(s)
     }
 
     el.addEventListener('touchstart', onStart, { passive: true })
-    el.addEventListener('touchmove', onMove, { passive: false })
-    el.addEventListener('touchend', onEnd)
-    el.addEventListener('touchcancel', onEnd)
     return () => {
       el.removeEventListener('touchstart', onStart)
-      el.removeEventListener('touchmove', onMove)
-      el.removeEventListener('touchend', onEnd)
-      el.removeEventListener('touchcancel', onEnd)
+      unbind()
+      d?.turn?.remove()
+      d = null
     }
   }, [])
 

@@ -10,6 +10,10 @@ export interface Turn {
   /** t'yi hedefe canlandır (parmak noktasından düz çizgiyle ya da yay yolundan) */
   animate(to: 0 | 1, ms: number, from?: Pt): Promise<void>
   remove(): void
+  /** Süren animasyonu bir sonraki karede bitir (yeni dokunuş geldiğinde beklemesin) */
+  skip(): void
+  /** Alttaki boş kâğıdı kaldır: yeni içerik görünsün (kaydırmada bırakınca) */
+  uncover(): void
   readonly W: number
   readonly H: number
   readonly left: number
@@ -36,7 +40,7 @@ function cloneOf(stage: HTMLElement, x: number, y: number, w: number, h: number)
 }
 
 /** Çevirmeyi başlat: kopya hazır, henüz katlanmamış (t = 0). Alan görünmüyorsa null. */
-export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | 'bottom'): Turn | null {
+export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | 'bottom', opts: { cover?: boolean } = {}): Turn | null {
   const r = stage.getBoundingClientRect()
   const left = Math.max(0, r.left)
   const top = Math.max(0, r.top)
@@ -46,7 +50,10 @@ export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | '
   if (W < 40 || H < 40 || !parent) return null
 
   const bg = getComputedStyle(document.body).backgroundColor || '#fff'
+  // Önceden kalmış bir kopya varsa (beklenmedik kesinti) temizle: aynı anda tek çevirme olur
+  document.querySelectorAll('[data-page-turn]').forEach((n) => n.remove())
   const wrap = document.createElement('div')
+  wrap.setAttribute('data-page-turn', '')
   wrap.setAttribute('aria-hidden', 'true')
   // Odak modunda gizlenmesin (index.css)
   wrap.setAttribute('data-focus-keep', '')
@@ -64,7 +71,9 @@ export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | '
   const c2 = cloneOf(stage, ox, oy, r.width, r.height)
   top_.appendChild(c1)
   flap.append(c2, paper, shade)
-  wrap.append(shadow, top_, flap)
+  // Kaydırırken sayfa henüz değişmez (parmağın altındaki öğe yerinde kalmalı): kalkan sayfanın altında boş kâğıt görünür
+  const under = opts.cover ? layer(`background:${bg};`) : null
+  wrap.append(...(under ? [under] : []), shadow, top_, flap)
   // Aynı ebeveyne eklenir: kalıtılan yazı tipi/renk ve üst seçicili stiller kopyada da geçerli
   parent.insertBefore(wrap, stage.nextSibling)
   // İçeride kaydırılmış alanın kopyası da aynı yerde dursun
@@ -78,6 +87,7 @@ export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | '
     return { x: W - q.x, y: q.y }
   }
   const endPoint: Pt = { x: dir === 1 ? -W : 2 * W, y: C.y }
+  let skipping = false
 
   const turn: Turn = {
     W,
@@ -123,10 +133,16 @@ export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | '
       return new Promise((done) => {
         const start = performance.now()
         const step = (now: number) => {
-          const k = Math.min(1, (now - start) / ms)
-          const e = ease(k)
-          if (from) turn.paint(t0 + (to - t0) * e, { x: from.x + (end.x - from.x) * e, y: from.y + (end.y - from.y) * e })
-          else turn.paint(t0 + (to - t0) * e)
+          const k = skipping ? 1 : Math.min(1, (now - start) / ms)
+          try {
+            const e = ease(k)
+            if (from) turn.paint(t0 + (to - t0) * e, { x: from.x + (end.x - from.x) * e, y: from.y + (end.y - from.y) * e })
+            else turn.paint(t0 + (to - t0) * e)
+          } catch {
+            // Çizim hatası animasyonu kilitlemesin: hemen bitir
+            done()
+            return
+          }
           if (k < 1) requestAnimationFrame(step)
           else done()
         }
@@ -135,6 +151,12 @@ export function startTurn(stage: HTMLElement, dir: 1 | -1, cornerSide: 'top' | '
     },
     remove() {
       wrap.remove()
+    },
+    skip() {
+      skipping = true
+    },
+    uncover() {
+      under?.remove()
     },
   }
   return turn

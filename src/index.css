@@ -166,6 +166,8 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+  /* Yatay kaydırma (sayfa çevirme) tarayıcının "geri git" hareketini tetiklemesin */
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -387,6 +389,7 @@ html.app-focus.focus-has-stage main {
 
 html.app-focus [data-focus-stage] {
   max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem);
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
