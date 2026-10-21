@@ -362,6 +362,26 @@ export interface LevelProgress {
   lastStudiedAt: string
 }
 
+/** Kitap sayfasına kalemle çizim (altını çizme / fosforlu). Noktalar sayfa görüntüsünün piksel biriminde (yarım/tam görünümden bağımsız). */
+export interface InkStroke {
+  /** Renk (#rrggbb) */
+  c: string
+  /** Kalınlık (sayfa pikseli) */
+  w: number
+  /** Saydamlık (fosforlu < 1) */
+  o: number
+  /** Düz nokta dizisi: x1, y1, x2, y2, … */
+  d: number[]
+}
+export interface BookInk {
+  id: string // `${userId}|${bookId}|${page}`
+  userId: string
+  bookId: string
+  page: number
+  strokes: InkStroke[]
+  updatedAt: string
+}
+
 /**
  * Notlarım: sağ alttaki not pencereleri. Yalnızca cihazda (JSON yedeğine girer; ses/görsel yedekte data URL olur).
  * - scope 'page': sayfaya özel not (sayfa başına tek metin; id = page:<kullanıcı>:<sayfa yolu>)

@@ -1,6 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type {
   AiNote,
+  BookInk,
   CoachChat,
   MemoryNote,
   NoteEntry,
@@ -35,6 +36,7 @@ export class YdsDatabase extends Dexie {
   memoryNotes!: EntityTable<MemoryNote, 'id'>
   suggestions!: EntityTable<Suggestion, 'id'>
   notebook!: EntityTable<NoteEntry, 'id'>
+  bookInk!: EntityTable<BookInk, 'id'>
 
   constructor() {
     super('YdsVocabularyDb')
@@ -87,6 +89,10 @@ export class YdsDatabase extends Dexie {
 
     this.version(10).stores({
       notebook: 'id, userId, scope, pageKey, createdAt, [userId+scope], [userId+pageKey]',
+    })
+
+    this.version(11).stores({
+      bookInk: 'id, userId, bookId, [userId+bookId]',
     })
   }
 }

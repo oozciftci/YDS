@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, Navigate, Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { db } from '../db'
 import { stamp } from '../services/notebook'
@@ -21,10 +22,14 @@ import {
   type Frame,
 } from './books/bookData'
 import { localFetch, preloadLocalImage, useLocalUrl } from '../services/localContent'
+import { PageView, PenPalette } from './books/PageView'
+import { clearPage, readPen, savePen, undoStroke, type Pen } from './books/ink'
+import reading from './books/Reading.module.css'
 
 // Kitaptan çalış: kitabı sayfa sayfa (telefonda yarım sayfa yarım sayfa) oku; kaldığın yer hatırlanır.
 // Sayfa notları sağ alttaki "📄 Bu sayfa" penceresinden (her sayfanın kendi notu), kitabın defteri bu sayfada toplanır.
-// Veri yalnızca yerel geliştirme sunucusundan gelir; yayın derlemesinde bu sayfa yoktur (bkz. App.tsx).
+// Odak modu (⛶): sayfa tüm ekranı kaplar; altta yalnızca sayfa numarası ve kalem (çizimler db.bookInk, bkz. books/PageView.tsx).
+// Veri geliştirmede yerel sunucudan, yayında cihaza yüklenen kaynak paketinden gelir (bkz. App.tsx).
 
 function BookList() {
   const userId = useUserStore((s) => s.activeUserId)
@@ -103,6 +108,8 @@ function ResumeBook() {
   return <Navigate to={`s/${page}${pos?.half ? `?yarim=${pos.half}` : ''}`} replace />
 }
 
+const FOCUS_KEY = 'yds-book-focus'
+
 function Reader() {
   const { bookId = '', page: pageParam = '1' } = useParams()
   const [search] = useSearchParams()
@@ -111,7 +118,16 @@ function Reader() {
   const [book, setBook] = useState<Book | null>(null)
   const [error, setError] = useState('')
   const [mode, setModeState] = useState<'half' | 'full'>(readMode)
-  const touch = useRef<{ x: number; y: number } | null>(null)
+  // Yeni kare hangi yönden geliyor (sayfa çevirme efekti): 1 sonraki, -1 önceki, 0 efektsiz
+  const [turn, setTurn] = useState(0)
+  const [pen, setPenState] = useState<Pen>(readPen)
+  const [focus, setFocusState] = useState(() => {
+    try {
+      return localStorage.getItem(FOCUS_KEY) === '1'
+    } catch {
+      return false
+    }
+  })
 
   useEffect(() => {
     loadBook(bookId)
@@ -155,11 +171,45 @@ function Reader() {
   }, [frames, idx, frame, bookId])
 
   function go(i: number) {
-    const f = frames[Math.max(0, Math.min(frames.length - 1, i))]
-    if (!f) return
+    const j = Math.max(0, Math.min(frames.length - 1, i))
+    const f = frames[j]
+    if (!f || j === idx) return
+    setTurn(j > idx ? 1 : -1)
     navigate(`/kitap/${bookId}/s/${f.page}${f.half ? `?yarim=${f.half}` : ''}`, { replace: true })
-    window.scrollTo({ top: 0 })
+    if (!focus) window.scrollTo({ top: 0 })
   }
+
+  function setPen(p: Pen) {
+    savePen(p)
+    setPenState(p)
+  }
+
+  function setFocus(on: boolean) {
+    try {
+      localStorage.setItem(FOCUS_KEY, on ? '1' : '0')
+    } catch {
+      // yoksay
+    }
+    setFocusState(on)
+    if (!on) setPen({ ...pen, on: false })
+    // Destekleyen tarayıcılarda gerçek tam ekran (iPhone Safari desteklemez; orada ana ekrana eklemek gerekir)
+    try {
+      if (on && !document.fullscreenElement) void document.documentElement.requestFullscreen?.().catch(() => undefined)
+      if (!on && document.fullscreenElement) void document.exitFullscreen().catch(() => undefined)
+    } catch {
+      // yoksay
+    }
+  }
+
+  // Odak modunda arkadaki sayfa kaymasın
+  useEffect(() => {
+    if (!focus) return
+    const old = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = old
+    }
+  }, [focus])
 
   // Klavye: ← → (yazı yazarken değil)
   useEffect(() => {
@@ -168,6 +218,7 @@ function Reader() {
       if (t.closest('input, textarea, select, [contenteditable]')) return
       if (e.key === 'ArrowRight') go(idx + 1)
       if (e.key === 'ArrowLeft') go(idx - 1)
+      if (e.key === 'Escape' && focus) setFocus(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -187,22 +238,62 @@ function Reader() {
   function setMode(m: 'half' | 'full') {
     saveMode(m)
     setModeState(m)
+    setTurn(0)
+  }
+
+  const where = `s. ${frame.page} / ${book.pageCount}${frame.half === 1 ? ' · üst' : frame.half === 2 ? ' · alt' : ''}`
+  const pageProps = {
+    userId,
+    bookId,
+    page,
+    frame,
+    src,
+    alt: `${book.short} sayfa ${frame.page}`,
+    pen,
+    turn,
+    onTap: (side: -1 | 0 | 1) => side && go(idx + side),
+    onSwipe: (dir: -1 | 1) => go(idx + dir),
+  }
+
+  if (focus) {
+    // Görünür kare ekrana sığdırılır: en-boy oranı korunarak genişlik ya da yükseklik doldurulur
+    const ratio = page.w / (page.h * span)
+    return createPortal(
+      <div className={reading.focus}>
+        <PageView {...pageProps} className={reading.focusFrame} style={{ width: `min(100vw, calc(100dvh * ${ratio}))` }} />
+        <div className={reading.pill}>
+          <button type="button" onClick={() => setFocus(false)} aria-label="Odak modundan çık" title="Odak modundan çık (Esc)">
+            ✕
+          </button>
+          <span className={reading.pageNo}>{where}</span>
+          <button
+            type="button"
+            className={pen.on ? reading.penOn : undefined}
+            onClick={() => setPen({ ...pen, on: !pen.on })}
+            aria-pressed={pen.on}
+            aria-label="Kalem"
+            title="Kalem: altını çiz, işaretle"
+          >
+            ✏️
+          </button>
+        </div>
+        {pen.on && (
+          <PenPalette
+            pen={pen}
+            onChange={setPen}
+            onUndo={() => void undoStroke(userId, bookId, frame.page)}
+            onClear={() => {
+              if (confirm('Bu sayfadaki çizimler silinsin mi?')) void clearPage(userId, bookId, frame.page)
+            }}
+          />
+        )}
+      </div>,
+      document.body,
+    )
   }
 
   return (
-    <section
-      className={styles.reader}
-      onTouchStart={(e) => (touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY })}
-      onTouchEnd={(e) => {
-        const s = touch.current
-        touch.current = null
-        if (!s) return
-        const dx = e.changedTouches[0].clientX - s.x
-        const dy = e.changedTouches[0].clientY - s.y
-        // Yatay kaydırma: sola kaydır → sonraki
-        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? idx + 1 : idx - 1)
-      }}
-    >
+    <section className={styles.reader}>
       <div className={styles.bar}>
         <Link to="/kitap" className={styles.back}>
           ← Kitaplar
@@ -235,6 +326,9 @@ function Reader() {
         <Link to={`/kitap/${bookId}/notlar`} className={styles.notesLink}>
           📓 Defter
         </Link>
+        <button type="button" className={styles.focusBtn} onClick={() => setFocus(true)} title="Sayfa tüm ekranı kaplasın; kalemle çiz">
+          ⛶ Odak
+        </button>
       </div>
 
       <div className={styles.progress} aria-hidden="true">
@@ -248,24 +342,8 @@ function Reader() {
         {unit && ` · Ünite ${unit.no}: ${unit.title}`}
       </p>
 
-      <div
-        className={styles.frame}
-        style={{ aspectRatio: `${page.w} / ${page.h * span}` }}
-        onClick={(e) => {
-          // Görüntünün sağ üçte birine dokununca ileri, sol üçte birine dokununca geri
-          const r = e.currentTarget.getBoundingClientRect()
-          const x = (e.clientX - r.left) / r.width
-          if (x > 0.67) go(idx + 1)
-          else if (x < 0.33) go(idx - 1)
-        }}
-      >
-        <img
-          src={src}
-          alt={`${book.short} sayfa ${frame.page}`}
-          style={{ top: `${(-frame.start / span) * 100}%` }}
-          draggable={false}
-        />
-      </div>
+      {/* Sağ üçte bire dokununca ileri, sol üçte bire dokununca geri; kaydırınca sayfa parmağı izler */}
+      <PageView {...pageProps} className={styles.frame} />
 
       {unit && (frame.page === unit.page + 1 || unitDone) && (
         <div className={styles.unitEnd}>
@@ -299,7 +377,7 @@ function Reader() {
         </button>
       </div>
       <p className={styles.hint}>
-        Telefonda sola/sağa kaydır, bilgisayarda ← → tuşları. Bu sayfaya not için sağ alttaki <strong>📄 Bu sayfa</strong>.
+        Telefonda sola/sağa kaydır, bilgisayarda ← → tuşları. Tam ekran ve kalem için <strong>⛶ Odak</strong>; not için sağ alttaki <strong>📄 Bu sayfa</strong>.
       </p>
     </section>
   )
