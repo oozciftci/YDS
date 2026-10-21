@@ -194,6 +194,7 @@ export function ImageTestRunner() {
   const swipe = useQuestionNav(
     () => setIdx((i) => Math.max(0, i - 1)),
     () => setIdx((i) => Math.min(count - 1, i + 1)),
+    { canPrev: idx > 0, canNext: idx < count - 1 },
   )
 
   // Açılışta ilk çözülmemiş soruya git
@@ -376,6 +377,7 @@ export function ImageWrongBook() {
   const swipe = useQuestionNav(
     () => go(pos - 1),
     () => go(pos + 1),
+    { canPrev: pos > 0, canNext: !!items && pos < items.length - 1 },
   )
   function go(i: number) {
     if (!items || i < 0 || i >= items.length) return

@@ -6,6 +6,7 @@ import { ALL_WORD_PACKS } from '../data/wordPacks'
 import { createWord, type CreateWordInput } from '../services/words'
 import { useUserStore } from '../stores/user'
 import styles from './ExamQuiz.module.css'
+import { useSwipeNav } from '../hooks/useSwipeNav'
 
 interface ExamQuestion {
   id: number
@@ -169,6 +170,14 @@ export function ExamQuizPage() {
   }, [questions, userAnswers])
 
   const currentQ = questions[currentIndex]
+  // Kaydırarak önceki / sonraki soru
+  const swipe = useSwipeNav({
+    onPrev: () => setCurrentIndex((i) => Math.max(0, i - 1)),
+    onNext: () => setCurrentIndex((i) => Math.min(TOTAL_QUESTIONS - 1, i + 1)),
+    canPrev: currentIndex > 0,
+    canNext: currentIndex + 1 < Math.min(TOTAL_QUESTIONS, questions.length),
+    enabled: !isFinished,
+  })
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60)
@@ -208,7 +217,7 @@ export function ExamQuizPage() {
 
       {!isFinished ? (
         /* AKTİF SINAV ALANI */
-        <main className={styles.examArea}>
+        <main className={styles.examArea} {...swipe}>
           {/* Soru Gezinim Numaraları (1 - 10) */}
           <nav className={styles.questionNav} aria-label="Soru gezinimi">
             {questions.map((q, idx) => {

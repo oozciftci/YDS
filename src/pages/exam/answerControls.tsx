@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type TouchEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useSwipeNav } from '../../hooks/useSwipeNav'
 import styles from '../ExamStudy.module.css'
 
 // Soru ekranlarında ortak kontroller: hızlı cevap modu ve önceki/sonraki gezinme (klavye okları, kaydırma).
@@ -42,11 +43,12 @@ function isEditable(el: EventTarget | null): boolean {
 }
 
 /**
- * ← / → tuşları ve yatay kaydırma ile önceki / sonraki soru.
+ * ← / → tuşları ve yatay kaydırma ile önceki / sonraki soru (kaydırma: src/hooks/useSwipeNav.ts — içerik parmağı izler).
  * Sola kaydırma (parmak sağdan sola) sonraki soruya, sağa kaydırma önceki soruya geçer.
  * Dönen nesne, kaydırmanın algılanacağı kapsayıcıya yayılır: <section {...swipe}>.
+ * `edges`: ilk/son sorudaysa o yöne çekince yaylanıp geri döner.
  */
-export function useQuestionNav(onPrev?: () => void, onNext?: () => void) {
+export function useQuestionNav(onPrev?: () => void, onNext?: () => void, edges?: { canPrev?: boolean; canNext?: boolean }) {
   const handlers = useRef({ onPrev, onNext })
   useEffect(() => {
     handlers.current = { onPrev, onNext }
@@ -68,24 +70,5 @@ export function useQuestionNav(onPrev?: () => void, onNext?: () => void) {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const start = useRef<{ x: number; y: number; t: number } | null>(null)
-  return {
-    onTouchStart(e: TouchEvent) {
-      const t = e.touches[0]
-      start.current = e.touches.length === 1 && !isEditable(e.target) ? { x: t.clientX, y: t.clientY, t: Date.now() } : null
-    },
-    onTouchEnd(e: TouchEvent) {
-      const s = start.current
-      start.current = null
-      if (!s) return
-      const t = e.changedTouches[0]
-      const dx = t.clientX - s.x
-      const dy = t.clientY - s.y
-      // Kısa, belirgin ve yatay bir hareket olmalı; dikey kaydırma ve metin seçimi soru değiştirmez
-      if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 2 || Date.now() - s.t > 800) return
-      if (window.getSelection()?.toString()) return
-      if (dx < 0) handlers.current.onNext?.()
-      else handlers.current.onPrev?.()
-    },
-  }
+  return useSwipeNav({ onPrev, onNext, canPrev: edges?.canPrev, canNext: edges?.canNext })
 }

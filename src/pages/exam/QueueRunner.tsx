@@ -35,6 +35,7 @@ export function QueueRunner({ title, description, items, wrongBook, empty }: Pro
   const swipe = useQuestionNav(
     () => setPos((p) => Math.max(0, p - 1)),
     () => setPos((p) => Math.min(items.length, p + 1)),
+    { canPrev: pos > 0, canNext: pos < items.length },
   )
   const score = Object.values(done).reduce(
     (s, d) => (d.ok ? { ...s, correct: s.correct + 1 } : { ...s, wrong: s.wrong + 1 }),

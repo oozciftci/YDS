@@ -102,6 +102,7 @@ export function MockExam() {
   const swipe = useQuestionNav(
     inQuestions ? () => setIdx((i) => Math.max(0, i - 1)) : undefined,
     inQuestions ? () => setIdx((i) => Math.min(qCount - 1, i + 1)) : undefined,
+    { canPrev: idx > 0, canNext: idx < qCount - 1 },
   )
 
   useEffect(() => {

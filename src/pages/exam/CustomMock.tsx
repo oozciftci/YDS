@@ -56,6 +56,7 @@ export function CustomMock() {
   const swipe = useQuestionNav(
     inQuestions ? () => setIdx((i) => Math.max(0, i - 1)) : undefined,
     inQuestions ? () => setIdx((i) => Math.min(items.length - 1, i + 1)) : undefined,
+    { canPrev: idx > 0, canNext: idx < items.length - 1 },
   )
 
   useEffect(() => {

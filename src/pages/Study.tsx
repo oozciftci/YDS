@@ -38,6 +38,7 @@ import { WriteAnswer } from '../components/WriteAnswer'
 import { WordFamilyBlock } from '../components/WordFamilyBlock'
 import styles from './Study.module.css'
 import { hasLocalContent } from '../services/localContent'
+import { useSwipeNav } from '../hooks/useSwipeNav'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
 const ExamContext = hasLocalContent() ? lazy(() => import('./exam/ExamContext')) : null
@@ -558,6 +559,9 @@ export function StudyPage() {
       setPhase('summary')
     }
   }, [currentIndex, questions.length])
+
+  // Kaydırarak önceki / sonraki kart (← → tuşlarıyla aynı)
+  const swipe = useSwipeNav({ onPrev: handlePrevCard, onNext: handleNextCard, canPrev: currentIndex > 0, enabled: phase === 'studying' })
 
   // Çoktan Seçmeli Seçenek Tıklaması
   function handleSelectOption(optIdx: number) {
@@ -1208,7 +1212,7 @@ export function StudyPage() {
           AŞAMA 2: AKTİF ÇALIŞMA EKRANI (FLAŞKART & TEST)
           ======================================================== */}
       {phase === 'studying' && currentQ && (
-        <div className={styles.activeArea}>
+        <div className={styles.activeArea} {...swipe}>
           {/* Üst Durum Çubuğu */}
           <div className={styles.statusBar}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>

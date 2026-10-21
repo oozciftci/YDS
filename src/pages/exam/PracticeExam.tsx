@@ -25,6 +25,7 @@ export function PracticeExam() {
   const swipe = useQuestionNav(
     () => setIdx((i) => (i !== null && i > 0 ? i - 1 : i)),
     () => setIdx((i) => (i !== null && i < count - 1 ? i + 1 : i)),
+    { canPrev: idx !== null && idx > 0, canNext: idx !== null && idx < count - 1 },
   )
 
   const answers = useLiveQuery(

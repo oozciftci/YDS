@@ -143,6 +143,7 @@ function Runner({ setId, bundle, hints, set, nextId }: RunnerProps) {
   const swipe = useQuestionNav(
     () => setIdx((i) => Math.max(0, i - 1)),
     () => setIdx((i) => Math.min(questions.length - 1, i + 1)),
+    { canPrev: idx > 0, canNext: idx < questions.length - 1 },
   )
 
   const q = questions[idx]

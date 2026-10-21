@@ -4,6 +4,7 @@ import { db } from '../db'
 import { aiConfigured, generate } from '../services/ai'
 import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
+import { useSwipeNav } from '../hooks/useSwipeNav'
 
 // Çeviri atölyesi (7.7): özgün cümleyi kendin çevir, yapay zekâ örnek çeviriyle karşılaştırıp puanlasın.
 // Sonuç aynı çeviri için cihazda önbelleğe alınır (aynı metin için ikinci kez ücret çıkmaz).
@@ -132,9 +133,15 @@ export function TranslationWorkshop() {
   }
 
   const done = Object.keys(progress).length
+  // Kaydırarak önceki / sonraki cümle (yazı alanında kaydırma çalışmaz)
+  const swipe = useSwipeNav({
+    onPrev: () => go((idx - 1 + list.length) % Math.max(1, list.length)),
+    onNext: () => go((idx + 1) % Math.max(1, list.length)),
+    enabled: list.length > 1,
+  })
 
   return (
-    <section className={styles.page}>
+    <section className={styles.page} {...swipe}>
       <header className={styles.head}>
         <div>
           <Link to="/yds-test" className={styles.backLink}>

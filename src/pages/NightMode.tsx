@@ -6,6 +6,7 @@ import { useUserStore } from '../stores/user'
 import { listOzgunReadings } from './exam/ozgunData'
 import styles from './NightMode.module.css'
 import { hasLocalContent } from '../services/localContent'
+import { useSwipeNav } from '../hooks/useSwipeNav'
 
 // Gece modu: yatarken dinlemek için kelime (apple, elma, apple, elma…) ya da paragraf cümleleri
 // (İngilizce, Türkçe…) belirlenen sayıda tekrarlanarak sabaha kadar döngüde okunur.
@@ -388,9 +389,11 @@ function Player({ units, cfg, onExit }: { units: Unit[]; cfg: NightSettings; onE
   function skip(step: number) {
     setIdx((i) => (i + step + units.length) % units.length)
   }
+  // Kaydırarak önceki / sonraki
+  const swipe = useSwipeNav({ onPrev: () => skip(-1), onNext: () => skip(1), enabled: units.length > 1 })
 
   return (
-    <div className={styles.night} role="dialog" aria-label="Gece modu oynatıcı">
+    <div className={styles.night} role="dialog" aria-label="Gece modu oynatıcı" {...swipe}>
       <div className={styles.nightTop}>
         <span>
           {idx + 1} / {units.length}
