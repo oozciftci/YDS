@@ -1,8 +1,18 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
+import {
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  type Ref,
+} from 'react'
 import { db } from '../../db'
 import type { BookPage, Frame } from './bookData'
 import { PEN_COLORS, addStroke, inkId, type Pen } from './ink'
+import { constrainCorner, curl, polygonCss } from './pageCurl'
 import styles from './Reading.module.css'
 
 // Kitap sayfası görünümü: görüntü + kalem katmanı + sayfa çevirme hissi.
@@ -75,93 +85,292 @@ function InkLayer({ userId, bookId, page, pen }: { userId: string; bookId: strin
 
 // ---- Sayfa görünümü ----
 
+export interface Side {
+  frame: Frame
+  page: BookPage
+  src: string | undefined
+}
+
+export interface PageViewHandle {
+  /** Komşu kareye çevirme animasyonuyla geç; komşu yoksa ya da animasyon sürüyorsa false */
+  flip: (dir: 1 | -1) => boolean
+}
+
+/** Bir karenin içeriği: tam sayfa görüntüsü + çizim; kare (yarım/tam) bunun bir dilimini gösterir. */
+function SheetContent({ side, userId, bookId, pen, alt }: { side: Side; userId: string; bookId: string; pen: Pen; alt: string }) {
+  const span = side.frame.end - side.frame.start
+  return (
+    <div className={styles.layer} style={{ top: `${(-side.frame.start / span) * 100}%`, height: `${100 / span}%` }}>
+      <img src={side.src} alt={alt} draggable={false} />
+      <InkLayer userId={userId} bookId={bookId} page={side.page} pen={pen} />
+    </div>
+  )
+}
+
+type Anim = { dir: 1 | -1; kind: 'curl' | 'slide'; corner: 'top' | 'bottom' }
+const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2)
+
 /**
- * Bir kare (yarım ya da tam sayfa). `turn`: yeni kare hangi yönden geldi (1 sonraki, -1 önceki, 0 efektsiz).
- * Kalem kapalıyken parmağı izler (sayfa çevirme hissi), bırakınca `onSwipe` ile geçer; dokunma bölgeleri `onTap`.
+ * Kitap gibi sayfa çevirme. İleri: mevcut sayfanın köşesi katlanarak kalkar (arka yüzü gölgeli kâğıt), altından sonraki
+ * sayfa açılır. Geri: önceki sayfa soldan katlanmış hâlden açılarak üstüne kapanır. Yarım sayfa görünümünde aynı sayfanın
+ * yarıları arasında katlama yerine dikey kayma. Kalem açıkken çevirme yok. Yalnızca clip-path ve transform (ekran kartı).
  */
 export function PageView({
   userId,
   bookId,
-  page,
-  frame,
-  src,
+  cur,
+  prev,
+  next,
   alt,
   pen,
-  turn,
   onTap,
-  onSwipe,
+  onTurned,
   className,
   style,
+  handle,
 }: {
   userId: string
   bookId: string
-  page: BookPage
-  frame: Frame
-  src: string | undefined
+  cur: Side
+  prev?: Side
+  next?: Side
   alt: string
   pen: Pen
-  turn: number
   onTap: (side: -1 | 0 | 1) => void
-  onSwipe: (dir: -1 | 1) => void
+  /** Animasyon bitti, kare değişmeli */
+  onTurned: (dir: 1 | -1) => void
   className: string
   style?: CSSProperties
+  handle?: Ref<PageViewHandle>
 }) {
-  const span = frame.end - frame.start
-  const layer = useRef<HTMLDivElement>(null)
-  const drag = useRef<{ x: number; y: number; dx: number; horizontal: boolean | null } | null>(null)
+  const span = cur.frame.end - cur.frame.start
+  const box = useRef<HTMLDivElement>(null)
+  const topRef = useRef<HTMLDivElement>(null)
+  const underRef = useRef<HTMLDivElement>(null)
+  const flapRef = useRef<HTMLDivElement>(null)
+  const shadowRef = useRef<HTMLDivElement>(null)
+  const shadeRef = useRef<HTMLDivElement>(null)
+  const [anim, setAnim] = useState<Anim | null>(null)
+  const animRef = useRef<Anim | null>(null)
+  const busy = useRef(false)
+  const drag = useRef<{ x: number; y: number; horizontal: boolean | null; t: number; last: { x: number; y: number } } | null>(null)
+  const pendingAuto = useRef(false)
+  const raf = useRef(0)
 
-  const setTransform = (dx: number, animate: boolean) => {
-    const el = layer.current
-    if (!el) return
-    const w = el.offsetWidth || 1
-    el.style.transition = animate ? 'transform 0.2s ease-out' : 'none'
-    el.style.transformOrigin = dx < 0 ? 'left center' : 'right center'
-    el.style.transform = dx ? `perspective(1400px) translateX(${dx}px) rotateY(${(dx / w) * 30}deg)` : ''
+  const size = () => ({ W: box.current?.offsetWidth || 1, H: box.current?.offsetHeight || 1 })
+
+  /** Görünümü t ∈ [0, 1] ilerlemesine göre çiz (0: başlangıç, 1: geçiş tamam). `at`: parmak konumu (yoksa yay yolu). */
+  function paint(a: Anim, t: number, at?: { x: number; y: number }) {
+    const { W, H } = size()
+    const top = topRef.current
+    const under = underRef.current
+    const flap = flapRef.current
+    const shadow = shadowRef.current
+    const shade = shadeRef.current
+    if (!top || !under) return
+    under.style.visibility = 'visible'
+    if (a.kind === 'slide') {
+      const s = a.dir
+      top.style.transform = `translateY(${-s * t * H}px)`
+      under.style.transform = `translateY(${s * (1 - t) * H}px)`
+      return
+    }
+    if (!flap || !shadow || !shade) return
+    const C = { x: W, y: a.corner === 'bottom' ? H : 0 }
+    const lift = a.corner === 'bottom' ? -1 : 1
+    // İleri: köşe C'den (-W) tarafına; geri: (-W)'den C'ye (önceki sayfa açılarak kapanır)
+    const u = a.dir === 1 ? t : 1 - t
+    let P = at ? { ...at } : { x: W - 2 * W * u, y: C.y + lift * Math.sin(Math.PI * u) * 0.12 * H }
+    P = constrainCorner(P, C, W, H)
+    const g = curl(P, C, W, H)
+    if (!g) {
+      top.style.clipPath = ''
+      flap.style.visibility = 'hidden'
+      shadow.style.visibility = 'hidden'
+      return
+    }
+    top.style.clipPath = polygonCss(g.remainder)
+    flap.style.visibility = 'visible'
+    flap.style.clipPath = polygonCss(g.lifted)
+    flap.style.transform = `matrix(${g.matrix.join(',')})`
+    // Katlama çizgisi boyunca gölge şeritleri (C tarafında; kapağınki yansıyınca katlamanın öbür yüzüne düşer)
+    const L = 2 * Math.hypot(W, H)
+    const sw = Math.max(24, W * 0.22)
+    const n = g.normal
+    const q = { x: g.mid.x - (n.x * sw) / 2, y: g.mid.y - (n.y * sw) / 2 }
+    const phi = Math.atan2(n.x, -n.y)
+    for (const el of [shadow, shade]) {
+      el.style.width = `${L}px`
+      el.style.height = `${sw}px`
+      el.style.left = `${q.x - L / 2}px`
+      el.style.top = `${q.y - sw / 2}px`
+      el.style.transform = `rotate(${phi}rad)`
+    }
+    shadow.style.visibility = 'visible'
+    const lifted = Math.min(1, Math.hypot(P.x - C.x, P.y - C.y) / (2 * W))
+    shadow.style.opacity = String(Math.min(1, lifted * 5) * (1 - lifted * 0.6))
   }
+
+  function rest() {
+    for (const el of [topRef.current, underRef.current, flapRef.current]) {
+      if (!el) continue
+      el.style.clipPath = ''
+      el.style.transform = ''
+    }
+    if (underRef.current) underRef.current.style.visibility = 'hidden'
+    if (flapRef.current) flapRef.current.style.visibility = 'hidden'
+    if (shadowRef.current) shadowRef.current.style.visibility = 'hidden'
+  }
+
+  /** t0'dan t1'e canlandır; parmak noktasından başlıyorsa düz çizgiyle hedefe gider. */
+  function run(a: Anim, t0: number, t1: number, ms: number, from?: { x: number; y: number }, done?: () => void) {
+    cancelAnimationFrame(raf.current)
+    busy.current = true
+    const { W, H } = size()
+    const C = { x: W, y: a.corner === 'bottom' ? H : 0 }
+    const end = a.kind === 'curl' ? ((a.dir === 1 ? t1 : 1 - t1) >= 1 ? { x: -W, y: C.y } : C) : undefined
+    const start = performance.now()
+    const step = (now: number) => {
+      const k = Math.min(1, (now - start) / ms)
+      const e = ease(k)
+      if (from && end) paint(a, t0 + (t1 - t0) * e, { x: from.x + (end.x - from.x) * e, y: from.y + (end.y - from.y) * e })
+      else paint(a, t0 + (t1 - t0) * e)
+      if (k < 1) raf.current = requestAnimationFrame(step)
+      else {
+        busy.current = false
+        done?.()
+      }
+    }
+    raf.current = requestAnimationFrame(step)
+  }
+
+  function begin(dir: 1 | -1, corner: 'top' | 'bottom'): Anim | null {
+    const target = dir === 1 ? next : prev
+    if (!target || busy.current) return null
+    const a: Anim = { dir, kind: target.frame.page === cur.frame.page ? 'slide' : 'curl', corner }
+    animRef.current = a
+    setAnim(a)
+    return a
+  }
+
+  const finish = (a: Anim) => () => onTurned(a.dir)
+  const cancel = () => () => {
+    animRef.current = null
+    setAnim(null)
+    rest()
+  }
+
+  useImperativeHandle(handle, () => ({
+    flip: (dir) => {
+      if (!begin(dir, 'bottom')) return false
+      pendingAuto.current = true
+      return true
+    },
+  }))
+
+  // Rol değişimi (hangi kare üstte/altta) çizildikten sonra: otomatik çevirmeyi başlat ya da ilk kareyi boya
+  useLayoutEffect(() => {
+    const a = animRef.current
+    if (!a || !anim) return
+    if (pendingAuto.current) {
+      pendingAuto.current = false
+      run(a, 0, 1, a.kind === 'curl' ? 620 : 320, undefined, finish(a))
+    } else paint(a, drag.current?.t ?? 0, drag.current ? toPoint(a, drag.current.last) : undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [anim])
+
+  // Kare değişti (çevirme bitti ya da başka yoldan gidildi): dinlenme durumu
+  const key = `${cur.frame.page}-${cur.frame.half}-${span}`
+  useLayoutEffect(() => {
+    cancelAnimationFrame(raf.current)
+    busy.current = false
+    animRef.current = null
+    setAnim(null)
+    rest()
+  }, [key])
+
+  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+
+  /** Parmak konumunu (ekran) kutu koordinatında köşe noktasına çevir. */
+  function toPoint(a: Anim, client: { x: number; y: number }) {
+    const r = box.current!.getBoundingClientRect()
+    const fx = client.x - r.left
+    const fy = client.y - r.top
+    return a.dir === 1 ? { x: fx, y: fy } : { x: 2 * fx - r.width, y: fy }
+  }
+  function progressOf(a: Anim, client: { x: number; y: number }, startX: number) {
+    const { W } = size()
+    if (a.kind === 'slide') return Math.max(0, Math.min(1, (Math.abs(client.x - startX) / W) * 1.3))
+    const P = toPoint(a, client)
+    const u = (W - P.x) / (2 * W)
+    return Math.max(0, Math.min(1, a.dir === 1 ? u : 1 - u))
+  }
+
+  const topSide = anim?.dir === -1 && anim.kind === 'curl' ? prev! : cur
+  const underSide = anim ? (anim.kind === 'curl' ? (anim.dir === 1 ? next! : cur) : anim.dir === 1 ? next! : prev!) : null
 
   return (
     <div
+      ref={box}
       className={className}
-      style={{ aspectRatio: `${page.w} / ${page.h * span}`, ...style }}
+      style={{ aspectRatio: `${cur.page.w} / ${cur.page.h * span}`, ...style }}
       onClick={(e) => {
-        if (pen.on) return
+        if (pen.on || busy.current) return
         const r = e.currentTarget.getBoundingClientRect()
         const x = (e.clientX - r.left) / r.width
         onTap(x > 0.67 ? 1 : x < 0.33 ? -1 : 0)
       }}
       onTouchStart={(e) => {
-        if (pen.on || e.touches.length !== 1) return
-        drag.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, dx: 0, horizontal: null }
+        if (pen.on || busy.current || e.touches.length !== 1) return
+        const t0 = e.touches[0]
+        drag.current = { x: t0.clientX, y: t0.clientY, horizontal: null, t: 0, last: { x: t0.clientX, y: t0.clientY } }
       }}
       onTouchMove={(e) => {
         const d = drag.current
         if (!d || e.touches.length !== 1) return
-        const dx = e.touches[0].clientX - d.x
-        const dy = e.touches[0].clientY - d.y
-        if (d.horizontal === null && Math.hypot(dx, dy) > 8) d.horizontal = Math.abs(dx) > Math.abs(dy) * 1.3
+        const p = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        const dx = p.x - d.x
+        const dy = p.y - d.y
+        if (d.horizontal === null && Math.hypot(dx, dy) > 8) {
+          d.horizontal = Math.abs(dx) > Math.abs(dy) * 1.2
+          if (d.horizontal) {
+            const r = box.current!.getBoundingClientRect()
+            if (!begin(dx < 0 ? 1 : -1, d.y - r.top > r.height / 2 ? 'bottom' : 'top')) d.horizontal = false
+          }
+        }
         if (!d.horizontal) return
-        d.dx = dx
-        setTransform(dx, false)
+        const a = animRef.current
+        if (!a) return
+        d.last = p
+        d.t = progressOf(a, p, d.x)
+        if (anim) paint(a, d.t, a.kind === 'curl' ? toPoint(a, p) : undefined)
       }}
       onTouchEnd={() => {
         const d = drag.current
         drag.current = null
-        if (!d?.horizontal) return
-        if (Math.abs(d.dx) > 60) {
-          setTransform(0, false)
-          onSwipe(d.dx < 0 ? 1 : -1)
-        } else setTransform(0, true)
+        const a = animRef.current
+        if (!d?.horizontal || !a) return
+        const go = d.t > 0.22
+        const from = a.kind === 'curl' ? toPoint(a, d.last) : undefined
+        run(a, d.t, go ? 1 : 0, 260 + 260 * (go ? 1 - d.t : d.t), from, go ? finish(a) : cancel())
       }}
     >
-      <div
-        ref={layer}
-        key={`${frame.page}-${frame.half}`}
-        className={`${styles.layer} ${turn > 0 ? styles.turnNext : turn < 0 ? styles.turnPrev : ''}`}
-        style={{ top: `${(-frame.start / span) * 100}%`, height: `${100 / span}%` }}
-      >
-        <img src={src} alt={alt} draggable={false} />
-        <InkLayer userId={userId} bookId={bookId} page={page} pen={pen} />
+      {underSide && (
+        <div ref={underRef} className={styles.sheet} style={{ visibility: 'hidden' }}>
+          <SheetContent side={underSide} userId={userId} bookId={bookId} pen={pen} alt="" />
+        </div>
+      )}
+      <div ref={shadowRef} className={styles.foldShadow} style={{ visibility: 'hidden' }} />
+      <div ref={topRef} className={styles.sheet}>
+        <SheetContent side={topSide} userId={userId} bookId={bookId} pen={pen} alt={alt} />
       </div>
+      {anim?.kind === 'curl' && (
+        <div ref={flapRef} className={`${styles.sheet} ${styles.flap}`} style={{ visibility: 'hidden' }}>
+          <SheetContent side={topSide} userId={userId} bookId={bookId} pen={{ ...pen, on: false }} alt="" />
+          <div className={styles.paper} />
+          <div ref={shadeRef} className={styles.flapShade} />
+        </div>
+      )}
     </div>
   )
 }

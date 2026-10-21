@@ -21,8 +21,8 @@ import {
   type BookMeta,
   type Frame,
 } from './books/bookData'
-import { localFetch, preloadLocalImage, useLocalUrl } from '../services/localContent'
-import { PageView, PenPalette } from './books/PageView'
+import { localFetch, useLocalUrl } from '../services/localContent'
+import { PageView, PenPalette, type PageViewHandle, type Side } from './books/PageView'
 import { clearPage, readPen, savePen, undoStroke, type Pen } from './books/ink'
 import reading from './books/Reading.module.css'
 
@@ -118,8 +118,7 @@ function Reader() {
   const [book, setBook] = useState<Book | null>(null)
   const [error, setError] = useState('')
   const [mode, setModeState] = useState<'half' | 'full'>(readMode)
-  // Yeni kare hangi yönden geliyor (sayfa çevirme efekti): 1 sonraki, -1 önceki, 0 efektsiz
-  const [turn, setTurn] = useState(0)
+  const view = useRef<PageViewHandle>(null)
   const [pen, setPenState] = useState<Pen>(readPen)
   const [focus, setFocusState] = useState(() => {
     try {
@@ -146,6 +145,11 @@ function Reader() {
   }, [frames, pageNo, halfParam])
   const frame: Frame | undefined = frames[idx]
   const src = useLocalUrl(frame ? imageUrl(bookId, frame.page) : null)
+  // Komşu kareler: çevirirken altta/üstte görünürler (görüntüleri de böylece önceden yüklenir)
+  const prevFrame: Frame | undefined = frames[idx - 1]
+  const nextFrame: Frame | undefined = frames[idx + 1]
+  const prevSrc = useLocalUrl(prevFrame ? imageUrl(bookId, prevFrame.page) : null)
+  const nextSrc = useLocalUrl(nextFrame ? imageUrl(bookId, nextFrame.page) : null)
 
   // Kaldığın yeri kaydet; bir üniteyi ileri doğru geçince o ünite bitmiş sayılır (günlük plan için)
   const prevPage = useRef<number | null>(null)
@@ -164,19 +168,19 @@ function Reader() {
     }
   }, [userId, bookId, frame, book])
 
-  // Sonraki sayfanın görüntüsünü önceden yükle
-  useEffect(() => {
-    const next = frames[idx + 1]
-    if (next && next.page !== frame?.page) preloadLocalImage(imageUrl(bookId, next.page))
-  }, [frames, idx, frame, bookId])
 
-  function go(i: number) {
+  function goTo(i: number) {
     const j = Math.max(0, Math.min(frames.length - 1, i))
     const f = frames[j]
     if (!f || j === idx) return
-    setTurn(j > idx ? 1 : -1)
     navigate(`/kitap/${bookId}/s/${f.page}${f.half ? `?yarim=${f.half}` : ''}`, { replace: true })
     if (!focus) window.scrollTo({ top: 0 })
+  }
+
+  /** Bir önceki/sonraki kareye sayfa çevirme animasyonuyla; uzak atlamalar (ünite seçimi) doğrudan. */
+  function go(i: number) {
+    if (Math.abs(i - idx) === 1 && view.current?.flip(i > idx ? 1 : -1)) return
+    goTo(i)
   }
 
   function setPen(p: Pen) {
@@ -238,21 +242,23 @@ function Reader() {
   function setMode(m: 'half' | 'full') {
     saveMode(m)
     setModeState(m)
-    setTurn(0)
   }
 
   const where = `s. ${frame.page} / ${book.pageCount}${frame.half === 1 ? ' · üst' : frame.half === 2 ? ' · alt' : ''}`
+  const side = (f: Frame | undefined, s: string | undefined): Side | undefined => (f ? { frame: f, page: book.pages[f.page - 1], src: s } : undefined)
   const pageProps = {
     userId,
     bookId,
-    page,
-    frame,
-    src,
+    cur: { frame, page, src },
+    prev: side(prevFrame, prevSrc),
+    next: side(nextFrame, nextSrc),
     alt: `${book.short} sayfa ${frame.page}`,
     pen,
-    turn,
-    onTap: (side: -1 | 0 | 1) => side && go(idx + side),
-    onSwipe: (dir: -1 | 1) => go(idx + dir),
+    handle: view,
+    onTap: (s: -1 | 0 | 1) => {
+      if (s) go(idx + s)
+    },
+    onTurned: (dir: -1 | 1) => goTo(idx + dir),
   }
 
   if (focus) {

@@ -98,10 +98,6 @@ export function useLocalUrl(apiPath: string | null): string | undefined {
   return url?.path === apiPath ? url.url : undefined
 }
 
-/** Sonraki sayfayı önceden hazırlamak için (yayında depodan okumak zaten hızlı; yalnızca geliştirmede ağdan çeker). */
-export function preloadLocalImage(apiPath: string): void {
-  if (import.meta.env.DEV) new Image().src = apiPath
-}
 
 // Liste yanıtları birden çok paketle gelebilir: kimliğe göre birleştirilir
 const LIST_KEYS = new Set(['yds/', 'kitap/', 'paket'])

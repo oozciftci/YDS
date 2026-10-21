@@ -36,44 +36,41 @@
   mix-blend-mode: multiply;
 }
 
-/* Sayfa çevirme hissi: yeni kare yandan, hafif dönerek gelir (yalnızca transform; ekran kartında çalışır) */
-.turnNext {
-  transform-origin: left center;
-  animation: turnNext 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+/* Sayfa çevirme: üst/alt kare katmanları, katlanan kapak ve gölgeler (bkz. PageView, pageCurl.ts) */
+.sheet {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fff;
+  will-change: transform, clip-path;
 }
 
-.turnPrev {
-  transform-origin: right center;
-  animation: turnPrev 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.flap {
+  transform-origin: 0 0;
+  overflow: visible;
 }
 
-@keyframes turnNext {
-  from {
-    transform: perspective(1400px) translateX(30%) rotateY(-32deg);
-    opacity: 0.45;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
+/* Kapağın arka yüzü: ince kâğıt, ön yüzün yazısı silik ve ters görünür */
+.paper {
+  position: absolute;
+  inset: 0;
+  background: rgb(251 249 244 / 0.88);
 }
 
-@keyframes turnPrev {
-  from {
-    transform: perspective(1400px) translateX(-30%) rotateY(32deg);
-    opacity: 0.45;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
+.flapShade,
+.foldShadow {
+  position: absolute;
+  pointer-events: none;
+  transform-origin: center;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .turnNext,
-  .turnPrev {
-    animation: none;
-  }
+.flapShade {
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.22), rgb(0 0 0 / 0.05) 45%, rgb(255 255 255 / 0.25));
+}
+
+/* Alttaki sayfaya düşen gölge (katlama çizgisi boyunca) */
+.foldShadow {
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.38), rgb(0 0 0 / 0) 70%);
 }
 
 /* ---- Odak modu: sayfa tüm ekranı kaplar ---- */
