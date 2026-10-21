@@ -18,6 +18,8 @@ const CoachPage = lazy(() => import('./pages/Coach'))
 const YdsTestPage = lazy(() => import('./pages/YdsTest'))
 const NightModePage = lazy(() => import('./pages/NightMode'))
 const WordFamiliesPage = lazy(() => import('./pages/WordFamilies').then((m) => ({ default: m.WordFamiliesPage })))
+const ReadingLibraryPage = lazy(() => import('./pages/ReadingLibrary').then((m) => ({ default: m.ReadingLibraryPage })))
+const LibraryReader = lazy(() => import('./pages/ReadingLibrary').then((m) => ({ default: m.LibraryReader })))
 
 // YDS soru çalışma ve Kitaptan çalış sayfaları telifli yerel içerik ister: geliştirmede yerel sunucudan, yayında cihaza
 // yüklenen kaynak paketinden (src/services/localContent.ts). Paket yüklenmemişse sayfa yolu hiç tanımlanmaz.
@@ -32,6 +34,22 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="calis" element={<StudyHubPage />} />
           <Route path="study" element={<StudyPage />} />
+          <Route
+            path="okuma"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <ReadingLibraryPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="okuma/:textId"
+            element={
+              <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                <LibraryReader />
+              </Suspense>
+            }
+          />
           <Route
             path="kelime-ailesi"
             element={

@@ -1,0 +1,105 @@
+.levelHint {
+  font-weight: 400;
+  color: var(--text-subtle);
+}
+
+.level {
+  display: inline-block;
+  padding: 0 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--primary-subtle);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.quiz {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.q {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.qText {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.qTr {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.trBtn {
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.opts {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.opt {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.opt:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.opt:disabled {
+  cursor: default;
+}
+
+.ok {
+  border-color: var(--success);
+  background: var(--success-subtle);
+}
+
+.bad {
+  border-color: var(--danger);
+  background: var(--danger-subtle);
+}
+
+.dim {
+  opacity: 0.6;
+}
+
+.why {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.score {
+  margin: 0;
+  font-weight: 700;
+}
+
+.summary summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.summary p {
+  margin: 0.4rem 0 0;
+  line-height: 1.6;
+}

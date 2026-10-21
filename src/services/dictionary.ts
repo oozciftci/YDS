@@ -335,6 +335,24 @@ export function getStemCandidates(rawWord: string): string[] {
   return Array.from(candidates)
 }
 
+/** Kelime (ya da kök adaylarından biri) kullanıcının havuzunda var mı; varsa kartıyla birlikte. */
+export async function findDeckWord(rawWord: string, userId?: string): Promise<{ word: WordItem; cardState?: CardState } | null> {
+  try {
+    for (const cand of getStemCandidates(rawWord)) {
+      const match = await db.words
+        .filter((w) => !w.isDeleted && (!userId || w.userId === userId) && w.term.toLowerCase() === cand)
+        .first()
+      if (match) {
+        const cardState = userId ? await db.cardStates.where('id').equals(`${match.id}_${userId}`).first() : undefined
+        return { word: match, cardState }
+      }
+    }
+  } catch {
+    // Dexie arama hatası olursa havuzda yok sayılır
+  }
+  return null
+}
+
 /**
  * Arama Sonucu Bilgisi
  */
@@ -388,29 +406,9 @@ export async function lookupWordInSentence(
   }
 
   // 2. Kullanıcının kendi YDS kelime tablosu (Dexie)
-  try {
-    for (const cand of candidates) {
-      const match = await db.words
-        .filter((w) => !w.isDeleted && (!userId || w.userId === userId) && w.term.toLowerCase() === cand)
-        .first()
-
-      if (match) {
-        let cardState: CardState | undefined
-        if (userId) {
-          cardState = await db.cardStates.where('id').equals(`${match.id}_${userId}`).first()
-        }
-        return {
-          term: match.term,
-          meaning: match.definition,
-          source: 'deck',
-          existingWord: match,
-          cardState,
-          isNewWord: false,
-        }
-      }
-    }
-  } catch {
-    // Dexie arama hatası olursa devam et
+  const deck = await findDeckWord(clean, userId)
+  if (deck) {
+    return { term: deck.word.term, meaning: deck.word.definition, source: 'deck', existingWord: deck.word, cardState: deck.cardState, isNewWord: false }
   }
 
   // 3. Yerel Önbellek

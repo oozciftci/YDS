@@ -140,7 +140,16 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 - İçindekiler paneli (`TocPanel.tsx`): üniteler + sağda "s. N" (okuyucudaki numara = dosyadaki sayfa sırası; basılı numara
   birkaç sayfa farklı olabilir), "Sayfaya git"; odakta sayfa numarasına dokununca açılır.
 
-### 4.5 Diğerleri
+### 4.5 Okuma Kütüphanesi ve ortak okuyucu
+- Veri: `public/data/okuma/<seviye>.json` (özgün, yayına girer; biçim `src/services/readingLibrary.ts`). Yeni metin eklerken:
+  cümle başına Türkçe, zor kelimeler için **metinde geçtiği biçimiyle küçük harfli** anlam anahtarı (ör. `muscles`, `absorbing`),
+  4 şıklı 3 soru (`qt` Türkçesi, `why` metindeki dayanak), Türkçe özet; sonra `node scripts/qcOkuma.mjs` + `npx vitest run`.
+  Seviye kelime sınırları: A2 80–220, B1 150–320, B2 220–420, C1 280–520.
+- Okuyucu `src/pages/exam/ReaderBody.tsx` (Okuma Modu da kullanır): sonuç ve devamı (sorular, sonraki metin) aynı kartta
+  metnin altında → odak modunda da görünür. Kaydırılan kapsayıcı dışarıda kalır, okuyucu metin kimliğiyle anahtarlanır (§4.3).
+- Kayıtlar `src/services/readingLog.ts`; Okuma Modu `<sınav>/<paragraf>`, kütüphane `lib/<id>`.
+
+### 4.6 Diğerleri
 - Kelime balonu (`exam/WordPopover.tsx`): ekranı kaplayan arka plan yerine "dışarıya dokununca kapan" dinleyicisi → başka kelimeye tek dokunuş.
 - Profil resmi/rengi (`components/Avatar.tsx`, `services/avatar.ts`): ~256 px kare JPEG data URL `users.avatarImage`.
 - Dar telefonda üst çubuk: kullanıcı adı ve çevrimiçi noktası gizli; büyük yazıda iki satıra sarar.
@@ -189,4 +198,5 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 - Kişisel çalışma planı (sınav tarihi + günde 1 saat) kurulmadı; tarih netleşince haftalık plan + ana sayfa planına bağla.
 - Kaydırırken alttaki içerik boş kâğıt (bilinçli tasarım, §4.3).
 - Strateji 3'te 9 sorunun kutusu yok (tam sayfa); kitap bölme yerleri bazen bölüm ortasına düşebilir.
-- YOL_HARITASI eski bekleyenler: 6.2 Yazma pratiği, 5.3 Okuma kütüphanesi, 6.7b, 6.3 senkron, File Search; "Yenilikler" sayfası önerisi.
+- Okuma Kütüphanesi: B2 ve C1 metinleri, “kendi metnini ekle” (cihazda kalır), konuya göre süzgeç henüz yok.
+- YOL_HARITASI eski bekleyenler: 6.2 Yazma pratiği, 6.7b, 6.3 senkron, File Search; "Yenilikler" sayfası önerisi.

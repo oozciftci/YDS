@@ -27,6 +27,7 @@ akışlar orada denenemez. Bu betikler kurulu Chrome'u başsız açar, 390×844 
 | `flipTest.mjs` | Kitap: yarım sayfada dikey kayma, katlanma ara kareleri (ekran görüntüsü), geri çevirme |
 | `penTest.mjs` | Kitap: aynalı geri çevirme, kalemle tek parmak çizgi / iki parmak (çizgi çizilmemeli), çizim silmenin kalıcılığı |
 | `readTest.mjs` | Okuma Modu: kelimeden kaydırarak paragraf geçişi, süre sıfırlanması, ilk paragrafta yaylanma, odakta yalnızca metin + süre + Bitir (alan ekrana sığar), bitirince sonuç; ek testinde ileri/geri (önceki cevap kilitli) |
+| `libTest.mjs` | Okuma Kütüphanesi: liste ve seviye süzgeci, metne özgü kelime anlamı (balon), kaydırarak metin geçişi, bitirince 3 soru + kayıt, odakta alanın sığması, listede okundu/soru sonucu |
 | `prodTest.mjs` | Yayın derlemesi (`vite preview` 4173, `/YDS/`): `.ydsk` paketini yükle, kitap/sınav/Strateji 3, çevrimdışı. 2. argüman paket dosyası |
 
 ## Dikkat

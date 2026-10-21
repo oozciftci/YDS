@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
-import { cleanToken, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
+import { cleanToken, findDeckWord, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
 import { EXAM_COLLECTED_TAG } from '../../services/groups'
 import { speakWord } from '../../services/tts'
 import { createWord, updateWord } from '../../services/words'
@@ -72,14 +72,22 @@ interface PopoverState {
 /**
  * Kelime anlam balonu. `note` eklenen kelimenin notuna yazılır (örn. "yds-2024-ilkbahar / Soru 12").
  * `lookedUp`: bu ekranda anlamına bakılan kelimeler (okuma özetinde gösterilir).
+ * `glossFor`: metnin kendi kelime anlamları (Okuma Kütüphanesi) — varsa genel sözlük yerine bağlama uygun anlam anında gösterilir.
  */
-export function useWordPopover(note: string): { onWord: OnWord; close: () => void; popover: ReactNode; lookedUp: string[] } {
+export function useWordPopover(
+  note: string,
+  glossFor?: (word: string) => string | undefined,
+): { onWord: OnWord; close: () => void; popover: ReactNode; lookedUp: string[] } {
   const activeUserId = useUserStore((s) => s.activeUserId)
   const [pop, setPop] = useState<PopoverState | null>(null)
   const [lookup, setLookup] = useState<WordLookupResult | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
   const [added, setAdded] = useState(false)
   const [lookedUp, setLookedUp] = useState<string[]>([])
+  const glossRef = useRef(glossFor)
+  useEffect(() => {
+    glossRef.current = glossFor
+  })
 
   const close = useCallback(() => setPop(null), [])
 
@@ -115,7 +123,18 @@ export function useWordPopover(note: string): { onWord: OnWord; close: () => voi
       setLookingUp(true)
       setLookedUp((l) => (l.includes(term.toLowerCase()) ? l : [...l, term.toLowerCase()]))
       try {
-        setLookup(await lookupWordInSentence(term, undefined, activeUserId))
+        const gloss = glossRef.current?.(term)
+        if (gloss) {
+          // Metnin kendi anlamı: ağa gitmeden; havuzda varsa "Topladıklarıma ekle" doğru çalışsın diye yalnızca havuza bakılır
+          const deck = await findDeckWord(term, activeUserId)
+          setLookup(
+            deck
+              ? { term: deck.word.term, meaning: gloss, source: 'sentence_gloss', existingWord: deck.word, cardState: deck.cardState, isNewWord: false }
+              : { term, meaning: gloss, source: 'sentence_gloss', isNewWord: true },
+          )
+        } else {
+          setLookup(await lookupWordInSentence(term, undefined, activeUserId))
+        }
       } finally {
         setLookingUp(false)
       }
@@ -156,6 +175,11 @@ export function useWordPopover(note: string): { onWord: OnWord; close: () => voi
           </button>
         </div>
         <p className={styles.popMeaning}>{lookingUp ? 'Anlam aranıyor…' : lookup?.meaning || 'Anlam bulunamadı.'}</p>
+        {lookup?.source === 'sentence_gloss' && lookup.existingWord && lookup.existingWord.definition !== lookup.meaning && (
+          <p className="muted" style={{ margin: 0, fontSize: '0.78rem' }}>
+            Havuzundaki anlamı: {lookup.existingWord.definition}
+          </p>
+        )}
         {lookup?.existingWord &&
           (added || (lookup.existingWord.tags || []).includes(EXAM_COLLECTED_TAG) ? (
             <p className="muted" style={{ margin: 0, fontSize: '0.78rem' }}>

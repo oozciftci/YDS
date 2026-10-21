@@ -61,8 +61,9 @@ const ALL: StudyCategory[] = [
     id: 'dinle',
     icon: '🎧',
     title: 'Dinle & Oku',
-    desc: 'Kulaktan öğren: kelime, paragraf, gece modu.',
+    desc: 'Seviyene göre oku, kulaktan öğren: metin, kelime, gece modu.',
     links: [
+      { to: '/okuma', label: 'Okuma Kütüphanesi', hint: 'A2–B1 metinler; kelimeye dokun, anlamını gör' },
       { to: '/gece', label: 'Gece Modu', hint: 'Yatarken kelime/paragraf dinle' },
       { to: '/study?mode=listen', label: 'Dinleyerek kelime', hint: 'Sesi duy, anlamını seç' },
       { to: '/yds-sorular/okuma', label: 'Okuma Modu', hint: 'Paragraf oku, dinle, süreni ölç', dev: true },
@@ -87,5 +88,5 @@ export const STUDY_CATEGORIES: StudyCategory[] = ALL.map((c) => ({
 
 /** Bu yollar "Çalış" menüsünün altında sayılır (menüde Çalış seçili görünür). */
 export function isStudyPath(pathname: string): boolean {
-  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap|kelime-ailesi)(\/|$)/.test(pathname)
+  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap|kelime-ailesi|okuma)(\/|$)/.test(pathname)
 }

@@ -1329,3 +1329,26 @@ h2 .listen .rateSelect {
   background: var(--danger-subtle);
   color: var(--danger);
 }
+
+/* Okuyucu (ReaderBody): bitirince metnin altında, aynı kartta sonuç ve devamı */
+.readResult {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: calc(8rem + env(safe-area-inset-top));
+}
+
+.readEnd {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Telefonda çubuk birkaç satıra sarar; sabit kalınca metnin üstünü kapatıyordu */
+@media (max-width: 640px) {
+  .readBar {
+    position: static;
+  }
+}

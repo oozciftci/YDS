@@ -1,0 +1,285 @@
+{
+  "level": "A2",
+  "texts": [
+    {
+      "id": "a2-uyku",
+      "title": "Why We Need Sleep",
+      "titleTr": "Neden Uyumamız Gerekir?",
+      "topic": "Sağlık",
+      "sentences": [
+        { "en": "Most adults need seven to nine hours of sleep every night.", "tr": "Çoğu yetişkinin her gece yedi ila dokuz saat uykuya ihtiyacı vardır." },
+        { "en": "However, many people sleep much less because of work, phones or stress.", "tr": "Ancak pek çok insan iş, telefon ya da stres yüzünden çok daha az uyur." },
+        { "en": "While we sleep, our body is not simply resting.", "tr": "Biz uyurken vücudumuz yalnızca dinlenmez." },
+        { "en": "The brain sorts the information of the day and stores important memories.", "tr": "Beyin günün bilgilerini düzenler ve önemli anıları saklar." },
+        { "en": "This is why students who sleep well often remember new words more easily.", "tr": "Bu yüzden iyi uyuyan öğrenciler yeni kelimeleri çoğu zaman daha kolay hatırlar." },
+        { "en": "Sleep also helps the body repair muscles and fight illness.", "tr": "Uyku ayrıca vücudun kasları onarmasına ve hastalıkla savaşmasına yardım eder." },
+        { "en": "People who sleep too little catch colds more often.", "tr": "Çok az uyuyan insanlar daha sık soğuk algınlığına yakalanır." },
+        { "en": "A lack of sleep can affect our mood, too.", "tr": "Uykusuzluk ruh hâlimizi de etkileyebilir." },
+        { "en": "After a bad night, we may feel angry or sad for no clear reason.", "tr": "Kötü bir geceden sonra belirgin bir neden olmadan kızgın ya da üzgün hissedebiliriz." },
+        { "en": "Doctors give some simple advice for better sleep.", "tr": "Doktorlar daha iyi bir uyku için bazı basit öneriler verir." },
+        { "en": "Go to bed at the same time every day, and keep your bedroom dark and quiet.", "tr": "Her gün aynı saatte yatın; yatak odanızı karanlık ve sessiz tutun." },
+        { "en": "Also, try to stop using screens at least an hour before bed.", "tr": "Ayrıca yatmadan en az bir saat önce ekran kullanmayı bırakmaya çalışın." }
+      ],
+      "glosses": {
+        "adults": "yetişkinler",
+        "however": "ancak, bununla birlikte",
+        "stress": "stres",
+        "simply": "yalnızca, sadece",
+        "resting": "dinlenmek",
+        "sorts": "düzenler, ayıklar",
+        "stores": "saklar, depolar",
+        "memories": "anılar",
+        "easily": "kolayca",
+        "repair": "onarmak",
+        "muscles": "kaslar",
+        "illness": "hastalık",
+        "catch": "(hastalığa) yakalanmak",
+        "colds": "soğuk algınlığı, nezle",
+        "lack": "eksiklik, yokluk (lack of sleep: uykusuzluk)",
+        "affect": "etkilemek",
+        "mood": "ruh hâli",
+        "clear": "belirgin, açık",
+        "advice": "öneri, tavsiye",
+        "quiet": "sessiz",
+        "screens": "ekranlar",
+        "least": "(at least) en az"
+      },
+      "summary": "Yetişkinlerin her gece 7–9 saat uykuya ihtiyacı vardır. Uyku sırasında beyin günün bilgilerini düzenler ve anıları saklar; vücut kasları onarır ve hastalıklarla savaşır. Az uyku hastalanmayı kolaylaştırır ve ruh hâlini bozar; düzenli yatış saati, karanlık ve sessiz oda, yatmadan önce ekransız bir saat önerilir.",
+      "qs": [
+        {
+          "q": "According to the text, what does the brain do during sleep?",
+          "qt": "Metne göre beyin uyku sırasında ne yapar?",
+          "o": ["It stops working completely.", "It sorts information and stores memories.", "It makes the muscles bigger.", "It creates new words."],
+          "a": 1,
+          "why": "4. cümle: “The brain sorts the information of the day and stores important memories.” — beyin bilgileri düzenler ve anıları saklar."
+        },
+        {
+          "q": "Which of these is NOT advice from doctors in the text?",
+          "qt": "Hangisi metindeki doktor önerilerinden biri DEĞİLDİR?",
+          "o": ["Go to bed at the same time.", "Keep the bedroom dark.", "Drink coffee before bed.", "Stop using screens before bed."],
+          "a": 2,
+          "why": "Son iki cümlede aynı saatte yatmak, karanlık ve sessiz oda, ekranı bırakmak önerilir; kahve hiç geçmez."
+        },
+        {
+          "q": "What can happen to people who sleep too little?",
+          "qt": "Çok az uyuyan insanlara ne olabilir?",
+          "o": ["They catch colds more often.", "They remember words more easily.", "They feel happier.", "They need less food."],
+          "a": 0,
+          "why": "7. cümle: “People who sleep too little catch colds more often.” — daha sık soğuk algınlığına yakalanırlar."
+        }
+      ]
+    },
+    {
+      "id": "a2-arilar",
+      "title": "Small Bees, Big Job",
+      "titleTr": "Küçük Arılar, Büyük İş",
+      "topic": "Doğa",
+      "sentences": [
+        { "en": "Bees are small insects, but they do a very big job for people.", "tr": "Arılar küçük böceklerdir ama insanlar için çok büyük bir iş yaparlar." },
+        { "en": "When a bee visits a flower, it collects a sweet liquid called nectar.", "tr": "Bir arı bir çiçeği ziyaret ettiğinde nektar denen tatlı bir sıvı toplar." },
+        { "en": "At the same time, yellow powder from the flower sticks to its body.", "tr": "Aynı zamanda çiçekteki sarı toz arının vücuduna yapışır." },
+        { "en": "This powder is called pollen.", "tr": "Bu toza polen denir." },
+        { "en": "When the bee flies to the next flower, it carries the pollen with it.", "tr": "Arı bir sonraki çiçeğe uçtuğunda poleni de beraberinde taşır." },
+        { "en": "In this way, plants can produce fruit and seeds.", "tr": "Bu şekilde bitkiler meyve ve tohum üretebilir." },
+        { "en": "Apples, cherries, almonds and many vegetables depend on bees.", "tr": "Elma, kiraz, badem ve pek çok sebze arılara bağlıdır." },
+        { "en": "Some scientists say that about one third of our food needs their help.", "tr": "Bazı bilim insanlarına göre yiyeceklerimizin yaklaşık üçte biri onların yardımına muhtaçtır." },
+        { "en": "Unfortunately, the number of bees is falling in many countries.", "tr": "Ne yazık ki birçok ülkede arıların sayısı azalıyor." },
+        { "en": "Chemicals used on farms, diseases and the loss of wild flowers are the main reasons.", "tr": "Tarlalarda kullanılan kimyasallar, hastalıklar ve kır çiçeklerinin yok olması başlıca nedenlerdir." },
+        { "en": "Ordinary people can help, too.", "tr": "Sıradan insanlar da yardım edebilir." },
+        { "en": "Even a few flowers on a balcony give bees food and a place to rest.", "tr": "Bir balkondaki birkaç çiçek bile arılara yiyecek ve dinlenecek bir yer sağlar." }
+      ],
+      "glosses": {
+        "insects": "böcekler",
+        "job": "iş, görev",
+        "collects": "toplar",
+        "liquid": "sıvı",
+        "nectar": "nektar (çiçek özü)",
+        "powder": "toz",
+        "sticks": "yapışır",
+        "pollen": "polen, çiçek tozu",
+        "carries": "taşır",
+        "produce": "üretmek",
+        "seeds": "tohumlar",
+        "cherries": "kirazlar",
+        "almonds": "bademler",
+        "depend": "(depend on) -e bağlı olmak",
+        "third": "(one third) üçte bir",
+        "unfortunately": "ne yazık ki",
+        "falling": "azalıyor, düşüyor",
+        "chemicals": "kimyasallar",
+        "farms": "çiftlikler, tarlalar",
+        "diseases": "hastalıklar",
+        "loss": "kayıp, yok olma",
+        "wild": "yabani (wild flowers: kır çiçekleri)",
+        "main": "başlıca, ana",
+        "reasons": "nedenler",
+        "ordinary": "sıradan",
+        "even": "bile",
+        "balcony": "balkon",
+        "rest": "dinlenmek"
+      },
+      "summary": "Arılar nektar toplarken vücutlarına yapışan poleni çiçekten çiçeğe taşır; bu sayede bitkiler meyve ve tohum verir. Yiyeceklerimizin yaklaşık üçte biri arıların bu yardımına bağlıdır. Tarım kimyasalları, hastalıklar ve kır çiçeklerinin azalması yüzünden arı sayısı düşüyor; balkondaki birkaç çiçek bile arılara yardım eder.",
+      "qs": [
+        {
+          "q": "What is pollen?",
+          "qt": "Polen nedir?",
+          "o": ["A sweet liquid in flowers", "Yellow powder from flowers", "A kind of insect", "A type of fruit"],
+          "a": 1,
+          "why": "3–4. cümleler: çiçekten gelen sarı toza (yellow powder) polen denir. Tatlı sıvı ise nektardır."
+        },
+        {
+          "q": "Why is the number of bees falling?",
+          "qt": "Arıların sayısı neden azalıyor?",
+          "o": ["People eat too much honey.", "Bees fly to other countries.", "Farm chemicals, diseases and fewer wild flowers", "There are too many flowers."],
+          "a": 2,
+          "why": "10. cümle: kimyasallar, hastalıklar ve kır çiçeklerinin kaybı “the main reasons” (başlıca nedenler) olarak sayılır."
+        },
+        {
+          "q": "According to the text, how can ordinary people help bees?",
+          "qt": "Metne göre sıradan insanlar arılara nasıl yardım edebilir?",
+          "o": ["By putting flowers on their balconies", "By buying more apples", "By catching bees", "By using chemicals"],
+          "a": 0,
+          "why": "Son cümle: balkondaki birkaç çiçek bile arılara yiyecek ve dinlenecek yer sağlar."
+        }
+      ]
+    },
+    {
+      "id": "a2-ipek-yolu",
+      "title": "The Silk Road",
+      "titleTr": "İpek Yolu",
+      "topic": "Tarih",
+      "sentences": [
+        { "en": "More than two thousand years ago, traders began to travel between China and Europe.", "tr": "İki bin yıldan uzun süre önce tüccarlar Çin ile Avrupa arasında yolculuk etmeye başladı." },
+        { "en": "The routes they used are known today as the Silk Road.", "tr": "Kullandıkları yollar bugün İpek Yolu olarak bilinir." },
+        { "en": "It was not a single road but a long network of paths across deserts and mountains.", "tr": "Bu, tek bir yol değil; çöllerden ve dağlardan geçen uzun bir yollar ağıydı." },
+        { "en": "Chinese silk was very popular in the West, so it gave the routes their name.", "tr": "Çin ipeği Batı'da çok seviliyordu, bu yüzden yollara adını o verdi." },
+        { "en": "Traders also carried spices, paper, glass and horses.", "tr": "Tüccarlar ayrıca baharat, kâğıt, cam ve at taşıdı." },
+        { "en": "The journey was long and dangerous.", "tr": "Yolculuk uzun ve tehlikeliydi." },
+        { "en": "Few traders travelled the whole way; most of them sold their goods to the next group in a city on the road.", "tr": "Yolun tamamını gidebilen tüccar azdı; çoğu mallarını yol üzerindeki bir şehirde bir sonraki gruba satardı." },
+        { "en": "Along the routes, travellers rested in large buildings called caravanserais.", "tr": "Yollar boyunca yolcular kervansaray denen büyük binalarda dinlenirdi." },
+        { "en": "Some of these buildings can still be seen in Anatolia today.", "tr": "Bu binaların bazıları bugün hâlâ Anadolu'da görülebilir." },
+        { "en": "The Silk Road did not only move goods.", "tr": "İpek Yolu yalnızca mal taşımadı." },
+        { "en": "Ideas, languages, religions and even diseases travelled along it, too.", "tr": "Fikirler, diller, dinler ve hatta hastalıklar da bu yol boyunca yayıldı." },
+        { "en": "For this reason, many historians call it one of the first steps towards the connected world we live in today.", "tr": "Bu nedenle pek çok tarihçi onu, bugün yaşadığımız birbirine bağlı dünyaya doğru atılan ilk adımlardan biri olarak görür." }
+      ],
+      "glosses": {
+        "thousand": "bin",
+        "traders": "tüccarlar",
+        "routes": "yollar, güzergâhlar",
+        "single": "tek",
+        "network": "ağ",
+        "paths": "yollar, patikalar",
+        "across": "-in içinden/üstünden geçen",
+        "deserts": "çöller",
+        "silk": "ipek",
+        "spices": "baharatlar",
+        "journey": "yolculuk",
+        "dangerous": "tehlikeli",
+        "whole": "bütün, tamamı",
+        "goods": "mallar, eşya",
+        "along": "boyunca",
+        "travellers": "yolcular",
+        "caravanserais": "kervansaraylar",
+        "still": "hâlâ",
+        "religions": "dinler",
+        "historians": "tarihçiler",
+        "steps": "adımlar",
+        "towards": "-e doğru",
+        "connected": "birbirine bağlı"
+      },
+      "summary": "İpek Yolu, iki bin yıldan uzun süre önce Çin ile Avrupa arasında kurulan, çöl ve dağlardan geçen bir yollar ağıdır; adını Batı'da çok sevilen Çin ipeğinden alır. Baharat, kâğıt, cam ve at da taşınır, tüccarlar kervansaraylarda dinlenirdi. Mallarla birlikte fikirler, diller ve dinler de yayıldığı için birbirine bağlı dünyanın ilk adımlarından sayılır.",
+      "qs": [
+        {
+          "q": "Why was the network of routes called the Silk Road?",
+          "qt": "Bu yollar ağına neden İpek Yolu denmiştir?",
+          "o": ["Because the roads were made of silk", "Because Chinese silk was very popular in the West", "Because only silk was carried on it", "Because it started in Anatolia"],
+          "a": 1,
+          "why": "4. cümle: Çin ipeği Batı'da çok popülerdi, “so it gave the routes their name”. Yalnızca ipek taşınmadı (5. cümle)."
+        },
+        {
+          "q": "What were caravanserais?",
+          "qt": "Kervansaraylar neydi?",
+          "o": ["Ships that carried goods", "Markets in China", "Mountains on the road", "Large buildings where travellers rested"],
+          "a": 3,
+          "why": "8. cümle: “travellers rested in large buildings called caravanserais.”"
+        },
+        {
+          "q": "Which statement is true according to the text?",
+          "qt": "Metne göre hangisi doğrudur?",
+          "o": ["Most traders travelled from China to Europe.", "The Silk Road was one straight road.", "Ideas and languages also travelled along the Silk Road.", "The journey was short and safe."],
+          "a": 2,
+          "why": "11. cümle: fikirler, diller ve dinler de yol boyunca yayıldı. Tüccarların çoğu yolun tamamını gitmedi; tek bir yol değildi; yolculuk uzun ve tehlikeliydi."
+        }
+      ]
+    },
+    {
+      "id": "a2-plastik",
+      "title": "Plastic in the Sea",
+      "titleTr": "Denizdeki Plastik",
+      "topic": "Çevre",
+      "sentences": [
+        { "en": "Plastic is cheap, light and strong, so we use it every day.", "tr": "Plastik ucuz, hafif ve dayanıklıdır; bu yüzden onu her gün kullanırız." },
+        { "en": "But these useful qualities also create a serious problem.", "tr": "Ama bu yararlı özellikler ciddi bir sorun da yaratır." },
+        { "en": "A plastic bottle can stay in nature for hundreds of years.", "tr": "Plastik bir şişe doğada yüzlerce yıl kalabilir." },
+        { "en": "Every year, millions of tonnes of plastic end up in the oceans.", "tr": "Her yıl milyonlarca ton plastik sonunda okyanuslara ulaşır." },
+        { "en": "Much of it comes from rivers that carry rubbish from cities to the sea.", "tr": "Bunun büyük kısmı şehirlerden denize çöp taşıyan nehirlerden gelir." },
+        { "en": "Sea animals often think that plastic is food.", "tr": "Deniz hayvanları çoğu zaman plastiği yiyecek sanır." },
+        { "en": "Turtles, for example, eat plastic bags because they look like jellyfish.", "tr": "Örneğin kaplumbağalar plastik poşetleri, denizanasına benzedikleri için yer." },
+        { "en": "Over time, large pieces break into very small pieces called microplastics.", "tr": "Zamanla büyük parçalar, mikroplastik denen çok küçük parçalara ayrılır." },
+        { "en": "Scientists have found microplastics in fish, salt and even drinking water.", "tr": "Bilim insanları balıkta, tuzda ve hatta içme suyunda mikroplastik buldu." },
+        { "en": "Many countries now ask shoppers to pay for plastic bags, and this has reduced their use.", "tr": "Artık pek çok ülke alışveriş yapanlardan plastik poşet için para istiyor ve bu, poşet kullanımını azalttı." },
+        { "en": "We can also help by carrying our own bottles and bags.", "tr": "Kendi şişemizi ve çantamızı taşıyarak biz de yardım edebiliriz." },
+        { "en": "Small changes in our daily habits can make a big difference.", "tr": "Günlük alışkanlıklarımızdaki küçük değişiklikler büyük bir fark yaratabilir." }
+      ],
+      "glosses": {
+        "cheap": "ucuz",
+        "light": "hafif",
+        "strong": "dayanıklı, sağlam",
+        "useful": "yararlı",
+        "qualities": "özellikler, nitelikler",
+        "serious": "ciddi",
+        "bottle": "şişe",
+        "nature": "doğa",
+        "hundreds": "yüzlerce",
+        "tonnes": "tonlar",
+        "end": "(end up) sonunda bir yere varmak",
+        "rubbish": "çöp",
+        "turtles": "kaplumbağalar",
+        "bags": "poşetler, çantalar",
+        "jellyfish": "denizanası",
+        "pieces": "parçalar",
+        "microplastics": "mikroplastikler",
+        "salt": "tuz",
+        "shoppers": "alışveriş yapanlar",
+        "reduced": "azalttı",
+        "daily": "günlük",
+        "habits": "alışkanlıklar",
+        "difference": "fark"
+      },
+      "summary": "Plastik ucuz ve dayanıklı olduğu için çok kullanılır ama doğada yüzlerce yıl kalır; her yıl milyonlarca ton plastik, çoğu nehirler yoluyla okyanuslara ulaşır. Deniz hayvanları plastiği yiyecek sanır; parçalanan plastik mikroplastiğe dönüşüp balığa, tuza ve içme suyuna karışır. Poşet ücreti ve kendi şişe-çantamızı taşımak gibi küçük adımlar fark yaratır.",
+      "qs": [
+        {
+          "q": "Why do turtles eat plastic bags?",
+          "qt": "Kaplumbağalar plastik poşetleri neden yer?",
+          "o": ["Because the bags taste good", "Because the bags look like jellyfish", "Because there is no other food", "Because the bags are cheap"],
+          "a": 1,
+          "why": "7. cümle: “…because they look like jellyfish” — poşetler denizanasına benzer."
+        },
+        {
+          "q": "What are microplastics?",
+          "qt": "Mikroplastikler nedir?",
+          "o": ["Very small pieces of plastic", "New types of bottles", "Small sea animals", "Bags that you pay for"],
+          "a": 0,
+          "why": "8. cümle: büyük parçalar “very small pieces called microplastics” hâline gelir."
+        },
+        {
+          "q": "What happened when countries asked shoppers to pay for plastic bags?",
+          "qt": "Ülkeler plastik poşet için para istemeye başlayınca ne oldu?",
+          "o": ["People bought more bags.", "Plastic became cheaper.", "Rivers carried more rubbish.", "The use of plastic bags went down."],
+          "a": 3,
+          "why": "10. cümle: “this has reduced their use” — poşet kullanımı azaldı (went down)."
+        }
+      ]
+    }
+  ]
+}
