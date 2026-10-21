@@ -256,6 +256,8 @@ Amaç: Elimizdeki 27 sınavı (2.160 soru) en verimli şekilde kullanmak. *Yerel
 
 ## Değişiklik günlüğü
 
+- **21.10.2026** — Oturum kapanışı: bu oturumun mimarisi, kararları, çözülen sorunları ve test yöntemi `docs/GELISTIRME_NOTLARI.md`’ye yazıldı; telefon boyutunda uçtan uca deneme betikleri `scripts/mobil-test/` (README ile); `DEVAM_PROMPT.md` yeni oturum için güncellendi; `PROJECT_MEMORY.md`’ye özet eklendi.
+
 - **21.10.2026** — Görünüm: `appearanceCss()` index.css değişkenlerinin üzerine `<style id="yds-appearance">` yazar (aynı seçiciler: `:root`, `[data-theme='dark']`, `prefers-color-scheme` medya sorgusu), varsayılanda boş. Açık temada vurgu açıklığı tona göre (sarı–camgöbeği aralığı %34) seçilir ki beyaz yazı okunsun; özel renkte yalnızca ton/doygunluk alınır. `syncThemeColor()` (theme.ts) meta theme-color’ı `--bg`’den okur. Uygulama `main.tsx`’te ilk çizimden önce.
 
 - **21.10.2026** — Yerel içerik katmanı: `src/services/localContent.ts` (`localFetch` = geliştirmede `/local-api`, yayında `YdsLocalContent` IndexedDB; `useLocalUrl` görüntüler için nesne adresi; `hasLocalContent()` = DEV ya da `yds-local-content` bayrağı — rotalar, menüler, komut paleti, koç haritası buna bakar; paket yükleyince sayfa yenilenir). Paketleyici `vite.localBundle.ts`: her kayıt sunucunun kendi `/local-api` yanıtıdır (sunucu kendine sorar), liste kayıtları (`yds/`, `kitap/`, `paket`) cihazda kimliğe göre birleştirilir, böylece parça parça yüklenebilir. Biçim: `YDSK1

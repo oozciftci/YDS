@@ -1,34 +1,19 @@
 # Yeni oturum için başlangıç metni
 
-Aşağıdaki metni yeni bir Claude Code oturumunun ilk mesajı olarak yapıştır.
+Aşağıdaki `---` çizgisinin altındaki metni yeni bir Claude Code oturumunun ilk mesajı olarak yapıştır.
 
 ---
 
-YDS Kelime projesinde (C:\Projeler\YDS_Proje) çalışmaya devam ediyoruz. Önce şunları oku: `YOL_HARITASI.md` (özellikle 20.10.2026 değişiklik günlüğü), `PROJECT_MEMORY.md`, `DEVAM_PROMPT.md` (bu dosya; aşağıdaki durum özeti).
+YDS Kelime projesinde (C:\Projeler\YDS_Proje) çalışmaya devam ediyoruz. Önce şunları oku, sonra bana kısaca durumu özetle:
+1. `docs/GELISTIRME_NOTLARI.md` — son oturumun mimarisi, kararlar ve gerekçeleri, çözülen sorunlar, test yöntemi, açık işler (en önemlisi).
+2. `YOL_HARITASI.md` — özellikle "Yapılanlar" tablosunun 21.10.2026 satırları ve "Değişiklik günlüğü".
+3. `PROJECT_MEMORY.md` — genel mimari ve eski kararlar.
+4. Telefonda deneme betikleri: `scripts/mobil-test/README.md`.
 
-**Kurallar (değişmedi):** Tüm kullanıcıya dönük metin Türkçe. Her adımdan sonra YOL_HARITASI.md güncellenir. Sade arayüz. `git add` dosya dosya (asla `-A`); commit yap, push yapma; commit mesajı "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" ile biter. API anahtarı isteme/kullanma; betiklerden Gemini çağırma; testlerde `generativelanguage` sahte yanıtla. Telifli içerik (`kaynaklar/`, `cikmis_sorular/`, `local-data/`) yalnızca yerelde kalır, gitignore'da; `npm run check:dist` yayında sızıntı olmadığını kontrol eder. Tarayıcıda denemede yüklenen deneme verilerini sonra sil.
+**Kurallar (değişmedi):** Tüm kullanıcıya dönük metin Türkçe. Her adımdan sonra `YOL_HARITASI.md` güncellenir (Yapılanlar satırı + Değişiklik günlüğü). Sade arayüz. `git add` dosya dosya (asla `-A`). Commit yap; **push'u ancak ben onaylayınca yap** (her değişiklikten sonra "push edeyim mi?" diye sor; onaylarsam push et, yayını `sw.js` değişimiyle izle ve telefonda görmem gereken sürüm kodunu söyle). Commit mesajı "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" ile biter. API anahtarı isteme/kullanma; betiklerden Gemini çağırma; testlerde `generativelanguage` sahte yanıtla. Telifli içerik (`kaynaklar/`, `cikmis_sorular/`, `local-data/`) yalnızca yerelde, gitignore'da; push öncesi `npm run check:dist` ve takip edilen dosyalarda telifli/gizli dosya olmadığını kontrol et. Denemede eklenen verileri sonra sil.
 
-**Kullanıcı:** YDS'ye neredeyse sıfırdan hazırlanıyor (önceki puan 30). Sınav tarihi henüz belli değil; günde ~1 saat çalışabiliyor (21.10.2026).
+**Ben:** YDS'ye neredeyse sıfırdan hazırlanıyorum (önceki puan 30). Sınav tarihi belli değil; günde ~1 saat çalışabiliyorum. Uygulamayı iPhone'da GitHub Pages yayın sürümünden (https://oozciftci.github.io/YDS/, ana ekrana ekli) kullanıyorum; kitaplar ve çıkmış sorular telefona `.ydsk` kaynak paketiyle yüklü. Telefon depolamam kısıtlı. Sorunları çoğu zaman ekran görüntüsüyle bildiriyorum. Bir ilke istediğimde (odak modu, sayfa çevirme gibi) bunu uygulamanın her yerine uygula ve benzer bozulmaları kendin tara; tek tek söyletme.
 
-**Kaynaklar (hepsi yerel):**
-- `kaynaklar/Essential Grammar in Use.pdf` (Murphy, A1–A2) ve `English Grammar in Use 5th` (B1–B2) → "Kitaptan çalış" (`/kitap`), görüntüler `local-data/kitaplar/`, `scripts/buildBooks.py`.
-- `kaynaklar/Modadil sınav stratejileri 3.pdf` → görüntü tabanlı 193 test / 2680 soru (`/yds-sorular/bankalar/strateji-3`), anahtar `local-data/yds/_eksik/strateji3_anahtar.txt` (görüntüden elle okundu), `scripts/buildStrateji3.py` + `scripts/winOcr.ps1` (Windows OCR).
-- `kaynaklar/SUAT GÜRCAN - RIDVAN GÜRBÜZ sınav stratejileri 1-2-1.pdf` → 745 sayfa OCR, `local-data/kaynaklar/sinav-stratejileri-12/sayfa-NNNN.md` + `icindekiler.json`; koç modu haritası `local-data/kaynaklar/harita.json` (`scripts/buildSourceMap.py`).
-- `cikmis_sorular/modadil-soru-bankasi-2.pdf` → MODADİL gramer bankası 20 test / 500 soru, kitabın çözümüyle (`local-data/yds/banka-grammar-modadil-NN.json`, `scripts/parseModadilGramer.py`).
-- Çıkmış YDS/YÖKDİL sınavları (`local-data/yds/`), Taktik Kitabı vb. önceden vardı.
-- `cikmis_sorular/remzi-50-deneme.pdf`: cevap anahtarı yok → kullanıcı eklenmesini istemedi.
-- Kelime aileleri (özgün, yayında): `public/data/word_families.json` ← `scripts/data/word_families/*.txt`, `scripts/buildWordFamilies.py`.
+**Son durum (21.10.2026):** Yayındaki sürüm `21.10 14:34 · e3c7a7e` (üst çubukta logonun yanında yazar; belgeler bundan sonra commit'lendi, yayına etkisi yok). Son oturumda yapılanlar: telefondan ev ağıyla erişim (`npm run telefon`), PC↔telefon eşitleme ve ilerleme dosyası, yayın sürümüne yerel kaynak paketi (bilgisayarsız/internetsiz), geniş görünüm ayarları (varsayılan: Gece, kırmızı ana başlık, yeşil alt başlık), kitap okuyucuda tam ekran + kalem/fosforlu + gerçek sayfa katlama + içindekiler/sayfaya git, uygulama genelinde kitap gibi sayfa çevirme ve kaydırma, her ekranda "yalnızca ana alan" odak modu (sağ üstten), profil resmi, sürüm etiketi, depolama şişmesinin durdurulması, hızlı geçişte takılı kalan çevirme kopyasının (donma) giderilmesi.
 
-**Son eklenenler (hepsi commit'li, push yok):** Çalış merkezi + sade ana sayfa; üst menü başlıkta; Kelimeler sayfası listesi/sayfalama; katlanır soru gezgini + üstte önceki/sonraki; Dinle duraklat/devam + EN↔TR; Gece Modu; kaydedilenler/sık kullanılanlar; × ile kaldırma; tersten çalış; MODADİL gramer bankası; Kitaptan çalış; Sınav Stratejileri 3 testleri + yanlış defteri; yazarak cevap (doğruda ✓ ve 1 sn sonra otomatik geçiş); hafıza kancası; kelime ailesi/ekler sayfası + "👪 Aynı aileden" (türev+tür+Türkçe, eş/zıt anlam); günün hikâyesi; okuma hızı antrenörü; kitap üniteleri günlük planda + ilgili MODADİL testi önerisi; Ctrl+K hızlı arama; odak modu (F); koç modunda Sınav Stratejileri 1-2 sayfaları kaynak.
-
-**Doğrulanmamış / açık işler:**
-1. Gerçek Gemini anahtarıyla denenmedi: günün hikâyesi, hafıza kancası önerisi, koç modu (Sınav Stratejileri 1-2 kaynaklı açıklama).
-2. Telefondan erişim (21.10.2026, ev ağı): `npm run telefon` → telefonda https://<IP>:5180 + şifre (Ayarlar › Telefondan aç; `vite.phone.ts`). İlerleme Ayarlar'daki “🔄 Eşitle” ile iki cihaz arasında birleşir (`src/services/deviceSync.ts`). Ev dışından: yayın sürümü + kaynak paketi (Ayarlar › 📦 Kaynak paketi → yayında 📚 Yerel kaynaklar; `src/services/localContent.ts`, `vite.localBundle.ts`); ilerleme yayın sürümüyle dosyayla taşınır. Gerçek telefonda denenmedi; yayına girmesi için kullanıcının push etmesi gerekir.
-3. Kişisel çalışma planı: sınav tarihi + günlük süre öğrenilince haftalık plan ve ana sayfa planına bağlama.
-4. Kullanıcıya "Yenilikler" sayfası önerildi (cevap bekliyor).
-5. Yazarak cevapta "neredeyse doğru" otomatik geçmiyor (kullanıcı isterse değişecek).
-6. Sınav Stratejileri 3'te 9 sorunun kutusu bulunamadı (tam sayfa gösteriliyor); kitap okuyucuda bazı bölme yerleri bölüm ortasına düşebilir — kullanıcı sayfa bildirirse elle düzelt.
-7. Sınav Stratejileri 1-2 OCR metinleri ayrıca kitap okuyucuya (görüntü) ya da konu anlatımı olarak uygulamaya eklenebilir — kullanıcıya sorulmadı.
-8. YOL_HARITASI'ndaki eski bekleyenler: 6.2 Yazma pratiği, 5.3 Okuma kütüphanesi, 6.7b, 6.3 senkron, File Search.
-
-İlk iş: kullanıcıya sınav tarihini ve günde ayırabileceği süreyi sor; sonra yukarıdaki açık işlerden hangisiyle devam etmek istediğini sor.
+**İlk iş:** Son düzeltmeler (takılı kopya/donma, odak modu, kaydırma) gerçek iPhone'da henüz doğrulanmadı. Bana bunları telefonda denediğimi ve sorun kalıp kalmadığını sor; sonra `docs/GELISTIRME_NOTLARI.md` §7'deki açık işlerden hangisiyle devam etmek istediğimi sor (öneri: sınav tarihi netleşince kişisel çalışma planı; Gemini'li özellikleri gerçek anahtarla deneme).

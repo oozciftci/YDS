@@ -2,7 +2,8 @@
 
 Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uygulamasının tüm mimarisini, bugüne kadar alınan kararları, mevcut durumunu ve yapılacak işleri belgeleyen **kalıcı proje hafızasıdır**.
 
-> **Son Güncelleme:** 13 Ekim 2026  
+> **Son Güncelleme:** 21 Ekim 2026  
+> **21.10.2026 oturumunun ayrıntılı geliştirme notları (mimari, kararlar, çözülen sorunlar, test yöntemi, açık işler):** `docs/GELISTIRME_NOTLARI.md`  
 > **Konuşma / Oturum Geçmişi:** `session-history/` klasöründe arşivlenmiştir.  
 > **Yol haritası ve yapılanlar/sıradakiler listesi:** `YOL_HARITASI.md` (her adımdan sonra güncellenir).
 
@@ -113,9 +114,14 @@ Bu dosya, YDS (Yabancı Dil Bilgisi Seviye Tespit Sınavı) Kelime Çalışma Uy
 - Paketler penceresinde "🆕 Yeni YDS Kelimeleri" kartı. Dev sunucusunda yüklenirse kelimelere en fazla 3 gerçek sınav cümlesi + çeviri eklenir (dev-only `/local-api/kelime-ornekleri`, yalnızca 127.0.0.1).
 - Not: okuma sorusu kalıpları ("according to the passage", "underlined word") bazı kelimelerin sayısını şişirir; ayrıntıda paragraf/kök/şık ayrımı görülür.
 
+### Telefon, yayın sürümü ve arayüz sistemleri (21 Ekim 2026)
+- Çıkmış sorular, kitaplar ve kaynak metinleri artık yalnızca `npm run dev` ile değil, **yayın sürümünde de** açılır: kullanıcı PC'den indirdiği `.ydsk` kaynak paketini telefona yükler (IndexedDB `YdsLocalContent`), içerik yayına/GitHub'a girmez. Yukarıdaki "YALNIZCA YEREL" bölümleri bu açıdan güncellenmiştir: sayfalar `hasLocalContent()` ile açılır, veri `localFetch()` ile gelir.
+- Ev ağından telefon erişimi (`npm run telefon`, HTTPS + şifre), PC↔telefon eşitleme ve ilerleme dosyası, görünüm ayarları, kitap okuyucu (tam ekran, kalem, sayfa katlama, içindekiler), uygulama genelinde sayfa çevirme + kaydırma, "yalnızca ana alan" odak modu, profil resmi, sürüm etiketi, depolama sınırları.
+- Hepsinin ayrıntısı, gerekçeleri ve tuzakları: `docs/GELISTIRME_NOTLARI.md`. Telefon boyutunda uçtan uca denemeler: `scripts/mobil-test/`.
+- Dikkat: Supabase eşitleme kuyruğu sunucu ayarlı değilken yazılmıyor (telefonda 9410 kayıt birikmişti); sunucu kurulursa ilk tam gönderim ayrıca yazılmalı.
+
 ### Sıradaki Önerilen Adımlar:
-1. **GitHub Güncellemesi:** Yapılan tüm geliştirmelerin GitHub'a push edilmesi.
-2. **Ev Bilgisayarı Kurulumu:** `KURULUM_VE_GELISTIRME_REHBERI.md` adımları takip edilerek ev bilgisayarında projenin çalıştırılması ve JSON yedeğinin aktarılması.
+Güncel açık işler: `docs/GELISTIRME_NOTLARI.md` §7 ve `YOL_HARITASI.md`.
 
 ---
 
