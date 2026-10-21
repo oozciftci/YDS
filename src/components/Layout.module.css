@@ -392,6 +392,13 @@
   }
 }
 
+/* Dar telefonda kullanıcı düğmesinde yalnızca profil resmi/rengi (ad gizli): üst çubuk tek satır kalsın */
+@media (max-width: 420px) {
+  .userName {
+    display: none;
+  }
+}
+
 .starOn {
   color: var(--warning);
   border-color: var(--warning);
@@ -403,25 +410,27 @@
   display: none;
 }
 
+/* Telefonda (ana ekrana eklenmiş uygulama) durum çubuğunun altında kalmasın: güvenli alan + çıkış düğmesine yer */
 .focus .main {
-  padding-top: 1rem;
-  padding-bottom: 2rem;
+  padding-top: calc(env(safe-area-inset-top) + 3rem);
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
 }
 
 .focusExit {
   position: fixed;
-  top: 8px;
-  right: 10px;
+  top: calc(env(safe-area-inset-top) + 8px);
+  right: calc(env(safe-area-inset-right) + 10px);
   z-index: 20;
-  padding: 0.3rem 0.7rem;
+  padding: 0.4rem 0.8rem;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
-  color: var(--text-muted);
+  color: var(--text);
   font: inherit;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
+  font-weight: 600;
   cursor: pointer;
-  opacity: 0.6;
+  box-shadow: var(--shadow-sm);
 }
 
 .focusExit:hover {

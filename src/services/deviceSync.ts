@@ -34,7 +34,7 @@ const str = (v: unknown) => (typeof v === 'string' ? v : '')
 
 /** Hangi kayıt daha yeni: büyük olan kazanır; eşitse yerel kalır. Boş = karşı taraf yalnızca eksik kaydı ekler. */
 const STAMP: Record<SyncTable, (r: Row) => string> = {
-  users: () => '',
+  users: (r) => str(r.updatedAt),
   words: (r) => str(r.updatedAt),
   cardStates: (r) => str(r.updatedAt),
   reviewLogs: () => '',

@@ -147,8 +147,12 @@ export interface UserProfile {
   displayName: string
   email?: string
   avatarColor?: string
+  /** Profil resmi (kare, küçültülmüş JPEG data URL); yoksa renkli baş harf */
+  avatarImage?: string
   createdAt: string
   lastActiveAt: string
+  /** Profil (ad/renk/resim) son değişikliği — cihazlar arası eşitlemede yeni olan kazanır */
+  updatedAt?: string
 }
 
 /**

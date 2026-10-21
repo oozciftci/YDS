@@ -10,6 +10,8 @@ interface UserState {
   setActiveUser: (userId: string) => Promise<void>
   loadUsers: () => Promise<void>
   addUser: (displayName: string) => Promise<UserProfile>
+  /** Profil rengi / resmi (Ayarlar › Kullanıcı Profilleri) */
+  updateProfile: (userId: string, patch: Partial<Pick<UserProfile, 'avatarColor' | 'avatarImage'>>) => Promise<void>
 }
 
 export const useUserStore = create<UserState>()(
@@ -42,6 +44,12 @@ export const useUserStore = create<UserState>()(
           await db.users.update(userId, { lastActiveAt: new Date().toISOString() })
           set({ activeUserId: userId, activeUser: user })
         }
+      },
+
+      async updateProfile(userId, patch) {
+        await db.users.update(userId, { ...patch, updatedAt: new Date().toISOString() })
+        const users = await db.users.toArray()
+        set({ allUsers: users, activeUser: users.find((u) => u.id === get().activeUserId) ?? get().activeUser })
       },
 
       async addUser(displayName: string) {

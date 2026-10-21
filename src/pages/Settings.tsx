@@ -16,6 +16,8 @@ import { AppearanceCard } from '../components/AppearanceCard'
 import { useUserStore } from '../stores/user'
 import { useSwStatus } from '../pwa/registerSW'
 import styles from './Settings.module.css'
+import { Avatar } from '../components/Avatar'
+import { imageToAvatar } from '../services/avatar'
 
 const SW_LABELS: Record<string, string> = {
   unsupported: 'Desteklenmiyor',
@@ -194,6 +196,8 @@ export function SettingsPage() {
           Her kullanıcının kelime havuzu ve tekrar geçmişi ayrı tutulur. Farklı cihazlardan da girseniz profiliniz eşitlenir.
         </p>
 
+        <ProfileEditor />
+
         <div className={styles.userList}>
           {allUsers.map((u) => {
             const isActive = u.id === activeUser?.id
@@ -203,10 +207,7 @@ export function SettingsPage() {
                 className={`${styles.userCard} ${isActive ? styles.userCardActive : ''}`}
               >
                 <div className={styles.userInfo}>
-                  <span
-                    className={styles.userColorDot}
-                    style={{ backgroundColor: u.avatarColor || '#7c5cff' }}
-                  />
+                  <Avatar user={u} size={28} round />
                   <span>{u.displayName}</span>
                 </div>
                 {!isActive ? (
@@ -636,6 +637,67 @@ function ReminderCard() {
 }
 
 /** Yapay zekâ (Gemini) ayarları: ücretli + yedek ücretsiz anahtar, model, aylık üst sınır. */
+const PROFILE_COLORS = ['#7c5cff', '#2563eb', '#0891b2', '#0d9488', '#16a34a', '#ca8a04', '#ea580c', '#dc2626', '#db2777', '#475569']
+
+/** Etkin kullanıcının profil resmi ve rengi. */
+function ProfileEditor() {
+  const user = useUserStore((s) => s.activeUser)
+  const updateProfile = useUserStore((s) => s.updateProfile)
+  const input = useRef<HTMLInputElement>(null)
+  const [msg, setMsg] = useState('')
+  if (!user) return null
+
+  async function onFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file || !user) return
+    try {
+      await updateProfile(user.id, { avatarImage: await imageToAvatar(file) })
+      setMsg('')
+    } catch (err) {
+      setMsg(err instanceof Error ? err.message : String(err))
+    }
+  }
+
+  return (
+    <div className={styles.profileEditor}>
+      <Avatar user={user} size={64} />
+      <div style={{ display: 'grid', gap: '0.5rem', minWidth: 0 }}>
+        <strong>{user.displayName}</strong>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <button type="button" className={`btn btn-secondary ${styles.btnSm}`} onClick={() => input.current?.click()}>
+            📷 {user.avatarImage ? 'Resmi değiştir' : 'Profil resmi ekle'}
+          </button>
+          {user.avatarImage && (
+            <button type="button" className={`btn btn-ghost ${styles.btnSm}`} onClick={() => void updateProfile(user.id, { avatarImage: undefined })}>
+              Resmi kaldır
+            </button>
+          )}
+          <input ref={input} type="file" accept="image/*" hidden onChange={(e) => void onFile(e)} />
+        </div>
+        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }} role="group" aria-label="Profil rengi">
+          {PROFILE_COLORS.map((c) => (
+            <button
+              key={c}
+              type="button"
+              className={styles.colorSwatch}
+              style={{ background: c, outline: user.avatarColor === c ? '2px solid var(--text)' : undefined }}
+              aria-label={`Renk ${c}`}
+              aria-pressed={user.avatarColor === c}
+              onClick={() => void updateProfile(user.id, { avatarColor: c })}
+            />
+          ))}
+          <label className={`${styles.colorSwatch} ${styles.colorCustom}`} title="Özel renk">
+            ＋
+            <input type="color" value={user.avatarColor || '#7c5cff'} onChange={(e) => void updateProfile(user.id, { avatarColor: e.target.value })} aria-label="Özel renk" />
+          </label>
+        </div>
+        {msg && <p className={styles.error} style={{ margin: 0 }}>{msg}</p>}
+      </div>
+    </div>
+  )
+}
+
 /** Telefondan aç (yalnızca geliştirme sunucusu): bilgisayarda `npm run telefon` adresi + şifre; iki cihazda da "Eşitle". */
 function PhoneCard() {
   const [info, setInfo] = useState<{ phone?: boolean; active?: boolean; urls?: string[]; password?: string } | null>(null)

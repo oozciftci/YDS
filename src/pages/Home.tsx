@@ -21,6 +21,7 @@ import { dismiss, useDismissed } from '../services/dismissed'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
 import { hasLocalContent } from '../services/localContent'
+import { Avatar } from '../components/Avatar'
 
 const NO_CARDS: CardState[] = []
 const NO_LOGS: ReviewLog[] = []
@@ -194,12 +195,9 @@ export function HomePage() {
       {/* 1. ÜST BİLGİ & KARŞILAMA BARI */}
       <header className={styles.topBar}>
         <div className={styles.userProfile}>
-          <span
-            className={styles.avatar}
-            style={{ backgroundColor: activeUser?.avatarColor || 'var(--primary)' }}
-          >
-            {activeUser?.displayName?.charAt(0) || 'Ö'}
-          </span>
+          <Link to="/settings#users" title="Profil resmi ve rengi" style={{ display: 'inline-flex' }}>
+            <Avatar user={activeUser} size={44} style={{ boxShadow: '0 2px 8px rgb(0 0 0 / 0.2)' }} />
+          </Link>
           <div className={styles.userMeta}>
             <h1 className={styles.title}>Merhaba, {activeUser?.displayName || 'Öğrenci'} 👋</h1>
             <p className={styles.subtitle}>

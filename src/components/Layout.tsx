@@ -9,6 +9,7 @@ import { cleanPath, isSaved, labelFor, recordVisit, toggleSaved, useFavoritesVer
 import { NotesDock } from './NotesDock'
 import { CommandPalette } from './CommandPalette'
 import styles from './Layout.module.css'
+import { Avatar } from './Avatar'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Ana Sayfa', icon: 'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
@@ -191,10 +192,7 @@ export function Layout() {
               aria-haspopup="true"
               aria-expanded={userMenuOpen}
             >
-              <span
-                className={styles.avatarDot}
-                style={{ backgroundColor: activeUser?.avatarColor || '#7c5cff' }}
-              />
+              <Avatar user={activeUser} size={20} round />
               <span className={styles.userName}>{activeUser?.displayName || 'Kullanıcı'}</span>
               <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">
                 <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
@@ -214,7 +212,7 @@ export function Layout() {
                       setUserMenuOpen(false)
                     }}
                   >
-                    <span className={styles.avatarDot} style={{ backgroundColor: u.avatarColor || '#7c5cff' }} />
+                    <Avatar user={u} size={20} round />
                     <span>{u.displayName}</span>
                     {u.id === activeUser?.id && <span className={styles.check}>✓</span>}
                   </button>
