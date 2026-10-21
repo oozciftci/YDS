@@ -180,7 +180,7 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 
 ## 7. Açık işler ve bilinen sınırlar
 
-- **Gerçek iPhone'da doğrulanmadı:** son çevirme/kaydırma düzeltmesi (e3c7a7e), odak modu, sürüm etiketi. Kullanıcıdan geri bildirim bekleniyor.
+- ✅ **Gerçek iPhone'da doğrulandı (21.10.2026):** son çevirme/kaydırma düzeltmesi (e3c7a7e), odak modu — kullanıcı sorun bildirmedi.
 - Gemini'li özellikler gerçek anahtarla denenmedi (günün hikâyesi, kanca önerisi, koç modu, çeviri puanlama …).
 - Yayın sürümü ↔ PC eşitlemesi yalnızca ilerleme dosyasıyla (otomatik değil). Ev ağı eşitlemesi yalnızca `npm run telefon` açıkken.
 - Supabase eşitlemesi kuyruk yazılmadığı için fiilen kapalı; kurulursa ilk tam gönderim gerekir (§3.7).
