@@ -20,8 +20,13 @@ function applyTheme(choice: ThemeChoice) {
   const root = document.documentElement
   if (choice === 'system') root.removeAttribute('data-theme')
   else root.setAttribute('data-theme', choice)
-  const isDark = choice === 'dark' || (choice === 'system' && media.matches)
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#131416' : '#f6f7f9')
+  syncThemeColor()
+}
+
+/** Tarayıcı/durum çubuğu rengi = o anki zemin (--bg; Görünüm tercihleri de değiştirebilir). */
+export function syncThemeColor() {
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()
+  if (bg) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bg)
 }
 
 interface ThemeState {

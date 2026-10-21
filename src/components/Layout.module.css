@@ -381,6 +381,14 @@
   .headerRight {
     gap: 0.4rem;
     min-width: 0;
+    /* Büyük yazı boyutunda (Görünüm ayarı) sığmazsa alt satıra geçsin, sayfa yana taşmasın */
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    row-gap: 0.3rem;
+  }
+
+  .userName {
+    max-width: 4.5em;
   }
 }
 

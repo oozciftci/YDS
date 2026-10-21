@@ -9,9 +9,11 @@ import { migrateWordLevels } from './services/levelMigration'
 import { startReminderLoop } from './services/reminder'
 import { initAutoSync } from './services/sync'
 import { initTheme } from './stores/theme'
+import { applyAppearance, useAppearance } from './stores/appearance'
 import { useUserStore } from './stores/user'
 
 initTheme()
+applyAppearance(useAppearance.getState().appearance)
 logger.init()
 initServiceWorker()
 initAutoSync()

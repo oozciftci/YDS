@@ -12,7 +12,7 @@ import { AI_MODELS, getAiUsage, resetPaidBlock, testKey } from '../services/ai'
 import { formatBytes, useStorageInfo } from '../services/storage'
 import { useSyncStatus } from '../services/sync'
 import { isValidHttpUrl, normalizeUrl, useSettings, type FreqSource } from '../stores/settings'
-import { useTheme, type ThemeChoice } from '../stores/theme'
+import { AppearanceCard } from '../components/AppearanceCard'
 import { useUserStore } from '../stores/user'
 import { useSwStatus } from '../pwa/registerSW'
 import styles from './Settings.module.css'
@@ -26,15 +26,7 @@ const SW_LABELS: Record<string, string> = {
   error: 'Hata',
 }
 
-const THEME_OPTIONS: { value: ThemeChoice; label: string }[] = [
-  { value: 'system', label: '📱 Sistem' },
-  { value: 'light', label: '☀️ Açık' },
-  { value: 'dark', label: '🌙 Koyu' },
-]
-
 export function SettingsPage() {
-  const theme = useTheme((s) => s.theme)
-  const setTheme = useTheme((s) => s.setTheme)
   const backend = useSettings((s) => s.backend)
   const setBackend = useSettings((s) => s.setBackend)
   const resetBackend = useSettings((s) => s.resetBackend)
@@ -184,24 +176,7 @@ export function SettingsPage() {
         </p>
       </header>
 
-      {/* GÖRÜNÜM */}
-      <section className="card">
-        <h2 className={styles.cardTitle}>Görünüm</h2>
-        <p className="muted">"Sistem" seçiliyse telefonun açık/koyu ayarı izlenir.</p>
-        <div className={styles.actions}>
-          {THEME_OPTIONS.map((o) => (
-            <button
-              key={o.value}
-              type="button"
-              className={`btn ${theme === o.value ? 'btn-primary' : 'btn-secondary'}`}
-              aria-pressed={theme === o.value}
-              onClick={() => setTheme(o.value)}
-            >
-              {o.label}
-            </button>
-          ))}
-        </div>
-      </section>
+      <AppearanceCard />
 
       {import.meta.env.DEV ? (
         <>
@@ -358,7 +333,7 @@ export function SettingsPage() {
 
       {/* 3. SENKRONİZASYON VE SUNUCU AYARLARI */}
       <form className="card" onSubmit={onSave} noValidate>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
           <h2 className={styles.cardTitle}>Sunucu (Supabase Senkronizasyonu)</h2>
           <button
             type="button"
