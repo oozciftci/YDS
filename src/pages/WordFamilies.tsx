@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AFFIXES, stemOf, type Affix } from '../data/affixes'
 import { db } from '../db'
+import { useQuestionNav } from './exam/answerControls'
 import { speakWord } from '../services/tts'
 import { useUserStore } from '../stores/user'
 import type { WordItem } from '../types/database'
@@ -27,23 +28,36 @@ function matches(term: string, a: Affix, pool: Set<string>): boolean {
   )
 }
 
-function AffixQuiz() {
-  const [round, setRound] = useState(() => newRound())
-  const [pick, setPick] = useState<number | null>(null)
-  const [score, setScore] = useState({ ok: 0, all: 0 })
+function newRound() {
+  const a = AFFIXES[Math.floor(Math.random() * AFFIXES.length)]
+  const others = AFFIXES.filter((x) => x.meaning !== a.meaning)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
+    .map((x) => x.meaning)
+  const options = [...others, a.meaning].sort(() => Math.random() - 0.5)
+  return { a, options, correct: options.indexOf(a.meaning), pick: null as number | null }
+}
 
-  function newRound() {
-    const a = AFFIXES[Math.floor(Math.random() * AFFIXES.length)]
-    const others = AFFIXES.filter((x) => x.meaning !== a.meaning)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
-      .map((x) => x.meaning)
-    const options = [...others, a.meaning].sort(() => Math.random() - 0.5)
-    return { a, options, correct: options.indexOf(a.meaning) }
-  }
+/** Ek testi. Yana kaydırma / ← →: sonraki soru ya da önceki sorulara (cevabıyla) geri dönüş — kitap gibi sayfa çevirerek. */
+function AffixQuiz() {
+  const [rounds, setRounds] = useState(() => [newRound()])
+  const [at, setAt] = useState(0)
+  const round = rounds[at]
+  const pick = round.pick
+  const answered = rounds.filter((r) => r.pick !== null)
+  const score = { ok: answered.filter((r) => r.pick === r.correct).length, all: answered.length }
+
+  const swipe = useQuestionNav(
+    () => setAt((i) => Math.max(0, i - 1)),
+    () => {
+      if (at + 1 >= rounds.length) setRounds((r) => [...r, newRound()])
+      setAt(at + 1)
+    },
+    { canPrev: at > 0 },
+  )
 
   return (
-    <div className="card" style={{ display: 'grid', gap: '0.6rem' }}>
+    <div className="card" data-focus-stage {...swipe.props} style={{ ...swipe.props.style, display: 'grid', gap: '0.6rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <strong>Ek testi</strong>
         <span className="muted">
@@ -61,27 +75,20 @@ function AffixQuiz() {
             type="button"
             className={`${styles.quizBtn} ${pick !== null && i === round.correct ? styles.ok : ''} ${pick === i && i !== round.correct ? styles.bad : ''}`}
             disabled={pick !== null}
-            onClick={() => {
-              setPick(i)
-              setScore((s) => ({ ok: s.ok + (i === round.correct ? 1 : 0), all: s.all + 1 }))
-            }}
+            onClick={() => setRounds((r) => r.map((x, j) => (j === at ? { ...x, pick: i } : x)))}
           >
             {o}
           </button>
         ))}
       </div>
       {pick !== null && (
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => {
-            setRound(newRound())
-            setPick(null)
-          }}
-        >
+        <button type="button" className="btn btn-primary" data-focus-hide onClick={() => void swipe.turn(1)}>
           Sonraki →
         </button>
       )}
+      <p className="muted" style={{ margin: 0, fontSize: '0.8rem' }} data-focus-hide>
+        Yana kaydırarak da geçebilirsin; geri kaydırınca önceki sorular cevabıyla görünür.
+      </p>
     </div>
   )
 }

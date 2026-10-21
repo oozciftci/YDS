@@ -13,7 +13,10 @@ function apply(main: HTMLElement) {
   main.querySelectorAll(`[${OFF}]`).forEach((e) => e.removeAttribute(OFF))
   const stage = realStage(main)
   document.documentElement.classList.toggle(ROOT_CLASS, !!stage)
-  if (!stage) return
+  if (!stage) {
+    document.documentElement.style.removeProperty('--focus-reserve')
+    return
+  }
   const keep = new Set<Element>([stage, ...main.querySelectorAll('[data-focus-keep], [role="dialog"]')])
   const insideKept = (e: Element) => {
     for (let p = e.parentElement; p && p !== main; p = p.parentElement) if (keep.has(p)) return true
@@ -29,6 +32,31 @@ function apply(main: HTMLElement) {
     if (keep.has(n)) continue
     for (const c of n.children) if (!needed.has(c)) c.setAttribute(OFF, '')
   }
+  reserve(stage, keep, insideKept)
+}
+
+/** Ana alanın dışında görünür kalanların (süre, Bitir …) yüksekliği: alan ekrana onlarla birlikte sığsın (--focus-reserve) */
+function reserve(stage: HTMLElement, keep: Set<Element>, insideKept: (e: Element) => boolean) {
+  const rows: [number, number][] = []
+  for (const k of keep) {
+    if (k === stage || insideKept(k) || k.getAttribute('role') === 'dialog' || k.hasAttribute('data-page-turn')) continue
+    const r = k.getBoundingClientRect()
+    if (r.height > 0 && getComputedStyle(k).position !== 'fixed') rows.push([r.top, r.bottom])
+  }
+  // Aynı satırdakiler (süre ile Bitir yan yana) bir kez sayılır; satır arası boşluk için 12 px
+  rows.sort((a, b) => a[0] - b[0])
+  let px = 0
+  let end = -Infinity
+  for (const [t, b] of rows) {
+    if (t >= end) {
+      px += b - t + 12
+      end = b
+    } else if (b > end) {
+      px += b - end
+      end = b
+    }
+  }
+  document.documentElement.style.setProperty('--focus-reserve', `${Math.round(px)}px`)
 }
 
 /** Odak modu açıkken çağrılır; içerik değiştikçe (sayfa, soru, balon) yeniden uygular. Kapatma işlevi döner. */
@@ -42,5 +70,6 @@ export function watchFocusStage(main: HTMLElement): () => void {
     obs.disconnect()
     main.querySelectorAll(`[${OFF}]`).forEach((e) => e.removeAttribute(OFF))
     document.documentElement.classList.remove(ROOT_CLASS)
+    document.documentElement.style.removeProperty('--focus-reserve')
   }
 }

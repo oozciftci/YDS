@@ -388,7 +388,8 @@ html.app-focus.focus-has-stage main {
 }
 
 html.app-focus [data-focus-stage] {
-  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem);
+  /* --focus-reserve: alanın dışında görünür kalanlar (deneme/okuma süresi, Bitir), focusStage.ts ölçer */
+  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem - var(--focus-reserve, 0px));
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;

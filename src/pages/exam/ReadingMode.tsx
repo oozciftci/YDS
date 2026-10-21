@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
+import { useQuestionNav } from './answerControls'
 import { loadAllExams, loadExam, shortTitle, type ExamBundle, type Passage } from './examData'
 import { ListenControls } from './ListenControls'
 import { PacerControls } from './PacerControls'
@@ -121,25 +122,63 @@ export function ReadingList() {
   )
 }
 
-/** Tek paragraf okuyucu. */
+/** Tek paragraf okuyucu. Kaydırma / ← → ile aynı sınavın önceki-sonraki paragrafı (kitap gibi sayfa çevirerek). */
 export function ReadingPassage() {
   const { examId = '', passageId = '' } = useParams()
   const navigate = useNavigate()
-  const userId = useUserStore((s) => s.activeUserId)
   const [bundle, setBundle] = useState<ExamBundle | null>(null)
   const [error, setError] = useState('')
-  const [showTr, setShowTr] = useState(false)
-  const [speaking, setSpeaking] = useState<number | null>(null)
-  const [startedAt] = useState(() => Date.now())
-  const [now, setNow] = useState(() => Date.now())
-  const [finishedSec, setFinishedSec] = useState<number | null>(null)
-  const { onWord, popover, lookedUp } = useWordPopover(`${examId} / okuma ${passageId}`)
 
   useEffect(() => {
     loadExam(examId)
       .then(setBundle)
       .catch((e) => setError('Sınav yüklenemedi: ' + e))
   }, [examId])
+
+  const reading = bundle?.exam.passages.filter((p) => p.kind === 'reading') ?? []
+  const idx = reading.findIndex((p) => p.id === passageId)
+  // Geçmişe yazılmaz: geri tuşu okuma listesine döner
+  const goTo = (p?: Passage) => p && navigate(`/yds-sorular/okuma/${examId}/${p.id}`, { replace: true })
+  const swipe = useQuestionNav(
+    () => goTo(reading[idx - 1]),
+    () => goTo(reading[idx + 1]),
+    { canPrev: idx > 0, canNext: idx >= 0 && idx + 1 < reading.length },
+  )
+
+  // Kaydırılan kapsayıcı paragraf değişince yerinde kalır (çevirmenin kopyası onun içinde); paragrafa ait her şey
+  // (süre, çeviriler, bakılan kelimeler) anahtarla baştan başlar.
+  return (
+    <section className={styles.page} {...swipe.props}>
+      {error ? (
+        <p className="muted">{error}</p>
+      ) : !bundle ? (
+        <p className="muted">Yükleniyor…</p>
+      ) : idx < 0 ? (
+        <p className="muted">Paragraf bulunamadı.</p>
+      ) : (
+        <PassageReader key={`${examId}/${passageId}`} bundle={bundle} idx={idx} onNext={() => void swipe.turn(1)} />
+      )}
+    </section>
+  )
+}
+
+function PassageReader({ bundle, idx, onNext }: { bundle: ExamBundle; idx: number; onNext: () => void }) {
+  const navigate = useNavigate()
+  const userId = useUserStore((s) => s.activeUserId)
+  const { exam, tr } = bundle
+  const reading = exam.passages.filter((p) => p.kind === 'reading')
+  const passage = reading[idx]
+  const [showTr, setShowTr] = useState(false)
+  const [speaking, setSpeaking] = useState<number | null>(null)
+  const [startedAt] = useState(() => Date.now())
+  const [now, setNow] = useState(() => Date.now())
+  const [finishedSec, setFinishedSec] = useState<number | null>(null)
+  const { onWord, popover, lookedUp } = useWordPopover(`${exam.id} / okuma ${passage.id}`)
+
+  // Yeni paragraf baştan görünsün (kaydırarak gelindiğinde sayfa aşağıda kalmasın)
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   // Süre sayacı (okuma bitene kadar)
   useEffect(() => {
@@ -148,14 +187,6 @@ export function ReadingPassage() {
     return () => clearInterval(t)
   }, [finishedSec])
 
-  if (error) return <p className="muted">{error}</p>
-  if (!bundle) return <p className="muted">Yükleniyor…</p>
-
-  const { exam, tr } = bundle
-  const reading = exam.passages.filter((p) => p.kind === 'reading')
-  const idx = reading.findIndex((p) => p.id === passageId)
-  const passage = reading[idx]
-  if (!passage) return <p className="muted">Paragraf bulunamadı.</p>
   const words = wordCount(passage)
   const next = reading[idx + 1]
   const range = questionRange(bundle, passage.id)
@@ -172,7 +203,7 @@ export function ReadingPassage() {
   const wpm = finishedSec ? Math.round((words / finishedSec) * 60) : null
 
   return (
-    <section className={styles.page}>
+    <>
       <header className={styles.head}>
         <div>
           <Link to="/yds-sorular/okuma" className={styles.backLink}>
@@ -183,30 +214,30 @@ export function ReadingPassage() {
           </h1>
           <p className="muted" style={{ margin: 0, fontSize: '0.88rem' }}>
             {words} kelime{range ? ` · Soru ${range[0]}-${range[1]}` : ''} · Bilmediğin kelimeye dokun, 🌐 cümlenin
-            Türkçesini açar.
+            Türkçesini açar. Yana kaydırınca önceki/sonraki paragraf.
           </p>
         </div>
       </header>
 
       <div className={styles.readBar}>
-        <span className={styles.timer} title="Okuma süresi">
+        <span className={styles.timer} title="Okuma süresi" data-focus-keep>
           ⏱ {fmt(elapsed)}
         </span>
-        <ListenControls key={`${exam.id}/${passage.id}`} sentences={passage.sentences} tr={tr} onActive={setSpeaking} showRate />
-        <PacerControls key={`pacer-${exam.id}/${passage.id}`} userId={userId} sentences={passage.sentences} onActive={setSpeaking} />
+        <ListenControls sentences={passage.sentences} tr={tr} onActive={setSpeaking} showRate />
+        <PacerControls userId={userId} sentences={passage.sentences} onActive={setSpeaking} />
         <label className={styles.toggle}>
           <input type="checkbox" checked={showTr} onChange={(e) => setShowTr(e.target.checked)} />
           Çeviriler
         </label>
         <span className={styles.spacer} />
         {finishedSec === null && (
-          <button type="button" className="btn btn-primary" onClick={finish}>
+          <button type="button" className="btn btn-primary" onClick={finish} data-focus-keep>
             ✓ Okumayı bitirdim
           </button>
         )}
       </div>
 
-      <article className="card">
+      <article className="card" data-focus-stage>
         <p className={styles.readText}>
           {passage.sentences.map((s, i) => (
             <SentenceView
@@ -223,7 +254,7 @@ export function ReadingPassage() {
       </article>
 
       {finishedSec !== null && (
-        <article className="card" style={{ display: 'grid', gap: '0.75rem' }}>
+        <article className="card" style={{ display: 'grid', gap: '0.75rem' }} data-focus-keep>
           <div className={styles.readStats}>
             <span>
               <span className={styles.readBig}>{wpm}</span> kelime/dk
@@ -261,16 +292,16 @@ export function ReadingPassage() {
               </button>
             )}
             {next && (
-              <Link to={`/yds-sorular/okuma/${exam.id}/${next.id}`} className="btn btn-secondary">
+              <button type="button" className="btn btn-secondary" onClick={onNext}>
                 Sonraki paragraf
-              </Link>
+              </button>
             )}
           </div>
         </article>
       )}
 
       {popover}
-    </section>
+    </>
   )
 }
 

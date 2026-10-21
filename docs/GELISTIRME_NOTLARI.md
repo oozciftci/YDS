@@ -107,7 +107,8 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
   (alan içindeki önceki/sonraki, ipucu, Hızlı cevap). Açık balon/pencereler (`role="dialog"`) korunur.
 - `focusStage.ts` korunanların atalarını görünür bırakıp her atanın öbür çocuklarına `data-focus-off` koyar; MutationObserver
   yalnızca öğe ekleme/çıkarmada yeniden uygular. **`:has()` kullanma** (bkz. §6.1).
-- Odakta ana alan `overflow-x: hidden; overflow-y: auto` (bkz. §6.3).
+- Odakta ana alan `overflow-x: hidden; overflow-y: auto` (bkz. §6.3). Alanın dışında görünür kalanların (süre, Bitir, okuma
+  sonucu) yüksekliği ölçülüp `--focus-reserve` ile alanın `max-height`’ından düşülür (yoksa alan ekrandan taşıyordu).
 - Kitap okuyucu kendi tam ekranını kullanır; genel odak açılınca kitap da tam ekran açılır (`useGlobalFocus`), çıkış `yds-focus-off` olayı.
 - Telefon durum çubuğu: odak içeriği ve çıkış düğmesi `env(safe-area-inset-*)` ile aşağıda.
 
@@ -129,7 +130,8 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
   - "Hareketi azalt" açıkken animasyonsuz.
 - Bağlı ekranlar: çıkmış sınav, deneme, özel deneme, konu/Yanlış Defteri (QueueRunner), soru bankaları, Strateji 3 testleri ve
   defteri, Alıştırma Merkezi, kelime kartları (Study), mini kelime denemesi (ExamQuiz), Çeviri Atölyesi, Gece Modu.
-  Bağlı olmayanlar: Okuma Modu (paragraflar arası), ek testi (WordFamilies).
+  Okuma Modu (paragraflar arası, 21.10.2026) ve ek testi (WordFamilies) de bağlandı. Bilinçli olarak bağlı olmayanlar:
+  Gramer konu sayfası (“Sonraki konu”), Eş anlam eşleştirme turları.
 
 ### 4.4 Kitap okuyucu — `src/pages/Books.tsx`, `src/pages/books/*`
 - Tam ekran (odak): kare ekrana sığar; altta yalnızca sayfa no + ✏️; çıkış sağ üstte. Gerçek tam ekran API'si (iPhone'da yok).
@@ -185,6 +187,6 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 - Yayın sürümü ↔ PC eşitlemesi yalnızca ilerleme dosyasıyla (otomatik değil). Ev ağı eşitlemesi yalnızca `npm run telefon` açıkken.
 - Supabase eşitlemesi kuyruk yazılmadığı için fiilen kapalı; kurulursa ilk tam gönderim gerekir (§3.7).
 - Kişisel çalışma planı (sınav tarihi + günde 1 saat) kurulmadı; tarih netleşince haftalık plan + ana sayfa planına bağla.
-- Okuma Modu ve ek testinde kaydırma yok. Kaydırırken alttaki içerik boş kâğıt (bilinçli tasarım, §4.3).
+- Kaydırırken alttaki içerik boş kâğıt (bilinçli tasarım, §4.3).
 - Strateji 3'te 9 sorunun kutusu yok (tam sayfa); kitap bölme yerleri bazen bölüm ortasına düşebilir.
 - YOL_HARITASI eski bekleyenler: 6.2 Yazma pratiği, 5.3 Okuma kütüphanesi, 6.7b, 6.3 senkron, File Search; "Yenilikler" sayfası önerisi.
