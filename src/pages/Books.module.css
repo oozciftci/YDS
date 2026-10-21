@@ -76,6 +76,22 @@
   color: var(--text);
   font: inherit;
   font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.unitSelectText {
+  /* Uzun ünite adı düğmeyi (ve sayfayı) genişletmesin: kalan yere sığar, sığmazsa … */
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .modeToggle {

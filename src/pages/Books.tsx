@@ -25,6 +25,7 @@ import { localFetch, useLocalUrl } from '../services/localContent'
 import { PageView, PenPalette, type PageViewHandle, type Side } from './books/PageView'
 import { clearPage, readPen, savePen, undoStroke, type Pen } from './books/ink'
 import reading from './books/Reading.module.css'
+import { TocPanel } from './books/TocPanel'
 
 // Kitaptan çalış: kitabı sayfa sayfa (telefonda yarım sayfa yarım sayfa) oku; kaldığın yer hatırlanır.
 // Sayfa notları sağ alttaki "📄 Bu sayfa" penceresinden (her sayfanın kendi notu), kitabın defteri bu sayfada toplanır.
@@ -119,6 +120,7 @@ function Reader() {
   const [error, setError] = useState('')
   const [mode, setModeState] = useState<'half' | 'full'>(readMode)
   const view = useRef<PageViewHandle>(null)
+  const [tocOpen, setTocOpen] = useState(false)
   const [pen, setPenState] = useState<Pen>(readPen)
   const [focus, setFocusState] = useState(() => {
     try {
@@ -244,6 +246,16 @@ function Reader() {
     setModeState(m)
   }
 
+  /** İçindekilerden ya da “Sayfaya git”ten: o sayfanın ilk karesine (komşuysa çevirerek) */
+  function goToPage(p: number) {
+    setTocOpen(false)
+    const i = frames.findIndex((f) => f.page === p)
+    if (i !== -1) go(i)
+  }
+  const toc = tocOpen && (
+    <TocPanel book={book} currentPage={frame.page} currentUnit={unit?.no ?? null} onGo={goToPage} onClose={() => setTocOpen(false)} />
+  )
+
   const where = `s. ${frame.page} / ${book.pageCount}${frame.half === 1 ? ' · üst' : frame.half === 2 ? ' · alt' : ''}`
   const side = (f: Frame | undefined, s: string | undefined): Side | undefined => (f ? { frame: f, page: book.pages[f.page - 1], src: s } : undefined)
   const pageProps = {
@@ -271,7 +283,9 @@ function Reader() {
           <button type="button" onClick={() => setFocus(false)} aria-label="Odak modundan çık" title="Odak modundan çık (Esc)">
             ✕
           </button>
-          <span className={reading.pageNo}>{where}</span>
+          <button type="button" className={reading.pageNoBtn} onClick={() => setTocOpen(true)} title="İçindekiler / sayfaya git">
+            {where}
+          </button>
           <button
             type="button"
             className={pen.on ? reading.penOn : undefined}
@@ -293,6 +307,7 @@ function Reader() {
             }}
           />
         )}
+        {toc}
       </div>,
       document.body,
     )
@@ -305,22 +320,11 @@ function Reader() {
           ← Kitaplar
         </Link>
         <strong className={styles.barTitle}>{book.short}</strong>
-        <select
-          className={styles.unitSelect}
-          value={unit?.no ?? ''}
-          onChange={(e) => {
-            const u = book.units.find((x) => x.no === Number(e.target.value))
-            if (u) go(frames.findIndex((f) => f.page === u.page))
-          }}
-          aria-label="Üniteye git"
-        >
-          {!unit && <option value="">Ünite seç…</option>}
-          {book.units.map((u) => (
-            <option key={u.no} value={u.no}>
-              {u.no}. {u.title}
-            </option>
-          ))}
-        </select>
+        <button type="button" className={styles.unitSelect} onClick={() => setTocOpen(true)} aria-label="İçindekiler: üniteye ya da sayfaya git">
+          <span className={styles.unitSelectText}>{unit ? `${unit.no}. ${unit.title}` : 'İçindekiler…'}</span>
+          <span aria-hidden="true">▾</span>
+        </button>
+        {toc}
         <span className={styles.modeToggle} role="group" aria-label="Görünüm">
           <button type="button" className={mode === 'half' ? styles.on : ''} onClick={() => setMode('half')} title="Telefonda rahat okuma için sayfayı ikiye böler">
             ½ Yarım
