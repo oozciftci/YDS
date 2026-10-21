@@ -42,7 +42,7 @@
   font-weight: 800;
   margin: 0;
   letter-spacing: -0.025em;
-  color: var(--text);
+  color: var(--heading);
 }
 
 .subtitle {
@@ -149,7 +149,7 @@
   font-weight: 800;
   margin: 0 0 0.45rem;
   letter-spacing: -0.025em;
-  color: var(--text);
+  color: var(--heading);
 }
 
 .heroParagraph {
@@ -239,7 +239,7 @@
   font-size: 1.15rem;
   font-weight: 700;
   margin: 0;
-  color: var(--text);
+  color: var(--heading);
 }
 
 .sectionDesc {
@@ -281,7 +281,7 @@
   font-size: 0.95rem;
   font-weight: 800;
   margin: 0;
-  color: var(--text);
+  color: var(--subheading);
 }
 
 .sessionTime {
@@ -633,7 +633,7 @@
   font-size: 1rem;
   font-weight: 700;
   margin: 0;
-  color: var(--text);
+  color: var(--heading);
 }
 
 .masterySub {
@@ -912,6 +912,7 @@
 
 .resumeRow strong {
   flex: 1;
+  color: var(--subheading);
   min-width: 0;
 }
 
@@ -945,6 +946,14 @@
 .catTile:hover {
   border-color: var(--primary);
   transform: translateY(-1px);
+}
+
+.catTile strong {
+  color: var(--heading);
+}
+
+.planTop strong {
+  color: var(--subheading);
 }
 
 .catTile small {

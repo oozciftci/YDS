@@ -74,6 +74,21 @@
   padding: 0;
 }
 
+.swatchSm {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.previewHeading {
+  color: var(--heading);
+  font-size: 1.05rem;
+}
+
+.previewSub {
+  color: var(--subheading);
+  font-size: 0.92rem;
+}
+
 .swatchActive {
   outline: 2px solid var(--text);
   outline-offset: 2px;

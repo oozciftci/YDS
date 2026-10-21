@@ -49,6 +49,10 @@
   --text-subtle: hsl(220 8% 56%);
   --input-bg: hsl(0 0% 100%);
 
+  /* Başlık renkleri (Ayarlar › Görünüm): ana başlık = sayfa/kart/kategori başlıkları, alt başlık = seçenek ve liste öğeleri */
+  --heading: var(--text);
+  --subheading: var(--text);
+
   --radius-xs: 6px;
   --radius-sm: 10px;
   --radius: 14px;
@@ -185,7 +189,12 @@ h4 {
   line-height: 1.25;
   margin: 0 0 0.5em;
   letter-spacing: -0.025em;
-  color: var(--text);
+  color: var(--heading);
+}
+
+h3,
+h4 {
+  color: var(--subheading);
 }
 
 a {

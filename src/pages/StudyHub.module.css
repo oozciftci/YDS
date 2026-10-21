@@ -99,6 +99,7 @@
 
 .link strong {
   font-size: 0.92rem;
+  color: var(--subheading);
 }
 
 .link small {

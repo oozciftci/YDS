@@ -56,6 +56,51 @@ function Choice({ active, onClick, children, style }: { active: boolean; onClick
   )
 }
 
+/** Başlık rengi: yazı rengi, vurgu rengi ya da hazır/özel renk ('ton,doygunluk') */
+function HeadingColorRow({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  const [h, s] = value.split(',').map(Number)
+  const isHue = Number.isFinite(h) && Number.isFinite(s)
+  const custom = isHue && !ACCENTS.some((c) => `${c.hue},${c.sat}` === value)
+  return (
+    <Row label={label}>
+      <Choice active={value === 'text'} onClick={() => onChange('text')}>
+        Yazı rengi
+      </Choice>
+      <Choice active={value === 'accent'} onClick={() => onChange('accent')}>
+        <span className={styles.dot} style={{ background: 'var(--primary)' }} />
+        Vurgu rengi
+      </Choice>
+      {ACCENTS.map((c) => {
+        const v = `${c.hue},${c.sat}`
+        return (
+          <button
+            key={c.name}
+            type="button"
+            className={`${styles.swatch} ${styles.swatchSm} ${value === v ? styles.swatchActive : ''}`}
+            style={{ background: accentHex(c.hue, c.sat) }}
+            title={c.name}
+            aria-label={`${label}: ${c.name}`}
+            aria-pressed={value === v}
+            onClick={() => onChange(v)}
+          />
+        )
+      })}
+      <label className={`${styles.swatch} ${styles.swatchSm} ${styles.custom} ${custom ? styles.swatchActive : ''}`} title="Özel renk">
+        <span aria-hidden="true">＋</span>
+        <input
+          type="color"
+          aria-label={`${label}: özel renk`}
+          value={isHue ? accentHex(h, s) : '#888888'}
+          onChange={(e) => {
+            const c = hexToHueSat(e.target.value)
+            onChange(`${c.hue},${c.sat}`)
+          }}
+        />
+      </label>
+    </Row>
+  )
+}
+
 /** Ayarlar › Görünüm: açık/koyu, hazır görünümler, vurgu rengi, zemin, yazı, köşeler, kontrast, hareket. */
 export function AppearanceCard() {
   const theme = useTheme((s) => s.theme)
@@ -123,6 +168,9 @@ export function AppearanceCard() {
         </label>
       </Row>
 
+      <HeadingColorRow label="Ana başlık rengi" value={a.heading} onChange={(heading) => update({ heading })} />
+      <HeadingColorRow label="Alt başlık rengi" value={a.subheading} onChange={(subheading) => update({ subheading })} />
+
       <Row label="Zemin tonu">
         {TONES.map((t) => (
           <Choice key={t.value} active={a.tone === t.value} onClick={() => update({ tone: t.value })}>
@@ -179,6 +227,8 @@ export function AppearanceCard() {
       </Row>
 
       <div className={styles.preview} aria-hidden="true">
+        <strong className={styles.previewHeading}>Ana başlık</strong>
+        <strong className={styles.previewSub}>Alt başlık</strong>
         <span className="btn btn-primary">Örnek düğme</span>
         <span className={styles.chip}>Etiket</span>
         <span className="muted">soluk metin</span>

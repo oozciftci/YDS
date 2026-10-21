@@ -565,6 +565,7 @@
 }
 
 .examName {
+  color: var(--subheading);
   display: grid;
   font-weight: 600;
   min-width: 0;

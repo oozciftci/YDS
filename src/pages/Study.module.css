@@ -292,7 +292,7 @@
   font-size: 1.1rem;
   font-weight: 800;
   margin: 0;
-  color: var(--text);
+  color: var(--subheading);
 }
 
 .levelCardRange {
@@ -954,7 +954,7 @@
   font-size: 1.25rem;
   font-weight: 800;
   margin: 0;
-  color: var(--text);
+  color: var(--heading);
   display: flex;
   align-items: center;
   gap: 0.45rem;

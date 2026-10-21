@@ -13,6 +13,9 @@ export interface Appearance {
   /** Vurgu rengi: ton (0-360) ve doygunluk (%) */
   hue: number
   sat: number
+  /** Başlık renkleri: 'text' (yazı rengi), 'accent' (vurgu rengi) ya da 'ton,doygunluk' (ör. '355,70') */
+  heading: string
+  subheading: string
   tone: Tone
   /** Koyu temada tam siyah zemin (OLED ekranlarda pil dostu) */
   black: boolean
@@ -28,6 +31,8 @@ export interface Appearance {
 export const DEFAULT_APPEARANCE: Appearance = {
   hue: 221,
   sat: 70,
+  heading: 'text',
+  subheading: 'text',
   tone: 'neutral',
   black: false,
   scale: 100,
@@ -138,6 +143,20 @@ function palette(a: Appearance): Palette {
       '--border-focus': `hsl(${H} ${DS}% 72%)`,
       '--gradient-brand': `linear-gradient(135deg, hsl(${H} ${DS}% 72%) 0%, hsl(${(H + 353) % 360} ${Math.max(DS - 10, 10)}% 70%) 100%)`,
     })
+  }
+
+  for (const [name, value] of [['--heading', a.heading], ['--subheading', a.subheading]] as const) {
+    if (value === 'accent') {
+      light[name] = 'var(--primary)'
+      dark[name] = 'var(--primary)'
+    } else if (value !== 'text') {
+      const [h, s] = value.split(',').map(Number)
+      if (Number.isFinite(h) && Number.isFinite(s)) {
+        // Yazı olarak okunsun: açık temada biraz daha koyu, koyu temada açık
+        light[name] = `hsl(${h} ${Math.min(90, s)}% ${lightL(h) - 4}%)`
+        dark[name] = `hsl(${h} ${Math.min(75, s)}% 72%)`
+      }
+    }
   }
 
   // Zemin: [ton, açık temada doygunluk, koyu temada doygunluk]
