@@ -10,6 +10,7 @@ import { summarizeBySection } from './examProgress'
 import { COACH_MODE_RULES, getSourceMode, tacticsAvailable, tacticsContext } from './tactics'
 import { useSettings } from '../stores/settings'
 import { roadmapDigest } from './roadmapDigest'
+import { hasLocalContent } from './localContent'
 
 // YZ Koç: sohbetlerin oluşturulması, mesaj gönderme ve uzun sohbetlerin özetlenmesi.
 // Sohbetler yalnızca bu cihazda (Dexie) saklanır; yalnızca istek anında Gemini'ye gider.
@@ -308,7 +309,7 @@ export async function sendYds(chat: CoachChat, text: string): Promise<CoachChat>
   next = await maybeSummarize(next)
   const { system, koc } = await ydsSystem(next)
   const r = await generateChat(system, historyFor(next), 0.5)
-  const modeLabel = import.meta.env.DEV ? (koc ? ' · 📒 Koç (kaynaklı)' : ' · ✨ Saf Gemini') : ''
+  const modeLabel = hasLocalContent() ? (koc ? ' · 📒 Koç (kaynaklı)' : ' · ✨ Saf Gemini') : ''
   const modelTurn: CoachTurn = { role: 'model', text: r.text.trim(), meta: metaOf(r) + modeLabel, at: new Date().toISOString() }
   next = { ...next, messages: [...next.messages, modelTurn], updatedAt: modelTurn.at }
   await db.coachChats.put(next)

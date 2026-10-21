@@ -4,6 +4,7 @@ import { GRAMMAR_TOPICS } from '../../data/grammar'
 import { loadSourceMap, loadTactics, saveTactics, type SourceMap, type TacticRule } from '../../services/tactics'
 import { YDS_SECTIONS, type SectionKey } from '../../services/ydsSections'
 import styles from '../ExamStudy.module.css'
+import { localFetch } from '../../services/localContent'
 
 // Taktik Kitabı (yalnızca yerel): hocaların kitaplarından çıkarılan kuralları görüntüleme ve düzeltme.
 // Kurallar local-data/kaynaklar/taktik-kitabi.json'da; kaydederken önceki sürüm .bak.json olarak saklanır.
@@ -143,7 +144,7 @@ export function TacticsBookPage() {
   }
 
   async function openPage(book: string, p: number) {
-    const r = await fetch(`/local-api/kaynak/sayfa/${encodeURIComponent(book)}/${p}`)
+    const r = await localFetch(`/local-api/kaynak/sayfa/${encodeURIComponent(book)}/${p}`)
     setPage({ book, page: p, text: r.ok ? await r.text() : 'Bu sayfanın OCR metni bulunamadı.' })
   }
 

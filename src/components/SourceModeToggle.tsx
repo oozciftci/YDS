@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getSourceMode, setSourceMode, tacticsAvailable, type SourceMode } from '../services/tactics'
 import styles from './SourceModeToggle.module.css'
+import { hasLocalContent } from '../services/localContent'
 
 // Yapay zekâ yanıtının kaynağı: "Koç" (Taktik Kitabı'na dayalı) ya da "Saf Gemini". Taktik Kitabı yalnızca
 // yerelde olduğundan seçim de yalnızca yerelde görünür; kitap boşken Koç seçilemez.
@@ -37,7 +38,7 @@ export function SourceModeToggle({
   available: boolean
   onChange: (m: SourceMode) => void
 }) {
-  if (!import.meta.env.DEV) return null
+  if (!hasLocalContent()) return null
   return (
     <div className={styles.wrap} role="radiogroup" aria-label="Yanıt kaynağı">
       {(['koc', 'saf'] as SourceMode[]).map((m) => {

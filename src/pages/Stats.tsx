@@ -14,6 +14,7 @@ import { WeeklyReportCard } from '../components/WeeklyReportCard'
 import { computeMilestones } from '../services/milestones'
 import { useSettings } from '../stores/settings'
 import styles from './Stats.module.css'
+import { hasLocalContent } from '../services/localContent'
 
 const POS_LABELS: Record<PartOfSpeech, string> = {
   verb: 'Fiil',
@@ -75,7 +76,7 @@ export function StatsPage() {
         answers: examAnswers,
         mocks: mockResults,
         targetScore,
-        showQuestions: import.meta.env.DEV,
+        showQuestions: hasLocalContent(),
       }),
     [cardStates, reviewLogs, examAnswers, mockResults, targetScore],
   )

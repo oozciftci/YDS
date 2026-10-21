@@ -1,5 +1,6 @@
-// Çıkmış YDS sınav verisi: yalnızca yerel geliştirme sunucusundan gelir (/local-api/yds).
-// Bu klasör yalnızca dev-only ExamStudy sayfasından içe aktarılır; yayın derlemesine girmez.
+// Çıkmış YDS sınav verisi (telifli): geliştirmede yerel sunucudan (/local-api/yds), yayında cihaza yüklenen kaynak
+// paketinden gelir (src/services/localContent.ts). Yayın derlemesinde yalnızca bu kod vardır, veri yoktur.
+import { localFetch } from '../../services/localContent'
 
 export interface Seg {
   id: string
@@ -91,7 +92,7 @@ let listCache: Promise<ExamMeta[]> | null = null
 const examCache = new Map<string, Promise<ExamBundle>>()
 
 function getJson<T>(url: string): Promise<T> {
-  return fetch(url).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(String(r.status)))))
+  return localFetch(url).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(String(r.status)))))
 }
 
 function listAll(): Promise<ExamMeta[]> {

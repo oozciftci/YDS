@@ -9,6 +9,7 @@ import styles from '../ExamStudy.module.css'
 import { imageUrl, loadBook, type Book } from '../books/bookData'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './answerControls'
 import { QuestionNav } from './QuestionNav'
+import { localFetch, useLocalUrl } from '../../services/localContent'
 
 // Görüntü tabanlı soru bankası (taranmış kitap): soru metni yok; her soru sayfadaki kutusuyla gösterilir,
 // şıklar düğmelerle işaretlenir, cevap kitabın cevap anahtarından kontrol edilir. Veri yalnızca yerelde.
@@ -34,7 +35,7 @@ interface ImgTest {
 
 let testsCache: Promise<{ title: string; tests: ImgTest[] }> | null = null
 function loadTests(bookId: string) {
-  testsCache ??= fetch(`/local-api/kitap/${bookId}/testler`).then((r) => {
+  testsCache ??= localFetch(`/local-api/kitap/${bookId}/testler`).then((r) => {
     if (!r.ok) {
       testsCache = null
       throw new Error(String(r.status))
@@ -149,10 +150,11 @@ function PageCrop({ book, page, box }: { book: Book; page: number; box: [number,
   const [x0, y0, x1, y1] = box ?? [0, 0, 1, 1]
   const bw = x1 - x0
   const bh = y1 - y0
+  const src = useLocalUrl(imageUrl(book.id, page))
   return (
     <div className={styles.cropFrame} style={{ aspectRatio: `${p.w * bw} / ${p.h * bh}` }}>
       <img
-        src={imageUrl(book.id, page)}
+        src={src}
         alt={`Sayfa ${page}`}
         draggable={false}
         style={{ width: `${100 / bw}%`, left: `${(-x0 / bw) * 100}%`, top: `${(-y0 / bh) * 100}%` }}

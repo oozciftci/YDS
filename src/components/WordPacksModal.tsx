@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ALL_WORD_PACKS, type WordPack } from '../data/wordPacks'
 import { bulkCreateWords, type CreateWordInput } from '../services/words'
 import styles from '../pages/Words.module.css'
+import { hasLocalContent, localFetch } from '../services/localContent'
 
 interface WordPacksModalProps {
   activeUserId: string
@@ -30,8 +31,8 @@ export function WordPacksModal({
   const [localPack, setLocalPack] = useState<{ id: string; count: number } | null>(null)
 
   useEffect(() => {
-    if (!import.meta.env.DEV) return
-    fetch('/local-api/paket')
+    if (!hasLocalContent()) return
+    localFetch('/local-api/paket')
       .then((r) => (r.ok ? r.json() : []))
       .then((list: { id: string; count: number }[]) => setLocalPack(list.find((p) => p.id === 'modadil-60-gun') ?? null))
       .catch(() => setLocalPack(null))
@@ -42,7 +43,7 @@ export function WordPacksModal({
     setLoadingAction('local_pack')
     setResultMsg(null)
     try {
-      const res = await fetch(`/local-api/paket/${localPack.id}`)
+      const res = await localFetch(`/local-api/paket/${localPack.id}`)
       if (!res.ok) throw new Error('Paket dosyası okunamadı: ' + res.status)
       const words: CreateWordInput[] = await res.json()
       const added = await bulkCreateWords(activeUserId, words)
@@ -150,9 +151,9 @@ export function WordPacksModal({
       if (!res.ok) throw new Error('Paket dosyası yüklenemedi: ' + res.status)
       const words: CreateWordInput[] = await res.json()
       let withExamples = 0
-      if (import.meta.env.DEV) {
+      if (hasLocalContent()) {
         try {
-          const ex = await fetch('/local-api/kelime-ornekleri')
+          const ex = await localFetch('/local-api/kelime-ornekleri')
           if (ex.ok) {
             const map: Record<string, CreateWordInput['sentences']> = await ex.json()
             for (const w of words) {
@@ -622,7 +623,7 @@ export function WordPacksModal({
           </div>
 
           {/* 60 Günde YDS Kelimeleri (Modadil): telifli kitap, yalnızca yerelde */}
-          {import.meta.env.DEV && localPack && (
+          {localPack && (
             <div
               style={{
                 padding: '1rem',

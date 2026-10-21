@@ -5,6 +5,7 @@ import { canSpeak, hasTurkishVoice, speakQueue, TTS_RATES, type SpeechItem } fro
 import { useUserStore } from '../stores/user'
 import { listOzgunReadings } from './exam/ozgunData'
 import styles from './NightMode.module.css'
+import { hasLocalContent } from '../services/localContent'
 
 // Gece modu: yatarken dinlemek için kelime (apple, elma, apple, elma…) ya da paragraf cümleleri
 // (İngilizce, Türkçe…) belirlenen sayıda tekrarlanarak sabaha kadar döngüde okunur.
@@ -95,7 +96,7 @@ async function loadParagraphUnits(pool: ParaPool, userId = ''): Promise<Unit[]> 
       return s.sentences.map((x) => ({ en: x.en.replace(/\*\*/g, ''), tr: x.tr, group: `📜 ${s.title}` }))
     })
   }
-  if (pool === 'exam' && import.meta.env.DEV) {
+  if (pool === 'exam' && hasLocalContent()) {
     const { loadAllExams, shortTitle } = await import('./exam/examData')
     const bundles = await loadAllExams()
     return bundles.flatMap((b) =>
@@ -141,7 +142,7 @@ export default function NightModePage() {
       loadWordUnits(userId, 'all'),
       loadParagraphUnits('ozgun'),
       loadParagraphUnits('story', userId),
-      import.meta.env.DEV ? loadParagraphUnits('exam').catch(() => []) : Promise.resolve([]),
+      hasLocalContent() ? loadParagraphUnits('exam').catch(() => []) : Promise.resolve([]),
     ]).then(([due, learning, all, ozgun, story, exam]) => {
       if (alive) setCounts({ due: due.length, learning: learning.length, all: all.length, ozgun: ozgun.length, story: story.length, exam: exam.length })
     })
@@ -228,7 +229,7 @@ export default function NightModePage() {
             <select value={cfg.paraPool} onChange={(e) => update({ paraPool: e.target.value as ParaPool })}>
               <option value="ozgun">Özgün okuma paragrafları ({n('ozgun')} cümle)</option>
               <option value="story">Günün hikâyelerim ({n('story')} cümle)</option>
-              {import.meta.env.DEV && <option value="exam">Çıkmış sınav paragrafları ({n('exam')} cümle)</option>}
+              {hasLocalContent() && <option value="exam">Çıkmış sınav paragrafları ({n('exam')} cümle)</option>}
             </select>
           </label>
         )}

@@ -21,8 +21,8 @@ import { ReadingList, ReadingPassage, ReadingQuestions } from './exam/ReadingMod
 import { TopicPractice } from './exam/TopicPractice'
 import { WrongBook } from './exam/WrongBook'
 
-// YDS Soru Merkezi. Veri yalnızca yerel geliştirme sunucusundan gelir (/local-api/yds);
-// yayın derlemesinde bu sayfa hiç bulunmaz (bkz. App.tsx).
+// YDS Soru Merkezi. Veri geliştirmede yerel sunucudan (/local-api/yds), yayında cihaza yüklenen kaynak paketinden
+// gelir (src/services/localContent.ts); paket yoksa sayfa yolu tanımlanmaz (bkz. App.tsx).
 
 const QUESTIONS_PER_EXAM = 80
 

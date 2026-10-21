@@ -1,5 +1,6 @@
 import { GRAMMAR_TOPICS } from '../data/grammar'
 import { YDS_SECTIONS } from './ydsSections'
+import { hasLocalContent } from './localContent'
 
 // Uygulama haritası: YZ koçunun öğrenciyi yönlendirebileceği sayfalar. Modele bu liste verilir;
 // yanıttaki bağlantılar yalnızca bu listedeki adreslere tıklanabilir olur (bilinmeyenler düz metin kalır).
@@ -31,7 +32,7 @@ export function appLinks(): AppLink[] {
     { href: '/koc/hafiza', label: 'Hafızam', desc: 'profil ve YZ hafıza notları' },
   ]
   // Çıkmış soru sayfaları yalnızca yerel geliştirmede vardır
-  if (import.meta.env.DEV) {
+  if (hasLocalContent()) {
     links.push(
       { href: '/yds-sorular', label: 'Soru Merkezi', desc: '27 çıkmış YDS; sınav çöz, deneme, konu bazlı çalışma' },
       ...YDS_SECTIONS.map((s) => ({ href: `/yds-sorular/konu/${s.key}`, label: `${s.label} soruları`, desc: `tüm sınavlardan ${s.label.toLowerCase()} soruları (${s.from}-${s.to}. sorular)` })),

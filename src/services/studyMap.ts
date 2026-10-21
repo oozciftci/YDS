@@ -1,3 +1,4 @@
+import { hasLocalContent } from './localContent'
 // Çalış menüsünün iskeleti: her özellik tek bir kategoride durur (ana sayfa ve Çalış merkezi bunu kullanır).
 
 export interface StudyLink {
@@ -81,7 +82,7 @@ const ALL: StudyCategory[] = [
 
 export const STUDY_CATEGORIES: StudyCategory[] = ALL.map((c) => ({
   ...c,
-  links: c.links.filter((l) => !l.dev || import.meta.env.DEV),
+  links: c.links.filter((l) => !l.dev || hasLocalContent()),
 }))
 
 /** Bu yollar "Çalış" menüsünün altında sayılır (menüde Çalış seçili görünür). */

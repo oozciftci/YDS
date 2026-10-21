@@ -20,6 +20,7 @@ import {
   type BookMeta,
   type Frame,
 } from './books/bookData'
+import { localFetch, preloadLocalImage, useLocalUrl } from '../services/localContent'
 
 // Kitaptan çalış: kitabı sayfa sayfa (telefonda yarım sayfa yarım sayfa) oku; kaldığın yer hatırlanır.
 // Sayfa notları sağ alttaki "📄 Bu sayfa" penceresinden (her sayfanın kendi notu), kitabın defteri bu sayfada toplanır.
@@ -128,6 +129,7 @@ function Reader() {
     return frames.findIndex((f) => f.page === pageNo)
   }, [frames, pageNo, halfParam])
   const frame: Frame | undefined = frames[idx]
+  const src = useLocalUrl(frame ? imageUrl(bookId, frame.page) : null)
 
   // Kaldığın yeri kaydet; bir üniteyi ileri doğru geçince o ünite bitmiş sayılır (günlük plan için)
   const prevPage = useRef<number | null>(null)
@@ -149,7 +151,7 @@ function Reader() {
   // Sonraki sayfanın görüntüsünü önceden yükle
   useEffect(() => {
     const next = frames[idx + 1]
-    if (next && next.page !== frame?.page) new Image().src = imageUrl(bookId, next.page)
+    if (next && next.page !== frame?.page) preloadLocalImage(imageUrl(bookId, next.page))
   }, [frames, idx, frame, bookId])
 
   function go(i: number) {
@@ -258,7 +260,7 @@ function Reader() {
         }}
       >
         <img
-          src={imageUrl(book.id, frame.page)}
+          src={src}
           alt={`${book.short} sayfa ${frame.page}`}
           style={{ top: `${(-frame.start / span) * 100}%` }}
           draggable={false}
@@ -387,7 +389,7 @@ function TestSuggestion({ topic }: { topic: string }) {
   const userId = useUserStore((s) => s.activeUserId)
   const [tests, setTests] = useState<{ id: string; section: string; no: number; type: string; questions: unknown[] }[] | null>(null)
   useEffect(() => {
-    fetch('/local-api/kitap/modadil-sinav-stratejileri-3/testler')
+    localFetch('/local-api/kitap/modadil-sinav-stratejileri-3/testler')
       .then((r) => (r.ok ? r.json() : { tests: [] }))
       .then((d) => setTests(d.tests))
       .catch(() => setTests([]))

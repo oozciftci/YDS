@@ -37,9 +37,10 @@ import { MemoryHook } from '../components/MemoryHook'
 import { WriteAnswer } from '../components/WriteAnswer'
 import { WordFamilyBlock } from '../components/WordFamilyBlock'
 import styles from './Study.module.css'
+import { hasLocalContent } from '../services/localContent'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
-const ExamContext = import.meta.env.DEV ? lazy(() => import('./exam/ExamContext')) : null
+const ExamContext = hasLocalContent() ? lazy(() => import('./exam/ExamContext')) : null
 
 export function StudyPage() {
   const navigate = useNavigate()

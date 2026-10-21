@@ -196,34 +196,37 @@ export interface DeviceSyncResult {
   sentRecords: number
 }
 
+/** Gelen kopyayı yerel veriyle birleştirir (veritabanı + tarayıcı deposu). */
+async function applyRemote(local: Snapshot, remote: Snapshot, base: Record<string, string>) {
+  const merged = mergeSnapshots(local.tables, remote.tables ?? {})
+  const tables = SYNC_TABLES.filter((t) => t !== 'notebook').map((t) => db.table(t))
+  await db.transaction('rw', tables, async () => {
+    for (const t of SYNC_TABLES) {
+      if (t === 'notebook') continue
+      if (merged.deletes[t].length) await db.table(t).bulkDelete(merged.deletes[t])
+      if (merged.puts[t].length) await db.table(t).bulkPut(merged.puts[t])
+    }
+  })
+  // Defter görselleri/sesleri data URL'den Blob'a (işlem dışında)
+  if (merged.deletes.notebook.length) await db.notebook.bulkDelete(merged.deletes.notebook)
+  if (merged.puts.notebook.length) await importNotebook(merged.puts.notebook)
+
+  const storageSet = mergeStorage(local.storage, remote.storage ?? {}, base)
+  for (const [k, v] of Object.entries(storageSet)) localStorage.setItem(k, v)
+  return { received: merged.received, storageReceived: Object.keys(storageSet).length, remapped: merged.remapped }
+}
+
 /** Ortak kopyayla eşitler; araya başka cihaz girerse (409) baştan dener. */
 export async function syncDevices(): Promise<DeviceSyncResult> {
   for (let attempt = 0; attempt < 3; attempt++) {
     const got = (await (await fetch('/local-api/esitle', { cache: 'no-store' })).json()) as { rev: number; data?: Snapshot }
-    const remote = got.data ?? { tables: {}, storage: {} }
-    const local = await readLocal()
-
-    const merged = mergeSnapshots(local.tables, remote.tables)
-    const tables = SYNC_TABLES.filter((t) => t !== 'notebook').map((t) => db.table(t))
-    await db.transaction('rw', tables, async () => {
-      for (const t of SYNC_TABLES) {
-        if (t === 'notebook') continue
-        if (merged.deletes[t].length) await db.table(t).bulkDelete(merged.deletes[t])
-        if (merged.puts[t].length) await db.table(t).bulkPut(merged.puts[t])
-      }
-    })
-    // Defter görselleri/sesleri data URL'den Blob'a (işlem dışında)
-    if (merged.deletes.notebook.length) await db.notebook.bulkDelete(merged.deletes.notebook)
-    if (merged.puts.notebook.length) await importNotebook(merged.puts.notebook)
-
     let base: Record<string, string> = {}
     try {
       base = JSON.parse(localStorage.getItem(BASE_KEY) || '{}') as Record<string, string>
     } catch {
       // ilk eşitleme
     }
-    const storageSet = mergeStorage(local.storage, remote.storage ?? {}, base)
-    for (const [k, v] of Object.entries(storageSet)) localStorage.setItem(k, v)
+    const applied = await applyRemote(await readLocal(), got.data ?? { tables: {}, storage: {} }, base)
 
     const out = await readLocal()
     const res = await fetch('/local-api/esitle', {
@@ -236,14 +239,36 @@ export async function syncDevices(): Promise<DeviceSyncResult> {
     const now = new Date().toISOString()
     localStorage.setItem(BASE_KEY, JSON.stringify(out.storage))
     localStorage.setItem(LAST_KEY, now)
-    const result = {
-      received: merged.received,
-      storageReceived: Object.keys(storageSet).length,
-      remapped: merged.remapped,
-      sentRecords: SYNC_TABLES.reduce((n, t) => n + (out.tables[t]?.length ?? 0), 0),
-    }
+    const result = { ...applied, sentRecords: SYNC_TABLES.reduce((n, t) => n + (out.tables[t]?.length ?? 0), 0) }
     logger.interaction('storage', 'Cihazlar arası eşitleme yapıldı.', { ...result })
     return result
   }
   throw new Error('Başka bir cihaz aynı anda eşitliyor; biraz sonra tekrar dene.')
+}
+
+// ---- İlerleme dosyası: sunucu olmadan (ör. yayın sürümü ↔ bilgisayar ya da iki tarayıcı arasında) taşıma ----
+
+const FILE_KIND = 'yds-ilerleme'
+
+/** Tüm ilerlemeyi tek dosya olarak indirir (öbür cihazda "Dosyadan birleştir" ile açılır). */
+export async function downloadProgressFile(): Promise<void> {
+  const data = await readLocal()
+  const blob = new Blob([JSON.stringify({ kind: FILE_KIND, v: 1, exportedAt: new Date().toISOString(), data })], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `yds-ilerleme-${new Date().toISOString().slice(0, 10)}.json`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  setTimeout(() => URL.revokeObjectURL(url), 10_000)
+}
+
+/** İlerleme dosyasını bu cihazdaki veriyle birleştirir (yeni olan kazanır; hiçbir şey silinmez). */
+export async function mergeProgressFile(file: File) {
+  const parsed = JSON.parse(await file.text()) as { kind?: string; data?: Snapshot }
+  if (parsed.kind !== FILE_KIND || !parsed.data) throw new Error('Bu bir ilerleme dosyası değil.')
+  const result = await applyRemote(await readLocal(), parsed.data, {})
+  logger.interaction('storage', 'İlerleme dosyası birleştirildi.', { ...result })
+  return result
 }

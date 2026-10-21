@@ -20,6 +20,7 @@ import { getDoneUnits, unitsDoneToday } from '../services/bookProgress'
 import { dismiss, useDismissed } from '../services/dismissed'
 import type { CardState, ReviewLog } from '../types/database'
 import styles from './Home.module.css'
+import { hasLocalContent } from '../services/localContent'
 
 const NO_CARDS: CardState[] = []
 const NO_LOGS: ReviewLog[] = []
@@ -90,7 +91,7 @@ export function HomePage() {
   // Çıkmış soru havuzu yalnızca yerelde bilinir (telifli veri yayına girmez)
   const [questionPool, setQuestionPool] = useState<number | undefined>(undefined)
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!hasLocalContent()) return
     import('./exam/examData')
       .then((m) => m.listExams())
       .then((list) => setQuestionPool(list.filter((e) => e.hasKey).length * 80))
@@ -100,7 +101,7 @@ export function HomePage() {
   // Kitaptan çalış (yalnızca yerelde): en son okunan kitabın sıradaki ünitesi
   const [bookTask, setBookTask] = useState<{ short: string; unitNo: number; unitTitle: string; to: string; doneToday: number } | undefined>(undefined)
   useEffect(() => {
-    if (!import.meta.env.DEV) return
+    if (!hasLocalContent()) return
     let alive = true
     import('./books/bookData')
       .then(async (m) => {

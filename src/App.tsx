@@ -10,9 +10,8 @@ import { WordsPage } from './pages/Words'
 import { SynonymMatchPage } from './pages/SynonymMatch'
 import { ExamQuizPage } from './pages/ExamQuiz'
 import { StudyHubPage } from './pages/StudyHub'
+import { hasLocalContent } from './services/localContent'
 
-// YDS soru çalışma sayfası yalnızca yerel geliştirmede (npm run dev) vardır; yayın derlemesinde
-// import.meta.env.DEV false olduğundan bu satır ve sayfa pakete hiç girmez.
 // Dilbilgisi rehberi ayrı parça olarak yüklenir (uzun içerik ana paketi büyütmesin)
 const GrammarPage = lazy(() => import('./pages/Grammar'))
 const CoachPage = lazy(() => import('./pages/Coach'))
@@ -20,9 +19,10 @@ const YdsTestPage = lazy(() => import('./pages/YdsTest'))
 const NightModePage = lazy(() => import('./pages/NightMode'))
 const WordFamiliesPage = lazy(() => import('./pages/WordFamilies').then((m) => ({ default: m.WordFamiliesPage })))
 
-const ExamStudyPage = import.meta.env.DEV ? lazy(() => import('./pages/ExamStudy')) : null
-// Kitaptan çalış: telifli kitap görüntüleri yalnızca yerelde (yayında sayfa yok)
-const BooksPage = import.meta.env.DEV ? lazy(() => import('./pages/Books')) : null
+// YDS soru çalışma ve Kitaptan çalış sayfaları telifli yerel içerik ister: geliştirmede yerel sunucudan, yayında cihaza
+// yüklenen kaynak paketinden (src/services/localContent.ts). Paket yüklenmemişse sayfa yolu hiç tanımlanmaz.
+const ExamStudyPage = hasLocalContent() ? lazy(() => import('./pages/ExamStudy')) : null
+const BooksPage = hasLocalContent() ? lazy(() => import('./pages/Books')) : null
 
 export default function App() {
   return (

@@ -1,4 +1,5 @@
 import type { SectionKey } from './ydsSections'
+import { hasLocalContent, localFetch } from './localContent'
 
 // Taktik Kitabı: YDS hocalarının kitaplarından (OCR) çıkarılan, soru tipine göre kısa uygulanabilir kurallar.
 // Veri telifli olduğu için yalnızca yerelde, dev-only ara katmandan gelir (vite.config.ts → /local-api/kaynak).
@@ -61,7 +62,7 @@ let bookCache: Promise<TacticsBook> | null = null
 
 async function getJson<T>(url: string, empty: T): Promise<T> {
   try {
-    const r = await fetch(url)
+    const r = await localFetch(url)
     return r.ok ? ((await r.json()) as T) : empty
   } catch {
     return empty
@@ -69,21 +70,21 @@ async function getJson<T>(url: string, empty: T): Promise<T> {
 }
 
 export function loadSourceMap(): Promise<SourceMap> {
-  if (!import.meta.env.DEV) return Promise.resolve(EMPTY_MAP)
+  if (!hasLocalContent()) return Promise.resolve(EMPTY_MAP)
   mapCache ??= getJson('/local-api/kaynak/harita', EMPTY_MAP)
   return mapCache
 }
 
 export function loadTactics(): Promise<TacticsBook> {
-  if (!import.meta.env.DEV) return Promise.resolve(EMPTY_BOOK)
+  if (!hasLocalContent()) return Promise.resolve(EMPTY_BOOK)
   bookCache ??= getJson('/local-api/kaynak/taktik', EMPTY_BOOK)
   return bookCache
 }
 
 /** Düzenleme ekranından kaydeder (yalnızca yerelde). */
 export async function saveTactics(book: TacticsBook): Promise<void> {
-  if (!import.meta.env.DEV) throw new Error('Taktik Kitabı yalnızca yerelde düzenlenebilir.')
-  const r = await fetch('/local-api/kaynak/taktik', {
+  if (!hasLocalContent()) throw new Error('Taktik Kitabı için önce kaynak paketini yükle.')
+  const r = await localFetch('/local-api/kaynak/taktik', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(book),
@@ -94,7 +95,7 @@ export async function saveTactics(book: TacticsBook): Promise<void> {
 
 async function pageText(book: string, page: number): Promise<string> {
   try {
-    const r = await fetch(`/local-api/kaynak/sayfa/${encodeURIComponent(book)}/${page}`)
+    const r = await localFetch(`/local-api/kaynak/sayfa/${encodeURIComponent(book)}/${page}`)
     return r.ok ? await r.text() : ''
   } catch {
     return ''

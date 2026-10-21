@@ -186,6 +186,9 @@
     order: 5;
     max-width: none;
     flex-basis: 100%;
+    /* Uzun ünite adları seçiciyi ekrandan geniş yapmasın */
+    min-width: 0;
+    width: 100%;
   }
 
   .frame {

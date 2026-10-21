@@ -98,7 +98,7 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
         <article className={`card ${styles.passage}`}>
           <h2 className={styles.sectionTitle}>
             {passage.kind === 'cloze' ? 'Boşluk doldurma paragrafı' : 'Okuma paragrafı'}
-            {exam.pdf && passage.page ? (
+            {import.meta.env.DEV && exam.pdf && passage.page ? (
               <button type="button" className={styles.pdfBtn} onClick={() => setPdfPage(passage.page ?? 1)}>
                 📄 Orijinal sayfa {passage.page}
               </button>
@@ -123,7 +123,8 @@ export function QuestionCard({ bundle, q, choice, revealed, onChoose, assist = t
             {section.icon} {section.label}
           </span>
           {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
-          {exam.pdf && q.page ? (
+          {/* Orijinal PDF yalnızca bilgisayardaki sunucuda var (kaynak paketine girmez) */}
+          {import.meta.env.DEV && exam.pdf && q.page ? (
             <button type="button" className={styles.pdfBtn} onClick={() => setPdfPage(q.page ?? 1)}>
               📄 Orijinal sayfa {q.page}
             </button>

@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
 import { phoneAccess, trusted } from './vite.phone.ts'
+import { localBundle } from './vite.localBundle.ts'
 
 // YDS soru çalışma verisi (local-data/yds) YALNIZCA geliştirme sunucusunda, localhost üzerinden (ya da
 // `npm run telefon` ile şifreyle girilmiş telefondan; vite.phone.ts) sunulur. Üretim derlemesine (dist) ve
@@ -305,6 +306,7 @@ export default defineConfig(({ mode }) => ({
     localBooks(),
     localSources(),
     localPacks(),
+    localBundle(),
     VitePWA({
       // 'prompt' modunda yeni SW bekler; ne zaman devreye gireceğine biz karar veririz
       // (src/pwa/registerSW.ts). Kullanıcıya hiçbir şey sorulmaz -> sessiz güncelleme,

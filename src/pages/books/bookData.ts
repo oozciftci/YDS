@@ -1,5 +1,6 @@
-// Kitaptan çalış: telifli kitapların sayfa görüntüleri yalnızca yerel geliştirme sunucusundan gelir (/local-api/kitap).
-// Bu dosya yalnızca dev-only Kitap sayfasından içe aktarılır; yayın derlemesine girmez.
+// Kitaptan çalış: telifli kitapların sayfa görüntüleri geliştirmede yerel sunucudan (/local-api/kitap), yayında cihaza
+// yüklenen kaynak paketinden gelir (src/services/localContent.ts; görüntüler için useLocalUrl).
+import { localFetch } from '../../services/localContent'
 
 export interface BookMeta {
   id: string
@@ -60,7 +61,7 @@ export function imageUrl(bookId: string, page: number): string {
 }
 
 function getJson<T>(url: string): Promise<T> {
-  return fetch(url).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(String(r.status)))))
+  return localFetch(url).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(String(r.status)))))
 }
 
 export function listBooks(): Promise<BookMeta[]> {

@@ -6,6 +6,7 @@ import { getSaved } from '../services/favorites'
 import { STUDY_CATEGORIES } from '../services/studyMap'
 import { useUserStore } from '../stores/user'
 import styles from './CommandPalette.module.css'
+import { hasLocalContent, localFetch } from '../services/localContent'
 
 // Hızlı arama (Ctrl+K / ⌘K): sayfa, kelime, dilbilgisi konusu, kitap ünitesi ve test adını yaz, Enter ile git.
 
@@ -24,7 +25,7 @@ const PAGES: Item[] = [
   { group: 'Sayfa', label: 'Ayarlar', to: '/settings' },
   { group: 'Sayfa', label: 'Yedekleme ve geri yükleme', hint: 'Ayarlar', to: '/settings' },
   ...STUDY_CATEGORIES.flatMap((c) => c.links.map((l) => ({ group: 'Sayfa', label: l.label, hint: `${c.title} · ${l.hint}`, to: l.to }))),
-  ...(import.meta.env.DEV
+  ...(hasLocalContent()
     ? [
         { group: 'Sayfa', label: 'Soru Merkezi', hint: 'Çıkmış sınavlar', to: '/yds-sorular' },
         { group: 'Sayfa', label: 'Özel Deneme', to: '/yds-sorular/ozel' },
@@ -53,7 +54,7 @@ function fold(s: string): string {
 /** Yalnızca yerelde var olan kaynaklar (kitap üniteleri, sınavlar, testler); ilk açılışta bir kez yüklenir. */
 let localCache: Promise<Item[]> | null = null
 function loadLocal(): Promise<Item[]> {
-  if (!import.meta.env.DEV) return Promise.resolve([])
+  if (!hasLocalContent()) return Promise.resolve([])
   localCache ??= (async () => {
     const out: Item[] = []
     try {
@@ -72,7 +73,7 @@ function loadLocal(): Promise<Item[]> {
       // sınav verisi yoksa geç
     }
     try {
-      const r = await fetch('/local-api/kitap/modadil-sinav-stratejileri-3/testler')
+      const r = await localFetch('/local-api/kitap/modadil-sinav-stratejileri-3/testler')
       if (r.ok) {
         const d = (await r.json()) as { tests: { id: string; section: string; no: number }[] }
         for (const t of d.tests)

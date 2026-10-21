@@ -13,6 +13,7 @@ import { sectionOf } from '../../services/ydsSections'
 import type { AiNoteTurn } from '../../types/database'
 import styles from '../ExamStudy.module.css'
 import type { ExamBundle, Question } from './examData'
+import { hasLocalContent } from '../../services/localContent'
 
 // Soru başına yapay zekâ sohbeti: ilk mesaj soruyu açıklatır (isteğe bağlı olarak öğrencinin takıldığı nokta
 // ile), sonra öğrenci devam soruları sorabilir. Sohbet cihazda saklanır; geri dönüldüğünde geçmiş görünür.
@@ -133,7 +134,7 @@ export function AiExplain({ bundle, q, choice }: { bundle: ExamBundle; q: Questi
         history.map((t) => ({ role: t.role, text: t.prompt ?? t.text })),
         first ? 0.3 : 0.5,
       )
-      const meta = `${r.model} · ${r.tier === 'paid' ? `ücretli (~${r.usd.toFixed(4)} $)` : 'ücretsiz katman'}${import.meta.env.DEV ? ` · ${SOURCE_MODE_LABEL[tactics ? 'koc' : 'saf']}` : ''}${memory ? ' · seni tanıyarak' : ''}`
+      const meta = `${r.model} · ${r.tier === 'paid' ? `ücretli (~${r.usd.toFixed(4)} $)` : 'ücretsiz katman'}${hasLocalContent() ? ` · ${SOURCE_MODE_LABEL[tactics ? 'koc' : 'saf']}` : ''}${memory ? ' · seni tanıyarak' : ''}`
       const next = [...history, { role: 'model' as const, text: r.text, meta, at: new Date().toISOString() }]
       setTurns(next)
       const firstModel = next.find((t) => t.role === 'model')

@@ -3,7 +3,8 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db'
 import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { exportDatabaseToJson, importDatabaseFromJson } from '../services/backup'
-import { lastDeviceSync, syncDevices } from '../services/deviceSync'
+import { downloadProgressFile, lastDeviceSync, mergeProgressFile, syncDevices } from '../services/deviceSync'
+import { deleteLocalContent, importLocalBundle, localSummary } from '../services/localContent'
 import { testBackendConnection, type ConnectionTestResult } from '../services/backend'
 import { logger } from '../services/logger'
 import { notificationsSupported, requestReminderPermission, showReminder } from '../services/reminder'
@@ -202,7 +203,14 @@ export function SettingsPage() {
         </div>
       </section>
 
-      {import.meta.env.DEV && <PhoneCard />}
+      {import.meta.env.DEV ? (
+        <>
+          <PhoneCard />
+          <BundleCard />
+        </>
+      ) : (
+        <LocalContentCard />
+      )}
 
       {/* 1. KULLANICI PROFİLLERİ */}
       <section className="card" id="users">
@@ -746,7 +754,186 @@ function DeviceSyncRow({ phone }: { phone: boolean }) {
           )}
         </p>
       )}
+      <ProgressFileRow />
     </div>
+  )
+}
+
+/** İlerlemeyi dosyayla taşı: yayın sürümü ↔ bilgisayar ya da telefondaki iki adres arasında (sunucu gerekmez). */
+function ProgressFileRow() {
+  const input = useRef<HTMLInputElement>(null)
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  async function onFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setBusy(true)
+    setMsg(null)
+    try {
+      const r = await mergeProgressFile(file)
+      setMsg({ ok: true, text: `✓ Birleştirildi: ${r.received + r.storageReceived} yeni ya da güncel kayıt alındı. Sayfayı yenile.` })
+    } catch (err) {
+      setMsg({ ok: false, text: err instanceof Error ? err.message : String(err) })
+    }
+    setBusy(false)
+  }
+
+  return (
+    <details style={{ marginTop: '0.75rem' }}>
+      <summary className="muted" style={{ cursor: 'pointer', fontSize: '0.9rem' }}>
+        İlerlemeyi dosyayla taşı
+      </summary>
+      <p className="muted" style={{ margin: '0.5rem 0', fontSize: '0.85rem' }}>
+        Bir cihazda “İlerleme dosyası indir”, öbüründe “Dosyadan birleştir”. Yeni olan kayıt kazanır, hiçbir şey silinmez.
+      </p>
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <button type="button" className="btn btn-secondary" onClick={() => void downloadProgressFile()}>
+          📤 İlerleme dosyası indir
+        </button>
+        <button type="button" className="btn btn-secondary" disabled={busy} onClick={() => input.current?.click()}>
+          {busy ? 'Birleştiriliyor…' : '📥 Dosyadan birleştir'}
+        </button>
+        <input ref={input} type="file" accept=".json,application/json" hidden onChange={(e) => void onFile(e)} />
+      </div>
+      {msg && (
+        <p role="status" className={msg.ok ? styles.ok : styles.error} style={{ margin: '0.5rem 0 0' }}>
+          {msg.text}
+        </p>
+      )}
+    </details>
+  )
+}
+
+/** Geliştirme sunucusunda: telifli kaynakları tek dosyada indir (yayın sürümündeki uygulamaya yüklemek için). */
+function BundleCard() {
+  const [parts, setParts] = useState<{ id: string; title: string; bytes: number }[] | null>(null)
+  const [chosen, setChosen] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    fetch('/local-api/kaynak-paketi/parcalar')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((list: { id: string; title: string; bytes: number }[] | null) => {
+        setParts(list)
+        setChosen(new Set((list ?? []).filter((p) => p.bytes > 0).map((p) => p.id)))
+      })
+      .catch(() => setParts(null))
+  }, [])
+  if (!parts) return null
+  const total = parts.filter((p) => chosen.has(p.id)).reduce((n, p) => n + p.bytes, 0)
+  const toggle = (id: string) =>
+    setChosen((s) => {
+      const n = new Set(s)
+      if (n.has(id)) n.delete(id)
+      else n.add(id)
+      return n
+    })
+
+  return (
+    <section id="kaynak-paketi" className="card">
+      <h2 className={styles.cardTitle}>📦 Kaynak paketi</h2>
+      <p className="muted" style={{ margin: '0 0 0.75rem' }}>
+        Kitapları ve çıkmış soruları bilgisayarsız kullanmak için: seçtiklerini tek dosya olarak indir, sonra yayın
+        sürümündeki uygulamada <b>Ayarlar › 📚 Yerel kaynaklar › Paket yükle</b> ile aç. Dosya yalnızca senin cihazlarında
+        kalmalı; kimseyle paylaşma, internete yükleme.
+      </p>
+      <div style={{ display: 'grid', gap: '0.35rem', marginBottom: '0.75rem' }}>
+        {parts.map((p) => (
+          <label key={p.id} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <input type="checkbox" checked={chosen.has(p.id)} disabled={!p.bytes} onChange={() => toggle(p.id)} />
+            <span>{p.title}</span>
+            <span className="muted" style={{ fontSize: '0.85rem' }}>
+              {formatBytes(p.bytes)}
+            </span>
+          </label>
+        ))}
+      </div>
+      {chosen.size > 0 ? (
+        <a className="btn btn-primary" href={`/local-api/kaynak-paketi?parcalar=${[...chosen].join(',')}`} download>
+          ⬇️ İndir ({formatBytes(total)})
+        </a>
+      ) : (
+        <p className="muted" style={{ margin: 0 }}>
+          En az bir parça seç.
+        </p>
+      )}
+    </section>
+  )
+}
+
+/** Yayın sürümünde: kaynak paketini cihaza yükle / sil, ilerlemeyi dosyayla taşı. */
+function LocalContentCard() {
+  const input = useRef<HTMLInputElement>(null)
+  const [summary, setSummary] = useState(localSummary)
+  const [progress, setProgress] = useState<number | null>(null)
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
+
+  async function onFile(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setMsg(null)
+    setProgress(0)
+    try {
+      const s = await importLocalBundle(file, setProgress)
+      setSummary(s)
+      setMsg({ ok: true, text: '✓ Yüklendi. Bölümlerin açılması için sayfa yenileniyor…' })
+      setTimeout(() => location.reload(), 1500)
+    } catch (err) {
+      setMsg({ ok: false, text: err instanceof Error ? err.message : String(err) })
+    }
+    setProgress(null)
+  }
+
+  async function remove() {
+    if (!confirm('Cihazdaki kitaplar ve çıkmış sorular silinsin mi? İlerlemen ve kelimelerin silinmez.')) return
+    await deleteLocalContent()
+    location.reload()
+  }
+
+  return (
+    <section id="yerel-kaynaklar" className="card">
+      <h2 className={styles.cardTitle}>📚 Yerel kaynaklar</h2>
+      {summary ? (
+        <>
+          <p className="muted" style={{ margin: '0 0 0.5rem' }}>
+            Bu cihazda yüklü ({formatBytes(summary.bytes)}, {new Date(summary.at).toLocaleDateString('tr-TR')}):
+          </p>
+          <ul style={{ margin: '0 0 0.75rem', paddingLeft: '1.2rem' }}>
+            {summary.parts.map((p) => (
+              <li key={p.id}>{p.title}</li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p className="muted" style={{ margin: '0 0 0.75rem' }}>
+          Kitaplar, çıkmış sorular ve soru bankaları telifli olduğu için uygulamayla gelmez. Bilgisayarında{' '}
+          <b>Ayarlar › 📦 Kaynak paketi</b> ile indirdiğin dosyayı buraya yükle; sonra internetsiz ve bilgisayarsız açılır.
+        </p>
+      )}
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <button type="button" className="btn btn-primary" disabled={progress !== null} onClick={() => input.current?.click()}>
+          {progress !== null ? `Yükleniyor… %${Math.round(progress * 100)}` : summary ? '📥 Paket ekle / güncelle' : '📥 Paket yükle'}
+        </button>
+        {summary && (
+          <button type="button" className="btn btn-ghost" disabled={progress !== null} onClick={() => void remove()}>
+            Sil
+          </button>
+        )}
+        <input ref={input} type="file" hidden onChange={(e) => void onFile(e)} />
+      </div>
+      {progress !== null && (
+        <div className={styles.meter} aria-hidden="true" style={{ marginTop: '0.75rem' }}>
+          <span style={{ width: `${progress * 100}%` }} />
+        </div>
+      )}
+      {msg && (
+        <p role="status" className={msg.ok ? styles.ok : styles.error} style={{ margin: '0.75rem 0 0' }}>
+          {msg.text}
+        </p>
+      )}
+      <ProgressFileRow />
+    </section>
   )
 }
 
