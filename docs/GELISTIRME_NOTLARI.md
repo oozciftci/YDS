@@ -167,6 +167,14 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 - Çıkmış sınav cümleleri: `node scripts/okuma/sinav_eksik.mjs` (`local-data/yds/<sınav>.tr.json`, kimlik → Türkçe; Türkçe
   metinler ve I–V şıkları sayılmaz). 22.10.2026 itibarıyla 39 sınavda eksik yok.
 
+### 4.6b Okurken kelime takibi — `src/services/wordStatus.ts`
+- Durum: yeni / öğreniliyor / biliniyor / yok say. Kaynak sırası: elle işaret (`db.knownWords`) → havuzdaki kart (4–5 puan
+  biliniyor; çalışılan ya da “Okumadan/Sınavdan” etiketli öğreniliyor; havuzda olup hiç çalışılmamış = yeni) → en sık kelimeler
+  → cümle ortasında büyük harfle başlayan ve havuzda olmayan = özel ad (yok say).
+- İşaret silinmez, `status: 'new'` yazılır (eşitleme silmeleri geri getirir). İşaret kök adaylarına da yazılır.
+- Büyük kitapta oran: `countTokens` kitap başına bir kez, `coverageOfCounts` her değişiklikte (300 ms gecikmeli).
+- Okuyucu dışında (soru kartları) vurgu yok; balondaki Biliyorum/Yok say düğmeleri her yerde çalışır.
+
 ### 4.7 Diğerleri
 - Kelime balonu (`exam/WordPopover.tsx`): ekranı kaplayan arka plan yerine "dışarıya dokununca kapan" dinleyicisi → başka kelimeye tek dokunuş.
 - Profil resmi/rengi (`components/Avatar.tsx`, `services/avatar.ts`): ~256 px kare JPEG data URL `users.avatarImage`.

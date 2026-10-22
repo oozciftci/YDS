@@ -4,6 +4,7 @@ import { hasLocalContent } from '../services/localContent'
 import { listBooks, readProgress, type BookMeta } from '../services/readingBooks'
 import { countWords, glossFor, loadLibrary, READING_LEVELS, type LibEntry, type LibQuestion, type ReadingLevel } from '../services/readingLibrary'
 import { patchLog, readingStats, readLogs, wpmOf } from '../services/readingLog'
+import { coverage, readBookCoverage, useWordStatus } from '../services/wordStatus'
 import { useUserStore } from '../stores/user'
 import { useQuestionNav } from './exam/answerControls'
 import { ReaderBody } from './exam/ReaderBody'
@@ -33,6 +34,16 @@ export function ReadingLibraryPage() {
   const [logs] = useState(() => readLogs(userId))
   const [books, setBooks] = useState<BookMeta[]>([])
   const [progress] = useState(() => readProgress(userId))
+  // Bilinen kelime oranı: kitaplarda son açılışta hesaplanan (önbellek), kısa metinlerde anında
+  const [bookCov] = useState(() => readBookCoverage(userId))
+  const { ix, version, loaded, userId: ixUser, load: loadStatus } = useWordStatus()
+  useEffect(() => {
+    if (userId) void loadStatus(userId)
+  }, [userId, loadStatus])
+  const textCov = useMemo(() => {
+    if (!loaded || ixUser !== userId || !texts) return {}
+    return Object.fromEntries(texts.map((t) => [t.id, coverage(ix, t.sentences.map((s) => s.en)).pct]))
+  }, [loaded, ixUser, userId, texts, ix, version]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     void loadLibrary().then(setTexts)
@@ -98,7 +109,16 @@ export function ReadingLibraryPage() {
                         <span className={styles.level}>{b.level}</span> {b.title}
                       </strong>
                       <small>
-                        {[b.titleTr, b.author, b.levelNote, `${b.words.toLocaleString('tr-TR')} kelime`, `~${minutes(b.words)} dk`].filter(Boolean).join(' · ')}
+                        {[
+                          b.titleTr,
+                          b.author,
+                          b.levelNote,
+                          `${b.words.toLocaleString('tr-TR')} kelime`,
+                          `~${minutes(b.words)} dk`,
+                          bookCov[b.id] && `bilinen %${bookCov[b.id].pct} · ${bookCov[b.id].newCount.toLocaleString('tr-TR')} yeni kelime`,
+                        ]
+                          .filter(Boolean)
+                          .join(' · ')}
                       </small>
                     </span>
                     <span className={pr ? ex.okText : 'muted'} style={{ fontSize: '0.8rem', textAlign: 'right' }}>
@@ -129,6 +149,7 @@ export function ReadingLibraryPage() {
                           <strong>{t.title}</strong>
                           <small>
                             {t.titleTr} · {t.topic} · {words} kelime · ~{minutes(words)} dk
+                            {textCov[t.id] !== undefined && ` · bilinen %${textCov[t.id]}`}
                           </small>
                         </span>
                         <span className={log ? ex.okText : 'muted'} style={{ fontSize: '0.8rem', textAlign: 'right' }}>

@@ -387,6 +387,20 @@ export interface BookInk {
 }
 
 /**
+ * Okurken kelime durumu (LingQ tarzı): kullanıcının elle verdiği işaret. Havuzdaki kartlardan türeyen durum burada
+ * tutulmaz (services/wordStatus hesaplar). Silme yerine `status: 'new'` yazılır ki eşitlemede geri gelmesin.
+ */
+export type WordMark = 'known' | 'ignored' | 'new'
+export interface KnownWord {
+  id: string // `${userId}|${term}`
+  userId: string
+  /** Küçük harfli, metinde geçtiği biçim (eşleştirmede kök adayları da denenir) */
+  term: string
+  status: WordMark
+  updatedAt: string
+}
+
+/**
  * Notlarım: sağ alttaki not pencereleri. Yalnızca cihazda (JSON yedeğine girer; ses/görsel yedekte data URL olur).
  * - scope 'page': sayfaya özel not (sayfa başına tek metin; id = page:<kullanıcı>:<sayfa yolu>)
  * - scope 'general': genel çalışma defterinin bir girdisi (metin, sesli not ya da ekran görüntüsü)

@@ -23,6 +23,8 @@ export interface BackupData {
   suggestions?: unknown[]
   /** Notlarım (sayfa notları + genel defter; ses/görsel data URL olarak) */
   notebook?: unknown[]
+  /** Okurken verilen kelime işaretleri (biliyorum / yok say) */
+  knownWords?: unknown[]
 }
 
 /**
@@ -47,6 +49,7 @@ export async function exportDatabaseToJson(): Promise<void> {
         db.suggestions.toArray(),
       ])
     const notebook = await exportNotebook()
+    const knownWords = await db.knownWords.toArray()
 
     const backup: BackupData = {
       version: 5,
@@ -65,6 +68,7 @@ export async function exportDatabaseToJson(): Promise<void> {
       coachChats,
       suggestions,
       notebook,
+      knownWords,
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -119,6 +123,7 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         db.memoryNotes,
         db.coachChats,
         db.suggestions,
+        db.knownWords,
       ],
       async () => {
         if (data.users && Array.isArray(data.users) && data.users.length > 0) {
@@ -156,6 +161,9 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
         }
         if (Array.isArray(data.suggestions) && data.suggestions.length > 0) {
           await db.suggestions.bulkPut(data.suggestions as never)
+        }
+        if (Array.isArray(data.knownWords) && data.knownWords.length > 0) {
+          await db.knownWords.bulkPut(data.knownWords as never)
         }
       },
     )

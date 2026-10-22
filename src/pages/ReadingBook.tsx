@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { loadBook, paginate, readProgress, saveProgress, sentenceEn, type Book, type BookPage } from '../services/readingBooks'
 import { glossFor } from '../services/readingLibrary'
+import { countTokens, coverageOfCounts, saveBookCoverage, useWordStatus, type Coverage } from '../services/wordStatus'
 import { useUserStore } from '../stores/user'
 import { useQuestionNav } from './exam/answerControls'
 import type { Seg } from './exam/examData'
@@ -79,6 +80,8 @@ function BookPageReader({ book, pages, n, onGo, onNext }: { book: Book; pages: B
     return { sentences, tr, paras, words: pg.words }
   }, [chapter, pg])
 
+  const bookCov = useBookCoverage(book, pg.chapter)
+
   // Bölümlerin ilk sayfaları (içindekiler)
   const chapterStarts = useMemo(() => book.chapters.map((_, ci) => pages.findIndex((p) => p.chapter === ci)), [book, pages])
   const last = n + 1 >= pages.length
@@ -92,6 +95,14 @@ function BookPageReader({ book, pages, n, onGo, onNext }: { book: Book; pages: B
           <span className={styles.level}>{book.level}</span> {book.title} · Bölüm {pg.chapter + 1}/{book.chapters.length} · Sayfa {n + 1}/{pages.length}
           {chapter.titleTr ? ` · ${chapter.titleTr}` : ''} · Yana kaydırınca sayfa çevrilir; 🌐 cümlenin Türkçesi.
         </>
+      }
+      infoExtra={
+        bookCov && (
+          <span title="Kitaptaki ve bu bölümdeki kelime geçişlerinin bildiğin oranı">
+            {' '}
+            · Kitapta bilinen %{bookCov.book.pct} ({bookCov.book.newWords.length.toLocaleString('tr-TR')} yeni kelime) · bölümde %{bookCov.chapter.pct}
+          </span>
+        )
       }
       before={
         <div className={styles.bookBar}>
@@ -140,4 +151,34 @@ function BookPageReader({ book, pages, n, onGo, onNext }: { book: Book; pages: B
       }
     />
   )
+}
+
+// Kitap sayımları kitap başına bir kez (büyük kitaplarda oran hızlı yenilensin)
+const countCache = new Map<string, { book: ReturnType<typeof countTokens>; chapters: ReturnType<typeof countTokens>[] }>()
+function bookCounts(book: Book) {
+  let c = countCache.get(book.id)
+  if (!c) {
+    const sents = (ch: Book['chapters'][number]) => ch.paras.flatMap((p) => (Array.isArray(p) ? p.map(sentenceEn) : []))
+    c = { book: countTokens(book.chapters.flatMap(sents)), chapters: book.chapters.map((ch) => countTokens(sents(ch))) }
+    countCache.set(book.id, c)
+  }
+  return c
+}
+
+/** Kitabın ve bölümün bilinen oranı; kelime durumu değişince kısa bir gecikmeyle yenilenir ve listede gösterilmek üzere saklanır. */
+function useBookCoverage(book: Book, chapter: number): { book: Coverage; chapter: Coverage } | null {
+  const userId = useUserStore((s) => s.activeUserId)
+  const { ix, version, loaded, userId: ixUser } = useWordStatus()
+  const [cov, setCov] = useState<{ book: Coverage; chapter: Coverage } | null>(null)
+  useEffect(() => {
+    if (!loaded || ixUser !== userId) return
+    const t = setTimeout(() => {
+      const c = bookCounts(book)
+      const next = { book: coverageOfCounts(ix, c.book), chapter: coverageOfCounts(ix, c.chapters[chapter]) }
+      setCov(next)
+      saveBookCoverage(userId, book.id, next.book)
+    }, 300)
+    return () => clearTimeout(t)
+  }, [book, chapter, ix, version, loaded, ixUser, userId])
+  return cov
 }

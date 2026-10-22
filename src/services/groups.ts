@@ -171,6 +171,18 @@ export const BUILT_IN_GROUPS: GroupDefinition[] = [
     hideWhenEmpty: true,
     matcher: (w) => (w.tags || []).includes(EXAM_COLLECTED_TAG),
   },
+  {
+    id: 'reading_collected',
+    name: 'Okumadan Topladıklarım',
+    shortName: 'Okumadan Topladıklarım',
+    description: 'Kitap ve metin okurken bir kelimeye dokunup "Öğrenmeye al" dediğin kelimeler; kartın arkasında geçtiği cümle ve Türkçesi.',
+    icon: '📖',
+    color: '#6366f1',
+    badge: 'Okuma',
+    isBuiltIn: true,
+    hideWhenEmpty: true,
+    matcher: (w) => (w.tags || []).includes(READING_COLLECTED_TAG),
+  },
 ]
 
 function rankOf(tags: string[], prefix: 'YDS' | 'YÖKDİL'): number {
@@ -195,6 +207,9 @@ export function frequencyRank(w: WordItem): number {
 
 /** Soru çözerken toplanan kelimelerin etiketi. */
 export const EXAM_COLLECTED_TAG = 'YDS-Sınav-Sorusu'
+
+/** Okurken (kitap, okuma kütüphanesi, Okuma Modu) toplanan kelimelerin etiketi. */
+export const READING_COLLECTED_TAG = 'Okumadan'
 
 /** Zorlanılan kart: çalışılmış ve son puanı düşük, ya da sık unutulmuş ve henüz iyi bilinmiyor. */
 export function isWeakCard(card?: CardState): boolean {
@@ -493,6 +508,8 @@ export function getCategoryBadgeOrName(categoryGroupId: string): string {
       return 'Zorlandıklarım'
     case 'yds_collected':
       return 'Sınavdan Topladıklarım'
+    case 'reading_collected':
+      return 'Okumadan Topladıklarım'
     default:
       return categoryGroupId.startsWith('grp_') ? 'Özel Deste' : categoryGroupId
   }

@@ -25,6 +25,7 @@ export const SYNC_TABLES = [
   'aiNotes',
   'notebook',
   'bookInk',
+  'knownWords',
 ] as const
 export type SyncTable = (typeof SYNC_TABLES)[number]
 export type Row = { id: string } & Record<string, unknown>
@@ -50,6 +51,7 @@ const STAMP: Record<SyncTable, (r: Row) => string> = {
   aiNotes: (r) => `${String(Array.isArray(r.messages) ? r.messages.length : 0).padStart(5, '0')}|${str(r.createdAt)}`,
   notebook: (r) => str(r.updatedAt),
   bookInk: (r) => str(r.updatedAt),
+  knownWords: (r) => str(r.updatedAt),
 }
 
 const wordKey = (r: Row) => `${str(r.userId)}|${str(r.term).trim().toLowerCase()}`

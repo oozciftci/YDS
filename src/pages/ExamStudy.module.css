@@ -143,6 +143,19 @@
   border-bottom-color: var(--primary);
 }
 
+/* Kelime vurgusu (okuyucular): yeni = mavi alt çizgi, öğreniliyor = sarı zemin */
+.wNew {
+  border-bottom: 2px solid var(--primary);
+  background: var(--primary-subtle);
+  border-radius: 2px;
+}
+
+.wLearning {
+  border-bottom: 2px solid var(--warning);
+  background: var(--warning-subtle);
+  border-radius: 2px;
+}
+
 .trLine {
   display: block;
   margin: 0.15rem 0 0.5rem 26px;
@@ -276,6 +289,23 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
+}
+
+.popStatus {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.popActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.popActions :global(.btn) {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.82rem;
 }
 
 .popHead {
@@ -1342,7 +1372,10 @@ h2 .listen .rateSelect {
 
 .readEnd {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
   margin-top: 1rem;
 }
 

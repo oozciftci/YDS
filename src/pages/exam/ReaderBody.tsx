@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { fmtDuration, MAX_REAL_WPM, writeLog } from '../../services/readingLog'
+import { coverage, readHighlight, saveHighlight, useWordStatus } from '../../services/wordStatus'
 import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import type { Seg } from './examData'
@@ -33,6 +34,8 @@ interface Props {
   paras?: (number | { h: string })[]
   /** Metnin üstünde (kitap: içindekiler/bölüm seçici) */
   before?: ReactNode
+  /** Bilgi satırının sonunda, kelime durumu değişince yenilenen ek (kitap: kitabın bilinen oranı) */
+  infoExtra?: ReactNode
 }
 
 /** Paragraf düzenini cümle aralıklarına çevirir */
@@ -41,14 +44,47 @@ function layout(paras: (number | { h: string })[]): ({ h: string } | { from: num
   return paras.map((p) => (typeof p === 'number' ? { from: at, to: (at += p) } : p))
 }
 
-export function ReaderBody({ back, title, info, sentences, tr, words, logId, note, glossFor, after, paras, before }: Props) {
+export function ReaderBody({ back, title, info, sentences, tr, words, logId, note, glossFor, after, paras, before, infoExtra }: Props) {
   const userId = useUserStore((s) => s.activeUserId)
   const [showTr, setShowTr] = useState(false)
   const [speaking, setSpeaking] = useState<number | null>(null)
   const [startedAt] = useState(() => Date.now())
   const [now, setNow] = useState(() => Date.now())
   const [finishedSec, setFinishedSec] = useState<number | null>(null)
-  const { onWord, popover, lookedUp } = useWordPopover(note, glossFor)
+  const { onWord, popover, lookedUp } = useWordPopover(note, glossFor, 'reading')
+  // Kelime vurgusu ve bilinen oranı (services/wordStatus)
+  const [highlight, setHighlight] = useState(readHighlight)
+  const { ix, version, loaded, userId: ixUser, load: loadStatus, mark } = useWordStatus()
+  useEffect(() => {
+    if (userId) void loadStatus(userId) // her açılışta tazele: kartlar başka ekranda çalışılmış olabilir
+  }, [userId, loadStatus])
+  const ready = loaded && ixUser === userId
+  const cov = useMemo(() => (ready ? coverage(ix, sentences.map((s) => s.en)) : null), [ready, ix, version, sentences]) // eslint-disable-line react-hooks/exhaustive-deps
+  // Sayfa sonu: dokunmadan geçtiğin yeni kelimeler bilinen sayılabilir (anlamına baktıkların hariç)
+  const untouched = useMemo(() => (cov ? cov.newWords.filter((w) => !lookedUp.includes(w)) : []), [cov, lookedUp])
+  const [bulk, setBulk] = useState<string[] | null>(null)
+  async function markRestKnown() {
+    const list = untouched
+    await mark(userId, list, 'known')
+    setBulk(list)
+  }
+  async function undoBulk() {
+    if (bulk) await mark(userId, bulk, 'new')
+    setBulk(null)
+  }
+  const bulkBox =
+    bulk ? (
+      <p className="muted" style={{ margin: 0, fontSize: '0.84rem' }}>
+        ✓ {bulk.length} kelime bilinenlere eklendi.{' '}
+        <button type="button" className={styles.linkBtn} onClick={() => void undoBulk()}>
+          Geri al
+        </button>
+      </p>
+    ) : untouched.length > 0 ? (
+      <button type="button" className="btn btn-secondary" onClick={() => void markRestKnown()} title="Anlamına bakmadığın yeni kelimeler bilinen sayılır; yanlışsa kelimeye dokunup “Yeniye döndür” diyebilirsin">
+        ✓ Kalan {untouched.length} yeni kelimeyi bildiğim olarak işaretle
+      </button>
+    ) : null
   const resultRef = useRef<HTMLDivElement>(null)
 
   // Yeni metin baştan görünsün (kaydırarak gelindiğinde sayfa aşağıda kalmasın)
@@ -68,6 +104,7 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
     if (finishedSec !== null) resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [finishedSec])
 
+  const hl = highlight && ready ? ix : undefined
   const elapsed = finishedSec ?? (now - startedAt) / 1000
   const wpm = finishedSec ? Math.round((words / finishedSec) * 60) : null
 
@@ -88,6 +125,13 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
           <h1 className={styles.title}>{title}</h1>
           <p className="muted" style={{ margin: 0, fontSize: '0.88rem' }}>
             {info}
+            {cov && cov.total > 0 && (
+              <span title="Bu sayfadaki kelime geçişlerinin bildiğin oranı (özel adlar ve yok saydıkların hariç)">
+                {' '}
+                · Bu sayfada bilinen %{cov.pct} · {cov.newWords.length} yeni
+              </span>
+            )}
+            {infoExtra}
           </p>
         </div>
       </header>
@@ -101,6 +145,17 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
         <label className={styles.toggle}>
           <input type="checkbox" checked={showTr} onChange={(e) => setShowTr(e.target.checked)} />
           Çeviriler
+        </label>
+        <label className={styles.toggle} title="Yeni kelimeler mavi, öğrenmekte oldukların sarı">
+          <input
+            type="checkbox"
+            checked={highlight}
+            onChange={(e) => {
+              setHighlight(e.target.checked)
+              saveHighlight(e.target.checked)
+            }}
+          />
+          Kelime vurgusu
         </label>
         <span className={styles.spacer} />
         {finishedSec === null && (
@@ -122,7 +177,7 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
             ) : (
               <p key={k} className={`${styles.readText} ${styles.readPara}`}>
                 {sentences.slice(b.from, b.to).map((s, j) => (
-                  <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === b.from + j} />
+                  <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === b.from + j} ix={hl} ixVersion={version} />
                 ))}
               </p>
             ),
@@ -130,7 +185,7 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
         ) : (
           <p className={styles.readText}>
             {sentences.map((s, i) => (
-              <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === i} />
+              <SentenceView key={s.id} seg={s} tr={tr[s.id]} forceShow={showTr} onWord={onWord} assist active={speaking === i} ix={hl} ixVersion={version} />
             ))}
           </p>
         )}
@@ -138,6 +193,7 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
         {/* Metnin sonunda da: telefonda üst çubuk sabit değil, okuyup bitiren yukarı dönmesin */}
         {finishedSec === null && (
           <div className={styles.readEnd}>
+            {bulkBox}
             <button type="button" className="btn btn-primary" onClick={finish}>
               ✓ Okumayı bitirdim
             </button>
@@ -176,6 +232,7 @@ export function ReaderBody({ back, title, info, sentences, tr, words, logId, not
                 </div>
               </div>
             )}
+            {bulkBox}
             {after}
           </div>
         )}

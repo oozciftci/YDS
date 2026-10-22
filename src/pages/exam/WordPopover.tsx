@@ -1,17 +1,27 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { cleanToken, findDeckWord, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
-import { EXAM_COLLECTED_TAG } from '../../services/groups'
+import { EXAM_COLLECTED_TAG, READING_COLLECTED_TAG } from '../../services/groups'
 import { speakWord } from '../../services/tts'
 import { createWord, updateWord } from '../../services/words'
 import { useUserStore } from '../../stores/user'
 import styles from '../ExamStudy.module.css'
 import type { Seg } from './examData'
+import { statusOf, useWordStatus, type StatusIndex, type WordStatus } from '../../services/wordStatus'
+import type { WordMark } from '../../types/database'
 
 // Çıkmış soru metinlerinde ortak parçalar: tıklanabilir cümle ve kelime anlam balonu.
 
 const WORD_RE = /([A-Za-zÇĞİÖŞÜçğıöşü0-9]+(?:['’][A-Za-z]+)?|[^\sA-Za-zÇĞİÖŞÜçğıöşü0-9]+|\s+)/g
 
-export type OnWord = (word: string, e: MouseEvent<HTMLButtonElement>) => void
+/** `ctx`: kelimenin geçtiği cümle (okurken "Öğrenmeye al" kartın arkasına yazar) */
+export type OnWord = (word: string, e: MouseEvent<HTMLButtonElement>, ctx?: { en: string; tr?: string }) => void
+
+const HL_CLASS: Record<WordStatus, string> = {
+  new: styles.wNew,
+  learning: styles.wLearning,
+  known: '',
+  ignored: '',
+}
 
 /** Bir cümleyi tıklanabilir kelimelere böler; başındaki rozet cümle çevirisini açar/kapatır. */
 export function SentenceView({
@@ -21,6 +31,8 @@ export function SentenceView({
   onWord,
   assist,
   active = false,
+  ix,
+  ixVersion,
 }: {
   seg: Seg
   tr?: string
@@ -29,10 +41,16 @@ export function SentenceView({
   assist: boolean
   /** Seslendirme sırasında o an okunan cümle. */
   active?: boolean
+  /** Kelime vurgusu (okuyucularda): verilirse yeni/öğrenilen kelimeler renklenir */
+  ix?: StatusIndex
+  /** Dizin değişince yeniden çizilsin diye */
+  ixVersion?: number
 }) {
   const [open, setOpen] = useState(false)
   const show = assist && (open || forceShow)
   const tokens = useMemo(() => seg.en.match(WORD_RE) || [seg.en], [seg.en])
+  const firstWord = useMemo(() => tokens.findIndex((t) => /^[A-Za-z]/.test(t)), [tokens])
+  void ixVersion
   const cls = `${styles.sentence} ${active ? styles.sentenceActive : ''}`
   // Çeviri sorularında Türkçe cümleler olur; yardım kapalıyken (deneme) düz metin gösterilir
   if (!assist || (seg.en.match(/[çğıöşüÇĞİÖŞÜ]/g) || []).length >= 2) {
@@ -51,7 +69,12 @@ export function SentenceView({
       </button>
       {tokens.map((t, i) =>
         /^[A-Za-zÇĞİÖŞÜçğıöşü0-9]/.test(t) ? (
-          <button key={i} type="button" className={styles.word} onClick={(e) => onWord(t, e)}>
+          <button
+            key={i}
+            type="button"
+            className={`${styles.word} ${ix ? HL_CLASS[statusOf(ix, t, i !== firstWord && /^[A-Z]/.test(t) && t !== 'I')] : ''}`}
+            onClick={(e) => onWord(t, e, { en: seg.en, tr })}
+          >
             {t}
           </button>
         ) : (
@@ -77,8 +100,16 @@ interface PopoverState {
 export function useWordPopover(
   note: string,
   glossFor?: (word: string) => string | undefined,
+  /** Toplanan kelimenin etiketi/destesi: okuyucularda "Okumadan", soru ekranlarında "Sınavdan" */
+  collect: 'reading' | 'exam' = 'exam',
 ): { onWord: OnWord; close: () => void; popover: ReactNode; lookedUp: string[] } {
   const activeUserId = useUserStore((s) => s.activeUserId)
+  const { ix, userId: ixUser, load: loadStatus, mark, notePool } = useWordStatus()
+  useWordStatus((st) => st.version) // durum değişince balon yenilensin
+  useEffect(() => {
+    if (activeUserId && ixUser !== activeUserId) void loadStatus(activeUserId)
+  }, [activeUserId, ixUser, loadStatus])
+  const [ctx, setCtx] = useState<{ en: string; tr?: string } | undefined>(undefined)
   const [pop, setPop] = useState<PopoverState | null>(null)
   const [lookup, setLookup] = useState<WordLookupResult | null>(null)
   const [lookingUp, setLookingUp] = useState(false)
@@ -111,8 +142,9 @@ export function useWordPopover(
   }, [isOpen])
 
   const onWord: OnWord = useCallback(
-    async (word, e) => {
+    async (word, e, sentence) => {
       e.stopPropagation()
+      setCtx(sentence)
       const rect = e.currentTarget.getBoundingClientRect()
       const width = Math.min(300, window.innerWidth - 16)
       const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))
@@ -142,25 +174,47 @@ export function useWordPopover(
     [activeUserId],
   )
 
-  async function addToDeck() {
+  const tag = collect === 'reading' ? READING_COLLECTED_TAG : EXAM_COLLECTED_TAG
+  const deckName = collect === 'reading' ? '📖 Okumadan Topladıklarım' : '📥 Sınavdan Topladıklarım'
+  const surface = pop ? cleanToken(pop.word).toLowerCase() : ''
+  /** İşaret hem metindeki biçime hem sözlük köküne yazılır (countries → countries, country) */
+  const markTerms = () => [surface, (lookup?.term || '').toLowerCase()].filter((t) => t && !/\s/.test(t))
+  const status: WordStatus | null = pop ? statusOf(ix, pop.word) : null
+
+  /** Kelimeyi havuza alır ya da havuzdakini desteye ekler; okurken geçtiği cümle (ve Türkçesi) kartın arkasına yazılır. */
+  async function learn() {
     if (!lookup) return
-    await createWord(activeUserId, {
-      term: lookup.term,
-      definition: lookup.meaning,
-      partOfSpeech: 'noun',
-      tags: [EXAM_COLLECTED_TAG],
-      notes: note,
-    })
+    const sentence = ctx && ctx.en.length <= 400 ? [{ en: ctx.en, ...(ctx.tr ? { tr: ctx.tr } : {}) }] : []
+    const w = lookup.existingWord
+    if (w) {
+      const has = (w.sentences || []).some((x) => (typeof x === 'string' ? x : x.en) === ctx?.en)
+      await updateWord(w.id, activeUserId, {
+        tags: [...new Set([...(w.tags || []), tag])],
+        ...(sentence.length && !has ? { sentences: [...sentence, ...(w.sentences || [])] } : {}),
+      })
+    } else {
+      await createWord(activeUserId, {
+        term: lookup.term,
+        definition: lookup.meaning,
+        partOfSpeech: 'noun',
+        tags: [tag],
+        notes: note,
+        sentences: sentence,
+      })
+    }
+    notePool(lookup.term, 'learning')
+    // Daha önce "biliyorum / yok say" dendiyse işaret kalkar
+    const marked = markTerms().filter((t) => ix.marks.get(t) && ix.marks.get(t) !== 'new')
+    if (marked.length) await mark(activeUserId, marked, 'new')
     setAdded(true)
   }
 
-  /** Havuzda zaten olan kelimeyi "Sınavdan Topladıklarım" destesine alır (etiket ekler). */
-  async function collectExisting() {
-    const w = lookup?.existingWord
-    if (!w) return
-    await updateWord(w.id, activeUserId, { tags: [...(w.tags || []), EXAM_COLLECTED_TAG] })
-    setAdded(true)
+  async function setMark(st: WordMark) {
+    await mark(activeUserId, markTerms(), st)
+    if (st !== 'new') setPop(null)
   }
+
+  const inDeck = !!lookup?.existingWord && (lookup.existingWord.tags || []).includes(tag)
 
   const popover = pop && (
     <>
@@ -180,24 +234,43 @@ export function useWordPopover(
             Havuzundaki anlamı: {lookup.existingWord.definition}
           </p>
         )}
-        {lookup?.existingWord &&
-          (added || (lookup.existingWord.tags || []).includes(EXAM_COLLECTED_TAG) ? (
-            <p className="muted" style={{ margin: 0, fontSize: '0.78rem' }}>
-              ✓ Havuzunda ve "Sınavdan Topladıklarım" destesinde
-            </p>
-          ) : (
-            <button type="button" className="btn btn-secondary" onClick={() => void collectExisting()}>
-              📥 Topladıklarıma ekle
-            </button>
-          ))}
-        {lookup?.isNewWord && lookup.meaning && (
-          <button type="button" className="btn btn-secondary" disabled={added} onClick={() => void addToDeck()}>
-            {added ? '✓ Eklendi' : '➕ Havuzuma ekle'}
-          </button>
+        {status && (
+          <p className={styles.popStatus}>
+            {status === 'known' ? '✓ Bildiğin kelime' : status === 'learning' ? '📚 Öğreniyorsun' : status === 'ignored' ? '🚫 Yok sayılıyor' : '🆕 Yeni kelime'}
+          </p>
         )}
-        {(lookup?.isNewWord || lookup?.existingWord) && (
+        <div className={styles.popActions}>
+          {added || inDeck ? (
+            <span className="muted" style={{ fontSize: '0.8rem' }}>
+              ✓ {deckName} destesinde
+            </span>
+          ) : (
+            lookup &&
+            (lookup.existingWord || lookup.meaning) && (
+              <button type="button" className="btn btn-primary" onClick={() => void learn()}>
+                📚 Öğrenmeye al
+              </button>
+            )
+          )}
+          {status !== 'known' && (
+            <button type="button" className="btn btn-secondary" onClick={() => void setMark('known')}>
+              ✓ Biliyorum
+            </button>
+          )}
+          {status !== 'ignored' && (
+            <button type="button" className="btn btn-secondary" onClick={() => void setMark('ignored')} title="Özel ad ya da gereksiz kelime: vurgulanmaz, orana girmez">
+              🚫 Yok say
+            </button>
+          )}
+          {(status === 'known' || status === 'ignored') && markTerms().some((t) => ix.marks.get(t) && ix.marks.get(t) !== 'new') && (
+            <button type="button" className="btn btn-secondary" onClick={() => void setMark('new')}>
+              ↺ Yeniye döndür
+            </button>
+          )}
+        </div>
+        {!added && !inDeck && (
           <p className="muted" style={{ margin: 0, fontSize: '0.74rem' }}>
-            Toplanan kelimeler Çalış ekranında "📥 Sınavdan Topladıklarım" destesinde çıkar.
+            Öğrenmeye aldığın kelimeler Çalış ekranında “{deckName}” destesinde{collect === 'reading' ? ', geçtiği cümleyle' : ''} çıkar.
           </p>
         )}
       </div>

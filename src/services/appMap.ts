@@ -18,6 +18,7 @@ export function appLinks(): AppLink[] {
     { href: '/study?group=new_words&auto=1', label: 'Yeni kelimeler', desc: 'YDS’de en sık çıkan yeni kelimelerle 20’lik bir tur' },
     { href: '/study?group=weak_words&auto=1', label: 'Zorlandıklarım', desc: 'sık yanılınan kelimeler destesi' },
     { href: '/study?group=yds_collected', label: 'Sınavdan topladıklarım', desc: 'sorulardan toplanan kelimeler' },
+    { href: '/study?group=reading_collected', label: 'Okumadan topladıklarım', desc: 'kitap ve metinlerden toplanan kelimeler, cümleleriyle' },
     { href: '/study?mode=cloze&auto=1', label: 'Cümle içi boşluk', desc: 'kelimeleri cümle bağlamında çalışma' },
     { href: '/study', label: 'Kelime çalışma merkezi', desc: 'seviye desteleri (A, B, C), phrasal verbs, bağlaçlar' },
     { href: '/match', label: 'Eş anlamlı eşleştirme', desc: 'eş anlamlı kelime oyunu' },
