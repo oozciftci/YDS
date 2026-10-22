@@ -6,181 +6,384 @@
 @levelNote: Kamu malı öyküden özgün uyarlama · 4 bölüm
 @source: O. Henry, “The Gift of the Magi” (1906, kamu malı)
 @license: Bu uygulama için yazılmış özgün uyarlama
-@summary: Yoksul ama birbirini çok seven genç bir çift, Noel'de karşılıklı hediye almak ister. Karısı Della saçını satıp kocasına bir saat zinciri alır. Kocası Jim ise saatini satıp karısına tarak takımı alır. Hediyeler birbirine uymaz, ama sevgileri en değerli armağandır.
+@summary: Yoksul ama birbirini çok seven genç bir çift, Noel'de birbirine hediye almak ister. Karısı Della saçını satıp kocasına bir saat zinciri alır. Kocası Jim ise saatini satıp karısına tarak takımı alır. Hediyeler artık işe yaramaz, ama sevgileri en değerli armağandır.
 
-@gloss: money = para
-@gloss: dollars = dolar
-@gloss: cents = sent
-@gloss: christmas = Noel
-@gloss: present = hediye
-@gloss: gift = armağan
-@gloss: hair = saç
-@gloss: chain = zincir
-@gloss: watch = saat
-@gloss: combs = tarak
-@gloss: shop = dükkân
-@gloss: window = pencere
-@gloss: flat = daire
+@gloss: cents = sent (bir doların yüzde biri)
+@gloss: pennies = bozuk paralar (1 sent)
+@gloss: saved = biriktirdi
+@gloss: counted = saydı
 @gloss: couch = kanepe
-@gloss: carpet = halı
-@gloss: mirror = ayna
-@gloss: coffee = kahve
-@gloss: husband = koca
-@gloss: love = sevgi
-@gloss: pretty = güzel
+@gloss: shabby = eski püskü
 @gloss: cried = ağladı
-@gloss: smiled = gülümsedi
+@gloss: flat = daire (apartman dairesi)
+@gloss: rent = kira
+@gloss: bell = zil
+@gloss: hugged = sarıldı
+@gloss: powder = pudra
+@gloss: window = pencere
+@gloss: fence = çit
+@gloss: backyard = arka bahçe
+@gloss: expenses = harcamalar
+@gloss: planning = planlama (plan yapmak)
+@gloss: worthy = layık, değer
+@gloss: mirror = ayna
+@gloss: slender = ince, narin
+@gloss: treasures = hazineler
+@gloss: watch = cep saati
+@gloss: hair = saç
+@gloss: queen = kraliçe
+@gloss: jewels = mücevherler
+@gloss: janitor = kapıcı
+@gloss: envy = kıskançlık
+@gloss: waterfall = şelale
+@gloss: knees = diz kapakları, dizler
+@gloss: nervously = sinirli sinirli, tedirgin bir şekilde
+@gloss: carpet = halı
+@gloss: jacket = ceket
+@gloss: sparkle = parıltı
+@gloss: stairs = merdiven
+@gloss: sign = tabela, levha
+@gloss: panting = nefes nefese
+@gloss: practised = alışkın, deneyimli
+@gloss: platinum = platin
+@gloss: chain = zincir
+@gloss: simple = sade, basit
+@gloss: strap = kayış
+@gloss: curling = kıvırma (kıvırcık yapma)
+@gloss: curls = bukleler
+@gloss: schoolboy = erkek öğrenci
+@gloss: coffee = kahve
+@gloss: chops = pirzola
+@gloss: whispered = fısıldadı
+@gloss: overcoat = palto
+@gloss: gloves = eldivenler
+@gloss: stared = dik dik baktı
+@gloss: expression = ifade
+@gloss: terrified = dehşete düşürdü
+@gloss: darling = sevgilim
+@gloss: package = paket
+@gloss: tortoise = kaplumbağa
+@gloss: combs = taraklar
+@gloss: wise = bilge, akıllı
+@gloss: manger = yem yalağı (İsa'nın doğduğu yer)
+@gloss: foolish = aptalca
+@gloss: sacrificed = feda etti
 @gloss: sold = sattı
-@gloss: looked = baktı
-@gloss: serious = ciddi
-@gloss: expensive = pahalı
-@gloss: wise = akıllı
-@gloss: treasure = hazine
 
-## Della Counts Her Money | Della Parasını Sayar
-It was one dollar and eighty-seven cents. That was all. || Bir dolar seksen yedi sent vardı. Hepsi bu kadardı.
-Sixty cents of it was in small coins called pennies. || Bunun altmış senti küçük bozuk paralardı.
-Della counted it three times. Then she sat down on the couch. || Della parayı üç kez saydı. Sonra kanepeye oturdu.
-Tomorrow was Christmas, and she had no money for a gift. || Yarın Noel'di ve bir hediye alacak parası yoktu.
+## One Dollar and Eighty-Seven Cents | Bir Dolar Seksen Yedi Sent
+One dollar and eighty-seven cents. || Bir dolar seksen yedi sent.
+That was all the money Della had. || Della'nın bütün parası buydu.
+Sixty cents of it was in pennies. || Bunun altmış sentı bozuk paralardan oluşuyordu.
+She had saved them one by one, for many months. || Onları aylar boyunca teker teker biriktirmişti.
+She had asked the shopkeepers for the lowest price every day. || Her gün bakkaldan, manavdan ve kasaptan en düşük fiyatı istemişti.
+Sometimes her face had turned red with shame. || Bazen utancından yüzü kızarmıştı.
+Della counted the money three times. || Della parayı üç kez saydı.
+It was still one dollar and eighty-seven cents. || Yine bir dolar seksen yedi sentti.
+And tomorrow was Christmas. || Ve yarın Noel'di.
 
-She lived in a small flat in New York. The rent was eight dollars each week. || New York'ta küçük bir dairede yaşıyordu. Kira haftada sekiz dolardı.
-The flat was old and plain. But it was their home. || Daire eski ve sadeydi. Ama onların evi idi.
-Her husband was named James Dillingham Young. He was called Jim. || Kocasının adı James Dillingham Young'dı. Ona Jim denirdi.
-Jim earned twenty dollars each week. That was not much money. || Jim haftada yirmi dolar kazanırdı. Bu çok para değildi.
+There was nothing to do. || Yapacak bir şey yoktu.
+Della fell onto the shabby little couch and cried. || Della eski püskü küçük kanepeye yığıldı ve ağladı.
+She cried for a long time. || Uzun süre ağladı.
 
-Della looked out of the window. A gray cat walked along a gray fence. || Della pencereden dışarı baktı. Gri bir kedi gri bir çitin üstünde yürüyordu.
-She cried, and then she dried her cheeks with a powder rag. || Ağladı, sonra yanaklarını pudra bezi ile kuruladı.
-She had saved money for months. But her money was never enough. || Aylarca para biriktirmişti. Ama parası hiçbir zaman yetmedi.
-Jim was her treasure, and she wanted to give him something special. || Jim onun hazinesiydi ve ona özel bir şey vermek istiyordu.
+Let us look at the place where she lived. || Gelin onun yaşadığı yere bakalım.
+It was a small flat, and the rent was eight dollars a week. || Küçük bir daireydi ve kirası haftada sekiz dolardı.
+It was not a terrible place, but it was very poor. || Berbat bir yer değildi ama çok yoksuldu.
+Downstairs there was a letter-box, but no letter could go into it. || Aşağıda bir posta kutusu vardı ama içine hiçbir mektup girmiyordu.
+There was also a bell, but nobody could make it ring. || Bir de zil vardı ama onu kimse çaldıramıyordu.
+Next to the bell there was a card with a name on it. || Zilin yanında üzerinde bir isim yazan bir kart vardı.
+It said, “Mr James Dillingham Young.” || Kartta “Bay James Dillingham Young” yazıyordu.
 
-? Why was Della sad at the beginning of the story? || Öykünün başında Della neden üzgündü?
-- She was ill and could not go out.
-+ She had only a little money and could not buy a Christmas gift for Jim.
-- Jim was angry with her.
-- Her flat was on fire.
-= Della, Jim'e alacak bir hediye için yeterli parası olmadığını düşünüyordu.
-? How much money did Jim earn each week? || Jim haftada ne kadar kazanırdı?
+Once, the family had been richer. || Bir zamanlar bu aile daha zengindi.
+In those days, Jim earned thirty dollars a week, and the long name “Dillingham” seemed important. || O günlerde Jim haftada otuz dolar kazanıyordu ve “Dillingham” gibi uzun bir ad önemli görünüyordu.
+Now Jim earned only twenty dollars a week. || Şimdi Jim haftada yalnızca yirmi dolar kazanıyordu.
+The long name seemed too big for a poor man. || Uzun isim, yoksul bir adam için fazla büyük görünüyordu.
+Perhaps one day they would use only the letter “D.” || Belki bir gün yalnızca “D” harfini kullanacaklardı.
+But when Jim came home in the evening, nobody cared about his name. || Ama Jim akşam eve geldiğinde adını kimse düşünmüyordu.
+His wife called him “Jim,” and she hugged him warmly. || Karısı ona “Jim” diye sesleniyor ve ona sıcacık sarılıyordu.
+That was the best part of the day. || Günün en güzel anı buydu.
+
+Della stopped crying and put some powder on her face. || Della ağlamayı bıraktı ve yüzüne biraz pudra sürdü.
+She stood at the window and looked outside. || Pencerenin önünde durdu ve dışarı baktı.
+A gray cat was walking along a gray fence in a gray backyard. || Gri bir kedi, gri bir arka bahçede gri bir çitin üstünde yürüyordu.
+The whole world looked sad and dull. || Bütün dünya kederli ve donuk görünüyordu.
+
+She thought about Jim. || Jim'i düşündü.
+She had only one dollar and eighty-seven cents to buy him a present. || Ona hediye almak için yalnızca bir dolar seksen yedi senti vardı.
+For months she had saved every penny she could. || Aylardır elinden gelen her kuruşu biriktirmişti.
+But twenty dollars a week does not go very far. || Ama haftada yirmi dolar pek uzağa gitmez.
+The expenses had been bigger than she expected. || Harcamalar beklediğinden büyük çıkmıştı.
+They always are. || Zaten hep öyle olur.
+Della had spent many happy hours planning a special gift. || Della özel bir hediyeyi planlayarak mutlu saatler geçirmişti.
+She wanted something fine and rare, something worthy of Jim. || İnce ve ender bir şey, Jim'e layık bir şey istiyordu.
+
+? How much money did Della have? || Della'nın ne kadar parası vardı?
+- Twenty dollars
 - Eight dollars
-+ Twenty dollars
++ One dollar and eighty-seven cents
 - Thirty dollars
-- One dollar
-= Jim haftada yirmi dolar kazanıyordu; kira ise sekiz dolardı.
+= “One dollar and eighty-seven cents. That was all.” — Della'nın bütün parası buydu.
+? Why did Jim and Della use a shorter name more often? || Jim ile Della neden kısa bir isim kullanmayı düşünüyordu?
+- Jim did not like his father.
++ Jim now earned less money than before.
+- Della wanted a new house.
+- The card was too small.
+= Jim eskiden haftada otuz dolar kazanıyordu, şimdi yirmi. Uzun “Dillingham” adı fakir bir adama büyük geliyordu.
+? What did Della do after she stopped crying? || Della ağlamayı bıraktıktan sonra ne yaptı?
+- She went to the shops.
+- She cooked dinner.
+- She called Jim.
++ She put on some powder and looked out of the window.
+= Pudra sürdü ve pencerenin önünde durup dışarı baktı.
 
-## Della Sells Her Hair | Della Saçını Satar
-Della had two special things. Jim's gold watch was one of them. || Della'nın iki özel şeyi vardı. Bunlardan biri Jim'in altın saatiydi.
-The watch had belonged to his father and his grandfather. || Saat, Jim'in babasına ve dedesine aitti.
-The other thing was Della's long brown hair. || Diğeri Della'nın uzun kahverengi saçıydı.
-Jim was proud of her hair, and Della was proud of it too. || Jim onun saçıyla gurur duyardı, Della da öyle.
+## The Mirror and the Hair Shop | Ayna ve Saç Dükkânı
+Between the windows of the room there was a long mirror. || Odanın pencereleri arasında uzun bir ayna vardı.
+It was thin and old. || İnce ve eskiydi.
+Only a very thin person could see herself well in it. || Kendini onda iyi görebilmek için çok ince biri olmak gerekirdi.
+Della was slender, so she knew how to use it. || Della narindi, bu yüzden aynayı nasıl kullanacağını biliyordu.
 
-Della stood in front of the mirror. She let her hair fall down. || Della aynanın önünde durdu. Saçını çözüp serbest bıraktı.
-It reached below her knee, like a waterfall of brown silk. || Diz altına kadar uzanıyordu, kahverengi ipek bir şelale gibi.
-Then a tear fell on the old red carpet. She quickly put up her hair again. || Sonra eski kırmızı halıya bir damla gözyaşı düştü. Hemen saçını yeniden topladı.
-She put on her old brown jacket and her old brown hat. Then she went out. || Eski kahverengi ceketini ve eski kahverengi şapkasını giydi. Sonra dışarı çıktı.
+Suddenly she turned away from the window. || Birden pencereden döndü.
+She ran to the mirror. || Aynaya koştu.
+Her eyes were shining, but her face became pale. || Gözleri parlıyordu ama yüzü soldu.
+She quickly pulled down her hair. || Hemen saçını çözdü.
+It fell all the way down her back. || Saçları sırtından aşağı kadar döküldü.
 
-A sign on the shop door said, "Hair Goods of All Kinds." || Dükkânın kapısındaki tabelada "Her Türlü Saç Ürünü" yazıyordu.
-Della climbed the stairs and stood still, breathing hard. || Della merdivenleri çıktı ve nefes nefese durdu.
-"Will you buy my hair?" she asked the shopkeeper. || "Saçımı satın alır mısınız?" diye sordu dükkân sahibine.
-"Take off your hat, and let me look at it," said the woman. || "Şapkanı çıkar, bir bakayım," dedi kadın.
+The two of them had two great treasures. || İkisinin iki büyük hazinesi vardı.
+One was Jim's gold watch. || Biri Jim'in altın saatiydi.
+It had belonged to his father, and before that, to his grandfather. || Önce dedesinin, sonra babasının olmuştu.
+The other treasure was Della's hair. || Öbür hazine Della'nın saçıydı.
+Suppose a queen lived in the next flat. || Yan dairede bir kraliçenin yaşadığını düşünün.
+Della would hang her hair out of the window to dry. || Della saçını kurumaya pencereden dışarı sarkıtırdı.
+Then the queen's jewels would look like nothing. || O zaman kraliçenin mücevherleri hiçbir şeye benzemezdi.
+Suppose a king lived downstairs as the janitor, with gold in the basement. || Kapıcı olarak aşağıda bir kralın yaşadığını, bodrumda da altınlarının durduğunu düşünün.
+Jim would take out his watch every time he walked past. || Jim önünden her geçişinde saatini çıkarırdı.
+The king would pull his beard from envy. || Kral kıskançlıktan sakalını yolardı.
 
-? Why did Della go to the hair shop? || Della saç dükkânına neden gitti?
-- To find a new hat
-+ To sell her hair and get money for Jim's gift
-- To ask for work
-- To meet her husband
-= Della, Jim'e hediye almak için saçını sattı.
-? What did the shopkeeper offer her? || Dükkân sahibi ona ne teklif etti?
-+ Twenty dollars
-- A new dress
-- A gold watch
-- Eight dollars for a week
-= Dükkân sahibi saç için yirmi dolar verdi.
+Now Della's beautiful hair fell around her like a brown waterfall. || Şimdi Della'nın güzel saçları, kahverengi bir şelale gibi etrafına dökülüyordu.
+It shone and moved with every breath. || Parlıyor ve her nefeste dalgalanıyordu.
+It went down below her knees. || Dizlerinin aşağısına kadar iniyordu.
+It was almost like a coat for her body. || Neredeyse vücudu için bir manto gibiydi.
 
-## The Fob Chain | Saat Zinciri
-After the sale, Della ran through the shops. She wanted the perfect present. || Satıştan sonra Della dükkânları gezdi. Mükemmel bir hediye istiyordu.
-At last she found a platinum chain. It was simple and elegant. || Sonunda basit ve zarif bir platin zincir buldu.
-She knew at once that it was meant for Jim's watch. It was like him, quiet and valuable. || Hemen Jim'in saatine ait olduğunu anladı. Jim gibiydi, sessiz ve değerliydi.
-The chain cost twenty-one dollars. She paid, and hurried home with eighty-seven cents. || Zincirin fiyatı yirmi bir dolardı. Parayı ödedi ve geriye seksen yedi sent kalınca eve koştu.
+Then she did it up again, quickly and nervously. || Sonra saçını tekrar, hızlı ve tedirgin bir şekilde topladı.
+For a minute she stood still. || Bir dakika kımıldamadan durdu.
+Two tears fell onto the old red carpet. || İki damla gözyaşı eski kırmızı halının üstüne düştü.
 
-At home, she used her curling irons to fix her short hair. || Evde kısa saçını düzeltmek için maşasını kullandı.
-Soon her head was covered with tiny curls. She looked like a schoolboy. || Kısa sürede başı küçük küçük bukleler ile kaplandı. Bir okul çocuğu gibi görünüyordu.
-"If Jim sees me like this, he will laugh," she said to herself. || "Jim beni böyle görürse güler," dedi kendi kendine.
+She put on her old brown jacket and her old brown hat. || Eski kahverengi ceketini ve eski kahverengi şapkasını giydi.
+Her eyes still had that bright sparkle. || Gözlerinde hâlâ o parlak ışıltı vardı.
+She ran out of the door and down the stairs to the street. || Kapıdan fırladı ve merdivenlerden sokağa koştu.
 
-At seven o'clock, the coffee was ready. The chops were hot in the pan. || Saat yedide kahve hazırdı. Pirzolalar tavada sıcaktı.
-Della sat near the door and waited. She was very nervous. || Della kapının yanında oturup bekledi. Çok gergindi.
-"Please, God, make him think I am still pretty," she whispered. || "Lütfen Tanrım, hâlâ güzel olduğumu düşünsün," diye fısıldadı.
+She stopped in front of a sign. || Bir tabelanın önünde durdu.
+It said, “Madame Sofronie. Hair Goods of All Kinds.” || Tabelada “Madam Sofronie. Her Türlü Saç Malzemesi” yazıyordu.
+Della ran up one flight of stairs and stood there, panting. || Della bir kat merdiven çıktı ve nefes nefese durdu.
+Madame was large, pale and cold. || Madam iri, soluk ve soğuk biriydi.
+She did not look like a “Sofronie” at all. || Hiç de bir “Sofronie”ye benzemiyordu.
 
-? What did Della buy for Jim? || Della Jim için ne aldı?
-- A new coat
-- Gloves
+“Will you buy my hair?” asked Della. || “Saçımı satın alır mısınız?” diye sordu Della.
+“I buy hair,” said Madame. “Take off your hat. Let me see it.” || “Saç alırım,” dedi Madam. “Şapkanı çıkar. Bir göreyim.”
+The brown waterfall fell down again. || Kahverengi şelale yeniden döküldü.
+Madame lifted the heavy hair with a practised hand. || Madam ağır saçları alışkın bir elle kaldırdı.
+“Twenty dollars,” she said. || “Yirmi dolar,” dedi.
+“Give it to me quickly,” said Della. || “Çabuk verin bana,” dedi Della.
+
+The next two hours passed like a happy dream. || Sonraki iki saat mutlu bir rüya gibi geçti.
+Della went from shop to shop, looking for Jim's present. || Della dükkân dükkân gezip Jim'in hediyesini aradı.
+
+At last she found it. || Sonunda onu buldu.
+It was made for Jim and for nobody else. || Jim için yapılmıştı, başkası için değil.
+No other shop had anything like it, and she had looked in all of them. || Başka hiçbir dükkânda ona benzer bir şey yoktu ve hepsine bakmıştı.
+It was a platinum chain for a watch. || Bir saat için platin bir zincirdi.
+The design was simple and quiet, and its value was in the metal itself. || Tasarımı sade ve sakindi, değeri metalin kendisindeydi.
+All good things should be like that. || Bütün güzel şeyler böyle olmalı.
+It was even good enough for Jim's watch. || Jim'in saatine bile yakışacak kadar iyiydi.
+When she saw it, she knew it was Jim's. || Onu görünce Jim'in olduğunu anladı.
+It was quiet and valuable, just like him. || Tıpkı onun gibi sessiz ve değerliydi.
+The shop took twenty-one dollars for it. || Dükkân bunun için yirmi bir dolar aldı.
+Della hurried home with eighty-seven cents. || Della seksen yedi sentle eve acele etti.
+
+Jim's watch was very fine, but it had no chain. || Jim'in saati çok güzeldi ama zinciri yoktu.
+He used an old leather strap instead. || Onun yerine eski bir deri kayış kullanıyordu.
+Sometimes he looked at the time secretly, because he felt ashamed of the strap. || Bazen kayıştan utandığı için saate gizlice bakıyordu.
+Now, with this new chain, he could look at his watch in front of anyone. || Şimdi bu yeni zincirle saatine herkesin önünde bakabilirdi.
+
+? Why did Della sell her hair? || Della saçını neden sattı?
+- She wanted a new hat.
+- She did not like it.
++ She needed money to buy a Christmas present for Jim.
+- Madame Sofronie asked for it.
+= Jim'e Noel hediyesi alacak parası yoktu; bu yüzden saçını yirmi dolara sattı.
+? What did Della buy for Jim? || Della, Jim için ne aldı?
+- A leather strap
+- A new watch
+- A pair of gloves
 + A platinum chain for his watch
-- A book
-= Della, Jim'in saatine uygun platin bir zincir aldı.
-? Why was Della nervous when she waited? || Della beklerken neden gergindi?
-+ She was worried that Jim would not think she was pretty.
-- She had lost the chain.
-- She had forgotten Christmas.
-- She was cold.
-= Della, saçını kestirdiği için Jim'in ne düşüneceğinden endişeliydi.
+= Jim'in babasından ve dedesinden kalan altın saati için platin bir zincir aldı.
+? How much did Madame pay for the hair? || Madam saç için ne kadar ödedi?
++ Twenty dollars
+- Twenty-one dollars
+- Eighty-seven cents
+- Eight dollars
+= “Twenty dollars,” said Madame.
 
-## Jim Comes Home | Jim Eve Gelir
-Jim was never late. Della heard his steps on the stairs. || Jim hiç geç kalmazdı. Della merdivenlerdeki adımlarını duydu.
-The door opened. Jim looked thin and very serious. || Kapı açıldı. Jim zayıf ve çok ciddi görünüyordu.
-He needed a new coat, and he had no gloves. He was only twenty-two years old. || Yeni bir paltoya ihtiyacı vardı ve eldiveni yoktu. Daha yirmi iki yaşındaydı.
-Jim stopped near the door. He stared at Della with a strange look. || Jim kapının yanında durdu. Della'ya tuhaf bir bakışla baktı.
+## Waiting for Jim | Jim'i Beklerken
+When Della got home, she felt calmer. || Della eve geldiğinde daha sakindi.
+Her happy excitement slowly became sense and reason. || Mutlu heyecanı yavaş yavaş sağduyuya döndü.
+She took out her curling irons and lit the gas. || Kıvırma maşalarını çıkardı ve gazı yaktı.
+She began to repair what love had done. || Sevginin yaptığı şeyi onarmaya başladı.
+It is always a big job, dear friends. || Bu her zaman büyük bir iştir, sevgili dostlar.
 
-Della was afraid. It was not anger, and it was not surprise. She could not read his face. || Della korktu. Bu öfke değildi, şaşkınlık da değildi. Yüzünü okuyamıyordu.
-"Jim, darling, don't look at me that way!" she cried. || "Jim canım, bana öyle bakma!" diye bağırdı.
-"I had my hair cut off and sold it, because I wanted to give you a present." || "Saçımı kestirip sattım, çünkü sana bir hediye vermek istedim."
-"It will grow again. Say, Merry Christmas, Jim!" || "Yeniden uzayacak. Hadi, Mutlu Noeller de, Jim!"
+In forty minutes her head was covered with tiny curls. || Kırk dakika içinde başı minik bukleler kaplandı.
+She looked like a schoolboy who had run away from school. || Okuldan kaçmış bir erkek öğrenciye benziyordu.
+She looked at herself in the mirror for a long time. || Uzun süre aynada kendine baktı.
+She looked carefully, and not very happily. || Dikkatle ve pek mutlu olmadan baktı.
 
-Jim looked around the room. He could hardly believe what he saw. || Jim odanın içine baktı. Gördüğüne zor inanıyordu.
-"You say your hair is gone?" he asked quietly. || "Saçının gittiğini mi söylüyorsun?" diye sessizce sordu.
-"Yes, it is sold," said Della. "But I am still me. Do you love me less?" || "Evet, satıldı," dedi Della. "Ama yine de benim. Beni daha az mı seviyorsun?"
+“Jim will be shocked,” she said to herself. || “Jim şaşkına dönecek,” dedi kendi kendine.
+“He may say I look like a girl from a cheap show. || “Belki ucuz bir gösterinin dansçısına benzediğimi söyler.
+But what could I do? || Ama ne yapabilirdim ki?
+What could I do with one dollar and eighty-seven cents?” || Bir dolar seksen yedi sentle ne yapabilirdim?”
 
-Jim held her tightly. For a moment, he said nothing at all. || Jim onu sıkıca tuttu. Bir an hiçbir şey söylemedi.
-Then he took a package from his coat pocket and put it on the table. || Sonra ceketinin cebinden bir paket çıkardı ve masaya koydu.
-"Do not make a mistake, Dell," he said. "Nothing could make me love you less." || "Yanlış anlama, Dell," dedi. "Hiçbir şey seni daha az sevmemi sağlayamaz."
+At seven o'clock the coffee was ready. || Saat yedide kahve hazırdı.
+The frying pan was hot on the back of the stove, and it was ready for the chops. || Tava ocağın arkasında sıcaktı ve pirzolalar için hazırdı.
+Jim was never late. || Jim hiç geç kalmazdı.
+Della held the chain in her hand and sat on the corner of the table near the door. || Della zinciri elinde tuttu ve kapının yakınındaki masanın köşesine oturdu.
+Soon she heard his steps on the stairs. || Kısa süre sonra merdivenlerde ayak seslerini duydu.
+For a moment her face turned white. || Bir an yüzü bembeyaz oldu.
 
-? How did Della feel when Jim stared at her? || Jim ona baktığında Della nasıl hissetti?
-- Happy and proud
-- Hungry and tired
-+ Afraid, because she could not understand his face
-- Cold and wet
-= Della, Jim'in yüzündeki ifadeyi anlayamadığı için korktu.
-? What did Jim do when he saw Della's hair? || Jim, Della'nın saçını görünce ne yaptı?
-- He became angry and left the room.
-+ He held her tightly and said he loved her.
-- He called the shopkeeper.
-- He asked for money back.
-= Jim, Della'yı kucakladı ve onu sevdiğini söyledi.
+She often said little prayers about simple, everyday things. || Basit, gündelik şeyler için sık sık küçük dualar ederdi.
+Now she whispered, “Please, God, make him think that I am still pretty.” || Şimdi fısıldadı: “Lütfen Tanrım, ona hâlâ güzel olduğumu düşündür.”
 
-## The Wisest Gifts | En Akıllı Hediyeler
-Della opened the package. It held a set of combs. || Della paketi açtı. İçinde bir takım tarak vardı.
-They were made of tortoiseshell, with jewels on the edges. || Kaplumbağa kabuğundan yapılmıştı ve kenarlarında mücevherler vardı.
-Della had looked at them in a shop window for a long time. || Della onlara bir dükkânın vitrininde uzun süre bakmıştı.
-They were expensive, and she had never hoped to own them. || Pahalılardı ve hiç sahip olmayı ummamıştı.
+The door opened, and Jim came in. || Kapı açıldı ve Jim içeri girdi.
+He closed it behind him. || Kapıyı arkasından kapattı.
+He looked thin and serious. || İnce ve ciddi görünüyordu.
+Poor Jim was only twenty-two, and he already had a family to look after. || Zavallı Jim yalnızca yirmi iki yaşındaydı ve şimdiden bakması gereken bir ailesi vardı.
+He needed a new overcoat, and he had no gloves. || Yeni bir paltoya ihtiyacı vardı ve eldivenleri de yoktu.
 
-But now her hair was gone, and the combs had no hair to decorate. || Ama şimdi saçı yoktu ve taraklar süsleyeceği saç bulamıyordu.
-She hugged the combs to her chest, and smiled through her tears. || Taraklarını göğsüne bastırdı ve gözyaşları içinde gülümsedi.
-Then she gave Jim his present. She held the chain on her open palm. || Sonra Jim'e hediyesini verdi. Zinciri açık avucunda tuttu.
-"Isn't it a beauty? Give me your watch, and I will see how it looks," she said. || "Güzel değil mi? Saatini ver, nasıl göründüğüne bakayım," dedi.
+Jim stopped just inside the door. || Jim kapıdan girer girmez durdu.
+He did not move, like a dog that smells a bird. || Kuş kokusu almış bir köpek gibi kıpırdamadı.
+His eyes were fixed on Della. || Gözleri Della'ya dikilmişti.
+There was a strange expression on his face, and she could not read it. || Yüzünde tuhaf bir ifade vardı ve Della onu okuyamadı.
+It terrified her. || Bu onu dehşete düşürdü.
+It was not anger. || Öfke değildi.
+It was not surprise. || Şaşkınlık değildi.
+It was not dislike or horror, or anything she had expected. || Hoşnutsuzluk ya da dehşet de değildi, beklediği hiçbir şey değildi.
+He just stared at her with that strange look. || Sadece o garip bakışla ona dik dik baktı.
 
-Jim did not move. He lay back on the couch and smiled. || Jim kıpırdamadı. Kanepeye uzandı ve gülümsedi.
-"Dell, let us keep our presents for a while," he said. "I sold the watch to buy your combs." || "Dell, hediyelerimizi bir süre saklayalım," dedi. "Taraklarını alabilmek için saatimi sattım."
+Della jumped down from the table and ran to him. || Della masadan atladı ve ona koştu.
+“Jim, darling,” she cried, “don't look at me like that! || “Jim, sevgilim,” diye bağırdı, “bana öyle bakma!
+I cut off my hair and sold it. || Saçımı kestirip sattım.
+I could not live through Christmas without giving you a present. || Sana bir hediye vermeden Noel'i geçiremezdim.
+It will grow again. You don't mind, do you? || Yeniden uzayacak. Sen kızmazsın, değil mi?
+My hair grows very fast. || Saçım çok hızlı uzar.
+Say ‘Merry Christmas,’ Jim, and let's be happy. || ‘Mutlu Noeller’ de, Jim, ve mutlu olalım.
+You don't know what a beautiful gift I have for you!” || Sana nasıl güzel bir hediyem var, bilemezsin!”
 
-Jim and Della were not wise in the usual way. They had given away their most precious things. || Jim ile Della olağan anlamda akıllı değildi. En değerli şeylerini vermişlerdi.
-But their love was wise. Of all the people who give gifts, these two were the wisest. || Ama sevgileri akıllıydı. Hediye veren insanlar arasında bu ikisi en akıllılarıydı.
-They are the magi. || Onlar bilgelerdir.
+“You have cut off your hair?” asked Jim slowly. || “Saçını mı kestirdin?” diye sordu Jim yavaşça.
+He spoke as if he could not understand it, even after hard thinking. || Çok düşündükten sonra bile anlayamıyormuş gibi konuşuyordu.
 
-? Why could Jim not use the chain Della gave him? || Della'nın verdiği zinciri Jim neden kullanamazdı?
-+ He had sold his watch, so the chain had nothing to hold.
-- The chain was too short.
-- It was made of gold.
-- Della had hidden it under the couch.
-= Jim saatini satmıştı; zincirin takılacağı bir saat yoktu.
-? What is the main message of the story? || Öykünün ana mesajı nedir?
-- Money is the most important thing in life.
-- Long hair is more beautiful than gold.
-+ Real love gives the most valuable things without thinking about the cost.
-- Gifts should always be expensive.
-= İki karakter de sevdikleri için en değerli şeylerini feda etti.
+“I cut it off and sold it,” said Della. || “Kestirip sattım,” dedi Della.
+“Don't you like me just the same? || “Beni yine de aynı sevmiyor musun?
+I am still me without my hair, am I not?” || Saçım olmasa da ben yine ben değil miyim?”
+Jim looked around the room, puzzled. || Jim şaşkınlıkla odanın içine baktı.
+“Your hair is gone?” he said, like a man in a dream. || “Saçın gitti mi?” dedi, rüyadaki bir adam gibi.
+
+“Don't look for it,” said Della. “It is sold and gone. || “Onu arama,” dedi Della. “Satıldı ve gitti.
+It is Christmas Eve, Jim. Be nice to me. It went for you. || Noel arifesi, Jim. Bana iyi davran. Sana gitti o.
+Maybe someone could count the hairs on my head,” she said, suddenly serious and sweet, “but nobody could ever count my love for you. || Belki biri başımdaki saç tellerini sayabilir,” dedi birden ciddi ve tatlı bir sesle, “ama sana olan sevgimi kimse sayamaz.
+Shall I put the chops on, Jim?” || Pirzolaları ocağa koyayım mı, Jim?”
+
+? What was Della afraid of when Jim came in? || Jim içeri girdiğinde Della neyden korkuyordu?
+- That the dinner was cold
+- That Jim had no gloves
++ That Jim would not like her short hair
+- That the chain was too small
+= “Please, God, make him think that I am still pretty.” — Jim'in kısa saçlarını beğenmemesinden korkuyordu.
+? How did Jim look at Della? || Jim, Della'ya nasıl baktı?
+- He was very angry.
++ He stared at her with a strange expression.
+- He laughed and clapped.
+- He did not look at her at all.
+= Yüzünde Della'nın okuyamadığı garip bir ifade vardı; öfke de şaşkınlık da değildi.
+? What did Della say about her love? || Della sevgisi hakkında ne dedi?
+- It would grow like her hair.
+- It was worth twenty dollars.
+- It was only for Christmas.
++ Nobody could count it.
+= “Nobody could ever count my love for you.”
+
+## The Gifts of the Magi | Bilgelerin Armağanı
+Suddenly Jim woke up from his trance. || Birden Jim şaşkınlık sersemliğinden uyandı.
+He took Della in his arms and held her tightly. || Della'yı kollarına aldı ve sıkıca tuttu.
+Let us look the other way for ten seconds. || On saniyeliğine öbür tarafa bakalım.
+What is the difference between eight dollars a week and a million dollars a year? || Haftada sekiz dolarla yılda bir milyon dolar arasında ne fark var?
+A clever person may give you the wrong answer. || Zeki biri size yanlış cevap verebilir.
+The wise men brought valuable gifts to the baby Jesus, but they did not bring this. || Bilge adamlar bebek İsa'ya değerli hediyeler getirdiler ama bunu getirmediler.
+You will understand this later. || Bunu daha sonra anlayacaksınız.
+
+Jim took a package out of his coat pocket and put it on the table. || Jim ceketinin cebinden bir paket çıkardı ve masanın üstüne koydu.
+“Dell, don't make a mistake about me,” he said. || “Dell, benim hakkımda yanlış düşünme,” dedi.
+“No haircut or shampoo could make me love my girl less. || “Hiçbir saç kesimi ya da şampuan kızımı daha az sevmeme neden olmaz.
+But open that package. || Ama şu paketi aç.
+Then you will understand why I looked at you like that.” || O zaman sana neden öyle baktığımı anlarsın.”
+
+Della's white fingers quickly pulled off the string and paper. || Della'nın beyaz parmakları ipi ve kâğıdı hızla çekip aldı.
+First she screamed with joy. || Önce sevinçle çığlık attı.
+Then, alas, she began to cry and sob. || Sonra, ne yazık ki, ağlamaya ve hıçkırmaya başladı.
+Jim had to comfort her with all his love. || Jim onu bütün sevgisiyle avutmak zorunda kaldı.
+
+In the package there were the combs. || Pakette taraklar vardı.
+They were a set of combs for the sides and the back of her hair. || Saçının yanları ve arkası için bir tarak takımıydı.
+Della had seen them in a shop window on Broadway, and she had loved them for a long time. || Della onları Broadway'deki bir vitrinde görmüştü ve uzun zamandır onlara hayrandı.
+They were beautiful, made of real tortoise shell, with jewels on the edges. || Güzeldiler; gerçek kaplumbağa kabuğundan yapılmıştı ve kenarlarında mücevherler vardı.
+Their colour was perfect for her lovely brown hair. || Renkleri onun güzel kahverengi saçına tam uygundu.
+She knew they were very expensive. || Çok pahalı olduklarını biliyordu.
+She had wanted them so much, but she had never hoped to own them. || Onları çok istemişti ama sahip olmayı hiç ummamıştı.
+Now they were hers, but the long hair for them was gone. || Şimdi onlar onundu ama onlar için olan uzun saçlar gitmişti.
+
+She held the combs against her chest. || Taraklarını göğsüne bastırdı.
+After a while she looked up with wet eyes and smiled. || Bir süre sonra ıslak gözlerle başını kaldırdı ve gülümsedi.
+“My hair grows so fast, Jim!” she said. || “Saçım çok hızlı uzar, Jim!” dedi.
+
+Then she jumped up like a little cat and cried, “Oh, oh!” || Sonra küçük bir kedi gibi sıçradı ve “Ah, ah!” diye bağırdı.
+Jim had not seen his beautiful present yet. || Jim güzel hediyesini henüz görmemişti.
+She held the chain out to him on her open hand. || Zinciri açık avucunun üstünde ona uzattı.
+The precious metal seemed to shine with her happy spirit. || Değerli metal, onun mutlu ruhuyla parlıyor gibiydi.
+
+“Isn't it wonderful, Jim?” she said. “I looked all over town for it. || “Harika değil mi, Jim?” dedi. “Bütün şehirde bunu aradım.
+Now you will look at the time a hundred times a day. || Artık günde yüz kez saate bakacaksın.
+Give me your watch. I want to see how the chain looks on it.” || Saatini ver bana. Zincirin üstünde nasıl durduğunu görmek istiyorum.”
+
+Jim did not obey. || Jim söz dinlemedi.
+He fell onto the couch, put his hands behind his head, and smiled. || Kanepeye uzandı, ellerini başının arkasına koydu ve gülümsedi.
+“Dell,” he said, “let's put away our Christmas presents for a while. || “Dell,” dedi, “Noel hediyelerimizi bir süre kaldıralım.
+They are too nice to use right now. || Şu anda kullanmak için fazla güzeller.
+I sold the watch to get the money for your combs. || Saati, senin taraklarının parasını bulmak için sattım.
+And now, why don't you put the chops on?” || Şimdi pirzolaları ocağa koysan nasıl olur?”
+
+Everyone knows the story of the wise men, the magi. || Herkes bilge adamların, yani magilerin öyküsünü bilir.
+They brought gifts to the baby in the manger. || Yemlikteki bebeğe hediyeler getirdiler.
+They began the custom of giving Christmas presents. || Noel hediyesi verme geleneğini onlar başlattı.
+Their gifts were wise, no doubt. || Hediyeleri kuşkusuz akıllıcaydı.
+
+This story is about two foolish young people in a small flat. || Bu öykü, küçük bir dairedeki iki aptal genç hakkında.
+They sacrificed their greatest treasures for each other, and it was not a wise thing to do. || Birbirleri için en büyük hazinelerini feda ettiler ve bu pek akıllıca bir şey değildi.
+But let me say one last word to the wise people of today. || Ama bugünün bilge insanlarına son bir söz söyleyeyim.
+Of all people who give presents, these two were the wisest. || Hediye verenlerin arasında bu ikisi en bilgeleriydi.
+Everywhere, people like them are the wisest. || Her yerde, onlar gibi insanlar en bilgedir.
+They are the magi. || Onlar magilerdir.
+
+? What did Jim sell to buy the combs? || Jim taraklar için ne sattı?
+- His coat
+- His gloves
++ His gold watch
+- His hat
+= “I sold the watch to get the money to buy your combs.”
+? Why could Della and Jim not use their presents? || Della ile Jim hediyelerini neden kullanamadı?
+- The presents were broken.
++ Each present was for something the other had sold.
+- They did not like the presents.
+- The shops were closed.
+= Taraklar uzun saç için, zincir ise saat içindi. Della saçını, Jim saatini satmıştı.
+? Why does the writer say they were the “magi”? || Yazar neden onlara “magi” diyor?
+- They were rich and famous.
+- They brought gifts to a king.
+- They lived in a castle.
++ They gave up their greatest treasures out of love.
+= Hediyeleri uyuşmadı ama birbirleri için en değerli şeylerinden vazgeçtiler. Bu yüzden en bilge hediye verenler onlardı.
