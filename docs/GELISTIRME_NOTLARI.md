@@ -160,6 +160,12 @@ Değişiklik günlüğü). Genel mimari ve eski kararlar: `PROJECT_MEMORY.md`. Y
 - OCR: Tesseract yok; Windows'un yerleşik OCR'ı PowerShell ile kullanıldı (yalnızca Türkçe dil paketi kurulu → İngilizce metinde
   ı/İ ve "Ido" hataları; `ocr_duzelt.py` düzeltir). İngilizce OCR dili kurulursa (Ayarlar › Dil › İngilizce › OCR) daha temiz olur.
 - Kaynaklar ve lisans notları: `scripts/okuma/kaynaklar.json`; indirme bağlantıları YOL_HARITASI günlüğünde.
+- Cümle çevirileri **veride** (internetten çeviri yok, kullanıcı kararı 22.10.2026): `local-data/okuma/ceviri/<id>.json`
+  (`{ "<İngilizce cümle>": "<Türkçe>" }`) → `kitap_yap.mjs` `{en, tr}` yazar. Yeni kitap eklenince: `kitap_yap.mjs` →
+  `node scripts/okuma/ceviri_eksik.mjs <id> --adet 150` → çevir (“N<TAB>Türkçe” satırları) → `--ekle dosya` → `kitap_yap.mjs`;
+  `--durum` hepsini sayar. Kaynak metin/cümle bölme değişirse anahtarlar kayar, eksikler yeniden listelenir.
+- Çıkmış sınav cümleleri: `node scripts/okuma/sinav_eksik.mjs` (`local-data/yds/<sınav>.tr.json`, kimlik → Türkçe; Türkçe
+  metinler ve I–V şıkları sayılmaz). 22.10.2026 itibarıyla 39 sınavda eksik yok.
 
 ### 4.7 Diğerleri
 - Kelime balonu (`exam/WordPopover.tsx`): ekranı kaplayan arka plan yerine "dışarıya dokununca kapan" dinleyicisi → başka kelimeye tek dokunuş.
