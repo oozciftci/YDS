@@ -23,13 +23,14 @@ const read = (dir) =>
 
 const clean = (p) =>
   p
+    .replace(/￼/g, '') // PDF'teki resim yer tutucuları
     .replace(/\s+--\s+|--/g, ' — ')
     .replace(/\s+-\s+(?=[a-z])/g, '-') // "red - headed" → "red-headed"
     .replace(/\s+/g, ' ')
     .trim()
 
 /** Paragraf → cümleler (uzun konuşma blokları önce ayrılır) */
-const toParas = (p) => splitDialogue(clean(p)).map((x) => splitSentences(x))
+const toParas = (p) => splitDialogue(clean(p)).map((x) => splitSentences(x)).filter((s) => s.length)
 
 const countWords = (chapters) =>
   chapters.reduce((n, c) => n + c.paras.reduce((m, p) => m + (Array.isArray(p) ? p.join(' ').split(/\s+/).length : 0), 0), 0)
@@ -117,6 +118,8 @@ for (const level of ['A2', 'B1']) {
         continue
       }
       if (isHead && END.test(p)) break
+      if (/^(Comprehension Notes|Original story by)/i.test(p)) break // öykü sonundaki öğretmen notları
+      if (/^(Note for teachers|Conclusion$)/i.test(p)) continue
       if (!started || (isHead && DROP.test(p))) continue
       if (isHead) continue // "The End" vb.: metin sürer
       paras.push(...toParas(p))
