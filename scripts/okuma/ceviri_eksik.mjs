@@ -69,7 +69,8 @@ if (ekle) {
   else {
     const part = JSON.parse(fs.readFileSync(partFile, 'utf8'))
     for (const line of raw.split(/\r?\n/)) {
-      const m = line.match(/^(\d+)\t(.*)$/)
+      // "N<TAB>tr"; sekme yerine boşluk, "N | tr" ya da "N. tr" de olur (başka araçlar sekmeyi boşluğa çevirebilir)
+      const m = line.match(/^(\d+)(?:\t|\s*[|.)]\s*|\s+)(.*)$/)
       if (m) put(part[Number(m[1]) - 1], m[2])
     }
   }
