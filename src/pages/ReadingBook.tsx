@@ -11,7 +11,7 @@ import { Quiz } from './ReadingLibrary'
 import styles from './ReadingLibrary.module.css'
 
 // Kitap okuyucu (services/readingBooks): kitap ~320 kelimelik sayfalara bölünür; yana kaydırınca / ← → ile sayfa çevrilir,
-// kaldığın yer kaydedilir. Okuyucu ReaderBody (kelimeye dokun, 🌐 cümle çevirisi — hazır değilse internetten, dinle, süre).
+// kaldığın yer kaydedilir. Okuyucu ReaderBody (kelimeye dokun, 🌐 cümle çevirisi — veride hazır, internetsiz; dinle, süre).
 // Bölüm sonunda (özgün uyarlamalarda) anlama soruları.
 
 export function ReadingBookPage() {
@@ -90,8 +90,7 @@ function BookPageReader({ book, pages, n, onGo, onNext }: { book: Book; pages: B
       info={
         <>
           <span className={styles.level}>{book.level}</span> {book.title} · Bölüm {pg.chapter + 1}/{book.chapters.length} · Sayfa {n + 1}/{pages.length}
-          {chapter.titleTr ? ` · ${chapter.titleTr}` : ''} · Yana kaydırınca sayfa çevrilir; 🌐 cümlenin Türkçesi
-          {book.origin === 'yerel' ? ' (internetten gelir, sonra cihazda kalır)' : ''}.
+          {chapter.titleTr ? ` · ${chapter.titleTr}` : ''} · Yana kaydırınca sayfa çevrilir; 🌐 cümlenin Türkçesi.
         </>
       }
       before={

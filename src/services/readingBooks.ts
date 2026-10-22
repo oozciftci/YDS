@@ -2,7 +2,8 @@
 //  - Özgün uyarlamalar (telifsiz, bu projede yazıldı): public/data/okuma/kitap/<id>.json + dizin public/data/okuma/kitaplar.json
 //    (dizin: node scripts/okuma/dizin.mjs). Cümle çevirileri ve kelime anlamları hazırdır, yayında da açılır.
 //  - Yerel kitaplar (ücretsiz ama yalnızca yerel tutulan): local-data/okuma/kitaplar → /local-api/okuma-kitap (geliştirme) ya da
-//    cihaza yüklenen kaynak paketi (yayın). Çeviriler 🌐 ile internetten gelir (services/sentenceTranslate).
+//    cihaza yüklenen kaynak paketi (yayın). Cümle çevirileri
+//    local-data/okuma/ceviri/<id>.json haritasından kitaba yazılır (kitap_yap.mjs); internetten çeviri yok.
 // Kitap okuyucuda sayfalara bölünür (paginate); kaldığın yer kişi başına tarayıcı deposunda (`yds-kitap:<kullanıcı>`).
 import { hasLocalContent, localFetch } from './localContent'
 import type { LibQuestion, ReadingLevel } from './readingLibrary'

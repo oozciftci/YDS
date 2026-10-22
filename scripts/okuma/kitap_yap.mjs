@@ -1,5 +1,7 @@
 // İndirilen kitapların düz metninden (scripts/okuma/metin_cikar.py → local-data/okuma/indirilen/<dizin>/metin.txt) okuma
 // kitabı üretir: local-data/okuma/kitaplar/<id>.json (biçim: src/services/readingBooks.ts). Yalnızca yerel; yayına girmez.
+// Cümle çevirileri local-data/okuma/ceviri/<id>.json ({ "<İngilizce cümle>": "<Türkçesi>" }) haritasından {en, tr} yazılır;
+// eksikleri parça parça çıkarmak/eklemek için scripts/okuma/ceviri_eksik.mjs.
 // Kullanım: node scripts/okuma/kitap_yap.mjs
 import fs from 'node:fs'
 import path from 'node:path'
@@ -8,6 +10,7 @@ import { splitDialogue, splitSentences } from '../../src/services/sentenceSplit.
 const ROOT = path.resolve(import.meta.dirname, '..', '..')
 const IN = path.join(ROOT, 'local-data', 'okuma', 'indirilen')
 const OUT = path.join(ROOT, 'local-data', 'okuma', 'kitaplar')
+const TR = path.join(ROOT, 'local-data', 'okuma', 'ceviri')
 const cfg = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'kaynaklar.json'), 'utf8'))
 fs.mkdirSync(OUT, { recursive: true })
 
@@ -34,9 +37,16 @@ const countWords = (chapters) =>
 function save(book) {
   book.chapters = book.chapters.filter((c) => c.paras.some(Array.isArray))
   book.words = countWords(book.chapters)
+  const trFile = path.join(TR, `${book.id}.json`)
+  const map = fs.existsSync(trFile) ? JSON.parse(fs.readFileSync(trFile, 'utf8')) : {}
+  let done = 0
+  for (const c of book.chapters)
+    c.paras = c.paras.map((p) =>
+      Array.isArray(p) ? p.map((en) => (map[en] ? (done++, { en, tr: map[en] }) : en)) : p,
+    )
   fs.writeFileSync(path.join(OUT, `${book.id}.json`), JSON.stringify(book))
   const sentences = book.chapters.reduce((n, c) => n + c.paras.filter(Array.isArray).reduce((m, p) => m + p.length, 0), 0)
-  console.log(`${book.id}: ${book.chapters.length} bölüm, ${book.words} kelime, ${sentences} cümle — ${book.chapters.map((c) => c.title).slice(0, 4).join(' | ')}${book.chapters.length > 4 ? ' …' : ''}`)
+  console.log(`${book.id}: ${book.chapters.length} bölüm, ${book.words} kelime, ${sentences} cümle (çevirili ${done}) — ${book.chapters.map((c) => c.title).slice(0, 4).join(' | ')}${book.chapters.length > 4 ? ' …' : ''}`)
 }
 
 const meta = (b) => ({ id: b.id, title: b.title, author: b.author, level: b.level, levelNote: b.levelNote, source: b.source, license: b.license })

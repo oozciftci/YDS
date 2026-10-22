@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { cleanToken, findDeckWord, lookupWordInSentence, type WordLookupResult } from '../../services/dictionary'
-import { cachedTranslation, translateSentence } from '../../services/sentenceTranslate'
 import { EXAM_COLLECTED_TAG } from '../../services/groups'
 import { speakWord } from '../../services/tts'
 import { createWord, updateWord } from '../../services/words'
@@ -33,21 +32,6 @@ export function SentenceView({
 }) {
   const [open, setOpen] = useState(false)
   const show = assist && (open || forceShow)
-  // Hazır çeviri yoksa (okuma kitapları) açılınca internetten getirilir, cihazda saklanır
-  const [auto, setAuto] = useState<{ en: string; text?: string; failed?: boolean } | null>(null)
-  const autoText = auto?.en === seg.en ? auto : null
-  useEffect(() => {
-    if (!show || tr || cachedTranslation(seg.en) !== undefined) return
-    let alive = true
-    translateSentence(seg.en).then(
-      (text) => alive && setAuto({ en: seg.en, text }),
-      () => alive && setAuto({ en: seg.en, failed: true }),
-    )
-    return () => {
-      alive = false
-    }
-  }, [show, tr, seg.en])
-  const trText = tr || cachedTranslation(seg.en) || autoText?.text
   const tokens = useMemo(() => seg.en.match(WORD_RE) || [seg.en], [seg.en])
   const cls = `${styles.sentence} ${active ? styles.sentenceActive : ''}`
   // Çeviri sorularında Türkçe cümleler olur; yardım kapalıyken (deneme) düz metin gösterilir
@@ -74,11 +58,7 @@ export function SentenceView({
           <span key={i}>{t}</span>
         ),
       )}
-      {show && (
-        <span className={styles.trLine}>
-          {trText || <em className={styles.noTr}>{autoText?.failed ? 'Çeviri için internet gerekli' : 'Çevriliyor…'}</em>}
-        </span>
-      )}
+      {show && <span className={styles.trLine}>{tr || <em className={styles.noTr}>Çeviri henüz eklenmedi</em>}</span>}
     </span>
   )
 }
