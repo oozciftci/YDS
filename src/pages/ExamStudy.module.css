@@ -143,17 +143,20 @@
   border-bottom-color: var(--primary);
 }
 
-/* Kelime vurgusu (okuyucular): yeni = mavi alt çizgi, öğreniliyor = sarı zemin */
+/* Kelime vurgusu (okuyucular): sade. Yeni = ince renkli alt çizgi, öğreniliyor = hafif sarı zemin;
+   bilinen kelimelerde noktalı çizgi de kalkar ki göz yalnızca bilinmeyenlere takılsın. */
 .wNew {
-  border-bottom: 2px solid var(--primary);
-  background: var(--primary-subtle);
-  border-radius: 2px;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--primary) 70%, transparent);
 }
 
 .wLearning {
-  border-bottom: 2px solid var(--warning);
-  background: var(--warning-subtle);
-  border-radius: 2px;
+  border-bottom-color: transparent;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  border-radius: 3px;
+}
+
+.wPlain {
+  border-bottom-color: transparent;
 }
 
 .trLine {

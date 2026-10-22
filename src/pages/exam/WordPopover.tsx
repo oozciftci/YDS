@@ -19,8 +19,8 @@ export type OnWord = (word: string, e: MouseEvent<HTMLButtonElement>, ctx?: { en
 const HL_CLASS: Record<WordStatus, string> = {
   new: styles.wNew,
   learning: styles.wLearning,
-  known: '',
-  ignored: '',
+  known: styles.wPlain,
+  ignored: styles.wPlain,
 }
 
 /** Bir cümleyi tıklanabilir kelimelere böler; başındaki rozet cümle çevirisini açar/kapatır. */
