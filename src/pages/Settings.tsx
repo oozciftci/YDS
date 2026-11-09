@@ -874,15 +874,38 @@ function BundleCard() {
     return () => clearInterval(t)
   }, [jobId, active])
 
+  // Telifli içerik şifreyle indirilir: şifre POST ile gönderilir, karşılığında 10 dakikalık tek kullanımlık izin gelir;
+  // indirme bağlantısı izinle birlikte gösterilir ve kullanıcı dokununca iner (telefon tarayıcıları kendiliğinden
+  // başlayan indirmeyi engelleyebilir).
+  const [password, setPassword] = useState('')
+  const [grant, setGrant] = useState<{ izin: string; id: string } | null>(null)
+  const [passError, setPassError] = useState('')
+  const [checking, setChecking] = useState(false)
+
+  async function unlock() {
+    setChecking(true)
+    setPassError('')
+    try {
+      const r = await fetch('/local-api/kaynak-paketi/izin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sifre: password }),
+      })
+      const body = (await r.json().catch(() => ({}))) as { izin?: string; error?: string }
+      if (!r.ok || !body.izin) throw new Error(body.error || 'Şifre doğrulanamadı.')
+      setPassword('')
+      setGrant({ izin: body.izin, id: Math.random().toString(36).slice(2, 12) })
+    } catch (e) {
+      setPassError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setChecking(false)
+    }
+  }
+
   function startDownload() {
-    const id = Math.random().toString(36).slice(2, 12)
-    setJob({ id, phase: 'baslatiliyor', done: 0, total: 0 })
-    const a = document.createElement('a')
-    a.href = `/local-api/kaynak-paketi?parcalar=${[...chosen].join(',')}&id=${id}`
-    a.download = ''
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
+    if (!grant) return
+    setJob({ id: grant.id, phase: 'baslatiliyor', done: 0, total: 0 })
+    setGrant(null) // izin tek kullanımlık
   }
 
   if (!parts) return null
@@ -922,10 +945,46 @@ function BundleCard() {
           </label>
         ))}
       </div>
-      {chosen.size > 0 ? (
-        <button type="button" className="btn btn-primary" disabled={active} onClick={startDownload}>
-          {active ? 'İndiriliyor…' : `⬇️ İndir (${formatBytes(total)})`}
-        </button>
+      {chosen.size > 0 && grant ? (
+        <a
+          className="btn btn-primary"
+          href={`/local-api/kaynak-paketi?parcalar=${[...chosen].join(',')}&id=${grant.id}&izin=${grant.izin}`}
+          download=""
+          onClick={startDownload}
+        >
+          ⬇️ İndir ({formatBytes(total)})
+        </a>
+      ) : chosen.size > 0 ? (
+        <form
+          style={{ display: 'grid', gap: '0.5rem', maxWidth: 360 }}
+          onSubmit={(e) => {
+            e.preventDefault()
+            void unlock()
+          }}
+        >
+          <label style={{ display: 'grid', gap: '0.25rem' }}>
+            <span>🔒 Paket şifresi</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              required
+            />
+          </label>
+          <button type="submit" className="btn btn-primary" disabled={active || checking || !password}>
+            {active ? 'İndiriliyor…' : checking ? 'Kontrol ediliyor…' : 'Şifreyi doğrula'}
+          </button>
+          {passError && (
+            <p className={styles.error} style={{ margin: 0 }}>
+              {passError}
+            </p>
+          )}
+          <small className="muted">Telifli içerik şifresiz indirilemez. Şifre doğruysa indirme düğmesi açılır (10 dakika geçerli).</small>
+        </form>
       ) : (
         <p className="muted" style={{ margin: 0 }}>
           En az bir parça seç.

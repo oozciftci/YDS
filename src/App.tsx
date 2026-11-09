@@ -26,6 +26,7 @@ const LibraryReader = lazy(() => import('./pages/ReadingLibrary').then((m) => ({
 // yüklenen kaynak paketinden (src/services/localContent.ts). Paket yüklenmemişse sayfa yolu hiç tanımlanmaz.
 const ExamStudyPage = hasLocalContent() ? lazy(() => import('./pages/ExamStudy')) : null
 const BooksPage = hasLocalContent() ? lazy(() => import('./pages/Books')) : null
+const DusPage = hasLocalContent() ? lazy(() => import('./pages/Dus')) : null
 
 export default function App() {
   return (
@@ -91,6 +92,16 @@ export default function App() {
               element={
                 <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
                   <ExamStudyPage />
+                </Suspense>
+              }
+            />
+          )}
+          {DusPage && (
+            <Route
+              path="dus/*"
+              element={
+                <Suspense fallback={<p className="muted">Yükleniyor…</p>}>
+                  <DusPage />
                 </Suspense>
               }
             />

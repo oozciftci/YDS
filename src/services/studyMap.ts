@@ -79,14 +79,24 @@ const ALL: StudyCategory[] = [
       { to: '/yds-sorular/analiz', label: 'Hatalarımı analiz et', hint: 'Yanlışlarındaki kalıplar', dev: true },
     ],
   },
+  {
+    id: 'dus',
+    icon: '🦷',
+    title: 'DUS',
+    desc: 'Diş Hekimliği Uzmanlık Sınavı: ÖSYM’nin çıkmış soruları.',
+    links: [
+      { to: '/dus', label: 'Çıkmış DUS soruları', hint: 'Sınav sınav, Temel ve Klinik test', dev: true },
+      { to: '/dus/yanlislar', label: 'DUS yanlışlarım', hint: 'Yanlış yaptığın soruları tekrar çöz', dev: true },
+    ],
+  },
 ]
 
 export const STUDY_CATEGORIES: StudyCategory[] = ALL.map((c) => ({
   ...c,
   links: c.links.filter((l) => !l.dev || hasLocalContent()),
-}))
+})).filter((c) => c.links.length > 0)
 
 /** Bu yollar "Çalış" menüsünün altında sayılır (menüde Çalış seçili görünür). */
 export function isStudyPath(pathname: string): boolean {
-  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap|kelime-ailesi|okuma)(\/|$)/.test(pathname)
+  return /^\/(calis|study|match|quiz|yds-test|yds-sorular|dilbilgisi|koc|gece|kitap|kelime-ailesi|okuma|dus)(\/|$)/.test(pathname)
 }

@@ -226,6 +226,57 @@ function localBooks(): Plugin {
   }
 }
 
+// DUS çıkmış soruları (local-data/dus/sinavlar; scripts/dus/dus_yap.py üretir): ÖSYM kitapçıklarının sayfa görüntüleri,
+// YALNIZCA geliştirme sunucusunda ve localhost'tan / şifreli telefondan (yayında şifreyle indirilen kaynak paketinden).
+//   GET /local-api/dus/                -> [{ id, title, year, counts: { tbt, kbt } }] (iptaller hariç)
+//   GET /local-api/dus/<sınav>         -> sinav.json
+//   GET /local-api/dus/<sınav>/p001.webp
+function localDus(): Plugin {
+  const dir = path.resolve(import.meta.dirname, 'local-data/dus/sinavlar')
+  const read = (id: string) => JSON.parse(fs.readFileSync(path.join(dir, id, 'sinav.json'), 'utf8'))
+  return {
+    name: 'local-dus',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/local-api/dus', (req, res, next) => {
+        if (!trusted(req)) {
+          res.statusCode = 403
+          res.end('Yalnızca yerel erişim')
+          return
+        }
+        const parts = decodeURIComponent((req.url || '/').replace(/[?#].*$/, '')).split('/').filter(Boolean)
+        const json = (body: unknown) => {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.setHeader('Cache-Control', 'no-store')
+          res.end(JSON.stringify(body))
+        }
+        if (parts.length === 0) {
+          const ids = fs.existsSync(dir) ? fs.readdirSync(dir).filter((id) => fs.existsSync(path.join(dir, id, 'sinav.json'))) : []
+          return json(
+            ids.map((id) => {
+              const e = read(id) as { title: string; year: number; tests: { key: string; questions: { answer: string }[] }[] }
+              const counts = Object.fromEntries(e.tests.map((t) => [t.key, t.questions.filter((q) => q.answer !== 'X').length]))
+              return { id, title: e.title, year: e.year, counts }
+            }),
+          )
+        }
+        const id = parts[0]
+        if (!/^[a-z0-9-]+$/.test(id) || !fs.existsSync(path.join(dir, id, 'sinav.json'))) return next()
+        if (parts.length === 1) return json(read(id))
+        if (parts.length === 2 && /^p\d{3}\.webp$/.test(parts[1])) {
+          const file = path.join(dir, id, parts[1])
+          if (!fs.existsSync(file)) return next()
+          res.setHeader('Content-Type', 'image/webp')
+          res.setHeader('Cache-Control', 'private, max-age=86400')
+          fs.createReadStream(file).pipe(res)
+          return
+        }
+        next()
+      })
+    },
+  }
+}
+
 // Okuma kitapları (local-data/okuma/kitaplar/<id>.json; scripts/okuma/kitap_yap.mjs üretir): ücretsiz ama yalnızca yerel
 // tutulan kitaplar, YALNIZCA geliştirme sunucusunda ve localhost'tan (yayında kaynak paketinden).
 //   GET /local-api/okuma-kitap/      -> [{ id, title, author, level, words, chapters, origin: 'yerel' … }]
@@ -365,6 +416,7 @@ export default defineConfig(({ mode, command }) => ({
     react(),
     localExamData(),
     localBooks(),
+    localDus(),
     localReadingBooks(),
     localSources(),
     localPacks(),
