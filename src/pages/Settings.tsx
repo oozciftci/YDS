@@ -1052,10 +1052,27 @@ function LocalContentCard() {
         </>
       ) : (
         <p className="muted" style={{ margin: '0 0 0.75rem' }}>
-          Kitaplar, çıkmış sorular ve soru bankaları telifli olduğu için uygulamayla gelmez. Bilgisayarında{' '}
-          <b>Ayarlar › 📦 Kaynak paketi</b> ile indirdiğin dosyayı buraya yükle; sonra internetsiz ve bilgisayarsız açılır.
+          Kitaplar, çıkmış sorular (YDS, DUS) ve soru bankaları telifli olduğu için uygulamayla gelmez. Bir kez yüklenince
+          internetsiz ve bilgisayarsız açılır.
         </p>
       )}
+      <details style={{ margin: '0 0 0.75rem' }}>
+        <summary>Paket dosyasını nereden indiririm?</summary>
+        <ol style={{ margin: '0.5rem 0 0', paddingLeft: '1.2rem', display: 'grid', gap: '0.35rem' }}>
+          <li>
+            Bilgisayarda <code>npm run telefon</code> çalışsın. Telefonun tarayıcısında bilgisayarın verdiği adresi aç
+            (<code>https://&lt;bilgisayarın IP’si&gt;:5180</code>; bu uygulama değil, bilgisayardaki sürüm). İlk açılışta
+            telefon erişim şifresi sorulur.
+          </li>
+          <li>
+            O sürümde <b>Ayarlar › 📦 Kaynak paketi</b>: istediğin parçaları (ör. “DUS çıkmış soruları”) işaretle,{' '}
+            <b>paket şifresini</b> yaz, “Şifreyi doğrula”, sonra “⬇️ İndir”. Dosya İndirilenler’e iner (yds-kaynaklar-….ydsk).
+          </li>
+          <li>
+            Buraya dön, aşağıdaki düğmeyle o dosyayı seç. Sayfa yenilenince bölümler (ör. Çalış › 🦷 DUS) açılır.
+          </li>
+        </ol>
+      </details>
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
         <button type="button" className="btn btn-primary" disabled={progress !== null} onClick={() => input.current?.click()}>
           {progress !== null ? `Yükleniyor… %${Math.round(progress * 100)}` : summary ? '📥 Paket ekle / güncelle' : '📥 Paket yükle'}
