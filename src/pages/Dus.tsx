@@ -1,25 +1,33 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import {
+  DUS_SUBJECTS,
   DUS_TESTS,
   answerKey,
   dusImageUrl,
   dusNet,
   listDusExams,
   loadDusExam,
+  loadDusSolutions,
   readDusAnswers,
   resetDusTest,
   saveDusAnswer,
   solvable,
+  subjectOf,
+  subjectSummary,
   testSummary,
   wrongKeys,
   type DusAnswers,
   type DusExam,
   type DusExamMeta,
   type DusQuestion,
+  type DusSolution,
+  type DusSubject,
   type DusTestKey,
 } from '../services/dus'
 import { useLocalUrl } from '../services/localContent'
+import { AiText } from '../components/AiText'
+import { DusAiExplain } from './DusAi'
 import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './exam/answerControls'
@@ -104,6 +112,42 @@ function DusHome() {
           </p>
         </article>
       )}
+      {DUS_TESTS.map((t) => (
+        <details key={t.key} className="card" open={t.key === 'kbt'}>
+          <summary>
+            <strong>Derse göre çöz · {t.title}</strong>
+          </summary>
+          <ul className={styles.examList} style={{ marginTop: '0.5rem' }}>
+            {DUS_SUBJECTS.filter((x) => x.test === t.key).map((x) => {
+              const n = exams.length * (x.to - x.from + 1)
+              const st = subjectSummary(all, x)
+              return (
+                <li key={x.id} className={styles.examRow}>
+                  <span className={styles.examName}>
+                    {x.icon} {x.title}
+                    <small>
+                      {st.answered
+                        ? `${st.answered}/${n} çözüldü · %${Math.round((st.correct / st.answered) * 100)} doğru`
+                        : `${n} soru · sınav başına ${x.to - x.from + 1}`}
+                    </small>
+                  </span>
+                  <span className={styles.bar} aria-hidden="true">
+                    <span className={styles.barFill} style={{ width: `${(st.answered / n) * 100}%` }} />
+                  </span>
+                  <span className={styles.examActions}>
+                    <button type="button" className="btn btn-secondary" onClick={() => navigate(`ders/${x.id}`)}>
+                      {st.answered && st.answered < n ? 'Devam' : 'Çöz'}
+                    </button>
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        </details>
+      ))}
+      <h2 className={styles.sectionTitle} style={{ margin: '0.5rem 0 0' }}>
+        Sınav sınav
+      </h2>
       <ul className={styles.examList}>
         {exams.map((e) =>
           DUS_TESTS.map((t) => {
@@ -140,16 +184,20 @@ function DusHome() {
 /** Soru kutusu + şıklar: çözme ve yanlışlar ekranında ortak. */
 function QuestionCard({
   exam,
+  test,
   q,
   title,
+  chip,
   saved,
   onAnswer,
   quick,
   footer,
 }: {
   exam: DusExam
+  test: DusTestKey
   q: DusQuestion
   title: string
+  chip?: DusSubject
   saved: { c: string; ok: boolean } | undefined
   onAnswer: (letter: string) => void
   quick: boolean
@@ -157,6 +205,14 @@ function QuestionCard({
 }) {
   const [choice, setChoice] = useState<string | null>(saved?.c ?? null)
   const [showPage, setShowPage] = useState(false)
+  const [solution, setSolution] = useState<DusSolution | undefined>(undefined)
+  useEffect(() => {
+    let alive = true
+    void loadDusSolutions(exam.id).then((all) => alive && setSolution(all[`${test}/${q.n}`]))
+    return () => {
+      alive = false
+    }
+  }, [exam.id, test, q.n])
   const revealed = Boolean(saved)
   function choose(l: string) {
     if (revealed) return
@@ -167,6 +223,11 @@ function QuestionCard({
     <article className={`card ${styles.question}`} data-focus-stage>
       <h2 className={styles.sectionTitle}>
         {title}
+        {chip && (
+          <span className={styles.sectionChip}>
+            {chip.icon} {chip.title}
+          </span>
+        )}
         <button type="button" className={styles.pdfBtn} onClick={() => setShowPage((v) => !v)}>
           {showPage ? 'Yalnız soru' : '📄 Sayfanın tamamı'}
         </button>
@@ -211,6 +272,26 @@ function QuestionCard({
         <span className={styles.spacer} />
         {footer}
       </div>
+      {solution?.terimler?.length ? (
+        <details className={styles.aiBox} data-noswipe>
+          <summary>📖 Bu sorudaki terimler ({solution.terimler.length})</summary>
+          <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.2rem', display: 'grid', gap: '0.25rem' }}>
+            {solution.terimler.map((x) => (
+              <li key={x.t}>
+                <strong>{x.t}</strong>: {x.a}
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+      {revealed && solution?.cozum && (
+        <div className={styles.aiBox} data-noswipe>
+          <strong>💡 Çözüm</strong>
+          <AiText text={solution.cozum} />
+          <small className="muted">Yapay zekâyla önceden hazırlandı, uzman kontrolünden geçmedi; ÖSYM cevap anahtarı esastır.</small>
+        </div>
+      )}
+      {revealed && <DusAiExplain key={`${exam.id}/${test}/${q.n}`} exam={exam} test={test} q={q} choice={saved?.c} />}
     </article>
   )
 }
@@ -292,8 +373,10 @@ function DusRunner() {
       <QuestionCard
         key={`${examId}/${testKey}/${q.n}`}
         exam={exam}
+        test={test.key}
         q={q}
         title={`Soru ${q.n}`}
+        chip={subjectOf(test.key, q.n)}
         saved={all[key(q)]}
         quick={quick}
         onAnswer={(l) => setAll(saveDusAnswer(userId, key(q), l, l === q.answer))}
@@ -313,36 +396,65 @@ function DusRunner() {
   )
 }
 
-interface WrongItem {
+interface QueueItem {
   exam: DusExam
   test: DusTestKey
   q: DusQuestion
   key: string
 }
 
-/** Yanlışlar: son cevabı yanlış olan sorular; doğru çözülen listeden çıkar (liste açılışta bir kez alınır). */
-function DusWrongs() {
+/** Anahtarlardan (sınav/test/no) soru listesi kurar; sınavlar gerektiği kadar yüklenir. */
+async function itemsOf(keys: string[]): Promise<QueueItem[]> {
+  const ids = [...new Set(keys.map((k) => k.split('/')[0]))]
+  const list = await Promise.all(ids.map((id) => loadDusExam(id).catch(() => null)))
+  const byId = new Map(list.filter((e): e is DusExam => !!e).map((e) => [e.id, e]))
+  const out: QueueItem[] = []
+  for (const k of keys) {
+    const [id, test, n] = k.split('/')
+    const exam = byId.get(id)
+    const q = exam?.tests.find((t) => t.key === test)?.questions.find((x) => x.n === Number(n))
+    if (exam && q && q.answer !== 'X') out.push({ exam, test: test as DusTestKey, q, key: k })
+  }
+  return out
+}
+
+/**
+ * Sınavlar arası soru kuyruğu: Yanlışlarım (son cevabı yanlış olanlar; bu ekranda verilen cevaplar ayrı tutulur ki
+ * liste kaymasın) ya da bir ders (tüm sınavlardaki o dersin soruları, yeniden eskiye; kayıtlı cevaplar görünür).
+ */
+function DusQueue({ subject }: { subject?: DusSubject }) {
   const userId = useUserStore((s) => s.activeUserId)
   const [all, setAll] = useAnswers()
-  const [items, setItems] = useState<WrongItem[] | null>(null)
+  const [items, setItems] = useState<QueueItem[] | null>(null)
   const [pos, setPos] = useState(0)
   const [quick, setQuick] = useQuickAnswer()
+  const [session, setSession] = useState<Record<string, { c: string; ok: boolean }>>({})
 
   useEffect(() => {
-    const keys = wrongKeys(readDusAnswers(userId))
-    const ids = [...new Set(keys.map((k) => k.split('/')[0]))]
-    void Promise.all(ids.map((id) => loadDusExam(id).catch(() => null))).then((list) => {
-      const byId = new Map(list.filter((e): e is DusExam => !!e).map((e) => [e.id, e]))
-      const out: WrongItem[] = []
-      for (const k of keys) {
-        const [id, test, n] = k.split('/')
-        const exam = byId.get(id)
-        const q = exam?.tests.find((t) => t.key === test)?.questions.find((x) => x.n === Number(n))
-        if (exam && q) out.push({ exam, test: test as DusTestKey, q, key: k })
+    let alive = true
+    const answers = readDusAnswers(userId)
+    const load = subject
+      ? listDusExams().then((exams) =>
+          itemsOf(
+            exams.flatMap((e) =>
+              Array.from({ length: subject.to - subject.from + 1 }, (_, i) => answerKey(e.id, subject.test, subject.from + i)),
+            ),
+          ),
+        )
+      : itemsOf(wrongKeys(answers))
+    void load.then((list) => {
+      if (!alive) return
+      setItems(list)
+      // Derste ilk çözülmemiş sorudan başla
+      if (subject) {
+        const first = list.findIndex((it) => !answers[it.key])
+        setPos(first === -1 ? 0 : first)
       }
-      setItems(out)
     })
-  }, [userId])
+    return () => {
+      alive = false
+    }
+  }, [userId, subject])
 
   const count = items?.length ?? 0
   const swipe = useQuestionNav(
@@ -350,8 +462,6 @@ function DusWrongs() {
     () => setPos((p) => Math.min(count - 1, p + 1)),
     { canPrev: pos > 0, canNext: pos < count - 1 },
   )
-  // Bu ekranda çözülen cevaplar ayrı tutulur: liste kaymaz, eski yanlış kayıt soru açılınca gizlenir
-  const [session, setSession] = useState<Record<string, { c: string; ok: boolean }>>({})
 
   if (!items) return <p className="muted">Hazırlanıyor…</p>
   if (!items.length)
@@ -360,11 +470,13 @@ function DusWrongs() {
         <Link to="/dus" className={styles.backLink}>
           ← DUS
         </Link>
-        <p>Yanlış soru yok. 🎉</p>
+        <p>{subject ? 'Bu derste soru bulunamadı.' : 'Yanlış soru yok. 🎉'}</p>
       </section>
     )
   const it = items[Math.min(pos, count - 1)]
   const t = DUS_TESTS.find((x) => x.key === it.test)!
+  const saved = subject ? all[it.key] : session[it.key]
+  const st = subject ? subjectSummary(all, subject) : null
 
   return (
     <section className={styles.page} {...swipe.props}>
@@ -372,17 +484,33 @@ function DusWrongs() {
         <Link to="/dus" className={styles.backLink}>
           ← DUS
         </Link>
-        <h1>📕 Yanlışlarım</h1>
+        <h1>{subject ? `${subject.icon} ${subject.title}` : '📕 Yanlışlarım'}</h1>
         <span className="muted" style={{ fontSize: '0.85rem' }}>
-          {pos + 1} / {count} · Kalan yanlış {wrongKeys(all).length}
+          {pos + 1} / {count}
+          {st
+            ? ` · Çözülen ${st.answered} · Doğru ${st.correct} · Net ${dusNet(st.correct, st.answered - st.correct)}`
+            : ` · Kalan yanlış ${wrongKeys(all).length}`}
         </span>
       </header>
+      {subject && (
+        <QuestionNav
+          count={count}
+          idx={pos}
+          onPick={setPos}
+          stateClass={(j) => {
+            const a = all[items[j].key]
+            return a ? (a.ok ? styles.navOk : styles.navBad) : ''
+          }}
+        />
+      )}
       <QuestionCard
         key={it.key}
         exam={it.exam}
+        test={it.test}
         q={it.q}
         title={`${it.exam.title} · ${t.short} · Soru ${it.q.n}`}
-        saved={session[it.key]}
+        chip={subject ? undefined : subjectOf(it.test, it.q.n)}
+        saved={saved}
         quick={quick}
         onAnswer={(l) => {
           const ok = l === it.q.answer
@@ -395,7 +523,7 @@ function DusWrongs() {
               ← Önceki
             </button>
             <button type="button" className="btn btn-secondary" disabled={pos >= count - 1} onClick={() => void swipe.turn(1)} data-focus-hide>
-              {session[it.key] ? 'Sonraki →' : 'Atla →'}
+              {saved ? 'Sonraki →' : 'Atla →'}
             </button>
           </>
         }
@@ -403,6 +531,13 @@ function DusWrongs() {
       <QuickAnswerToggle value={quick} onChange={setQuick} />
     </section>
   )
+}
+
+function SubjectRoute() {
+  const { subjectId } = useParams()
+  const subject = DUS_SUBJECTS.find((x) => x.id === subjectId)
+  if (!subject) return <p className="muted">Ders bulunamadı.</p>
+  return <DusQueue key={subject.id} subject={subject} />
 }
 
 /** Test değişince çözme ekranı baştan kurulur (ilk çözülmemiş soruya gider). */
@@ -415,7 +550,8 @@ export default function DusPage() {
   return (
     <Routes>
       <Route index element={<DusHome />} />
-      <Route path="yanlislar" element={<DusWrongs />} />
+      <Route path="yanlislar" element={<DusQueue />} />
+      <Route path="ders/:subjectId" element={<SubjectRoute />} />
       <Route path=":examId/:test" element={<RunnerRoute />} />
     </Routes>
   )

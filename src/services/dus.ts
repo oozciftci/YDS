@@ -42,6 +42,48 @@ export const DUS_TESTS: { key: DusTestKey; title: string; short: string }[] = [
   { key: 'kbt', title: 'Klinik Bilimler Testi', short: 'Klinik' },
 ]
 
+// Dersler: ÖSYM soruları ders sırasıyla dizer; 2012–2021 kitapçıklarının hepsinde dağılım aynı
+// (Temel: 6-4-6-6-6-4-4-4, Klinik: 10'ar). Sınırlar soru metinleriyle denetlendi (YOL_HARITASI.md, 09.11.2026).
+export interface DusSubject {
+  id: string
+  title: string
+  icon: string
+  test: DusTestKey
+  /** İlk ve son soru numarası (dâhil) */
+  from: number
+  to: number
+}
+const SUBJECT_ROWS: [string, string, string, DusTestKey, number][] = [
+  ['anatomi', 'Anatomi', '🦴', 'tbt', 6],
+  ['histoloji', 'Histoloji ve Embriyoloji', '🔬', 'tbt', 4],
+  ['fizyoloji', 'Fizyoloji', '❤️', 'tbt', 6],
+  ['biyokimya', 'Biyokimya', '⚗️', 'tbt', 6],
+  ['mikrobiyoloji', 'Mikrobiyoloji', '🦠', 'tbt', 6],
+  ['patoloji', 'Patoloji', '🧫', 'tbt', 4],
+  ['farmakoloji', 'Farmakoloji', '💊', 'tbt', 4],
+  ['biyoloji', 'Biyoloji ve Genetik', '🧬', 'tbt', 4],
+  ['restoratif', 'Restoratif Diş Tedavisi', '🦷', 'kbt', 10],
+  ['protetik', 'Protetik Diş Tedavisi', '👄', 'kbt', 10],
+  ['cerrahi', 'Ağız, Diş ve Çene Cerrahisi', '🔪', 'kbt', 10],
+  ['radyoloji', 'Ağız, Diş ve Çene Radyolojisi', '📷', 'kbt', 10],
+  ['periodontoloji', 'Periodontoloji', '🪥', 'kbt', 10],
+  ['ortodonti', 'Ortodonti', '😬', 'kbt', 10],
+  ['endodonti', 'Endodonti', '🩺', 'kbt', 10],
+  ['pedodonti', 'Pedodonti', '🧒', 'kbt', 10],
+]
+export const DUS_SUBJECTS: DusSubject[] = (() => {
+  const next: Record<DusTestKey, number> = { tbt: 1, kbt: 1 }
+  return SUBJECT_ROWS.map(([id, title, icon, test, count]) => {
+    const from = next[test]
+    next[test] += count
+    return { id, title, icon, test, from, to: from + count - 1 }
+  })
+})()
+
+export function subjectOf(test: DusTestKey, n: number): DusSubject | undefined {
+  return DUS_SUBJECTS.find((s) => s.test === test && n >= s.from && n <= s.to)
+}
+
 export async function listDusExams(): Promise<DusExamMeta[]> {
   const r = await localFetch('/local-api/dus/')
   if (!r.ok) return []
@@ -59,6 +101,31 @@ export function loadDusExam(id: string): Promise<DusExam> {
     })
     p.catch(() => examCache.delete(id))
     examCache.set(id, p)
+  }
+  return p
+}
+
+// Hazır çözümler ve terimler (yerel; local-data/dus/cozumler/<sınav>.json, anahtar "<test>/<no>"). Yapay zekâ ile
+// önceden yazılır ve kontrol edilmemiştir; yoksa boş nesne.
+export interface DusTerm {
+  t: string
+  a: string
+}
+export interface DusSolution {
+  /** Sade Markdown (AiText) */
+  cozum: string
+  terimler?: DusTerm[]
+}
+export type DusSolutions = Record<string, DusSolution>
+
+const solCache = new Map<string, Promise<DusSolutions>>()
+export function loadDusSolutions(id: string): Promise<DusSolutions> {
+  let p = solCache.get(id)
+  if (!p) {
+    p = localFetch(`/local-api/dus/${id}/cozum`)
+      .then((r) => (r.ok ? (r.json() as Promise<DusSolutions>) : {}))
+      .catch(() => ({}))
+    solCache.set(id, p)
   }
   return p
 }
@@ -138,3 +205,18 @@ export function wrongKeys(all: DusAnswers): string[] {
 
 /** DUS'ta net: doğru − yanlış/4. */
 export const dusNet = (correct: number, wrong: number) => Math.round((correct - wrong / 4) * 100) / 100
+
+/** Bir dersteki çözülen/doğru sayısı (tüm sınavlar). */
+export function subjectSummary(all: DusAnswers, subject: DusSubject) {
+  let answered = 0
+  let correct = 0
+  for (const [k, a] of Object.entries(all)) {
+    const [, test, n] = k.split('/')
+    if (test !== subject.test) continue
+    const no = Number(n)
+    if (no < subject.from || no > subject.to) continue
+    answered++
+    if (a.ok) correct++
+  }
+  return { answered, correct }
+}

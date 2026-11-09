@@ -105,6 +105,8 @@ interface GeminiResponse {
 export interface ChatTurn {
   role: 'user' | 'model'
   text: string
+  /** Mesaja eklenen görüntüler (base64, ör. sayfadan kırpılmış soru); metinden önce gönderilir */
+  images?: { mime: string; data: string }[]
 }
 
 /** Ek istek seçenekleri. `jsonSchema` verilirse model yalnızca bu şemaya uyan JSON döndürür. */
@@ -118,7 +120,10 @@ async function call(key: string, model: string, system: string, turns: ChatTurn[
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
-      contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
+      contents: turns.map((t) => ({
+        role: t.role,
+        parts: [...(t.images ?? []).map((i) => ({ inlineData: { mimeType: i.mime, data: i.data } })), { text: t.text }],
+      })),
       generationConfig: opts.jsonSchema
         ? { temperature, responseMimeType: 'application/json', responseSchema: opts.jsonSchema }
         : { temperature },
