@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSwipeNav } from '../../hooks/useSwipeNav'
+import { resetView, useSwipeNav } from '../../hooks/useSwipeNav'
+import { useNoteSub } from '../../services/noteScope'
 import styles from '../ExamStudy.module.css'
 
 // Soru ekranlarında ortak kontroller: hızlı cevap modu ve önceki/sonraki gezinme (klavye okları, kaydırma).
@@ -48,7 +49,23 @@ function isEditable(el: EventTarget | null): boolean {
  * Dönen `props` kaydırmanın algılanacağı kapsayıcıya yayılır (<section {...swipe.props}>); `turn(±1)` düğmeler için.
  * `edges`: ilk/son sorudaysa o yöne çekince yaylanıp geri döner.
  */
-export function useQuestionNav(onPrev?: () => void, onNext?: () => void, edges?: { canPrev?: boolean; canNext?: boolean }) {
+/**
+ * `edges.note`: o anki soru ("Soru 12" ya da tam anahtar) — "Bu sayfa" notu ve yapışkan notlar ona bağlanır
+ * (src/services/noteScope.ts). Geçişte görünüm (kaydırma, yakınlaştırma) kendiliğinden sıfırlanır (useSwipeNav).
+ */
+export function useQuestionNav(
+  onPrev?: () => void,
+  onNext?: () => void,
+  edges?: { canPrev?: boolean; canNext?: boolean; note?: string | null },
+) {
+  useNoteSub(edges?.note)
+  // Soru listesinden atlamada da yeni soru baştan açılsın (önceki/sonraki geçişleri useSwipeNav'da sıfırlanır)
+  const shown = useRef(edges?.note)
+  useEffect(() => {
+    if (shown.current === edges?.note) return
+    shown.current = edges?.note
+    requestAnimationFrame(() => resetView(null))
+  }, [edges?.note])
   const swipe = useSwipeNav({ onPrev, onNext, canPrev: edges?.canPrev, canNext: edges?.canNext })
   const handlers = useRef({ onPrev, onNext })
   const turnRef = useRef(swipe.turn)

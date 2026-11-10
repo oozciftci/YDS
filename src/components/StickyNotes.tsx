@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useRef, useState, type PointerEvent as RPointerEvent } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useNotePageKey } from '../services/noteScope'
+import { useRecorder } from '../hooks/useRecorder'
 import { db } from '../db'
 import { deleteEntry, updateEntry } from '../services/notebook'
 import { useUserStore } from '../stores/user'
@@ -8,7 +9,8 @@ import type { NoteEntry, StickyPlace } from '../types/database'
 import styles from './StickyNotes.module.css'
 
 // Sayfaya yapıştırılmış renkli notlar (post-it): "📄 Bu sayfa" penceresinden renk seçilerek yapıştırılır.
-// Sürükleyerek taşınır, sağ alt köşeden boyutlanır, dokununca büyüyüp açılır (yazı, renk, sil). Odak modunda da görünür.
+// Sürükleyerek taşınır, sağ alt köşeden boyutlanır, dokununca büyüyüp açılır (yazı, sesli not, renk, sil). Odak modunda da
+// görünür. Not, açıldığı sayfaya ya da soruya aittir (src/services/noteScope.ts); başka soruya geçince görünmez.
 // Konum ekranın oranı olarak saklanır (telefon yan çevrilince de ekranda kalır). Hareket yalnızca stil değiştirir;
 // parmağın altındaki öğe hareket sırasında DOM'dan kalkmaz (iOS dokunma hedefi sorunu).
 
@@ -48,8 +50,7 @@ function tilt(id: string) {
 
 export function StickyLayer() {
   const userId = useUserStore((s) => s.activeUserId)
-  const { pathname } = useLocation()
-  const pageKey = pathname.replace(/\/+$/, '') || '/'
+  const pageKey = useNotePageKey()
   const notes = useLiveQuery(
     () =>
       db.notebook
@@ -170,7 +171,8 @@ function Sticky({ note, vp, onOpen, hidden }: { note: NoteEntry; vp: { w: number
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen()}
     >
       <span className={styles.tape} aria-hidden="true" />
-      <p className={styles.text}>{note.text?.trim() || 'Boş not — dokun, yaz'}</p>
+      {note.blob && <span className={styles.voiceChip}>🎤 {fmtDur(note.durationSec ?? 0)}</span>}
+      <p className={styles.text}>{note.text?.trim() || (note.blob ? '' : 'Boş not — dokun, yaz')}</p>
       <span
         className={styles.resize}
         onPointerDown={(e) => down(e, 'size')}
@@ -183,7 +185,89 @@ function Sticky({ note, vp, onOpen, hidden }: { note: NoteEntry; vp: { w: number
   )
 }
 
-/** Büyük hâl: yaz, rengi değiştir, sil, küçült */
+const fmtDur = (sec: number) => {
+  const s = Math.max(0, Math.round(sec))
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+}
+
+/** Sesli not: kaydet / dinle / sil (ses yapışkan notun kendisinde saklanır) */
+function StickyVoice({ note }: { note: NoteEntry }) {
+  const rec = useRecorder()
+  const [error, setError] = useState('')
+  const [playing, setPlaying] = useState(false)
+  const audio = useRef<HTMLAudioElement | null>(null)
+  useEffect(
+    () => () => {
+      audio.current?.pause()
+      if (audio.current?.src) URL.revokeObjectURL(audio.current.src)
+    },
+    [],
+  )
+
+  async function toggleRecord() {
+    setError('')
+    if (rec.recording) {
+      const r = await rec.stop()
+      if (r) await updateEntry(note.id, { blob: r.blob, mime: r.blob.type, durationSec: r.seconds })
+      return
+    }
+    audio.current?.pause()
+    try {
+      await rec.start()
+    } catch {
+      setError('Mikrofona erişilemedi. Tarayıcı izinlerini kontrol et.')
+    }
+  }
+
+  function togglePlay() {
+    if (!note.blob) return
+    if (playing && audio.current) {
+      audio.current.pause()
+      setPlaying(false)
+      return
+    }
+    if (audio.current?.src) URL.revokeObjectURL(audio.current.src)
+    const a = new Audio(URL.createObjectURL(note.blob))
+    audio.current = a
+    a.onended = () => setPlaying(false)
+    a.play().then(
+      () => setPlaying(true),
+      () => setError('Ses çalınamadı.'),
+    )
+  }
+
+  return (
+    <div className={styles.voice}>
+      <button type="button" className={`${styles.barBtn} ${rec.recording ? styles.recOn : ''}`} onClick={() => void toggleRecord()}>
+        {rec.recording ? `⏹ Bitir · ${fmtDur(rec.seconds)}` : note.blob ? '🎤 Yeniden kaydet' : '🎤 Sesli not'}
+      </button>
+      {note.blob && !rec.recording && (
+        <>
+          <button type="button" className={styles.barBtn} onClick={togglePlay} aria-label={playing ? 'Durdur' : 'Sesli notu dinle'}>
+            {playing ? '⏸' : '▶'} {fmtDur(note.durationSec ?? 0)}
+          </button>
+          <button
+            type="button"
+            className={styles.barBtn}
+            onClick={() => {
+              if (!confirm('Sesli not silinsin mi?')) return
+              audio.current?.pause()
+              setPlaying(false)
+              void updateEntry(note.id, { blob: undefined, mime: undefined, durationSec: undefined })
+            }}
+            aria-label="Sesli notu sil"
+            title="Sesli notu sil"
+          >
+            ✕
+          </button>
+        </>
+      )}
+      {error && <span className={styles.voiceErr}>{error}</span>}
+    </div>
+  )
+}
+
+/** Büyük hâl: yaz, sesli not, rengi değiştir, sil, küçült */
 function StickyEditor({ note, onClose }: { note: NoteEntry; onClose: () => void }) {
   const [text, setText] = useState(note.text ?? '')
   const [saved, setSaved] = useState(true)
@@ -220,6 +304,7 @@ function StickyEditor({ note, onClose }: { note: NoteEntry; onClose: () => void 
             setSaved(false)
           }}
         />
+        <StickyVoice note={note} />
         <div className={styles.editBar}>
           <span className={styles.swatches} role="group" aria-label="Renk">
             {STICKY_COLORS.map((c) => (

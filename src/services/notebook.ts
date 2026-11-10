@@ -63,7 +63,14 @@ const STATIC: Record<string, string> = {
 }
 
 /** Sayfa yolundan okunur özellik adı (genel defter girdilerinin varsayılan başlığı için). */
-export function pageLabel(pathname: string): string {
+export function pageLabel(pageKey: string): string {
+  // "#Soru 12": notun bağlı olduğu soru (src/services/noteScope.ts)
+  const [pathname, sub] = pageKey.split('#')
+  const base = basePageLabel(pathname)
+  return sub ? `${base} · ${sub}` : base
+}
+
+function basePageLabel(pathname: string): string {
   const path = pathname.replace(/\/+$/, '') || '/'
   if (STATIC[path]) return STATIC[path]
   const seg = path.split('/').filter(Boolean)
@@ -168,7 +175,10 @@ export async function addSticky(userId: string, pageKey: string, text: string, c
   return row
 }
 
-export async function updateEntry(id: string, patch: Partial<Pick<NoteEntry, 'text' | 'title' | 'sticky'>>): Promise<void> {
+export async function updateEntry(
+  id: string,
+  patch: Partial<Pick<NoteEntry, 'text' | 'title' | 'sticky' | 'blob' | 'mime' | 'durationSec'>>,
+): Promise<void> {
   await db.notebook.update(id, { ...patch, updatedAt: new Date().toISOString() })
 }
 

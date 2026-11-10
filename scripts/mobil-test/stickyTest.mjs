@@ -1,17 +1,17 @@
 // Yapışkan notlar (post-it) ve DUS metin görünümü — başsız Chrome, telefon boyutu, gerçek dokunma olayları.
 // Dener: notu parmakla taşıma (kalıcı), köşeden boyutlandırma, dokununca açılma (iOS'taki hayalet tıklamayla hemen
 // kapanmamalı), açılan notta yazı alanına odaklanma, "Bu sayfa" notunun salt okunur olmaması; DUS sorusunda metin
-// görünümü, yatay telefonda odak modunda yatay taşma olmaması.
-// Kullanım: MSYS_NO_PATHCONV=1 node scripts/mobil-test/stickyTest.mjs "<çıktı klasörü>"   (sunucu 5176'da)
+// görünümü, yatay telefonda odak modunda yatay taşma olmaması; not soruya özgü (sonraki soruda görünmez, dönünce
+// görünür), geçişte kaydırma sıfırlanır, yapışkan nota sesli not (sahte mikrofon).
+// Kullanım: MSYS_NO_PATHCONV=1 node scripts/mobil-test/stickyTest.mjs "<çıktı klasörü>" [taban adres, varsayılan 5176]
 import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const [, , outDir] = process.argv
-const BASE = 'http://localhost:5176'
+const [, , outDir, BASE = 'http://localhost:5176'] = process.argv
 const PAGE = '/dus/2012-ilkbahar/tbt'
 const prof = path.join(outDir, 'prof-sticky')
-const proc = spawn('C:/Program Files/Google/Chrome/Application/chrome.exe', ['--headless=new', '--remote-debugging-port=9341', `--user-data-dir=${prof}`, 'about:blank'], { stdio: 'ignore' })
+const proc = spawn('C:/Program Files/Google/Chrome/Application/chrome.exe', ['--headless=new', '--remote-debugging-port=9341', '--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', `--user-data-dir=${prof}`, 'about:blank'], { stdio: 'ignore' })
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 let targets
 for (let i = 0; i < 40; i++) {
@@ -66,7 +66,12 @@ await sleep(2500)
 await evaluate(`(async () => {
   const { addSticky } = await import('/src/services/notebook.ts')
   const { useUserStore } = await import('/src/stores/user.ts')
-  await addSticky(useUserStore.getState().activeUserId, ${JSON.stringify(PAGE)}, 'Deneme notu', 'sari')
+  // Uygulamanın yüklediği kopya (Vite düzenlenen dosyaya ?t= ekler; ayrı kopyanın durumu boş olur)
+  const scopeUrl = performance.getEntriesByType('resource').map((e) => e.name).filter((n) => n.includes('/src/services/noteScope.ts')).pop() ?? '/src/services/noteScope.ts'
+  const { currentNoteSub } = await import(scopeUrl)
+  const sub = currentNoteSub()
+  const key = !sub ? ${JSON.stringify(PAGE)} : sub.startsWith('/') ? sub : ${JSON.stringify(PAGE)} + '#' + sub
+  await addSticky(useUserStore.getState().activeUserId, key, 'Deneme notu', 'sari')
   localStorage.setItem('yds-focus', '0')
   return true
 })()`)
@@ -112,6 +117,39 @@ check('yapışkan notta yazı alanına odaklanma', !ta.ro && (await evaluate(`do
 await tap(20, 830)
 await sleep(500)
 check('arka plana dokununca küçülüyor', !(await evaluate(`!!document.querySelector('[role=dialog][aria-label="Yapışkan not"]')`)))
+
+// 7b) Sonraki soru: not görünmez, sayfa en üstten açılır; önceki soruya dönünce not yine orada
+const navBtn = (label) => `[...document.querySelectorAll('button')].find((b) => b.textContent.trim().startsWith(${JSON.stringify(label)}))`
+await evaluate('window.scrollTo(0, 400)')
+let nb = JSON.parse(await evaluate(`JSON.stringify((() => { const b = ${navBtn('Sonraki')}; b.scrollIntoView({ block: 'center' }); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })())`))
+await tap(nb.x, nb.y)
+await sleep(1200)
+const after = JSON.parse(await evaluate(`JSON.stringify({ y: Math.round(scrollY), sticky: !!document.querySelector(${JSON.stringify(STICKY)}) })`))
+check('sonraki soruda not görünmüyor', !after.sticky)
+check('sonraki soru en üstten açılıyor', after.y === 0, JSON.stringify(after))
+nb = JSON.parse(await evaluate(`JSON.stringify((() => { const b = ${navBtn('← Önceki')}; b.scrollIntoView({ block: 'center' }); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })())`))
+await tap(nb.x, nb.y)
+await sleep(1200)
+check('önceki soruya dönünce not yerinde', !!(await evaluate(`!!document.querySelector(${JSON.stringify(STICKY)})`)))
+
+// 7c) Sesli not: aç, kaydet, bitir → notta ses var, küçük notta 🎤 işareti
+const r4 = await rect(STICKY)
+await tap(r4.l + 30, r4.t + 30)
+await sleep(700)
+const recBtn = () => evaluate(`JSON.stringify((() => { const b = [...document.querySelectorAll('[role=dialog] button')].find((x) => /Sesli not|Bitir/.test(x.textContent)); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2, t: b.textContent } })())`).then(JSON.parse)
+let rb = await recBtn()
+await tap(rb.x, rb.y)
+await sleep(1800)
+rb = await recBtn()
+check('kayıt sürüyor (Bitir düğmesi)', rb.t.includes('Bitir'), rb.t)
+await tap(rb.x, rb.y)
+await sleep(800)
+const voice = await evaluate(`(async () => { const { db } = await import('/src/db/index.ts'); const n = await db.notebook.filter((x) => x.scope === 'sticky' && !!x.blob).first(); return JSON.stringify({ size: n?.blob?.size ?? 0, sec: n?.durationSec ?? 0, play: !![...document.querySelectorAll('[role=dialog] button')].find((x) => x.getAttribute('aria-label') === 'Sesli notu dinle') }) })()`)
+const v = JSON.parse(voice)
+check('sesli not kaydedildi ve dinle düğmesi var', v.size > 0 && v.sec > 1 && v.play, voice)
+await tap(20, 830)
+await sleep(500)
+check('küçük notta 🎤 işareti', !!(await evaluate(`document.querySelector(${JSON.stringify(STICKY)})?.textContent.includes('🎤')`)))
 
 // 8) "Bu sayfa" notu salt okunur değil
 const pill = JSON.parse(await evaluate(`JSON.stringify((() => { const b = document.querySelector('[title="Bu sayfaya özel not"]'); const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 } })())`))

@@ -41,6 +41,35 @@ const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => req
 // Sayfa çevirmenin kopyaları (aria-hidden) değil, gerçek ana alan
 const stageOf = (el: HTMLElement) => realStage(el) ?? el
 
+/**
+ * Yeni soru her zaman ilk açılıştaki gibi açılsın: önceki soruda kaydırılan (aşağı/yana) ya da parmakla
+ * yakınlaştırılıp kenara itilen görünüm sonraki soruya taşınmasın.
+ */
+export function resetView(el: HTMLElement | null) {
+  window.scrollTo(0, 0)
+  el ??= document.querySelector<HTMLElement>('[data-focus-stage]:not([aria-hidden])')
+  if (el) {
+    const stage = stageOf(el)
+    for (const s of [stage, ...stage.querySelectorAll<HTMLElement>('*')]) {
+      if (s.scrollTop) s.scrollTop = 0
+      if (s.scrollLeft) s.scrollLeft = 0
+    }
+    for (let p = stage.parentElement; p; p = p.parentElement) {
+      if (p.scrollLeft) p.scrollLeft = 0
+      if (p.scrollTop && p !== document.documentElement && p !== document.body) p.scrollTop = 0
+    }
+  }
+  // iPhone'da parmakla yakınlaştırma: viewport'a kısa süre maximum-scale=1 vermek yakınlaştırmayı sıfırlar
+  const vv = window.visualViewport
+  const meta = document.querySelector<HTMLMetaElement>('meta[name="viewport"]')
+  if (vv && meta && (vv.scale > 1.01 || vv.offsetLeft > 1)) {
+    const orig = meta.content
+    meta.content = `${orig.replace(/,?\s*maximum-scale=[^,]*/g, '')}, maximum-scale=1`
+    window.setTimeout(() => (meta.content = orig), 400)
+  }
+}
+const resetSoon = (el: HTMLElement | null) => void nextFrame().then(() => resetView(el))
+
 export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, enabled = true }: SwipeNavOptions) {
   const ref = useRef<HTMLElement | null>(null)
   const opts = useRef({ onPrev, onNext, canPrev, canNext, enabled })
@@ -60,12 +89,14 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
     const t = el && !reduced() ? startTurn(stageOf(el), dir, 'bottom') : null
     if (!t) {
       h()
+      resetSoon(el)
       return
     }
     busy.current = true
     active.current = t
     try {
       h()
+      resetSoon(el)
       await t.animate(1, 620)
     } finally {
       t.remove()
@@ -102,6 +133,7 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
               // Bırakınca geçilir: yeni içerik altta yerleşir, kâğıt kalkar, çevirme onu açarak tamamlanır
               handler(s.dir)?.()
               await nextFrame()
+              resetView(el)
               t.uncover()
             }
             await t.animate(commit ? 1 : 0, commit ? 260 + 300 * (1 - t.progress) : 220, from)
@@ -116,7 +148,10 @@ export function useSwipeNav({ onPrev, onNext, canPrev = true, canNext = true, en
       }
       if (s.rubber) rubber(0, true)
       // Hareketi azalt açıkken: animasyonsuz geç
-      if (reduced() && allowed(s.dir) && (Math.abs(dx) > 50 || fast)) handler(s.dir)!()
+      if (reduced() && allowed(s.dir) && (Math.abs(dx) > 50 || fast)) {
+        handler(s.dir)!()
+        resetSoon(el)
+      }
     }
 
     // Parmak olayları dokunulan öğeden dinlenir: kaydırma başlayınca yeni içerik hazırlandığında o öğe sayfadan kalkabilir;

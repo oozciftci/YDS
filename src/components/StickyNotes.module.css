@@ -164,3 +164,31 @@
   font-size: 0.85rem;
   cursor: pointer;
 }
+
+/* Sesli not */
+.voice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.recOn {
+  background: #e53935 !important;
+  color: #fff !important;
+}
+
+.voiceErr {
+  font-size: 0.8rem;
+  color: #b71c1c;
+}
+
+.voiceChip {
+  display: inline-block;
+  margin-bottom: 0.2rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.1);
+  font-size: 0.75rem;
+  font-family: system-ui, sans-serif;
+}

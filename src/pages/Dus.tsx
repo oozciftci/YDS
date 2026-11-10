@@ -468,7 +468,7 @@ function DusRunner() {
   const swipe = useQuestionNav(
     () => setIdx(Math.max(0, i - 1)),
     () => setIdx(Math.min(count - 1, i + 1)),
-    { canPrev: i > 0, canNext: i < count - 1 },
+    { canPrev: i > 0, canNext: i < count - 1, note: questions[i] ? `/dus/${examId}/${testKey}#Soru ${questions[i].n}` : null },
   )
 
   if (error) return <p className="muted">{error}</p>
@@ -602,7 +602,7 @@ function DusQueue({ subject }: { subject?: DusSubject }) {
   const swipe = useQuestionNav(
     () => setPos((p) => Math.max(0, p - 1)),
     () => setPos((p) => Math.min(count - 1, p + 1)),
-    { canPrev: pos > 0, canNext: pos < count - 1 },
+    { canPrev: pos > 0, canNext: pos < count - 1, note: items?.[pos] ? `/dus/${items[pos].exam.id}/${items[pos].test}#Soru ${items[pos].q.n}` : null },
   )
 
   if (!items) return <p className="muted">Hazırlanıyor…</p>
