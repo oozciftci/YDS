@@ -120,12 +120,37 @@ def kelimeler(s):
     return w
 
 
+FILIGRAN = {'ösym'[i:j] for i in range(4) for j in range(i + 1, 5)}
+
+
+def uclari_temizle(toks, n, anah=lambda w: w):
+    """Katmanın başında/sonunda kalan filigran parçalarını (ÖSYM → "y", "ösy", "sym") ve soru numarasını atar."""
+    atilir = lambda w: anah(w) in FILIGRAN or anah(w) == str(n) or not anah(w)
+    while toks and atilir(toks[0]):
+        toks = toks[1:]
+    while toks and atilir(toks[-1]):
+        toks = toks[:-1]
+    return toks
+
+
+def filigran_at(s, n):
+    """OCR alanının sonuna karışan büyük harfli filigran parçasını (ÖSYM → "SY", "M") ve ondan önceki soru numarasını atar."""
+    toks = s.rstrip().split(' ')
+    atildi = False
+    while toks and toks[-1].strip('.') in {f.upper() for f in FILIGRAN} | {'ÖSYM'}:
+        toks.pop()
+        atildi = True
+    if atildi and toks and toks[-1].strip('.') == str(n):
+        toks.pop()
+    return ' '.join(toks) if atildi else s
+
+
 def katman_kelimeleri(q):
     t = q.get('text', '')
     t = re.sub(r'\b[A-E]\s*[)﴿]', ' ', t)          # şık harfleri
     t = re.sub(r'\s\d{1,3}\s*[.﴿)]?\s*$', ' ', t)    # sondaki soru numarası
     t = re.sub(r'^\s*\d{1,3}\s*[.﴿)]\s*', ' ', t)    # baştaki soru numarası
-    return kelimeler(t)
+    return uclari_temizle(kelimeler(t), q.get('n'))
 
 
 def ocr_metni(k):
@@ -153,7 +178,7 @@ def katman_ham(q):
     t = re.sub(r'\s\d{1,3}\s*[.)]?\s*$', ' ', t)
     t = re.sub(r'^\s*\d{1,3}\s*[.)]\s*', ' ', t)
     t = re.sub(r'(\w)[-‐­]\s+(\w)', r'\1\2', t)
-    return t.split()
+    return uclari_temizle(t.split(), q.get('n'), anahtar)
 
 
 def anahtar(tok):
@@ -217,10 +242,13 @@ def oto_duzelt(q, k):
 
 def degerlendir(q, k):
     if k.get('durum') not in ('duzeltildi', 'onaylandi') and k.get('soru'):
-        k['soru'] = satirlari_duzenle(k['soru'])
+        k['soru'] = filigran_at(satirlari_duzenle(k['soru']), q.get('n'))
+        k['siklar'] = {h: filigran_at(v, q.get('n')) for h, v in k.get('siklar', {}).items()}
         n = oto_duzelt(q, k)
         if n:
             k['oto'] = k.get('oto', 0) + n
+    if k.get('soru'):
+        k['soru'] = madde_ayir(k['soru'])
     uyum, eksik, fazla = karsilastir(q, k)
     k['uyum'], k['eksik'], k['fazla'] = uyum, eksik[:30], fazla[:30]
     tam = all(k.get('siklar', {}).get(h, '').strip() for h in 'ABCDE')
@@ -230,6 +258,26 @@ def degerlendir(q, k):
 
 
 MADDE = re.compile(r'^\s*((I{1,3}|IV|VI{0,3}|IX|X)\.|[-•▪]|\d{1,2}[.)]|[a-e]\)|[A-Z]\s*[:.)-])')
+
+
+def madde_ayir(s):
+    """Tek satıra yazılmış "I. ... II. ... III. ..." maddelerini ayrı satırlara böler; son maddeden sonra gelen soru
+    cümlesini ("... hangileri doğrudur?") da ayrı satıra alır. Kelimelere dokunmaz."""
+    out = []
+    for satir in s.split('\n'):
+        if re.match(r'I\.\s', satir) and re.search(r'\s(II|III|IV|V|VI)\.\s', satir):
+            parcalar = re.split(r'\s(?=(?:II|III|IV|V|VI)\.\s)', satir)
+            son = parcalar[-1]
+            m = list(re.finditer(r'[.!]\s+(?=[A-ZÇĞİÖŞÜ])', son))
+            for b in reversed(m):
+                kuyruk = son[b.end():]
+                if 'hangi' in kuyruk and not re.search(r'[.!]\s+[A-ZÇĞİÖŞÜ]', kuyruk):
+                    parcalar[-1:] = [son[: b.start() + 1], kuyruk]
+                    break
+            out.extend(parcalar)
+        else:
+            out.append(satir)
+    return '\n'.join(out)
 
 
 def satirlari_duzenle(s):
