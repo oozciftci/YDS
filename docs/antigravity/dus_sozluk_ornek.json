@@ -1,0 +1,133 @@
+{
+  "sinav": "2012-ilkbahar",
+  "surum": 1,
+  "sorular": {
+    "tbt/1": {
+      "neSoruyor": "Gözyaşı bezinin çalışmasını (gözyaşı salgılamasını) kafadaki sinirlerden hangisinin yönettiği soruluyor.",
+      "terimler": [
+        {
+          "metin": "kranial sinirler",
+          "terim": "kranial sinir",
+          "kisa": "Kafa siniri",
+          "aciklama": "Beyinden (omurilikten değil) doğrudan çıkan 12 çift sinir. Roma rakamıyla numaralanır (I–XII); göz, yüz, dil, kulak gibi baş-boyun yapılarını yönetir."
+        },
+        {
+          "metin": "glandula lacrimalis",
+          "terim": "glandula lacrimalis",
+          "kisa": "Gözyaşı bezi",
+          "aciklama": "Göz çukurunun üst-dış köşesinde, üst göz kapağının arkasında duran bez. Gözü nemli tutan gözyaşını üretir. Latince glandula = bez, lacrima = gözyaşı.",
+          "koken": "Latince: glandula (bez) + lacrimalis (gözyaşına ait)"
+        },
+        {
+          "metin": "Nervus opticus",
+          "terim": "nervus opticus",
+          "kisa": "Görme siniri (II. kafa siniri)",
+          "aciklama": "Gözün ağ tabakasından (retina) aldığı görüntü bilgisini beyne taşıyan duyu siniri. Yalnızca görmeyle ilgilidir."
+        },
+        {
+          "metin": "Nervus oculomotorius",
+          "terim": "nervus oculomotorius",
+          "kisa": "Göz hareket siniri (III. kafa siniri)",
+          "aciklama": "Göz küresini hareket ettiren kasların çoğunu, üst göz kapağını kaldıran kası ve göz bebeğini küçülten kası çalıştıran sinir.",
+          "koken": "Latince: oculus (göz) + motor (hareket ettiren)"
+        },
+        {
+          "metin": "Nervus trochlearis",
+          "terim": "nervus trochlearis",
+          "kisa": "IV. kafa siniri",
+          "aciklama": "Gözü aşağı-içe çeviren tek bir kası (musculus obliquus superior) çalıştıran ince sinir. Adını bu kasın kirişinin geçtiği makara benzeri halkadan (trochlea) alır.",
+          "koken": "Latince: trochlea (makara)"
+        },
+        {
+          "metin": "Nervus abducens",
+          "terim": "nervus abducens",
+          "kisa": "VI. kafa siniri",
+          "aciklama": "Gözü dışa (kulağa doğru) çeviren kası (musculus rectus lateralis) çalıştıran sinir. Abducens = dışa çeken, uzaklaştıran.",
+          "koken": "Latince: abducere (uzaklaştırmak)"
+        },
+        {
+          "metin": "Nervus facialis",
+          "terim": "nervus facialis",
+          "kisa": "Yüz siniri (VII. kafa siniri)",
+          "aciklama": "Yüz ifadesini oluşturan mimik kaslarını çalıştıran sinir. Bunun yanında dilin ön kısmından tat duyusu taşıyan ve bazı salgı bezlerini uyaran lifler de içerir."
+        }
+      ]
+    },
+    "kbt/1": {
+      "neSoruyor": "Dişin üç yüzünü kapsayan bir dolgu yapıldıktan sonra hastada ortaya çıkan diş hassasiyetinin en sık sebebi soruluyor.",
+      "terimler": [
+        {
+          "metin": "MOD restorasyon",
+          "terim": "MOD restorasyon",
+          "kisa": "Üç yüzlü dolgu",
+          "aciklama": "Dişin Mezial (öndeki dişe bakan yan yüz), Oklüzal (çiğneme yüzü) ve Distal (arkadaki dişe bakan yan yüz) yüzlerini birlikte kapsayan dolgu. Harfler bu üç yüzün baş harfleridir."
+        },
+        {
+          "metin": "postoperatif hassasiyet",
+          "terim": "postoperatif hassasiyet",
+          "kisa": "İşlem sonrası hassasiyet",
+          "aciklama": "Dolgu yapıldıktan sonraki günlerde dişin soğuğa, sıcağa ya da çiğnemeye karşı sızlaması. Post = sonra, operatif = işlem/ameliyat."
+        },
+        {
+          "metin": "kondanse",
+          "terim": "kondanse etmek",
+          "kisa": "Sıkıştırmak",
+          "aciklama": "Dolgu maddesini (ör. amalgam) kaviteye katman katman bastırarak sıkıştırmak; arada boşluk kalmamasını sağlar."
+        },
+        {
+          "metin": "Oklüzal embrazür",
+          "terim": "oklüzal embrazür",
+          "kisa": "Çiğneme yüzündeki diş arası oluk",
+          "aciklama": "Yan yana iki dişin temas noktasının üstünde, çiğneme yüzü tarafında kalan V şeklindeki açıklık. Yiyeceğin dişler arasından kaymasına yardım eder."
+        },
+        {
+          "metin": "Matriks",
+          "terim": "matriks",
+          "kisa": "Dolgu kalıbı",
+          "aciklama": "Yan yüzü eksik olan dişin etrafına sarılan ince metal ya da plastik bant. Dolgu maddesi yerleştirilirken eksik duvarın yerini tutar ve dolguya şekil verir."
+        },
+        {
+          "metin": "Aksiyo-pulpal köşe",
+          "terim": "aksiyo-pulpal köşe",
+          "kisa": "Kavitenin iç köşesi",
+          "aciklama": "Dolgu için açılan oyukta (kavite) dik duvarla (aksiyal duvar) taban duvarının (pulpal duvar) birleştiği iç köşe. Pulpa, dişin içindeki sinir ve damarları barındıran canlı dokudur."
+        }
+      ]
+    },
+    "tbt/15": {
+      "neSoruyor": "Karbonik anhidraz adlı enzimin hangi kimyasal tepkimeyi hızlandırdığı soruluyor.",
+      "terimler": [
+        {
+          "metin": "Karbonik anhidraz",
+          "terim": "karbonik anhidraz",
+          "kisa": "Bir enzim (çinko içerir)",
+          "aciklama": "Alyuvarlarda, böbrekte, midede ve tükürük bezlerinde bulunan, çinko içeren bir enzim. Vücudun asit-baz dengesinin korunmasında görev alır."
+        },
+        {
+          "metin": "katalizler",
+          "terim": "katalizlemek",
+          "kisa": "Hızlandırmak",
+          "aciklama": "Bir kimyasal tepkimeyi, kendisi harcanmadan hızlandırmak. Enzimler vücuttaki tepkimeleri bu şekilde hızlandıran proteinlerdir."
+        },
+        {
+          "metin": "Hb",
+          "terim": "Hb (hemoglobin)",
+          "kisa": "Hemoglobin",
+          "aciklama": "Alyuvarlara kırmızı rengini veren, oksijeni akciğerden dokulara taşıyan protein. Şıklardaki HbO₂, HbCO₂ gibi gösterimler hemoglobinin bir molekülü bağlamış hâlidir."
+        },
+        {
+          "metin": "H₂CO₃",
+          "terim": "H₂CO₃ (karbonik asit)",
+          "kisa": "Karbonik asit",
+          "aciklama": "Karbondioksitin (CO₂) suyla (H₂O) birleşmesiyle oluşan zayıf asit. Kolayca bikarbonat (HCO₃⁻) ve hidrojen iyonuna (H⁺) ayrışır."
+        },
+        {
+          "metin": "HCO₃⁻",
+          "terim": "HCO₃⁻ (bikarbonat)",
+          "kisa": "Bikarbonat",
+          "aciklama": "Kanda karbondioksitin en çok taşındığı biçim. Aynı zamanda kanın asitlenmesini önleyen başlıca tampon maddedir."
+        }
+      ]
+    }
+  }
+}
