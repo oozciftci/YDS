@@ -232,6 +232,7 @@ function localBooks(): Plugin {
 //   GET /local-api/dus/<sınav>         -> sinav.json
 //   GET /local-api/dus/<sınav>/p001.webp
 //   GET /local-api/dus/<sınav>/cozum     -> local-data/dus/cozumler/<sınav>.json ({ "<test>/<no>": { cozum, terimler } }) ya da {}
+//   GET /local-api/dus/<sınav>/metin     -> local-data/dus/ocr/<sınav>.json'dan { "<test>/<no>": { soru, siklar, sekil, durum } } ya da {}
 function localDus(): Plugin {
   const dir = path.resolve(import.meta.dirname, 'local-data/dus/sinavlar')
   const read = (id: string) => JSON.parse(fs.readFileSync(path.join(dir, id, 'sinav.json'), 'utf8'))
@@ -268,6 +269,19 @@ function localDus(): Plugin {
         if (parts.length === 2 && parts[1] === 'cozum') {
           const file = path.resolve(dir, '..', 'cozumler', `${id}.json`)
           return json(fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {})
+        }
+        // OCR ile çıkarılmış soru metni (scripts/dus/dus_ocr.py); denetim alanları atılır
+        if (parts.length === 2 && parts[1] === 'metin') {
+          const file = path.resolve(dir, '..', 'ocr', `${id}.json`)
+          if (!fs.existsSync(file)) return json({})
+          const all = JSON.parse(fs.readFileSync(file, 'utf8')) as Record<string, { soru: string; siklar: Record<string, string>; sekil?: boolean; durum: string }>
+          return json(
+            Object.fromEntries(
+              Object.entries(all)
+                .filter(([, k]) => k.soru)
+                .map(([key, k]) => [key, { soru: k.soru, siklar: k.siklar, sekil: !!k.sekil, durum: k.durum }]),
+            ),
+          )
         }
         if (parts.length === 2 && /^p\d{3}\.webp$/.test(parts[1])) {
           const file = path.join(dir, id, parts[1])

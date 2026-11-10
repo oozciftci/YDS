@@ -451,7 +451,7 @@ function BookNotes() {
                     {u ? ` · Ünite ${u.no}` : ''}
                   </Link>
                   <span className="muted">
-                    {n.scope === 'page' ? '📄 Sayfa notu' : '📓 Defter'} · {stamp(n.updatedAt)}
+                    {n.scope === 'page' ? '📄 Sayfa notu' : n.scope === 'sticky' ? '📌 Yapışkan not' : '📓 Defter'} · {stamp(n.updatedAt)}
                   </span>
                 </div>
                 {n.kind === 'text' && <p className={styles.noteText}>{n.text}</p>}

@@ -2,7 +2,8 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useRef, useState, type ClipboardEvent, type KeyboardEvent } from 'react'
 import { useLocation } from 'react-router-dom'
 import { db } from '../db'
-import { addGeneralEntry, deleteEntry, pageLabel, pageNoteId, savePageNote, updateEntry } from '../services/notebook'
+import { addGeneralEntry, addSticky, deleteEntry, pageLabel, pageNoteId, savePageNote, updateEntry } from '../services/notebook'
+import { STICKY_COLORS, STICKY_OPEN } from './StickyNotes'
 import { useUserStore } from '../stores/user'
 import type { NoteEntry } from '../types/database'
 import styles from './NotesDock.module.css'
@@ -74,7 +75,7 @@ export function NotesDock() {
   )
 }
 
-/** Sayfaya özel not: tek metin, yazdıkça kaydedilir. */
+/** Sayfaya özel not: tek metin, yazdıkça kaydedilir. Renk seçilerek sayfaya yapışkan not olarak yapıştırılabilir. */
 function PagePane({ userId, pageKey, onClose }: { userId: string; pageKey: string; onClose: () => void }) {
   // Bileşen sayfa değişince yeniden kurulur (key); not bir kez yüklenir, sonra yazdıkça kaydedilir
   const note = useLiveQuery(() => db.notebook.get(pageNoteId(userId, pageKey)).then((n) => n ?? null), [userId, pageKey])
@@ -90,6 +91,18 @@ function PagePane({ userId, pageKey, onClose }: { userId: string; pageKey: strin
     return () => clearTimeout(t)
   }, [text, saved, userId, pageKey])
 
+  /** Yazılanı seçilen renkte yapışkan not yapar; sayfa notu boşalır, pencere küçülür (not sayfada görünsün) */
+  async function stick(color: string) {
+    const body = value.trim()
+    const row = await addSticky(userId, pageKey, body, color)
+    if (body) await savePageNote(userId, pageKey, '')
+    setText('')
+    setSaved(true)
+    onClose()
+    // Boş not hemen açılsın ki yazılabilsin
+    if (!body) setTimeout(() => window.dispatchEvent(new CustomEvent(STICKY_OPEN, { detail: row.id })), 50)
+  }
+
   return (
     <section className={styles.pane} aria-label="Bu sayfanın notu">
       <header className={styles.paneHead}>
@@ -102,17 +115,32 @@ function PagePane({ userId, pageKey, onClose }: { userId: string; pageKey: strin
           ▾
         </button>
       </header>
+      {/* Salt okunur yapılmaz: iOS, odaklanırken salt okunur olan alanda klavyeyi açmıyor ve sonra da açmıyordu.
+          Not yüklenmeden yazılırsa yazılan esas alınır (text !== null). */}
       <textarea
         className={styles.pageText}
         autoFocus
         value={value}
-        readOnly={note === undefined}
         placeholder="Bu sayfaya özel notun… (sayfaya her döndüğünde burada olur)"
         onChange={(e) => {
           setText(e.target.value)
           setSaved(false)
         }}
       />
+      <div className={styles.stickBar} role="group" aria-label="Yapışkan not olarak sayfaya yapıştır">
+        <span className={styles.stickLabel}>📌 Sayfaya yapıştır:</span>
+        {STICKY_COLORS.map((c) => (
+          <button
+            key={c.key}
+            type="button"
+            className={styles.stickSwatch}
+            style={{ background: c.bg }}
+            onClick={() => void stick(c.key)}
+            title={`${c.label} yapışkan not`}
+            aria-label={`${c.label} yapışkan not`}
+          />
+        ))}
+      </div>
     </section>
   )
 }

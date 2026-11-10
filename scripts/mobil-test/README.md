@@ -29,6 +29,7 @@ akışlar orada denenemez. Bu betikler kurulu Chrome'u başsız açar, 390×844 
 | `readTest.mjs` | Okuma Modu: kelimeden kaydırarak paragraf geçişi, süre sıfırlanması, ilk paragrafta yaylanma, odakta yalnızca metin + süre + Bitir (alan ekrana sığar), bitirince sonuç; ek testinde ileri/geri (önceki cevap kilitli) |
 | `libTest.mjs` | Okuma Kütüphanesi: liste ve seviye süzgeci, metne özgü kelime anlamı (balon), kaydırarak metin geçişi, bitirince 3 soru + kayıt, odakta alanın sığması, listede okundu/soru sonucu |
 | `bookTest.mjs` | Okuma kitapları: listede kitaplar (seviye sırası), sayfa çevirme, bölüm seçici, son sayfada sorular, kaldığın yer, yerel kitapta internetten çeviri (başsız Chrome’da ağ bazen başarısız olur), uzun kitapta sayfa |
+| `stickyTest.mjs` | Yapışkan notlar (parmakla taşı, köşeden boyutlandır, yenileyince yerinde, dokununca açılıp açık kalma, yazı alanına odak), “Bu sayfa” notu yazılabilir, DUS metin görünümü, yatay telefonda odakta iki sütun ve taşma yok (`local-data/dus` gerekir) |
 | `prodTest.mjs` | Yayın derlemesi (`vite preview` 4173, `/YDS/`): `.ydsk` paketini yükle, kitap/sınav/Strateji 3, çevrimdışı. 2. argüman paket dosyası |
 
 ## Dikkat

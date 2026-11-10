@@ -404,11 +404,24 @@ export interface KnownWord {
  * Notlarım: sağ alttaki not pencereleri. Yalnızca cihazda (JSON yedeğine girer; ses/görsel yedekte data URL olur).
  * - scope 'page': sayfaya özel not (sayfa başına tek metin; id = page:<kullanıcı>:<sayfa yolu>)
  * - scope 'general': genel çalışma defterinin bir girdisi (metin, sesli not ya da ekran görüntüsü)
+ * - scope 'sticky': sayfaya yapıştırılmış renkli not (post-it); sayfa başına birden çok, `sticky` konum/boyut/renk
  */
+export interface StickyPlace {
+  /** Renk anahtarı (NotesDock STICKY_COLORS) */
+  color: string
+  /** Sol üst köşe, ekranın oranı (0–1); döndürmede ve farklı ekranda yerinde kalır */
+  x: number
+  y: number
+  /** Küçük hâlin boyutu (px) */
+  w: number
+  h: number
+}
+
 export interface NoteEntry {
   id: string
   userId: string
-  scope: 'page' | 'general'
+  scope: 'page' | 'general' | 'sticky'
+  sticky?: StickyPlace
   /** Notun yazıldığı sayfanın yolu (ör. /yds-sorular/sinav/yds-2018-aralik) */
   pageKey: string
   /** Notun yazıldığı özelliğin adı (ör. "Soru Merkezi · 2018 Aralık YDS") */

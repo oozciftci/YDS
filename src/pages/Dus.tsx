@@ -9,6 +9,7 @@ import {
   listDusExams,
   loadDusExam,
   loadDusSolutions,
+  loadDusTexts,
   readDusAnswers,
   resetDusTest,
   saveDusAnswer,
@@ -23,6 +24,7 @@ import {
   type DusQuestion,
   type DusSolution,
   type DusSubject,
+  type DusText,
   type DusTestKey,
 } from '../services/dus'
 import { useLocalUrl } from '../services/localContent'
@@ -181,6 +183,59 @@ function DusHome() {
   )
 }
 
+// Görünüm tercihi (metin / orijinal görüntü) ve yazı boyutu: cihazda hatırlanır
+const VIEW_KEY = 'yds-dus-view'
+const FONT_KEY = 'yds-dus-font'
+const FONT_STEPS = [0.9, 1, 1.12, 1.25, 1.4, 1.6, 1.8]
+
+function readLs(key: string): string | null {
+  try {
+    return localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+function writeLs(key: string, v: string) {
+  try {
+    localStorage.setItem(key, v)
+  } catch {
+    // yoksay
+  }
+}
+
+/** Metin görünümü: soru kökü (I., II. maddeleri ayrı satırda; tablo satırları ' | ') */
+function StemText({ text }: { text: string }) {
+  const lines = text.split('\n').filter((l) => l.trim())
+  return (
+    <div className={styles.dusStem}>
+      {lines.map((l, i) =>
+        l.includes(' | ') ? (
+          <div key={i} className={styles.dusRow}>
+            {l.split(' | ').map((c, j) => (
+              <span key={j}>{c}</span>
+            ))}
+          </div>
+        ) : (
+          <p key={i} className={/^\s*(I{1,3}|IV|VI{0,3}|IX|X)\.\s/.test(l) ? styles.dusItem : undefined}>
+            {l}
+          </p>
+        ),
+      )}
+    </div>
+  )
+}
+
+/** Tablolu şıkta sütunlar (başlık satırıyla aynı ızgara) */
+function Cols({ text }: { text: string }) {
+  return (
+    <span className={styles.dusCols}>
+      {text.split(' | ').map((c, i) => (
+        <span key={i}>{c}</span>
+      ))}
+    </span>
+  )
+}
+
 /** Soru kutusu + şıklar: çözme ve yanlışlar ekranında ortak. */
 function QuestionCard({
   exam,
@@ -206,9 +261,16 @@ function QuestionCard({
   const [choice, setChoice] = useState<string | null>(saved?.c ?? null)
   const [showPage, setShowPage] = useState(false)
   const [solution, setSolution] = useState<DusSolution | undefined>(undefined)
+  // undefined: yükleniyor; null: bu soru için metin yok (görüntü gösterilir)
+  const [txt, setTxt] = useState<DusText | null | undefined>(undefined)
+  const [pref, setPref] = useState(() => readLs(VIEW_KEY) ?? 'metin')
+  // Şekilli soruda bu soruya özel seçim (tercih değişmez)
+  const [local, setLocal] = useState<'metin' | 'orijinal' | null>(null)
+  const [font, setFont] = useState(() => Number(readLs(FONT_KEY)) || 1)
   useEffect(() => {
     let alive = true
     void loadDusSolutions(exam.id).then((all) => alive && setSolution(all[`${test}/${q.n}`]))
+    void loadDusTexts(exam.id).then((all) => alive && setTxt(all[`${test}/${q.n}`] ?? null))
     return () => {
       alive = false
     }
@@ -219,8 +281,31 @@ function QuestionCard({
     setChoice(l)
     if (quick) onAnswer(l)
   }
+  // Şekilli sorularda varsayılan orijinal görüntü (şekil metne çevrilemez)
+  const view: 'metin' | 'orijinal' = !txt ? 'orijinal' : (local ?? (txt.sekil ? 'orijinal' : pref === 'orijinal' ? 'orijinal' : 'metin'))
+  function toggleView() {
+    const next = view === 'metin' ? 'orijinal' : 'metin'
+    if (txt?.sekil) setLocal(next)
+    else {
+      setPref(next)
+      writeLs(VIEW_KEY, next)
+    }
+    setShowPage(false)
+  }
+  function stepFont(d: number) {
+    const i = FONT_STEPS.findIndex((f) => f >= font)
+    const next = FONT_STEPS[Math.max(0, Math.min(FONT_STEPS.length - 1, (i === -1 ? 1 : i) + d))]
+    setFont(next)
+    writeLs(FONT_KEY, String(next))
+  }
+  // Tablolu şıklar: soru metninin son satırı sütun başlıkları ("Ana bağlayıcı | Gerekçe"), şıklar da ' | ' ile bölünmüş
+  const lastLine = txt ? (txt.soru.split('\n').pop() ?? '') : ''
+  const table = txt && lastLine.includes(' | ') && Object.values(txt.siklar).some((v) => v.includes(' | ')) ? lastLine : null
+  const letterState = (l: string, ok: string, bad: string, picked: string) =>
+    revealed ? (l === q.answer ? ok : l === saved?.c ? bad : '') : l === choice ? picked : ''
+
   return (
-    <article className={`card ${styles.question}`} data-focus-stage>
+    <article className={`card ${styles.question}`} data-focus-stage style={{ ['--dus-fs' as string]: String(font) }}>
       <h2 className={styles.sectionTitle}>
         {title}
         {chip && (
@@ -228,35 +313,77 @@ function QuestionCard({
             {chip.icon} {chip.title}
           </span>
         )}
-        <button type="button" className={styles.pdfBtn} onClick={() => setShowPage((v) => !v)}>
-          {showPage ? 'Yalnız soru' : '📄 Sayfanın tamamı'}
-        </button>
-      </h2>
-      <PageCrop exam={exam} page={q.page} box={showPage ? null : q.box} />
-      <div className={styles.letterRow} role="group" aria-label="Şıklar">
-        {LETTERS.map((l) => {
-          const state = revealed
-            ? l === q.answer
-              ? styles.letterOk
-              : l === saved?.c
-                ? styles.letterBad
-                : ''
-            : l === choice
-              ? styles.letterPicked
-              : ''
-          return (
-            <button
-              key={l}
-              type="button"
-              className={`${styles.letterBtn} ${state}`}
-              onClick={() => choose(l)}
-              disabled={revealed && l !== q.answer && l !== saved?.c}
-            >
-              {l}
+        <span className={styles.dusTools}>
+          {view === 'metin' && (
+            <>
+              <button type="button" className={styles.pdfBtn} onClick={() => stepFont(-1)} aria-label="Yazıyı küçült" title="Yazıyı küçült">
+                A−
+              </button>
+              <button type="button" className={styles.pdfBtn} onClick={() => stepFont(1)} aria-label="Yazıyı büyüt" title="Yazıyı büyüt">
+                A+
+              </button>
+            </>
+          )}
+          {view === 'orijinal' && (
+            <button type="button" className={styles.pdfBtn} onClick={() => setShowPage((v) => !v)}>
+              {showPage ? 'Yalnız soru' : '📄 Sayfa'}
             </button>
-          )
-        })}
-      </div>
+          )}
+          {txt && (
+            <button type="button" className={styles.pdfBtn} onClick={toggleView} title={view === 'metin' ? 'Kitapçıktaki orijinal görüntüyü göster' : 'Metin olarak göster'}>
+              {view === 'metin' ? '🖼️ Orijinal' : '🔤 Metin'}
+            </button>
+          )}
+        </span>
+      </h2>
+      {view === 'metin' && txt ? (
+        <div className={styles.dusText}>
+          <StemText text={table ? txt.soru.slice(0, txt.soru.lastIndexOf('\n')) : txt.soru} />
+          <ul className={styles.options}>
+            {table && (
+              <li className={styles.dusColHead} aria-hidden="true">
+                <span className={styles.optLetter} style={{ visibility: 'hidden' }}>A</span>
+                <Cols text={table} />
+              </li>
+            )}
+            {LETTERS.map((l) => (
+              <li key={l} className={`${styles.option} ${styles.dusOption} ${letterState(l, styles.optCorrect, styles.optWrong, styles.optPicked)}`}>
+                <button
+                  type="button"
+                  className={styles.dusOptBtn}
+                  onClick={() => choose(l)}
+                  disabled={revealed}
+                  aria-label={`Seçenek ${l}`}
+                >
+                  <span className={styles.optLetter}>{l}</span>
+                  <span className={styles.optBody}>{table ? <Cols text={txt.siklar[l] ?? ''} /> : txt.siklar[l]}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          {txt.durum === 'incele' && (
+            <p className={styles.dusWarn}>⚠️ Bu sorunun metni otomatik denetimden tam geçmedi; şüphelenirsen 🖼️ Orijinal’e bak.</p>
+          )}
+        </div>
+      ) : (
+        <>
+          {txt?.sekil && !showPage && <p className={styles.dusWarn}>🖼️ Şekilli soru: orijinal görüntü gösteriliyor.</p>}
+          <PageCrop exam={exam} page={q.page} box={showPage ? null : q.box} />
+          <div className={styles.letterRow} role="group" aria-label="Şıklar">
+            {LETTERS.map((l) => (
+              <button
+                key={l}
+                type="button"
+                className={`${styles.letterBtn} ${letterState(l, styles.letterOk, styles.letterBad, styles.letterPicked)}`}
+                onClick={() => choose(l)}
+                disabled={revealed && l !== q.answer && l !== saved?.c}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
       <div className={styles.actions}>
         {!revealed ? (
           !quick && (

@@ -109,10 +109,11 @@ function parts(): Part[] {
       files: [
         ...dusIds.flatMap((id) => ls(path.join(dus, id)).map((f) => path.join(dus, id, f))),
         ...ls(path.join(ROOT, 'dus', 'cozumler')).map((f) => path.join(ROOT, 'dus', 'cozumler', f)),
+        ...ls(path.join(ROOT, 'dus', 'ocr')).filter((f) => f.endsWith('.json')).map((f) => path.join(ROOT, 'dus', 'ocr', f)),
       ],
       paths: () => [
         'dus/',
-        ...dusIds.flatMap((id) => [`dus/${id}`, `dus/${id}/cozum`, ...ls(path.join(dus, id)).filter((f) => /^p\d{3}\.webp$/.test(f)).map((f) => `dus/${id}/${f}`)]),
+        ...dusIds.flatMap((id) => [`dus/${id}`, `dus/${id}/cozum`, `dus/${id}/metin`, ...ls(path.join(dus, id)).filter((f) => /^p\d{3}\.webp$/.test(f)).map((f) => `dus/${id}/${f}`)]),
       ],
     })
   // Okuma kitapları (metin; birkaç MB): telefona ayrı ve küçük bir paket olarak da yüklenebilir

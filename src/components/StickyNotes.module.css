@@ -1,0 +1,166 @@
+/* Sayfaya yapıştırılmış renkli notlar (post-it). Renkler kâğıt rengidir: açık ve koyu temada aynı, yazı hep koyu. */
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+}
+
+.layerOpen {
+  z-index: 70;
+}
+
+.sticky {
+  position: fixed;
+  box-sizing: border-box;
+  padding: 0.9rem 0.6rem 0.5rem;
+  color: #2b2b2b;
+  border-radius: 2px 2px 14px 2px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 6px 14px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: grab;
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+
+.sticky:active {
+  cursor: grabbing;
+}
+
+.sticky:focus-visible {
+  outline: 2px solid #333;
+  outline-offset: 2px;
+}
+
+/* Üstte yarı saydam bant */
+.tape {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 46px;
+  height: 14px;
+  transform: translateX(-50%) rotate(-2deg);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.text {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Sağ alt köşe: boyutlandırma tutamacı (parmakla tutulabilsin diye geniş) */
+.resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  cursor: nwse-resize;
+  touch-action: none;
+  background: linear-gradient(135deg, transparent 55%, rgba(0, 0, 0, 0.22) 56%, rgba(0, 0, 0, 0.22) 62%, transparent 63%, transparent 72%, rgba(0, 0, 0, 0.22) 73%, rgba(0, 0, 0, 0.22) 79%, transparent 80%);
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
+}
+
+.editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: min(420px, 100%);
+  height: min(420px, 70dvh);
+  padding: 1.2rem 0.9rem 0.7rem;
+  color: #2b2b2b;
+  border-radius: 3px 3px 18px 3px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  animation: pop 0.16s ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6) rotate(-3deg);
+    opacity: 0;
+  }
+}
+
+.editText {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3rem;
+  border: 0;
+  background: transparent;
+  color: #2b2b2b;
+  font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+  /* 16px altı iOS'ta yakınlaştırma yapar */
+  font-size: 16px;
+  line-height: 1.45;
+  resize: none;
+  outline: none;
+}
+
+.editBar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.swatches {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.swatch {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.swatchOn {
+  border-color: #2b2b2b;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8) inset;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.barBtn {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.45);
+  color: #2b2b2b;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}

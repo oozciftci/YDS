@@ -7,6 +7,7 @@ import { useUserStore } from '../stores/user'
 import { isStudyPath } from '../services/studyMap'
 import { cleanPath, isSaved, labelFor, recordVisit, toggleSaved, useFavoritesVersion } from '../services/favorites'
 import { NotesDock } from './NotesDock'
+import { StickyLayer } from './StickyNotes'
 import { CommandPalette } from './CommandPalette'
 import styles from './Layout.module.css'
 import { Avatar } from './Avatar'
@@ -263,6 +264,7 @@ export function Layout() {
       </main>
 
 
+      <StickyLayer />
       {!focus && <NotesDock />}
       <CommandPalette />
     </div>

@@ -87,6 +87,14 @@ export function pageLabel(pathname: string): string {
     return seg[2] === 'notlar' ? `${name} · Defter` : name
   }
   if (seg[0] === 'koc') return 'YZ Koç'
+  if (seg[0] === 'dus') {
+    if (!seg[1]) return 'DUS'
+    if (seg[1] === 'yanlislar') return 'DUS · Yanlışlarım'
+    if (seg[1] === 'ders') return `DUS · Ders: ${seg[2] ?? ''}`.trim()
+    const m = /^(\d{4})(?:-(ilkbahar|sonbahar))?/.exec(seg[1])
+    const exam = m ? `${m[1]}${m[2] ? ` ${SEASONS[m[2]]}` : ''}` : seg[1]
+    return `DUS ${exam}${seg[2] ? ` · ${seg[2] === 'tbt' ? 'Temel' : 'Klinik'}` : ''}`
+  }
   return seg.join(' / ') || 'Ana Sayfa'
 }
 
@@ -140,7 +148,27 @@ export async function addGeneralEntry(
   return row
 }
 
-export async function updateEntry(id: string, patch: Partial<Pick<NoteEntry, 'text' | 'title'>>): Promise<void> {
+/** Sayfaya renkli yapışkan not ekler (ekranın ortasına yakın; üst üste binmesin diye biraz kaydırılır). */
+export async function addSticky(userId: string, pageKey: string, text: string, color: string): Promise<NoteEntry> {
+  const now = new Date().toISOString()
+  const others = await db.notebook.where('[userId+pageKey]').equals([userId, pageKey]).filter((n) => n.scope === 'sticky').count()
+  const row: NoteEntry = {
+    id: crypto.randomUUID(),
+    userId,
+    scope: 'sticky',
+    pageKey,
+    pageLabel: pageLabel(pageKey),
+    kind: 'text',
+    text,
+    sticky: { color, x: Math.min(0.6, 0.12 + others * 0.06), y: Math.min(0.6, 0.18 + others * 0.06), w: 150, h: 130 },
+    createdAt: now,
+    updatedAt: now,
+  }
+  await db.notebook.add(row)
+  return row
+}
+
+export async function updateEntry(id: string, patch: Partial<Pick<NoteEntry, 'text' | 'title' | 'sticky'>>): Promise<void> {
   await db.notebook.update(id, { ...patch, updatedAt: new Date().toISOString() })
 }
 

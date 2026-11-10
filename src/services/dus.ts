@@ -130,7 +130,29 @@ export function loadDusSolutions(id: string): Promise<DusSolutions> {
   return p
 }
 
-export const dusImageUrl = (examId: string, page: number) => `/local-api/dus/${examId}/p${String(page).padStart(3, '0')}.webp`
+// Soru metni (yerel; local-data/dus/ocr/<sınav>.json, scripts/dus/dus_ocr.py): soru kutusu OCR projesindeki görme-dil
+// modeliyle okunur, PDF'in metin katmanıyla kelime kelime denetlenir. durum: ok (katmanla uyuşuyor), duzeltildi /
+// onaylandi (görüntüye bakılarak düzeltildi), incele (denetimden geçmedi). Yoksa boş nesne → görüntü gösterilir.
+export interface DusText {
+  soru: string
+  siklar: Record<string, string>
+  /** Soruda şekil/fotoğraf var: metin yetmez, orijinal görüntü varsayılan */
+  sekil: boolean
+  durum: 'ok' | 'duzeltildi' | 'onaylandi' | 'incele'
+}
+const textCache = new Map<string, Promise<Record<string, DusText>>>()
+export function loadDusTexts(id: string): Promise<Record<string, DusText>> {
+  let p = textCache.get(id)
+  if (!p) {
+    p = localFetch(`/local-api/dus/${id}/metin`)
+      .then((r) => (r.ok ? (r.json() as Promise<Record<string, DusText>>) : {}))
+      .catch(() => ({}))
+    textCache.set(id, p)
+  }
+  return p
+}
+
+export const dusImageUrl =(examId: string, page: number) => `/local-api/dus/${examId}/p${String(page).padStart(3, '0')}.webp`
 
 /** İptal edilen sorular çözülmez. */
 export const solvable = (t: DusTest) => t.questions.filter((q) => q.answer !== 'X')

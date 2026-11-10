@@ -1403,3 +1403,150 @@ h2 .listen .rateSelect {
 .readHeading:first-child {
   margin-top: 0;
 }
+
+/* ---- DUS: OCR ile çıkarılmış soru metni (Dus.tsx) ----
+   --dus-fs: kullanıcının A−/A+ ile seçtiği yazı ölçeği. Odak modunda bir kademe büyür; telefon yan çevrilince
+   (alçak ve geniş ekran) soru kökü solda, şıklar sağda: soru tek bakışta ve kaydırmadan sığar. */
+.dusTools {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-left: auto;
+  vertical-align: middle;
+}
+
+.dusTools .pdfBtn {
+  margin-left: 0;
+  min-height: 28px;
+}
+
+.dusText {
+  font-size: calc(1.05rem * var(--dus-fs, 1));
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.dusStem p {
+  margin: 0 0 0.45rem;
+}
+
+.dusStem .dusItem {
+  margin: 0 0 0.2rem;
+  padding-left: 0.4rem;
+  font-weight: 500;
+}
+
+.dusRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.6rem;
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dusText .options {
+  margin-top: 0.6rem;
+  gap: 0.4rem;
+}
+
+.dusOption {
+  padding: 0;
+}
+
+.dusOptBtn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dusOptBtn:disabled {
+  cursor: default;
+}
+
+.dusOptBtn .optBody {
+  line-height: 1.5;
+  padding-top: 0.12em;
+}
+
+.dusOptBtn .optLetter {
+  width: calc(28px * var(--dus-fs, 1));
+  height: calc(28px * var(--dus-fs, 1));
+  flex: none;
+}
+
+.dusWarn {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+:global(html.app-focus) .dusText {
+  font-size: calc(1.2rem * var(--dus-fs, 1));
+}
+
+:global(html.app-focus) .cropFrame {
+  max-width: min(100%, 1100px);
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  :global(html.app-focus) .dusText {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  :global(html.app-focus) .dusText .options {
+    margin-top: 0;
+    gap: 0.3rem;
+  }
+
+  :global(html.app-focus) .dusOptBtn {
+    padding: 0.28rem 0.6rem;
+  }
+
+  :global(html.app-focus) .question .sectionTitle {
+    margin-bottom: 0.35rem;
+  }
+
+  :global(html.app-focus) .dusText .dusWarn {
+    grid-column: 1 / -1;
+  }
+
+  /* Yatay telefonda görüntü: yüksekliğe sığsın diye genişlik sınırı yok, kart kendi içinde kayar */
+  :global(html.app-focus) .cropFrame {
+    max-width: 100%;
+  }
+}
+
+/* DUS tablolu şıklar: başlık satırı ve şıklar aynı sütun ızgarasında */
+.dusCols {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.8rem;
+}
+
+.dusColHead {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0 0.7rem;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.dusColHead .dusCols {
+  flex: 1;
+  padding-bottom: 0.2rem;
+}
