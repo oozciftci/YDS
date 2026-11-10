@@ -1060,9 +1060,18 @@ function LocalContentCard() {
         <summary>Paket dosyasını nereden indiririm?</summary>
         <ol style={{ margin: '0.5rem 0 0', paddingLeft: '1.2rem', display: 'grid', gap: '0.35rem' }}>
           <li>
-            Bilgisayarda <code>npm run telefon</code> çalışsın. Telefonun tarayıcısında bilgisayarın verdiği adresi aç
-            (<code>https://&lt;bilgisayarın IP’si&gt;:5180</code>; bu uygulama değil, bilgisayardaki sürüm). İlk açılışta
-            telefon erişim şifresi sorulur.
+            Bilgisayarda proje klasöründeki <b>Telefon-Sunucusu.bat</b> dosyasına çift tıkla (ya da{' '}
+            <code>npm run telefon</code>). Açılan pencere telefon adresini ve giriş şifresini yazar; iş bitene kadar
+            pencereyi kapatma.
+          </li>
+          <li>
+            Telefon bilgisayarla <b>aynı Wi-Fi’de</b> olmalı. İş ağı ya da misafir ağı engelliyorsa bilgisayarda{' '}
+            <b>Ayarlar › Ağ ve İnternet › Mobil etkin nokta</b>’yı aç, telefonu o Wi-Fi’ye bağla ve{' '}
+            <code>https://192.168.137.1:5180</code> adresini kullan.
+          </li>
+          <li>
+            Adresi telefonun Safari’sinde aç (bu uygulama değil, bilgisayardaki sürüm). Sertifika uyarısında “Ayrıntıları
+            göster” › “bu web sitesini ziyaret et”, sonra giriş şifresini yaz.
           </li>
           <li>
             O sürümde <b>Ayarlar › 📦 Kaynak paketi</b>: istediğin parçaları (ör. “DUS çıkmış soruları”) işaretle,{' '}

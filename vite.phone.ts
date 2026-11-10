@@ -220,8 +220,15 @@ export function phoneAccess(enabled: boolean): Plugin {
       const print = server.printUrls.bind(server)
       server.printUrls = () => {
         print()
-        const urls = lanAddresses().map((ip) => `https://${ip}:${PHONE_PORT}`)
-        server.config.logger.info(`  📱 Telefondan: ${urls.join('  ·  ') || '(ev ağı bulunamadı)'}   şifre: ${loadState().password}`)
+        // 192.168.137.x: Windows'un "Mobil etkin nokta"sı — telefon bu bilgisayarın Wi-Fi'sine bağlıysa her zaman çalışır
+        const urls = lanAddresses().map(
+          (ip) => `https://${ip}:${PHONE_PORT}${ip.startsWith('192.168.137.') ? ' (bilgisayarın etkin noktasına bağlıysan)' : ''}`,
+        )
+        const log = (s: string) => server.config.logger.info(s)
+        log(`  📱 Telefondan (telefon aynı Wi-Fi'de olmalı):`)
+        for (const u of urls.length ? urls : ['(ağ bulunamadı)']) log(`       ${u}`)
+        log(`     Giriş şifresi: ${loadState().password}`)
+        log(`     Sertifika uyarısında: "Ayrıntıları göster" › "bu web sitesini ziyaret et".`)
       }
     },
   }
