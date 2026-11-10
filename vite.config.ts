@@ -233,6 +233,7 @@ function localBooks(): Plugin {
 //   GET /local-api/dus/<sınav>/p001.webp
 //   GET /local-api/dus/<sınav>/cozum     -> local-data/dus/cozumler/<sınav>.json ({ "<test>/<no>": { cozum, terimler } }) ya da {}
 //   GET /local-api/dus/<sınav>/metin     -> local-data/dus/ocr/<sınav>.json'dan { "<test>/<no>": { soru, siklar, sekil, durum } } ya da {}
+//   GET /local-api/dus/<sınav>/sozluk    -> local-data/dus/sozluk/<sınav>.json'dan { "<test>/<no>": { neSoruyor, terimler } } ya da {}
 function localDus(): Plugin {
   const dir = path.resolve(import.meta.dirname, 'local-data/dus/sinavlar')
   const read = (id: string) => JSON.parse(fs.readFileSync(path.join(dir, id, 'sinav.json'), 'utf8'))
@@ -282,6 +283,11 @@ function localDus(): Plugin {
                 .map(([key, k]) => [key, { soru: k.soru, siklar: k.siklar, sekil: !!k.sekil, durum: k.durum }]),
             ),
           )
+        }
+        // Terim sözlüğü (docs/antigravity/DUS_SOZLUK_GOREVI.md; scripts/dus/sozluk_denetle.py birleştirir)
+        if (parts.length === 2 && parts[1] === 'sozluk') {
+          const file = path.resolve(dir, '..', 'sozluk', `${id}.json`)
+          return json(fs.existsSync(file) ? ((JSON.parse(fs.readFileSync(file, 'utf8')) as { sorular?: unknown }).sorular ?? {}) : {})
         }
         if (parts.length === 2 && /^p\d{3}\.webp$/.test(parts[1])) {
           const file = path.join(dir, id, parts[1])

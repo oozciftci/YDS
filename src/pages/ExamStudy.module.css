@@ -1468,7 +1468,8 @@ h2 .listen .rateSelect {
   cursor: pointer;
 }
 
-.dusOptBtn:disabled {
+.dusOptBtn:disabled,
+.dusOptBtn[aria-disabled='true'] {
   cursor: default;
 }
 
@@ -1549,4 +1550,57 @@ h2 .listen .rateSelect {
 .dusColHead .dusCols {
   flex: 1;
   padding-bottom: 0.2rem;
+}
+
+/* DUS terim sözlüğü: altı noktalı terim, açıklama balonu, "ne soruyor" satırı (src/pages/DusTerms.tsx) */
+.dusTerm {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--accent-teal);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  cursor: help;
+  border-radius: 3px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dusTerm:hover,
+.dusTerm:focus-visible {
+  background: var(--accent-teal-subtle);
+  outline: none;
+}
+
+.termPop {
+  z-index: 75;
+  width: min(340px, calc(100vw - 16px));
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.termBase {
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.termText {
+  margin: 0;
+}
+
+.dusAsk {
+  margin: 0.15rem 0 0.2rem;
+  font-size: 0.9em;
+}
+
+.dusAskBtn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent-teal);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dusAskText {
+  color: var(--text-muted);
 }

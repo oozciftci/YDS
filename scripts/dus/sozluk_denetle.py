@@ -9,6 +9,9 @@
 #   python scripts/dus/sozluk_denetle.py --parca 2014-ilkbahar      sıradaki parça dosyasının yolu
 #   python scripts/dus/sozluk_denetle.py 2014-ilkbahar               o sınavın parçalarını denetler (+ birleştirir)
 #   python scripts/dus/sozluk_denetle.py --hepsi                     bütün sözlük dosyalarını denetler
+#   python scripts/dus/sozluk_denetle.py --sizinti [2014-ilkbahar]   cevabı ele veriyor olabilecek kayıtlar
+# Düzeltme turu (docs/antigravity/DUS_SOZLUK_DUZELTME.md): --sonraki/--parca komutlarına --duzeltme eklenir;
+# düzeltilmiş kayıtlar dNNN.json parçalarına yazılır ve eski parçalardaki kaydın yerine geçer.
 #   python scripts/dus/sozluk_denetle.py --dosya docs/antigravity/dus_sozluk_ornek.json
 import argparse
 import json
@@ -90,9 +93,83 @@ def sozluk(sinav):
     return out
 
 
-def sonraki_parca(sinav):
-    nolar = [int(m.group(1)) for y in parcalar(sinav) if (m := re.match(r'(\d+)\.json$', os.path.basename(y)))]
-    return os.path.join(parca_dizini(sinav), f'{(max(nolar) if nolar else 0) + 1:03}.json')
+def sonraki_parca(sinav, duzeltme=False):
+    on = 'd' if duzeltme else ''
+    nolar = [int(m.group(1)) for y in parcalar(sinav) if (m := re.match(on + r'(\d+)\.json$', os.path.basename(y)))]
+    return os.path.join(parca_dizini(sinav), f'{on}{(max(nolar) if nolar else 0) + 1:03}.json')
+
+
+def duzeltilenler(sinav):
+    """Düzeltme turunda (dNNN.json parçaları) yeniden yazılmış soru anahtarları."""
+    out = set()
+    for yol in parcalar(sinav):
+        if os.path.basename(yol).startswith('d'):
+            try:
+                out |= set(oku(yol).get('sorular', {}))
+            except Exception:
+                pass
+    return out
+
+
+# --- Cevap sızıntısı (kaba ölçü): cevap anahtarı yalnızca burada, içeride okunur -------------------------------
+
+_cevaplar = {}
+
+
+def cevaplar(sinav):
+    if sinav not in _cevaplar:
+        sj = oku(os.path.join(KOK, 'local-data', 'dus', 'sinavlar', sinav, 'sinav.json'))
+        _cevaplar[sinav] = {f"{t['key']}/{q['n']}": q.get('answer') for t in sj['tests'] for q in t['questions']}
+    return _cevaplar[sinav]
+
+
+GENEL = {'aşağı', 'hangi', 'değil', 'olara', 'yukar', 'ifade', 'doğru', 'yanlı', 'tedav', 'hasta', 'göre', 'olan',
+         'için', 'daha', 'sonr', 'olma', 'ile', 'veya', 'gibi', 'bulu', 'kull', 'yapı', 'neden'}
+
+
+def _kel(t):
+    t = t.replace('İ', 'i').replace('I', 'ı').lower()
+    return {w[:5] for w in re.findall(r'[a-zçğıöşüâîû0-9]+', t) if len(w) >= 4} - GENEL
+
+
+def sizinti(sinav, k, kayit, q):
+    """Kökteki terimlerin açıklaması ya da neSoruyor cevabı ele veriyor mu? Şık terimleri sayılmaz (uygulamada
+    cevaptan önce kilitli). Döndürür: açıklama listesi (boş = temiz)."""
+    a = cevaplar(sinav).get(k)
+    if not a or a not in 'ABCDE':
+        return []
+    kok = _kel(q['soru'])
+    sik = {h: _kel(q.get('siklar', {}).get(h, '')) - kok for h in 'ABCDE'}
+    ortak = set.intersection(*sik.values()) if all(sik.values()) else set()
+    dogru = sik[a] - ortak - set().union(*[sik[h] for h in 'ABCDE' if h != a])
+    yanlis = [sik[h] - ortak - sik[a] for h in 'ABCDE' if h != a]
+    out = []
+    for t in kayit.get('terimler', []):
+        if not isinstance(t, dict) or t.get('metin', '') not in q['soru']:
+            continue
+        w = _kel(f"{t.get('kisa', '')} {t.get('aciklama', '')} {t.get('koken', '')}")
+        if dogru and dogru & w and dogru <= w | kok:
+            out.append(f'kök terimi "{t["metin"]}": açıklaması doğru şıkkın içeriğini söylüyor')
+        elif sum(1 for y in yanlis if y and y & w) >= 3:
+            out.append(f'kök terimi "{t["metin"]}": açıklaması şıkları sıralıyor (eleme yoluyla cevabı veriyor)')
+    ns = _kel(kayit.get('neSoruyor', ''))
+    if dogru and dogru & ns and dogru <= ns | kok:
+        out.append('neSoruyor: doğru şıkkın içeriğini söylüyor')
+    elif sum(1 for y in yanlis if y and y & ns) >= 3:
+        out.append('neSoruyor: şıkları sıralıyor')
+    return out
+
+
+def sizinti_listesi(hedef):
+    toplam = 0
+    for s in [hedef] if hedef else sinavlar():
+        qs = sorular(s)
+        for k, kayit in sozluk(s)['sorular'].items():
+            if k in qs:
+                for m in sizinti(s, k, kayit, qs[k]):
+                    toplam += 1
+                    print(f'SIZINTI? {s} {k} · {m}')
+    print(f'{toplam} olası sızıntı')
 
 
 def tam_metin(q):
@@ -100,31 +177,39 @@ def tam_metin(q):
 
 
 def durum():
-    toplam_b = toplam_t = 0
+    toplam_b = toplam_t = toplam_d = 0
     for s in sinavlar():
         qs = sorular(s)
         try:
             biten = len(set(sozluk(s).get('sorular', {})) & set(qs))
+            duz = len(duzeltilenler(s) & set(qs))
         except Exception as e:  # bozuk JSON
             print(f'{s:16} OKUNAMADI: {e}')
             continue
         toplam_b += biten
         toplam_t += len(qs)
-        print(f'{s:16} {biten:4}/{len(qs):<4} {"✓" if biten == len(qs) else ""}')
-    print(f'TOPLAM {toplam_b}/{toplam_t}')
+        toplam_d += duz
+        print(f'{s:16} {biten:4}/{len(qs):<4} {"✓" if biten == len(qs) else " "}   düzeltme {duz:4}/{len(qs):<4} {"✓" if duz == len(qs) else ""}')
+    print(f'TOPLAM {toplam_b}/{toplam_t}   düzeltme {toplam_d}/{toplam_t}')
 
 
-def sonraki(sinav, adet):
+def sonraki(sinav, adet, duzeltme=False):
     qs = sorular(sinav)
-    biten = set(sozluk(sinav).get('sorular', {}))
+    eski = sozluk(sinav).get('sorular', {})
+    biten = duzeltilenler(sinav) if duzeltme else set(eski)
     kalan = [k for k in sirala(qs) if k not in biten]
-    print(f'# {sinav}: {len(kalan)} soru kaldı. Sıradaki {min(adet, len(kalan))}:\n')
+    print(f'# {sinav}: {len(kalan)} soru kaldı{" (düzeltme turu)" if duzeltme else ""}. Sıradaki {min(adet, len(kalan))}:\n')
     for k in kalan[:adet]:
         q = qs[k]
         print(f'=== {k} · {ders(k)}{"  [ŞEKİLLİ SORU: metin eksik olabilir]" if q.get("sekil") else ""}')
         print(q['soru'])
         for h in 'ABCDE':
             print(f'{h}) {q.get("siklar", {}).get(h, "")}')
+        if duzeltme and k in eski:
+            print('--- MEVCUT KAYIT (ilk tur; yeniden yaz):')
+            print(json.dumps(eski[k], ensure_ascii=False, indent=1))
+            for m in sizinti(sinav, k, eski[k], q):
+                print(f'!!! SIZINTI? {m}')
         print()
 
 
@@ -212,10 +297,17 @@ def denetle_sinav(sinav):
             h.append(f'{ad}: "sinav" alanı "{sinav}" olmalı')
         hatalar += h
         uyarilar += u
-        for k in d.get('sorular', {}) if isinstance(d.get('sorular'), dict) else []:
-            if k in gorulen:
+        duz = os.path.basename(yol).startswith('d')
+        for k, kayit in d.get('sorular', {}).items() if isinstance(d.get('sorular'), dict) else []:
+            if k in gorulen and (duz == gorulen[k].startswith('d')):
                 uyarilar.append(f'{ad} {k}: {gorulen[k]} dosyasında da var; sonraki geçerli sayılır')
             gorulen[k] = os.path.basename(yol)
+            if duz and k in qs and isinstance(kayit, dict):
+                for m in sizinti(sinav, k, kayit, qs[k]):
+                    uyarilar.append(f'{ad} {k}: SIZINTI? {m}')
+                for t in kayit.get('terimler', []) if isinstance(kayit.get('terimler'), list) else []:
+                    if isinstance(t, dict) and len(t.get('aciklama', '')) > 260:
+                        uyarilar.append(f'{ad} {k} "{t.get("metin")}": açıklama {len(t["aciklama"])} karakter; en çok 2 kısa cümle (≤ 260)')
     raporla(hatalar, uyarilar)
     biten = len(set(gorulen) & set(qs))
     print(f'{sinav}: {biten}/{len(qs)} soru · {len(hatalar)} hata · {len(uyarilar)} uyarı')
@@ -245,6 +337,8 @@ def main():
     ap.add_argument('--durum', action='store_true')
     ap.add_argument('--sonraki')
     ap.add_argument('--parca')
+    ap.add_argument('--duzeltme', action='store_true')
+    ap.add_argument('--sizinti', nargs='?', const='')
     ap.add_argument('--adet', type=int, default=10)
     ap.add_argument('--hepsi', action='store_true')
     ap.add_argument('--dosya')
@@ -252,9 +346,11 @@ def main():
     if a.durum:
         return durum()
     if a.sonraki:
-        return sonraki(a.sonraki, a.adet)
+        return sonraki(a.sonraki, a.adet, a.duzeltme)
     if a.parca:
-        return print(sonraki_parca(a.parca))
+        return print(sonraki_parca(a.parca, a.duzeltme))
+    if a.sizinti is not None:
+        return sizinti_listesi(a.sizinti)
     if a.dosya:
         d = oku(a.dosya)
         hatalar, uyarilar = denetle_veri(d, sorular(d.get('sinav', '')), os.path.basename(a.dosya))

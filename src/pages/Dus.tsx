@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import {
   DUS_SUBJECTS,
@@ -8,6 +8,7 @@ import {
   dusNet,
   listDusExams,
   loadDusExam,
+  loadDusGlossary,
   loadDusSolutions,
   loadDusTexts,
   readDusAnswers,
@@ -21,6 +22,7 @@ import {
   type DusAnswers,
   type DusExam,
   type DusExamMeta,
+  type DusGloss,
   type DusQuestion,
   type DusSolution,
   type DusSubject,
@@ -30,6 +32,7 @@ import {
 import { useLocalUrl } from '../services/localContent'
 import { AiText } from '../components/AiText'
 import { DusAiExplain } from './DusAi'
+import { AskLine, TermBubble, TermText, type OpenTerm } from './DusTerms'
 import { useUserStore } from '../stores/user'
 import styles from './ExamStudy.module.css'
 import { QuickAnswerToggle, useQuestionNav, useQuickAnswer } from './exam/answerControls'
@@ -204,7 +207,7 @@ function writeLs(key: string, v: string) {
 }
 
 /** Metin görünümü: soru kökü (I., II. maddeleri ayrı satırda; tablo satırları ' | ') */
-function StemText({ text }: { text: string }) {
+function StemText({ text, r = (s) => s }: { text: string; r?: (s: string) => ReactNode }) {
   const lines = text.split('\n').filter((l) => l.trim())
   return (
     <div className={styles.dusStem}>
@@ -212,12 +215,12 @@ function StemText({ text }: { text: string }) {
         l.includes(' | ') ? (
           <div key={i} className={styles.dusRow}>
             {l.split(' | ').map((c, j) => (
-              <span key={j}>{c}</span>
+              <span key={j}>{r(c)}</span>
             ))}
           </div>
         ) : (
           <p key={i} className={/^\s*(I{1,3}|IV|VI{0,3}|IX|X)\.\s/.test(l) ? styles.dusItem : undefined}>
-            {l}
+            {r(l)}
           </p>
         ),
       )}
@@ -226,11 +229,11 @@ function StemText({ text }: { text: string }) {
 }
 
 /** Tablolu şıkta sütunlar (başlık satırıyla aynı ızgara) */
-function Cols({ text }: { text: string }) {
+function Cols({ text, r = (s) => s }: { text: string; r?: (s: string) => ReactNode }) {
   return (
     <span className={styles.dusCols}>
       {text.split(' | ').map((c, i) => (
-        <span key={i}>{c}</span>
+        <span key={i}>{r(c)}</span>
       ))}
     </span>
   )
@@ -267,8 +270,12 @@ function QuestionCard({
   // Şekilli soruda bu soruya özel seçim (tercih değişmez)
   const [local, setLocal] = useState<'metin' | 'orijinal' | null>(null)
   const [font, setFont] = useState(() => Number(readLs(FONT_KEY)) || 1)
+  const [gloss, setGloss] = useState<DusGloss | null>(null)
+  const [bubble, setBubble] = useState<OpenTerm | null>(null)
+  const closeBubble = useCallback(() => setBubble(null), [])
   useEffect(() => {
     let alive = true
+    void loadDusGlossary(exam.id).then((all) => alive && setGloss(all[`${test}/${q.n}`] ?? null))
     void loadDusSolutions(exam.id).then((all) => alive && setSolution(all[`${test}/${q.n}`]))
     void loadDusTexts(exam.id).then((all) => alive && setTxt(all[`${test}/${q.n}`] ?? null))
     return () => {
@@ -301,6 +308,10 @@ function QuestionCard({
   // Tablolu şıklar: soru metninin son satırı sütun başlıkları ("Ana bağlayıcı | Gerekçe"), şıklar da ' | ' ile bölünmüş
   const lastLine = txt ? (txt.soru.split('\n').pop() ?? '') : ''
   const table = txt && lastLine.includes(' | ') && Object.values(txt.siklar).some((v) => v.includes(' | ')) ? lastLine : null
+  // Terimler: yalnızca şıkta geçenler cevaplanana kadar kilitli (açıklaması cevabı ele verebilir)
+  const terms = gloss?.terimler ?? []
+  const isLocked = (t: { metin: string }) => !revealed && !!txt && !txt.soru.includes(t.metin)
+  const r = (s: string): ReactNode => <TermText text={s} terms={terms} isLocked={isLocked} onOpen={setBubble} />
   const letterState = (l: string, ok: string, bad: string, picked: string) =>
     revealed ? (l === q.answer ? ok : l === saved?.c ? bad : '') : l === choice ? picked : ''
 
@@ -338,12 +349,15 @@ function QuestionCard({
       </h2>
       {view === 'metin' && txt ? (
         <div className={styles.dusText}>
-          <StemText text={table ? txt.soru.slice(0, txt.soru.lastIndexOf('\n')) : txt.soru} />
+          <div>
+            <StemText text={table ? txt.soru.slice(0, txt.soru.lastIndexOf('\n')) : txt.soru} r={r} />
+            {gloss?.neSoruyor && <AskLine key={`${exam.id}/${test}/${q.n}`} text={gloss.neSoruyor} />}
+          </div>
           <ul className={styles.options}>
             {table && (
               <li className={styles.dusColHead} aria-hidden="true">
                 <span className={styles.optLetter} style={{ visibility: 'hidden' }}>A</span>
-                <Cols text={table} />
+                <Cols text={table} r={r} />
               </li>
             )}
             {LETTERS.map((l) => (
@@ -352,11 +366,11 @@ function QuestionCard({
                   type="button"
                   className={styles.dusOptBtn}
                   onClick={() => choose(l)}
-                  disabled={revealed}
+                  aria-disabled={revealed}
                   aria-label={`Seçenek ${l}`}
                 >
                   <span className={styles.optLetter}>{l}</span>
-                  <span className={styles.optBody}>{table ? <Cols text={txt.siklar[l] ?? ''} /> : txt.siklar[l]}</span>
+                  <span className={styles.optBody}>{table ? <Cols text={txt.siklar[l] ?? ''} r={r} /> : r(txt.siklar[l] ?? '')}</span>
                 </button>
               </li>
             ))}
@@ -399,7 +413,8 @@ function QuestionCard({
         <span className={styles.spacer} />
         {footer}
       </div>
-      {solution?.terimler?.length ? (
+      {bubble && <TermBubble key={bubble.term.metin} open={bubble} onClose={closeBubble} />}
+      {!terms.length && solution?.terimler?.length ? (
         <details className={styles.aiBox} data-noswipe>
           <summary>📖 Bu sorudaki terimler ({solution.terimler.length})</summary>
           <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.2rem', display: 'grid', gap: '0.25rem' }}>

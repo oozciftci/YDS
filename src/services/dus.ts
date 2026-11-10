@@ -152,6 +152,32 @@ export function loadDusTexts(id: string): Promise<Record<string, DusText>> {
   return p
 }
 
+/** Terim sözlüğü (docs/antigravity/DUS_SOZLUK_GOREVI.md): soru ve şıklardaki terimlere dokununca açılan balon. */
+export interface DusTerm {
+  /** Soru/şık metninde birebir geçen hâli (altı çizilir) */
+  metin: string
+  terim: string
+  kisa: string
+  aciklama: string
+  koken?: string
+}
+export interface DusGloss {
+  neSoruyor: string
+  terimler: DusTerm[]
+}
+
+const glossCache = new Map<string, Promise<Record<string, DusGloss>>>()
+export function loadDusGlossary(id: string): Promise<Record<string, DusGloss>> {
+  let p = glossCache.get(id)
+  if (!p) {
+    p = localFetch(`/local-api/dus/${id}/sozluk`)
+      .then((r) => (r.ok ? (r.json() as Promise<Record<string, DusGloss>>) : {}))
+      .catch(() => ({}))
+    glossCache.set(id, p)
+  }
+  return p
+}
+
 export const dusImageUrl =(examId: string, page: number) => `/local-api/dus/${examId}/p${String(page).padStart(3, '0')}.webp`
 
 /** İptal edilen sorular çözülmez. */
