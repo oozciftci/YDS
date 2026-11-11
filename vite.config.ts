@@ -234,6 +234,8 @@ function localBooks(): Plugin {
 //   GET /local-api/dus/<sınav>/cozum     -> local-data/dus/cozumler/<sınav>.json ({ "<test>/<no>": { cozum, terimler } }) ya da {}
 //   GET /local-api/dus/<sınav>/metin     -> local-data/dus/ocr/<sınav>.json'dan { "<test>/<no>": { soru, siklar, sekil, durum } } ya da {}
 //   GET /local-api/dus/<sınav>/sozluk    -> local-data/dus/sozluk/<sınav>.json'dan { "<test>/<no>": { neSoruyor, terimler } } ya da {}
+//   GET /local-api/dus/<sınav>/konu      -> local-data/dus/konu/<sınav>.json'dan { "<test>/<no>": { konu, altBaslik, zorluk, spotlar: [{ on, arka }] } } ya da {}
+//   GET /local-api/dus/konular           -> scripts/dus/konular.json ({ surum, dersler: [{ id, ad, test, ilk, son, konular: [{ id, ad, kapsam }] }] })
 function localDus(): Plugin {
   const dir = path.resolve(import.meta.dirname, 'local-data/dus/sinavlar')
   const read = (id: string) => JSON.parse(fs.readFileSync(path.join(dir, id, 'sinav.json'), 'utf8'))
@@ -263,6 +265,11 @@ function localDus(): Plugin {
             }),
           )
         }
+        // Alt konu sınıflaması (scripts/dus/konular.json; yoksa boş)
+        if (parts.length === 1 && parts[0] === 'konular') {
+          const file = path.resolve(import.meta.dirname, 'scripts/dus/konular.json')
+          return json(fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {})
+        }
         const id = parts[0]
         if (!/^[a-z0-9-]+$/.test(id) || !fs.existsSync(path.join(dir, id, 'sinav.json'))) return next()
         if (parts.length === 1) return json(read(id))
@@ -287,6 +294,11 @@ function localDus(): Plugin {
         // Terim sözlüğü (docs/antigravity/DUS_SOZLUK_GOREVI.md; scripts/dus/sozluk_denetle.py birleştirir)
         if (parts.length === 2 && parts[1] === 'sozluk') {
           const file = path.resolve(dir, '..', 'sozluk', `${id}.json`)
+          return json(fs.existsSync(file) ? ((JSON.parse(fs.readFileSync(file, 'utf8')) as { sorular?: unknown }).sorular ?? {}) : {})
+        }
+        // Alt konu + spot bilgi kartları (docs/antigravity/DUS_KONU_SPOT_GOREVI.md; scripts/dus/konu_denetle.py birleştirir)
+        if (parts.length === 2 && parts[1] === 'konu') {
+          const file = path.resolve(dir, '..', 'konu', `${id}.json`)
           return json(fs.existsSync(file) ? ((JSON.parse(fs.readFileSync(file, 'utf8')) as { sorular?: unknown }).sorular ?? {}) : {})
         }
         if (parts.length === 2 && /^p\d{3}\.webp$/.test(parts[1])) {

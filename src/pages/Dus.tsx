@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom'
 import {
   DUS_SUBJECTS,
   DUS_TESTS,
   answerKey,
   dusImageUrl,
+  dusItemsOf,
   dusNet,
   listDusExams,
   loadDusExam,
@@ -13,7 +14,6 @@ import {
   loadDusTexts,
   readDusAnswers,
   resetDusTest,
-  saveDusAnswer,
   solvable,
   subjectOf,
   subjectSummary,
@@ -23,12 +23,23 @@ import {
   type DusExam,
   type DusExamMeta,
   type DusGloss,
+  type DusQueueItem,
   type DusQuestion,
   type DusSolution,
   type DusSubject,
   type DusText,
   type DusTestKey,
 } from '../services/dus'
+import {
+  clampDusGoal,
+  dusDailyPlan,
+  dusDeckCounts,
+  flagDusQuestion,
+  readDusDeck,
+  readDusGoal,
+  recordDusAnswer,
+  writeDusGoal,
+} from '../services/dusSrs'
 import { useLocalUrl } from '../services/localContent'
 import { AiText } from '../components/AiText'
 import { DusAiExplain } from './DusAi'
@@ -41,14 +52,21 @@ import { QuestionNav } from './exam/QuestionNav'
 // DUS çalışma bölümü: ÖSYM'nin çıkmış DUS kitapçıkları (görüntü tabanlı; soru metni sayfadan kırpılır).
 // Yalnızca geliştirmede ya da şifreli kaynak paketi yüklüyken görünür.
 
+// Ayrı parçalar: tekrar/bugünün seti, süreli deneme ve istatistik (tekrar ekranı QuestionCard'ı bu dosyadan alır)
+const DusReview = lazy(() => import('./DusReview'))
+const DusMock = lazy(() => import('./DusMock'))
+const DusStats = lazy(() => import('./DusStats'))
+
 const LETTERS = ['A', 'B', 'C', 'D', 'E']
 
 function useAnswers(): [DusAnswers, (a: DusAnswers) => void] {
   const userId = useUserStore((s) => s.activeUserId)
-  const [state, setState] = useState(() => ({ userId, all: readDusAnswers(userId) }))
-  // Kullanıcı değişince o kullanıcının kayıtları
-  if (state.userId !== userId) setState({ userId, all: readDusAnswers(userId) })
-  return [state.all, (all) => setState({ userId, all })]
+  // Depodaki kayıtlar kullanıcı başına bir kez okunur; bu ekranda yapılan değişiklik o kullanıcıya bağlı tutulur.
+  // Kullanıcı değişince eski kullanıcının durumu yok sayılır (render sırasında setState yok).
+  const stored = useMemo(() => readDusAnswers(userId), [userId])
+  const [state, setState] = useState<{ userId: string; all: DusAnswers } | null>(null)
+  const set = useCallback((all: DusAnswers) => setState({ userId, all }), [userId])
+  return [state && state.userId === userId ? state.all : stored, set]
 }
 
 /** Sayfanın bir bölgesini kırparak gösterir (kutu yoksa tam sayfa). */
@@ -67,6 +85,68 @@ function PageCrop({ exam, page, box }: { exam: DusExam; page: number; box: DusQu
         style={{ width: `${100 / bw}%`, left: `${(-x0 / bw) * 100}%`, top: `${(-y0 / bh) * 100}%` }}
       />
     </div>
+  )
+}
+
+/** Bugünün seti: vadesi gelen tekrarlar + günlük yeni soru hedefi, ilerleme ve seri. */
+function TodayCard({ answers }: { answers: DusAnswers }) {
+  const navigate = useNavigate()
+  const userId = useUserStore((s) => s.activeUserId)
+  const [goal, setGoal] = useState(readDusGoal)
+  const deck = useMemo(() => readDusDeck(userId), [userId])
+  const plan = dusDailyPlan(answers, deck, goal)
+  const counts = dusDeckCounts(deck)
+  const pct = plan.target ? Math.min(100, Math.round((plan.done / plan.target) * 100)) : 100
+  const left = plan.due + plan.newLeft
+  function step(d: number) {
+    const next = clampDusGoal(goal + d)
+    setGoal(next)
+    writeDusGoal(next)
+  }
+  return (
+    <article className={`card ${styles.dusToday}`}>
+      <div className={styles.dusTodayHead}>
+        <strong>📅 Bugünün seti</strong>
+        {plan.streak > 0 && <span className={styles.dusStreak}>🔥 {plan.streak} gün seri</span>}
+      </div>
+      <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+        Önce vadesi gelen tekrarlar, sonra en zayıf dersinden (klinik öncelikli) çözmediğin yeni sorular. Yanlış
+        cevapladığın ya da ⭐ ile işaretlediğin sorular tekrar destesine girer.
+      </p>
+      <div className={styles.dusTodayStats}>
+        <span>
+          🔁 Tekrar <b>{plan.due}</b>
+        </span>
+        <span className={styles.dusGoal}>
+          🆕 Günlük yeni
+          <button type="button" className={styles.pdfBtn} onClick={() => goal > 5 && step(-5)} aria-label="Hedefi azalt" aria-disabled={goal <= 5}>
+            −
+          </button>
+          <b>{goal}</b>
+          <button type="button" className={styles.pdfBtn} onClick={() => goal < 100 && step(5)} aria-label="Hedefi artır" aria-disabled={goal >= 100}>
+            +
+          </button>
+        </span>
+      </div>
+      <div className={styles.dusTodayBar}>
+        <span className={styles.bar} aria-hidden="true">
+          <span className={styles.barFill} style={{ width: `${pct}%` }} />
+        </span>
+        <small className="muted">
+          Bugün {plan.done} / {plan.target}
+        </small>
+      </div>
+      <div className={styles.dusTodayHead}>
+        <button type="button" className="btn btn-primary" onClick={() => left && navigate('bugun')} aria-disabled={!left}>
+          {left ? `Başla (${left})` : 'Bugünkü set tamam ✓'}
+        </button>
+        {counts.total > 0 && (
+          <small className="muted">
+            Tekrar destesinde {counts.total} soru · yarın {counts.tomorrow} · 7 gün içinde {counts.week}
+          </small>
+        )}
+      </div>
+    </article>
   )
 }
 
@@ -107,6 +187,18 @@ function DusHome() {
           </p>
         </div>
       </header>
+      <TodayCard answers={all} />
+      <nav className={styles.dusLinks} aria-label="DUS araçları">
+        <Link to="deneme" className="btn btn-secondary">
+          ⏱️ Süreli deneme
+        </Link>
+        <Link to="istatistik" className="btn btn-secondary">
+          📊 İstatistik
+        </Link>
+        <Link to="tekrar" className="btn btn-secondary">
+          🔁 Tekrar
+        </Link>
+      </nav>
       {wrong > 0 && (
         <article className="card">
           <button type="button" className="btn btn-primary" onClick={() => navigate('yanlislar')}>
@@ -239,8 +331,8 @@ function Cols({ text, r = (s) => s }: { text: string; r?: (s: string) => ReactNo
   )
 }
 
-/** Soru kutusu + şıklar: çözme ve yanlışlar ekranında ortak. */
-function QuestionCard({
+/** Soru kutusu + şıklar: çözme, yanlışlar ve tekrar ekranında ortak. */
+export function QuestionCard({
   exam,
   test,
   q,
@@ -250,6 +342,8 @@ function QuestionCard({
   onAnswer,
   quick,
   footer,
+  flagged,
+  onFlag,
 }: {
   exam: DusExam
   test: DusTestKey
@@ -260,6 +354,9 @@ function QuestionCard({
   onAnswer: (letter: string) => void
   quick: boolean
   footer: React.ReactNode
+  /** ⭐ işareti (cevaptan sonra görünür; işaretlenen soru tekrar destesine girer) */
+  flagged?: boolean
+  onFlag?: (on: boolean) => void
 }) {
   const [choice, setChoice] = useState<string | null>(saved?.c ?? null)
   const [showPage, setShowPage] = useState(false)
@@ -410,6 +507,18 @@ function QuestionCard({
             {saved?.ok ? '✓ Doğru' : `✗ Yanlış — doğru cevap: ${q.answer}`}
           </span>
         )}
+        {revealed && onFlag && (
+          <button
+            type="button"
+            className={`${styles.pdfBtn} ${flagged ? styles.dusFlagOn : ''}`}
+            onClick={() => onFlag(!flagged)}
+            aria-pressed={!!flagged}
+            title="İşaretlenen soru tekrar destesine girer, ertesi gün yeniden sorulur"
+            data-focus-hide
+          >
+            {flagged ? '⭐ İşaretli' : '☆ İşaretle'}
+          </button>
+        )}
         <span className={styles.spacer} />
         {footer}
       </div>
@@ -448,21 +557,28 @@ function DusRunner() {
   const [all, setAll] = useAnswers()
   const [quick, setQuick] = useQuickAnswer()
 
+  // Sınav yüklenince ilk çözülmemiş sorudan başla
   useEffect(() => {
+    let alive = true
     loadDusExam(examId)
-      .then(setExam)
-      .catch(() => setError('Sınav bulunamadı.'))
-  }, [examId])
+      .then((e) => {
+        if (!alive) return
+        const t = e.tests.find((x) => x.key === testKey)
+        const answers = readDusAnswers(userId)
+        const first = t ? solvable(t).findIndex((q) => !answers[answerKey(examId, t.key, q.n)]) : -1
+        setExam(e)
+        setIdx(first === -1 ? 0 : first)
+      })
+      .catch(() => alive && setError('Sınav bulunamadı.'))
+    return () => {
+      alive = false
+    }
+  }, [examId, testKey, userId])
 
   const test = exam?.tests.find((t) => t.key === testKey)
   const questions = useMemo(() => (test ? solvable(test) : []), [test])
   const key = (q: DusQuestion) => answerKey(examId, testKey as DusTestKey, q.n)
 
-  // Açılışta ilk çözülmemiş soru
-  if (idx === null && questions.length) {
-    const first = questions.findIndex((q) => !all[key(q)])
-    setIdx(first === -1 ? 0 : first)
-  }
   const i = idx ?? 0
   const count = questions.length
   const swipe = useQuestionNav(
@@ -521,7 +637,9 @@ function DusRunner() {
         chip={subjectOf(test.key, q.n)}
         saved={all[key(q)]}
         quick={quick}
-        onAnswer={(l) => setAll(saveDusAnswer(userId, key(q), l, l === q.answer))}
+        onAnswer={(l) => setAll(recordDusAnswer(userId, key(q), l, l === q.answer))}
+        flagged={all[key(q)]?.flag}
+        onFlag={(on) => setAll(flagDusQuestion(userId, key(q), on))}
         footer={
           <>
             <button type="button" className="btn btn-ghost" disabled={i === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
@@ -538,28 +656,6 @@ function DusRunner() {
   )
 }
 
-interface QueueItem {
-  exam: DusExam
-  test: DusTestKey
-  q: DusQuestion
-  key: string
-}
-
-/** Anahtarlardan (sınav/test/no) soru listesi kurar; sınavlar gerektiği kadar yüklenir. */
-async function itemsOf(keys: string[]): Promise<QueueItem[]> {
-  const ids = [...new Set(keys.map((k) => k.split('/')[0]))]
-  const list = await Promise.all(ids.map((id) => loadDusExam(id).catch(() => null)))
-  const byId = new Map(list.filter((e): e is DusExam => !!e).map((e) => [e.id, e]))
-  const out: QueueItem[] = []
-  for (const k of keys) {
-    const [id, test, n] = k.split('/')
-    const exam = byId.get(id)
-    const q = exam?.tests.find((t) => t.key === test)?.questions.find((x) => x.n === Number(n))
-    if (exam && q && q.answer !== 'X') out.push({ exam, test: test as DusTestKey, q, key: k })
-  }
-  return out
-}
-
 /**
  * Sınavlar arası soru kuyruğu: Yanlışlarım (son cevabı yanlış olanlar; bu ekranda verilen cevaplar ayrı tutulur ki
  * liste kaymasın) ya da bir ders (tüm sınavlardaki o dersin soruları, yeniden eskiye; kayıtlı cevaplar görünür).
@@ -567,7 +663,7 @@ async function itemsOf(keys: string[]): Promise<QueueItem[]> {
 function DusQueue({ subject }: { subject?: DusSubject }) {
   const userId = useUserStore((s) => s.activeUserId)
   const [all, setAll] = useAnswers()
-  const [items, setItems] = useState<QueueItem[] | null>(null)
+  const [items, setItems] = useState<DusQueueItem[] | null>(null)
   const [pos, setPos] = useState(0)
   const [quick, setQuick] = useQuickAnswer()
   const [session, setSession] = useState<Record<string, { c: string; ok: boolean }>>({})
@@ -577,13 +673,13 @@ function DusQueue({ subject }: { subject?: DusSubject }) {
     const answers = readDusAnswers(userId)
     const load = subject
       ? listDusExams().then((exams) =>
-          itemsOf(
+          dusItemsOf(
             exams.flatMap((e) =>
               Array.from({ length: subject.to - subject.from + 1 }, (_, i) => answerKey(e.id, subject.test, subject.from + i)),
             ),
           ),
         )
-      : itemsOf(wrongKeys(answers))
+      : dusItemsOf(wrongKeys(answers))
     void load.then((list) => {
       if (!alive) return
       setItems(list)
@@ -657,8 +753,10 @@ function DusQueue({ subject }: { subject?: DusSubject }) {
         onAnswer={(l) => {
           const ok = l === it.q.answer
           setSession((s) => ({ ...s, [it.key]: { c: l, ok } }))
-          setAll(saveDusAnswer(userId, it.key, l, ok))
+          setAll(recordDusAnswer(userId, it.key, l, ok))
         }}
+        flagged={all[it.key]?.flag}
+        onFlag={(on) => setAll(flagDusQuestion(userId, it.key, on))}
         footer={
           <>
             <button type="button" className="btn btn-ghost" disabled={pos === 0} onClick={() => void swipe.turn(-1)} data-focus-hide>
@@ -688,10 +786,16 @@ function RunnerRoute() {
   return <DusRunner key={`${examId}/${test}`} />
 }
 
+const lazyEl = (el: ReactNode) => <Suspense fallback={<p className="muted">Yükleniyor…</p>}>{el}</Suspense>
+
 export default function DusPage() {
   return (
     <Routes>
       <Route index element={<DusHome />} />
+      <Route path="tekrar" element={lazyEl(<DusReview />)} />
+      <Route path="bugun" element={lazyEl(<DusReview daily />)} />
+      <Route path="deneme/*" element={lazyEl(<DusMock />)} />
+      <Route path="istatistik" element={lazyEl(<DusStats />)} />
       <Route path="yanlislar" element={<DusQueue />} />
       <Route path="ders/:subjectId" element={<SubjectRoute />} />
       <Route path=":examId/:test" element={<RunnerRoute />} />

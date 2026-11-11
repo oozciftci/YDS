@@ -41,6 +41,10 @@ export function appLinks(): AppLink[] {
       { href: '/yds-sorular/okuma', label: 'Okuma modu', desc: 'okuma paragrafları, okuma hızı, dinleme' },
       { href: '/yds-sorular/taktik', label: 'Taktik Kitabı', desc: 'hocaların kitaplarından soru tipine göre taktikler' },
       { href: '/yds-sorular/analiz', label: 'Hatalarımı analiz et', desc: 'son yanlışlardaki tekrar eden kök hatalar ve çalışma önerisi' },
+      { href: '/dus', label: 'DUS', desc: 'diş hekimliği uzmanlık sınavı (DUS) çıkmış soruları; sınav sınav ya da derse göre çöz' },
+      { href: '/dus/deneme', label: 'DUS süreli deneme', desc: '120 soru / 150 dk DUS denemesi (çıkmış sınav ya da karma), Temel/Klinik net' },
+      { href: '/dus/istatistik', label: 'DUS istatistik', desc: 'DUS ders ders başarı, en zayıf dersler, deneme netlerinin gelişimi' },
+      { href: '/dus/tekrar', label: 'DUS tekrar', desc: 'zamanı gelen DUS sorularının aralıklı tekrarı' },
     )
   }
   return links

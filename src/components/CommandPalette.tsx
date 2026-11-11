@@ -31,6 +31,10 @@ const PAGES: Item[] = [
         { group: 'Sayfa', label: 'Özel Deneme', to: '/yds-sorular/ozel' },
         { group: 'Sayfa', label: 'Soru bankaları', to: '/yds-sorular/bankalar' },
         { group: 'Sayfa', label: 'Sınav Stratejileri 3', hint: 'Konulara göre testler', to: '/yds-sorular/bankalar/strateji-3' },
+        { group: 'Sayfa', label: 'DUS', hint: 'Diş hekimliği uzmanlık sınavı çıkmış soruları', to: '/dus' },
+        { group: 'Sayfa', label: 'DUS süreli deneme', hint: '120 soru, 150 dk; sınav ya da karma', to: '/dus/deneme' },
+        { group: 'Sayfa', label: 'DUS istatistik', hint: 'Ders ders başarı, deneme netleri', to: '/dus/istatistik' },
+        { group: 'Sayfa', label: 'DUS tekrar', hint: 'Zamanı gelen DUS soruları', to: '/dus/tekrar' },
       ]
     : []),
 ]

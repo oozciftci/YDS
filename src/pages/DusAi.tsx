@@ -3,18 +3,19 @@ import { Link } from 'react-router-dom'
 import { AiText } from '../components/AiText'
 import { db } from '../db'
 import { aiConfigured, generateChat } from '../services/ai'
-import { dusImageUrl, subjectOf, type DusExam, type DusQuestion, type DusTestKey } from '../services/dus'
+import { dusImageUrl, loadDusTexts, subjectOf, type DusExam, type DusQuestion, type DusTestKey, type DusText } from '../services/dus'
 import { localFetch } from '../services/localContent'
 import { useUserStore } from '../stores/user'
 import type { AiNoteTurn } from '../types/database'
 import styles from './ExamStudy.module.css'
 
 // DUS sorusu için yapay zekâ sohbeti (Gemini). Soru sayfadan kırpılmış görüntü olduğu için görüntü de gönderilir
-// (şekil, radyografi, tablo okunabilsin); PDF'ten çıkan metin yardımcı olarak eklenir. Sohbet cihazda (aiNotes) saklanır.
+// (şekil, radyografi, tablo okunabilsin); metin yardımcı olarak eklenir: varsa denetlenmiş OCR metni (soru + şıklar),
+// yoksa PDF'ten çıkan ham metin. Sohbet cihazda (aiNotes) saklanır.
 
 const SYSTEM = `Sen Diş Hekimliğinde Uzmanlık Eğitimi Giriş Sınavı'na (DUS) hazırlayan deneyimli bir öğretim üyesisin ve Türk bir diş hekimiyle konuşuyorsun.
 
-Sana ÖSYM'nin çıkmış bir DUS sorusunun görüntüsü, PDF'ten çıkarılmış (bozuk olabilen) metni ve resmî cevap anahtarı verilir. Soruyu görüntüden oku; metin yalnızca yardımcıdır.
+Sana ÖSYM'nin çıkmış bir DUS sorusunun görüntüsü, metni (görüntüden okunmuş ya da PDF'ten çıkarılmış; hatalı olabilir) ve resmî cevap anahtarı verilir. Soruyu görüntüden oku; metin yalnızca yardımcıdır.
 
 İlk açıklamada Türkçe, sade ve kısa yaz; şu biçimi kullan:
 **Doğru cevap: X)** — neden doğru olduğu (2-4 cümle, temel bilgi ya da mekanizma).
@@ -54,13 +55,28 @@ async function cropImage(exam: DusExam, q: DusQuestion): Promise<{ mime: string;
   }
 }
 
-function firstPrompt(exam: DusExam, test: DusTestKey, q: DusQuestion, choice: string | undefined, studentQuestion: string) {
+/** Yardımcı metin: varsa OCR (soru + şıklar), yoksa PDF metni. */
+function promptText(q: DusQuestion, ocr: DusText | null | undefined): string[] {
+  if (ocr?.soru) {
+    const opts = ['A', 'B', 'C', 'D', 'E'].filter((l) => ocr.siklar[l]).map((l) => `${l}) ${ocr.siklar[l]}`)
+    return ['Soru metni (görüntüden okundu; yardımcı):', ocr.soru, ...opts]
+  }
+  return ['PDF metni (yardımcı; şıklar ve satırlar karışmış olabilir):', q.text]
+}
+
+function firstPrompt(
+  exam: DusExam,
+  test: DusTestKey,
+  q: DusQuestion,
+  choice: string | undefined,
+  studentQuestion: string,
+  ocr?: DusText | null,
+) {
   const subject = subjectOf(test, q.n)
   const lines = [
     `Sınav: ${exam.title}, ${test === 'tbt' ? 'Temel Bilimler' : 'Klinik Bilimler'} Testi, Soru ${q.n}${subject ? ` (ders: ${subject.title})` : ''}`,
     '',
-    'PDF metni (yardımcı; şıklar ve satırlar karışmış olabilir):',
-    q.text,
+    ...promptText(q, ocr),
     '',
     `Doğru cevap (ÖSYM cevap anahtarı): ${q.answer}`,
   ]
@@ -102,8 +118,10 @@ export function DusAiExplain({ exam, test, q, choice }: { exam: DusExam; test: D
     const first = turns.length === 0
     if (!first && !text) return
     const now = new Date().toISOString()
+    setLoading(true)
+    const ocr = first ? ((await loadDusTexts(exam.id))[`${test}/${q.n}`] ?? null) : null
     const userTurn: AiNoteTurn = first
-      ? { role: 'user', text: text || DEFAULT_ASK, prompt: firstPrompt(exam, test, q, choice, text), at: now }
+      ? { role: 'user', text: text || DEFAULT_ASK, prompt: firstPrompt(exam, test, q, choice, text, ocr), at: now }
       : { role: 'user', text, at: now }
     const history = [...turns, userTurn]
     setTurns(history)

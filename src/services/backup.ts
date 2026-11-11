@@ -1,4 +1,5 @@
 import { db } from '../db'
+import { mergeStamped } from './deviceSync'
 import { logger } from './logger'
 import { exportNotebook, importNotebook } from './notebook'
 
@@ -25,6 +26,51 @@ export interface BackupData {
   notebook?: unknown[]
   /** Okurken verilen kelime işaretleri (biliyorum / yok say) */
   knownWords?: unknown[]
+  /** DUS cevapları ve tekrar destesi: tarayıcı deposu anahtarı (yds-dus:<kullanıcı>, yds-dus-srs:<kullanıcı>) → JSON metni */
+  dusStorage?: Record<string, string>
+}
+
+/** DUS'un tarayıcı deposundaki kişiye özel anahtarları (soru metni yok; yalnızca kimlik, şık, zaman). */
+const DUS_STORAGE_KEY = /^yds-dus(-srs)?:/
+
+function readDusStorage(): Record<string, string> {
+  const out: Record<string, string> = {}
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i)
+      if (k && DUS_STORAGE_KEY.test(k)) out[k] = localStorage.getItem(k) ?? ''
+    }
+  } catch {
+    // depo kapalı
+  }
+  return out
+}
+
+/**
+ * Yedekteki DUS kayıtlarını bu cihazdakilerle birleştirir (saf): kayıt kayıt daha yeni `t` kazanır; bozuk ya da
+ * tanınmayan anahtar atlanır. Dönen nesne yazılacak anahtar → JSON metni.
+ */
+export function mergeDusStorage(local: Record<string, string | null>, incoming: unknown): Record<string, string> {
+  const out: Record<string, string> = {}
+  if (!incoming || typeof incoming !== 'object' || Array.isArray(incoming)) return out
+  for (const [k, v] of Object.entries(incoming as Record<string, unknown>)) {
+    if (!DUS_STORAGE_KEY.test(k) || typeof v !== 'string') continue
+    try {
+      const r = JSON.parse(v) as unknown
+      if (!r || typeof r !== 'object' || Array.isArray(r)) continue
+      let l: unknown = {}
+      try {
+        l = JSON.parse(local[k] || '{}')
+      } catch {
+        // yereldeki bozuk: yedek esas
+      }
+      const base = l && typeof l === 'object' && !Array.isArray(l) ? (l as Record<string, unknown>) : {}
+      out[k] = JSON.stringify(mergeStamped(base, r as Record<string, unknown>))
+    } catch {
+      // bozuk kayıt atlanır
+    }
+  }
+  return out
 }
 
 /**
@@ -50,6 +96,7 @@ export async function exportDatabaseToJson(): Promise<void> {
       ])
     const notebook = await exportNotebook()
     const knownWords = await db.knownWords.toArray()
+    const dusStorage = readDusStorage()
 
     const backup: BackupData = {
       version: 5,
@@ -69,6 +116,7 @@ export async function exportDatabaseToJson(): Promise<void> {
       suggestions,
       notebook,
       knownWords,
+      ...(Object.keys(dusStorage).length ? { dusStorage } : {}),
     }
 
     const jsonStr = JSON.stringify(backup, null, 2)
@@ -170,6 +218,21 @@ export async function importDatabaseFromJson(file: File): Promise<{ wordsImporte
 
     // Defter görselleri/sesleri data URL'den Blob'a çevrilir (fetch gerektirdiği için işlem dışında)
     if (Array.isArray(data.notebook) && data.notebook.length > 0) await importNotebook(data.notebook)
+
+    // DUS cevapları ve tekrar destesi (eski yedeklerde yok)
+    if (data.dusStorage && typeof data.dusStorage === 'object') {
+      const set = mergeDusStorage(
+        Object.fromEntries(Object.keys(data.dusStorage).map((k) => [k, localStorage.getItem(k)])),
+        data.dusStorage,
+      )
+      for (const [k, v] of Object.entries(set)) {
+        try {
+          localStorage.setItem(k, v)
+        } catch {
+          // depo dolu
+        }
+      }
+    }
 
     logger.interaction('storage', 'Kullanıcı JSON yedeğini başarıyla geri yükledi.', {
       wordsImported: data.words.length,

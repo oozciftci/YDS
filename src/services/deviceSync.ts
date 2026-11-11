@@ -133,8 +133,22 @@ export function mergeSnapshots(local: Tables, remote: Tables) {
 // Tarayıcı deposundaki kişiye özel ilerleme (kitapta kaldığın yer, biten üniteler, dilbilgisi puanları, kaydedilenler …)
 const STORAGE_KEY = /^yds-[a-z-]+:user_/
 const STORAGE_SKIP = /^yds-mock:/ // yarıdaki süreli deneme cihazda kalır
+/** Bu tarayıcı deposu anahtarı eşitlemeye girer mi (kişiye özel `yds-*:user_*`, yarıdaki deneme hariç)? */
+export const isSyncedStorageKey = (k: string) => STORAGE_KEY.test(k) && !STORAGE_SKIP.test(k)
 const BASE_KEY = 'yds-sync-base'
 const LAST_KEY = 'yds-sync-last'
+/** DUS cevapları (yds-dus:) ve tekrar destesi (yds-dus-srs:): kayıt kayıt, daha yeni `t` kazanır */
+const STAMPED_KEY = /^yds-dus(-srs)?:/
+
+/** Kayıt kayıt birleştirme: `t` damgası büyük olan kazanır; eşitse ya da damga yoksa yerel kalır. */
+export function mergeStamped(local: Record<string, unknown>, remote: Record<string, unknown>) {
+  const stamp = (v: unknown) => (v && typeof v === 'object' ? str((v as { t?: unknown }).t) : '')
+  const out: Record<string, unknown> = { ...local }
+  for (const [id, rv] of Object.entries(remote)) {
+    if (!(id in out) || stamp(rv) > stamp(out[id])) out[id] = rv
+  }
+  return out
+}
 
 /** Üç yollu birleştirme: son eşitlemeden beri yalnızca bir taraf değiştiyse o kazanır; ikisi de değiştiyse nesneler/diziler birleşir, yoksa yerel kalır. */
 export function mergeStorage(local: Record<string, string>, remote: Record<string, string>, base: Record<string, string>) {
@@ -153,7 +167,10 @@ export function mergeStorage(local: Record<string, string>, remote: Record<strin
         const seen = new Set<string>()
         set[k] = JSON.stringify([...r, ...l].filter((x) => !seen.has(JSON.stringify(x)) && !!seen.add(JSON.stringify(x))))
       } else if (l && r && typeof l === 'object' && typeof r === 'object' && !Array.isArray(l) && !Array.isArray(r)) {
-        set[k] = JSON.stringify({ ...r, ...l })
+        const merged = STAMPED_KEY.test(k)
+          ? mergeStamped(l as Record<string, unknown>, r as Record<string, unknown>)
+          : { ...r, ...l }
+        set[k] = JSON.stringify(merged)
       }
     } catch {
       // düz metin: yerel kalır
@@ -166,7 +183,7 @@ function readStorage() {
   const out: Record<string, string> = {}
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i)
-    if (k && STORAGE_KEY.test(k) && !STORAGE_SKIP.test(k)) out[k] = localStorage.getItem(k) ?? ''
+    if (k && isSyncedStorageKey(k)) out[k] = localStorage.getItem(k) ?? ''
   }
   return out
 }

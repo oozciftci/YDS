@@ -1,0 +1,334 @@
+{
+  "surum": 1,
+  "aciklama": "DUS alt konu sınıflaması. Ders kimlikleri ve soru aralıkları src/services/dus.ts DUS_SUBJECTS ile aynı. Her konu birbirini dışlar; sığmayan soru '<ders>/diger'e gider. Görev: docs/antigravity/DUS_KONU_SPOT_GOREVI.md; denetleyici: scripts/dus/konu_denetle.py.",
+  "dersler": [
+    {
+      "id": "anatomi",
+      "ad": "Anatomi",
+      "test": "tbt",
+      "ilk": 1,
+      "son": 6,
+      "konular": [
+        { "id": "anatomi/genel-anatomi", "ad": "Genel anatomi ve eklem tipleri", "kapsam": "Anatomik terminoloji, kemik/kas/eklem sınıflaması, eklem tipleri ve hareketleri (TME hariç)" },
+        { "id": "anatomi/kafatasi-kemikleri", "ad": "Kafatası ve yüz kemikleri", "kapsam": "Neurocranium ve viscerocranium kemikleri, foramenler, fossalar, fissürler ve bunlardan geçen yapılar" },
+        { "id": "anatomi/kranial-sinirler", "ad": "Kranial sinirler ve gangliyonlar", "kapsam": "12 kranial sinir, dalları ve innervasyon alanları, baş-boyun parasempatik gangliyonları, refleks yolları" },
+        { "id": "anatomi/cigneme-kaslari-tme", "ad": "Çiğneme kasları ve TME", "kapsam": "Çiğneme kasları, temporomandibular eklemin yapısı, bağları ve mandibula hareketlerini yapan kaslar" },
+        { "id": "anatomi/yuz-boyun-kaslari", "ad": "Yüz ve boyun kasları, boyun bölgeleri", "kapsam": "Mimik kasları, supra/infrahyoid kaslar, boyun kasları, boyun üçgenleri, fasyalar ve servikal pleksus" },
+        { "id": "anatomi/agiz-dil-damak", "ad": "Ağız boşluğu, dil, damak ve tükürük bezleri", "kapsam": "Ağız boşluğu sınırları, dil ve damak (kasları dâhil), tükürük bezleri ve kanalları" },
+        { "id": "anatomi/farinks-larinks", "ad": "Farinks ve larinks", "kapsam": "Yutak ve gırtlağın bölümleri, kasları, kıkırdakları, kıvrımları ve innervasyonu" },
+        { "id": "anatomi/burun-orbita-kulak", "ad": "Burun, paranazal sinüsler, orbita ve kulak", "kapsam": "Burun boşluğu ve meatuslar, paranazal sinüsler, orbita ve göz kasları, kulak bölümleri" },
+        { "id": "anatomi/bas-boyun-damarlari", "ad": "Baş-boyun damarları ve lenfatikleri", "kapsam": "Karotis sistemi ve dalları (a. maxillaris vb.), baş-boyun venleri, dural sinüsler, lenf düğümleri ve drenajı" },
+        { "id": "anatomi/noroanatomi", "ad": "Nöroanatomi ve otonom sistem", "kapsam": "Beyin, beyin sapı, omurilik, zarlar, sinir yolları ve otonom sinir sisteminin genel düzeni (kranial sinirler hariç)" },
+        { "id": "anatomi/govde-ekstremite", "ad": "Gövde ve ekstremiteler", "kapsam": "Toraks ve mediasten, karın ve pelvis organları, üst ve alt ekstremite kasları, sinirleri ve damarları" },
+        { "id": "anatomi/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "histoloji",
+      "ad": "Histoloji ve Embriyoloji",
+      "test": "tbt",
+      "ilk": 7,
+      "son": 10,
+      "konular": [
+        { "id": "histoloji/hucre-epitel-bezler", "ad": "Hücre, epitel doku ve bezler", "kapsam": "Hücre yapısının histolojisi, epitel tipleri, yüzey farklılaşmaları, ekzokrin/endokrin bez yapısı (ağız bezleri hariç)" },
+        { "id": "histoloji/bag-kikirdak-kemik", "ad": "Bağ doku, kıkırdak ve kemik", "kapsam": "Bağ doku hücre ve lifleri, kıkırdak tipleri, kemik dokusu, kemikleşme, eklem ve sinoviyal zar histolojisi" },
+        { "id": "histoloji/kan-lenfoid", "ad": "Kan ve lenfoid doku", "kapsam": "Kan hücreleri ve granülleri, hematopoez, lenfoid organlar ve bağışıklık hücrelerinin histolojisi" },
+        { "id": "histoloji/kas-sinir", "ad": "Kas ve sinir dokusu", "kapsam": "İskelet, kalp ve düz kas yapısı; nöron, glia, sinir lifleri ve sinapsların histolojisi" },
+        { "id": "histoloji/organ-sistemleri", "ad": "Organ sistemleri histolojisi", "kapsam": "Solunum, sindirim, deri, endokrin, üriner ve diğer organların histolojisi (ağız ve diş hariç)" },
+        { "id": "histoloji/agiz-mukozasi-bezler", "ad": "Ağız mukozası ve tükürük bezleri", "kapsam": "Ağız epiteli ve tabakaları, dil papillaları, tat tomurcukları, tükürük bezlerinin histolojisi" },
+        { "id": "histoloji/dis-dokulari", "ad": "Diş dokuları ve periodonsiyum", "kapsam": "Mine, dentin, pulpa, sement, periodontal ligament ve alveol kemiğinin histolojisi" },
+        { "id": "histoloji/dis-gelisimi", "ad": "Diş gelişimi ve sürmesi", "kapsam": "Odontogenez evreleri, mine organı, ameloblast/odontoblast farklılaşması, kök gelişimi, diş sürmesi" },
+        { "id": "histoloji/genel-embriyoloji", "ad": "Genel embriyoloji", "kapsam": "Gametogenez, döllenme, yarıklanma, implantasyon, germ yaprakları, nöral krest ve türevleri, zarlar" },
+        { "id": "histoloji/bas-boyun-embriyolojisi", "ad": "Baş-boyun embriyolojisi", "kapsam": "Farengeal arklar, cepler ve yarıklar ile türevleri; yüz, damak, dil ve tiroidin gelişimi; gelişim anomalileri" },
+        { "id": "histoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "fizyoloji",
+      "ad": "Fizyoloji",
+      "test": "tbt",
+      "ilk": 11,
+      "son": 16,
+      "konular": [
+        { "id": "fizyoloji/hucre-membran-sivilar", "ad": "Hücre zarı, taşınım ve vücut sıvıları", "kapsam": "Zar taşınım mekanizmaları, dinlenim zar potansiyeli, vücut sıvı bölmeleri, ozmoz ve sıvı hacim ölçümü" },
+        { "id": "fizyoloji/sinir-sinaps-otonom", "ad": "Aksiyon potansiyeli, sinaps ve otonom sinir sistemi", "kapsam": "Aksiyon potansiyeli ve iletimi, sinaptik aktarım, nörotransmitterler, otonom reseptörler ve etkileri" },
+        { "id": "fizyoloji/kas", "ad": "Kas fizyolojisi", "kapsam": "Nöromüsküler kavşak, iskelet/düz/kalp kası kasılma mekanizmaları, uyarılma-kasılma eşleşmesi" },
+        { "id": "fizyoloji/duyu-merkezi-sinir", "ad": "Duyu ve merkezî sinir sistemi", "kapsam": "Duyu reseptörleri ve lif tipleri, ağrı, tat, koku, işitme, görme, refleksler, motor kontrol, uyku ve beyin işlevleri" },
+        { "id": "fizyoloji/kan-hemostaz", "ad": "Kan ve hemostaz", "kapsam": "Kan hücreleri ve üretimi, eritropoez, kan grupları, pıhtılaşma, antikoagülan mekanizmalar ve fibrinoliz" },
+        { "id": "fizyoloji/kalp-dolasim", "ad": "Kalp ve dolaşım", "kapsam": "Kalbin elektriksel ve mekanik işlevi, kalp debisi, kan basıncı ve düzenlenmesi, damar tonusu, mikrodolaşım" },
+        { "id": "fizyoloji/solunum", "ad": "Solunum", "kapsam": "Akciğer hacim ve kapasiteleri, solunum mekaniği, gaz değişimi, O2-CO2 taşınması, solunumun kontrolü" },
+        { "id": "fizyoloji/bobrek-asit-baz", "ad": "Böbrek, elektrolit ve asit-baz dengesi", "kapsam": "Glomerüler filtrasyon, tübüler işlevler, su-elektrolit dengesi, potasyum dengesi, asit-baz düzenlenmesi" },
+        { "id": "fizyoloji/sindirim-tukuruk", "ad": "Sindirim ve tükürük", "kapsam": "Çiğneme, yutma, GİS motilitesi ve salgıları, tükürük salgısı ve düzenlenmesi, sindirim ve emilim" },
+        { "id": "fizyoloji/endokrin-ureme", "ad": "Endokrin ve üreme", "kapsam": "Hormonların etkileri ve salgı düzenlenmesi, kalsiyum-fosfat düzenleyici hormonlar, metabolizma ve üreme fizyolojisi" },
+        { "id": "fizyoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "biyokimya",
+      "ad": "Biyokimya",
+      "test": "tbt",
+      "ilk": 17,
+      "son": 22,
+      "konular": [
+        { "id": "biyokimya/protein-yapisi", "ad": "Amino asitler ve protein yapısı", "kapsam": "Amino asitlerin yapısı ve özellikleri, protein yapı düzeyleri, kollajen, hemoglobin ve diğer yapısal proteinler" },
+        { "id": "biyokimya/enzim-koenzim-vitamin", "ad": "Enzimler, koenzimler ve vitaminler", "kapsam": "Enzim sınıfları, kinetik ve inhibisyon, düzenleme, koenzimler ve vitaminler (D vitamini hariç)" },
+        { "id": "biyokimya/karbonhidrat", "ad": "Karbonhidratlar ve metabolizması", "kapsam": "Şekerlerin yapısı, glikoliz, glukoneogenez, glikojen metabolizması, pentoz fosfat yolu, ilgili düzenleyici enzimler" },
+        { "id": "biyokimya/enerji-metabolizmasi", "ad": "Sitrik asit döngüsü ve oksidatif fosforilasyon", "kapsam": "Pirüvat dehidrogenaz, sitrik asit döngüsü, elektron taşıma zinciri, ATP sentezi, biyolojik oksidasyon" },
+        { "id": "biyokimya/lipid", "ad": "Lipidler ve metabolizması", "kapsam": "Lipid yapıları, yağ asidi sentezi ve oksidasyonu, keton cisimleri, kolesterol, lipoproteinler, membran lipidleri" },
+        { "id": "biyokimya/aminoasit-metabolizmasi", "ad": "Amino asit ve azot metabolizması", "kapsam": "Transaminasyon, deaminasyon, üre döngüsü, amino asit türevleri, hem sentezi ve yıkımı" },
+        { "id": "biyokimya/nukleotid-molekuler", "ad": "Nükleotidler ve moleküler biyokimya", "kapsam": "Purin/pirimidin metabolizması, nükleik asit biyokimyası, replikasyon-transkripsiyon-translasyonun biyokimyası" },
+        { "id": "biyokimya/hormon-sinyal", "ad": "Hormonların biyokimyası ve sinyal iletimi", "kapsam": "Hormonların kimyasal yapısı, reseptör tipleri, ikincil haberciler, hormonların metabolik etkileri, metabolizmanın bütünleşmesi" },
+        { "id": "biyokimya/mineral-kan-agiz", "ad": "Mineral, kan ve ağız biyokimyası", "kapsam": "Kalsiyum-fosfat ve D vitamini, demir metabolizması, eser elementler, pıhtılaşma faktörleri, tükürük ve diş dokularının biyokimyası" },
+        { "id": "biyokimya/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "mikrobiyoloji",
+      "ad": "Mikrobiyoloji",
+      "test": "tbt",
+      "ilk": 23,
+      "son": 28,
+      "konular": [
+        { "id": "mikrobiyoloji/genel-bakteriyoloji", "ad": "Genel bakteriyoloji", "kapsam": "Bakteri hücre yapısı, üreme, metabolizma, genetik, virülans faktörleri, boyama ve kültür, antibiyotik direnç mekanizmaları" },
+        { "id": "mikrobiyoloji/sterilizasyon-dezenfeksiyon", "ad": "Sterilizasyon ve dezenfeksiyon", "kapsam": "Fiziksel ve kimyasal sterilizasyon, dezenfektan ve antiseptikler, biyolojik indikatörler, enfeksiyon kontrolü" },
+        { "id": "mikrobiyoloji/temel-immunoloji", "ad": "Temel immünoloji", "kapsam": "Doğal ve kazanılmış bağışıklık, antijen, antikor sınıfları, kompleman, sitokinler, T ve B hücreleri, MHC" },
+        { "id": "mikrobiyoloji/klinik-immunoloji", "ad": "Klinik immünoloji", "kapsam": "Aşırı duyarlılık tipleri, immün yetmezlikler, aşılar ve bağışıklama, serolojik ve immünolojik testler" },
+        { "id": "mikrobiyoloji/gram-pozitif", "ad": "Gram pozitif bakteriler", "kapsam": "Stafilokok, streptokok, enterokok, Bacillus, Clostridium, Corynebacterium, Listeria ve Actinomyces dışı gram pozitifler" },
+        { "id": "mikrobiyoloji/gram-negatif-ozel", "ad": "Gram negatif ve özel bakteriler", "kapsam": "Gram negatif kok ve basiller, mikobakteriler, spiroketler, klamidya, mikoplazma, riketsiyalar" },
+        { "id": "mikrobiyoloji/agiz-mikrobiyolojisi", "ad": "Ağız mikrobiyolojisi", "kapsam": "Ağız florası, dental plak ve biyofilm, çürük ve periodontal hastalık etkenleri, periodontal bakteri kompleksleri" },
+        { "id": "mikrobiyoloji/viroloji", "ad": "Viroloji", "kapsam": "Virus yapısı ve çoğalması, herpes, hepatit, HIV, HPV, paramiksovirus, enterovirus ve onkojenik viruslar" },
+        { "id": "mikrobiyoloji/mikoloji", "ad": "Mikoloji", "kapsam": "Mantarların genel özellikleri, Candida ve diğer fırsatçı ve sistemik mantarlar" },
+        { "id": "mikrobiyoloji/parazitoloji", "ad": "Parazitoloji", "kapsam": "Protozoonlar ve helmintler, yaşam döngüleri, yol açtıkları hastalıklar" },
+        { "id": "mikrobiyoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "patoloji",
+      "ad": "Patoloji",
+      "test": "tbt",
+      "ilk": 29,
+      "son": 32,
+      "konular": [
+        { "id": "patoloji/hucre-hasari", "ad": "Hücre zedelenmesi ve adaptasyon", "kapsam": "Hücresel adaptasyonlar, geri dönüşümlü/dönüşümsüz hasar, nekroz, apoptoz, hücre içi birikimler, kalsifikasyon" },
+        { "id": "patoloji/inflamasyon-onarim", "ad": "İnflamasyon ve onarım", "kapsam": "Akut ve kronik iltihap, mediyatörler, lökosit olayları ve fagositoz, granülom, rejenerasyon ve yara iyileşmesi" },
+        { "id": "patoloji/hemodinamik", "ad": "Hemodinamik bozukluklar", "kapsam": "Ödem, hiperemi, kanama, tromboz, emboli, infarktüs, şok" },
+        { "id": "patoloji/immunopatoloji", "ad": "İmmünopatoloji", "kapsam": "Aşırı duyarlılık mekanizmaları, otoimmün hastalıklar, transplant rejeksiyonu, immün yetmezlik, amiloidoz" },
+        { "id": "patoloji/neoplazi-genetik", "ad": "Neoplazi ve genetik hastalıklar", "kapsam": "Benign/malign ayrımı, karsinogenez, onkogen ve tümör baskılayıcı genler, derecelendirme-evreleme, genetik hastalıklar" },
+        { "id": "patoloji/oral-mukoza", "ad": "Ağız mukozası lezyonları", "kapsam": "Beyaz/kırmızı lezyonlar, vezikülobüllöz ve ülseratif hastalıklar, pigmente ve viral lezyonlar, premalign lezyonlar, ağız kanserleri" },
+        { "id": "patoloji/kistler", "ad": "Ağız ve çene kistleri", "kapsam": "Odontojenik ve odontojenik olmayan kistler, psödokistler, yumuşak doku kistleri" },
+        { "id": "patoloji/odontojenik-tumorler", "ad": "Odontojenik tümörler", "kapsam": "Epitelyal, mezenkimal ve karma odontojenik tümörler" },
+        { "id": "patoloji/kemik-lezyonlari", "ad": "Çene kemiği lezyonları", "kapsam": "Fibro-osseöz lezyonlar, dev hücreli lezyonlar, kemik tümörleri, metabolik ve iltihabi kemik hastalıkları" },
+        { "id": "patoloji/tukuruk-yumusak-doku", "ad": "Tükürük bezi ve yumuşak doku hastalıkları", "kapsam": "Tükürük bezi hastalıkları ve tümörleri, yumuşak doku tümörleri ve reaktif lezyonlar, lenfomalar" },
+        { "id": "patoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "farmakoloji",
+      "ad": "Farmakoloji",
+      "test": "tbt",
+      "ilk": 33,
+      "son": 36,
+      "konular": [
+        { "id": "farmakoloji/genel-farmakoloji", "ad": "Genel farmakoloji", "kapsam": "Farmakokinetik (emilim, dağılım, metabolizma, atılım), farmakodinamik, ilaç şekilleri ve uygulama yolları, etkileşimler" },
+        { "id": "farmakoloji/otonom", "ad": "Otonom sinir sistemi ilaçları", "kapsam": "Kolinerjik ve antikolinerjik ilaçlar, adrenerjik agonist ve blokörler, nöromüsküler blokörler" },
+        { "id": "farmakoloji/lokal-anestezikler", "ad": "Lokal anestezikler", "kapsam": "Lokal anesteziklerin yapısı, etki mekanizması, vazokonstriktörler, yan etkileri ve toksisitesi" },
+        { "id": "farmakoloji/analjezik-antiinflamatuvar", "ad": "Analjezik ve antiinflamatuvar ilaçlar", "kapsam": "NSAİİ, parasetamol, opioid analjezikler ve antagonistleri" },
+        { "id": "farmakoloji/mss-anestezi", "ad": "MSS ilaçları ve genel anestezikler", "kapsam": "Genel anestezikler, sedatif-hipnotikler, benzodiazepinler, antiepileptikler, antidepresan ve antipsikotikler" },
+        { "id": "farmakoloji/kardiyovaskuler-kan", "ad": "Kardiyovasküler ve kan ilaçları", "kapsam": "Antihipertansifler, diüretikler, antiaritmikler, antianjinaller, antikoagülan, antitrombositer ve fibrinolitikler" },
+        { "id": "farmakoloji/antimikrobiyal", "ad": "Antimikrobiyal ilaçlar", "kapsam": "Antibiyotik grupları ve mekanizmaları, beta-laktamaz inhibitörleri, antifungal ve antiviral ilaçlar" },
+        { "id": "farmakoloji/endokrin-kemik", "ad": "Endokrin ve kemik ilaçları", "kapsam": "Kortikosteroidler, antidiyabetikler, tiroid ilaçları, bifosfonatlar ve kemik metabolizmasına etkili ilaçlar" },
+        { "id": "farmakoloji/otakoid-gis-solunum", "ad": "Otakoidler, GİS ve solunum ilaçları", "kapsam": "Histamin ve antihistaminikler, mide asidi ilaçları, serotonin, eikosanoidler, astım ve öksürük ilaçları" },
+        { "id": "farmakoloji/antineoplastik-immun", "ad": "Antineoplastik ve immünomodülatör ilaçlar", "kapsam": "Kanser kemoterapötikleri, immünsüpresifler, monoklonal antikorlar ve biyolojik ajanlar" },
+        { "id": "farmakoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "biyoloji",
+      "ad": "Biyoloji ve Genetik",
+      "test": "tbt",
+      "ilk": 37,
+      "son": 40,
+      "konular": [
+        { "id": "biyoloji/hucre-zari-tasima", "ad": "Hücre zarı ve vezikül trafiği", "kapsam": "Zarın yapısı, zar proteinleri, taşınım, endositoz-ekzositoz, vezikül oluşumu ve zar füzyonu" },
+        { "id": "biyoloji/organeller", "ad": "Organeller ve protein hedeflenmesi", "kapsam": "ER, Golgi, lizozom, peroksizom, mitokondri; protein hedeflenmesi, glikozilasyon, proteazom ve otofaji" },
+        { "id": "biyoloji/hucre-iskeleti-baglantilar", "ad": "Hücre iskeleti, çekirdek ve hücre bağlantıları", "kapsam": "Mikrotübül, aktin ve ara filamentler, çekirdek zarı ve lamina, hücre bağlantıları, yüzey farklılaşmaları" },
+        { "id": "biyoloji/hucre-sinyal", "ad": "Hücre sinyal iletimi", "kapsam": "Reseptör tipleri, G proteinleri, ikincil haberciler, kinaz yolakları" },
+        { "id": "biyoloji/hucre-dongusu-olum", "ad": "Hücre döngüsü, bölünme ve hücre ölümü", "kapsam": "Hücre döngüsü ve denetimi, mitoz ve mayoz, apoptoz, kanser hücre biyolojisi, kök hücreler" },
+        { "id": "biyoloji/dna-replikasyon-onarim", "ad": "DNA yapısı, replikasyon ve onarım", "kapsam": "DNA ve kromatin yapısı, replikasyon enzimleri, DNA hasarı ve onarımı, mutasyon tipleri" },
+        { "id": "biyoloji/gen-ifadesi", "ad": "Gen ifadesi ve düzenlenmesi", "kapsam": "Transkripsiyon, RNA işlenmesi, translasyon, translasyon sonrası modifikasyonlar, gen düzenlenmesi ve epigenetik" },
+        { "id": "biyoloji/kalitim", "ad": "Kalıtım", "kapsam": "Mendel kalıtımı, otozomal ve X'e bağlı kalıtım, mitokondriyal kalıtım, soyağacı, çok etkenli kalıtım" },
+        { "id": "biyoloji/kromozom-anomalileri", "ad": "Kromozom ve kromozom anomalileri", "kapsam": "Kromozom yapısı ve karyotip, sayısal ve yapısal anomaliler, bunlarla ilişkili sendromlar" },
+        { "id": "biyoloji/molekuler-teknikler", "ad": "Moleküler biyoloji teknikleri", "kapsam": "PCR, restriksiyon enzimleri, klonlama ve vektörler, blot yöntemleri, dizileme, gen tedavisi" },
+        { "id": "biyoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "restoratif",
+      "ad": "Restoratif Diş Tedavisi",
+      "test": "kbt",
+      "ilk": 1,
+      "son": 10,
+      "konular": [
+        { "id": "restoratif/dis-sert-dokulari", "ad": "Diş sert dokuları ve çürük dışı lezyonlar", "kapsam": "Mine ve dentinin yapısı ve özellikleri, mine kusurları, aşınma, erozyon, abrazyon, abfraksiyon, dentin hassasiyeti" },
+        { "id": "restoratif/curuk-etiyoloji", "ad": "Çürük etiyolojisi ve tükürük", "kapsam": "Çürük oluşum etkenleri, dental plak ve kariyojenik bakteriler, tükürüğün koruyucu bileşenleri, kök yüzeyi çürüğü" },
+        { "id": "restoratif/curuk-tani-onleme", "ad": "Çürük tanısı, risk ve önleme", "kapsam": "Çürük tanı yöntemleri ve sınıflamaları, lezyonun histopatolojisi, florür, kimyasal plak kontrolü, remineralizasyon, minimal invaziv yaklaşım" },
+        { "id": "restoratif/kavite-preparasyonu", "ad": "Kavite preparasyonu ve izolasyon", "kapsam": "Black sınıflaması, kavite duvar ve köşeleri, preparasyon ilkeleri, el ve döner aletler, matriks sistemleri, izolasyon" },
+        { "id": "restoratif/amalgam", "ad": "Amalgam", "kapsam": "Amalgamın bileşimi ve fazları, korozyon, kondansasyon, bitirme, amalgam restorasyonların başarısızlığı" },
+        { "id": "restoratif/kompozit", "ad": "Kompozit rezinler", "kapsam": "Kompozit içeriği ve sınıflaması, polimerizasyon ve büzülme, ışık cihazları, tabakalama ve uygulama teknikleri" },
+        { "id": "restoratif/adeziv-sistemler", "ad": "Adeziv sistemler", "kapsam": "Mine ve dentine bağlanma, asitle pürüzlendirme, hibrit tabaka, adeziv sınıflaması, primer ve monomerler" },
+        { "id": "restoratif/cam-iyonomer-kaide", "ad": "Cam iyonomer, kaide ve astarlar", "kapsam": "Cam iyonomer ve rezin modifiye cam iyonomer, kompomer, kaide ve astar materyalleri, ART uygulamaları" },
+        { "id": "restoratif/pulpa-koruma", "ad": "Pulpa-dentin kompleksinin korunması", "kapsam": "Restoratif işlemlerin pulpaya etkisi, postoperatif hassasiyet, mikrosızıntı, indirekt ve direkt pulpa kuafajı kararı" },
+        { "id": "restoratif/estetik-renklenme", "ad": "Estetik, renklenme ve beyazlatma", "kapsam": "Renk ve estetik ilkeleri, diş renklenmeleri, vital ve devital beyazlatma, diastema kapatma, laminate veneer" },
+        { "id": "restoratif/indirekt-restorasyonlar", "ad": "İndirekt restorasyonlar", "kapsam": "İnley-onley, CAD/CAM, seramik ve kompozit indirekt restorasyonlar, döküm restorasyonlar, yapıştırma" },
+        { "id": "restoratif/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "protetik",
+      "ad": "Protetik Diş Tedavisi",
+      "test": "kbt",
+      "ilk": 11,
+      "son": 20,
+      "konular": [
+        { "id": "protetik/okluzyon-gnatoloji", "ad": "Oklüzyon ve gnatoloji", "kapsam": "Mandibula hareketleri ve sınır hareketleri, Bennett hareketi, artikülatörler, oklüzyon kavramları, dikey boyut, TMD'nin protetik yönü" },
+        { "id": "protetik/tam-protez", "ad": "Tam protezler", "kapsam": "Destek dokular ve sınırlar, ölçü ve modeller, çene ilişkileri kaydı, diş seçimi ve dizimi, tam protez oklüzyonu, sorunlar" },
+        { "id": "protetik/bolumlu-protez", "ad": "Hareketli bölümlü protezler", "kapsam": "Kennedy sınıflaması, ana ve küçük bağlayıcılar, tırnaklar, kroşeler, indirekt tutucular, sörvey ve tasarım" },
+        { "id": "protetik/sabit-protez", "ad": "Sabit protezler", "kapsam": "Kuron-köprü endikasyonları, Ante kanunu, diş preparasyonu ve bitiş çizgileri, gövde tasarımı, geçici restorasyonlar, post-kor" },
+        { "id": "protetik/implant-overdenture", "ad": "İmplant üstü protezler ve overdenture", "kapsam": "İmplant destekli sabit ve hareketli protezler, bağlantı elemanları, diş ya da implant destekli overdenture" },
+        { "id": "protetik/maksillofasiyal-protez", "ad": "Maksillofasiyal protezler", "kapsam": "Obturatörler, çene ve yüz defektlerinin protetik rehabilitasyonu, radyoterapi hastasında protez" },
+        { "id": "protetik/olcu-model-dokum", "ad": "Ölçü, model ve döküm materyalleri", "kapsam": "Ölçü maddeleri ve dezenfeksiyonu, alçılar, mumlar, rövetmanlar, döküm işlemi ve hataları" },
+        { "id": "protetik/seramik-alasim", "ad": "Seramikler ve metal alaşımlar", "kapsam": "Dental seramik tipleri, zirkonya, tam seramik sistemler, metal alaşımlar, metal-seramik bağlantı" },
+        { "id": "protetik/polimer-siman", "ad": "Protez polimerleri ve yapıştırma simanları", "kapsam": "Akrilik rezinler ve kaide materyalleri, astarlama ve besleme, geçici restorasyon materyalleri, yapıştırma simanları" },
+        { "id": "protetik/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "cerrahi",
+      "ad": "Ağız, Diş ve Çene Cerrahisi",
+      "test": "kbt",
+      "ilk": 21,
+      "son": 30,
+      "konular": [
+        { "id": "cerrahi/lokal-anestezi", "ad": "Lokal anestezi", "kapsam": "Ağız içi anestezi teknikleri ve bloklanan sinirler, anestezik seçimi, lokal ve sistemik komplikasyonlar" },
+        { "id": "cerrahi/tibbi-hasta-acil", "ad": "Tıbbi riskli hasta ve acil durumlar", "kapsam": "Sistemik hastalıklı hastada cerrahi, antikoagülan ve bifosfonat kullananlar, radyoterapi hastası, tıbbi aciller, sedasyon" },
+        { "id": "cerrahi/dis-cekimi", "ad": "Diş çekimi ve komplikasyonları", "kapsam": "Çekim ilkeleri ve aletleri, flep ve sütür, çekim komplikasyonları (alveolit, kanama, kırık), yara iyileşmesi" },
+        { "id": "cerrahi/gomulu-disler", "ad": "Gömülü dişler", "kapsam": "Gömülü diş sınıflamaları, cerrahi çekim tekniği, komplikasyonlar ve sinir yaralanmaları" },
+        { "id": "cerrahi/enfeksiyonlar", "ad": "Odontojenik enfeksiyonlar", "kapsam": "Fasiyal boşluk enfeksiyonları, selülit ve apse, yayılım yolları, kavernöz sinüs trombozu, osteomiyelit, antibiyotik tedavisi" },
+        { "id": "cerrahi/maksiller-sinus", "ad": "Maksiller sinüs", "kapsam": "Maksiller sinüs hastalıkları, oroantral açıklık ve fistül, kapatma teknikleri, sinüse kaçan kök" },
+        { "id": "cerrahi/implant-preprotetik", "ad": "İmplantoloji ve preprotetik cerrahi", "kapsam": "İmplant planlaması ve kemik kalitesi, osseointegrasyon, kemik greftleri, sinüs tabanı yükseltme, preprotetik cerrahi" },
+        { "id": "cerrahi/travma", "ad": "Maksillofasiyal travma", "kapsam": "Mandibula, maksilla, zigoma ve orta yüz kırıkları, sınıflamaları, kas çekimleri, redüksiyon ve fiksasyon" },
+        { "id": "cerrahi/ortognatik-yarik", "ad": "Ortognatik cerrahi ve yarıklar", "kapsam": "Dentofasiyal deformiteler, osteotomiler (Le Fort, sagital split, genioplasti), distraksiyon, yarık dudak-damak" },
+        { "id": "cerrahi/tme-hastaliklari", "ad": "Temporomandibular eklem hastalıkları", "kapsam": "TME düzensizlikleri, disk deplasmanı, ankiloz, luksasyon, miyofasiyal ağrı, TME cerrahisi" },
+        { "id": "cerrahi/kist-tumor", "ad": "Çene kistleri ve tümörleri", "kapsam": "Çene kemiği kistleri ve tümörlerinin tanısı ve cerrahi tedavisi, biyopsi, ağız kanserinde cerrahi yaklaşım" },
+        { "id": "cerrahi/oral-mukoza-tukuruk", "ad": "Ağız mukozası ve tükürük bezi hastalıkları", "kapsam": "Mukoza lezyonları ve aftlar, pigmentasyonlar, kserostomi, tükürük bezi hastalıkları, sistemik hastalıkların ağız bulguları" },
+        { "id": "cerrahi/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "radyoloji",
+      "ad": "Ağız, Diş ve Çene Radyolojisi",
+      "test": "kbt",
+      "ilk": 31,
+      "son": 40,
+      "konular": [
+        { "id": "radyoloji/radyasyon-fizigi", "ad": "Radyasyon fiziği ve röntgen cihazı", "kapsam": "X-ışını oluşumu, tüp bileşenleri ve hedef özellikleri, ışın nitelikleri, madde ile etkileşim, radyasyon birimleri" },
+        { "id": "radyoloji/radyobiyoloji-korunma", "ad": "Radyobiyoloji ve radyasyondan korunma", "kapsam": "Deterministik ve stokastik etkiler, radyosensitivite, radyoterapinin ağız etkileri, doz sınırları, korunma ilkeleri" },
+        { "id": "radyoloji/goruntu-kalitesi", "ad": "Görüntü oluşumu ve kalitesi", "kapsam": "Film ve dijital reseptörler, dansite, kontrast, detay ve keskinlik, banyo işlemi, görüntü hataları" },
+        { "id": "radyoloji/intraoral-teknikler", "ad": "İntraoral radyografi teknikleri", "kapsam": "Açıortay ve paralel teknik, bitewing, okluzal radyografi, lokalizasyon teknikleri, projeksiyon hataları" },
+        { "id": "radyoloji/ekstraoral-teknikler", "ad": "Panoramik ve ekstraoral teknikler", "kapsam": "Panoramik radyografi ilkeleri ve hataları, sefalometrik ve diğer kafa grafileri" },
+        { "id": "radyoloji/ileri-goruntuleme", "ad": "İleri görüntüleme yöntemleri", "kapsam": "KIBT, BT, MR, ultrasonografi, sintigrafi, sialografi, artrografi ve endikasyonları" },
+        { "id": "radyoloji/radyografik-yorum", "ad": "Radyografik anatomi ve yorumlama", "kapsam": "Normal radyografik anatomi, lezyon tanımlama terimleri (sınır, iç yapı, komşu yapılara etki), periapikal ve periodontal bulgular" },
+        { "id": "radyoloji/cene-lezyonlari", "ad": "Çene kemiği lezyonları", "kapsam": "Kist, benign ve malign tümörler, fibro-osseöz lezyonlar, iltihabi kemik lezyonlarının klinik-radyolojik bulguları ve ayırıcı tanısı" },
+        { "id": "radyoloji/dis-anomalileri", "ad": "Diş anomalileri", "kapsam": "Sayı, şekil, boyut, yapı ve sürme anomalileri (füzyon, geminasyon, konkresens, dens invaginatus vb.)" },
+        { "id": "radyoloji/oral-mukoza", "ad": "Ağız mukozası hastalıkları (oral diagnoz)", "kapsam": "Beyaz ve kırmızı lezyonlar, liken planus, vezikülobüllöz hastalıklar, viral ve fungal enfeksiyonlar, ülserler, pigmentasyonlar" },
+        { "id": "radyoloji/sistemik-sendromlar", "ad": "Sistemik hastalıklar ve sendromlar", "kapsam": "Endokrin, metabolik ve hematolojik hastalıkların ağız ve çene bulguları, kalıtsal sendromlar" },
+        { "id": "radyoloji/agri-tme-tukuruk", "ad": "Orofasiyal ağrı, TME ve tükürük bezleri", "kapsam": "Nevraljiler ve orofasiyal ağrı ayırıcı tanısı, TME hastalıklarının tanısı, tükürük bezi hastalıkları (Sjögren vb.)" },
+        { "id": "radyoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "periodontoloji",
+      "ad": "Periodontoloji",
+      "test": "kbt",
+      "ilk": 41,
+      "son": 50,
+      "konular": [
+        { "id": "periodontoloji/periodonsiyum-yapisi", "ad": "Periodonsiyumun yapısı", "kapsam": "Diş eti, bağlantı epiteli, periodontal ligament, sement ve alveol kemiğinin yapısı ve işlevi" },
+        { "id": "periodontoloji/etiyoloji-mikrobiyoloji", "ad": "Etiyoloji ve mikrobiyoloji", "kapsam": "Dental plak ve biyofilm, periodontal patojenler ve kompleksler, diştaşı, plak tutucu lokal faktörler" },
+        { "id": "periodontoloji/patogenez-immunoloji", "ad": "Patogenez ve konak yanıtı", "kapsam": "Gingivitis evreleri, iltihap hücreleri ve sitokinler, MMP'ler, RANKL/OPG, kemik yıkım mekanizmaları" },
+        { "id": "periodontoloji/siniflama-tani", "ad": "Sınıflama ve tanı", "kapsam": "Periodontal hastalık sınıflamaları, klinik muayene ve indeksler, periodontitis tipleri, nekrotizan hastalıklar, apseler, endo-perio lezyonlar" },
+        { "id": "periodontoloji/sistemik-risk", "ad": "Risk faktörleri ve sistemik ilişki", "kapsam": "Sigara, diyabet ve diğer risk faktörleri, periodontal hastalığın sistemik etkileri, ilaçlara bağlı diş eti büyümesi, antibiyotik profilaksisi" },
+        { "id": "periodontoloji/okluzal-travma", "ad": "Oklüzal travma ve mobilite", "kapsam": "Primer ve sekonder oklüzal travma, diş mobilitesi, splintleme" },
+        { "id": "periodontoloji/tedavi-plani-nonsurgical", "ad": "Tedavi planı ve cerrahi olmayan tedavi", "kapsam": "Tedavi fazları ve prognoz, diştaşı temizliği ve kök yüzeyi düzleştirme, el aletleri, kimyasal plak kontrolü, antimikrobiyaller, idame" },
+        { "id": "periodontoloji/cerrahi-rejenerasyon", "ad": "Periodontal cerrahi ve rejenerasyon", "kapsam": "Gingivektomi, flep operasyonları, rezektif kemik cerrahisi, GTR ve membranlar, greftler, iyileşme tipleri" },
+        { "id": "periodontoloji/mukogingival-plastik", "ad": "Mukogingival ve plastik cerrahi", "kapsam": "Diş eti çekilmesi, kök kapama teknikleri, serbest ve bağ dokusu greftleri, frenektomi, kuron boyu uzatma, papil rekonstrüksiyonu" },
+        { "id": "periodontoloji/peri-implant", "ad": "Peri-implant dokular ve hastalıklar", "kapsam": "İmplant çevresi dokuların yapısı, peri-implant mukozitis ve peri-implantitis, risk faktörleri ve tedavi" },
+        { "id": "periodontoloji/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "ortodonti",
+      "ad": "Ortodonti",
+      "test": "kbt",
+      "ilk": 51,
+      "son": 60,
+      "konular": [
+        { "id": "ortodonti/buyume-gelisim", "ad": "Kraniyofasiyal büyüme ve gelişim", "kapsam": "Prenatal ve postnatal kraniyofasiyal gelişim, büyüme teorileri, kemikleşme tipleri, büyüme atılımı ve değerlendirilmesi" },
+        { "id": "ortodonti/dentisyon-gelisimi", "ad": "Dentisyon ve oklüzyon gelişimi", "kapsam": "Diş sürmesi ve sıraları, süt-karma-daimi dentisyon, oklüzyonun gelişimi, ark boyutlarındaki değişiklikler" },
+        { "id": "ortodonti/etiyoloji-siniflama", "ad": "Maloklüzyon etiyolojisi ve sınıflaması", "kapsam": "Angle ve diğer sınıflamalar, kalıtsal ve çevresel etkenler, kötü alışkanlıklar, teratojenler ve sendromlar" },
+        { "id": "ortodonti/tani-sefalometri", "ad": "Tanı, model analizi ve sefalometri", "kapsam": "Ortodontik kayıtlar, model analizleri (Bolton vb.), sefalometrik noktalar, düzlemler ve analizler" },
+        { "id": "ortodonti/biyomekanik", "ad": "Biyomekanik", "kapsam": "Kuvvet, moment, direnç ve rotasyon merkezi, diş hareket tipleri, optimum kuvvet değerleri, ankraj" },
+        { "id": "ortodonti/doku-reaksiyonlari", "ad": "Diş hareketinin biyolojisi", "kapsam": "Ortodontik kuvvete periodontal ve kemik yanıtı, hiyalinizasyon, kök rezorpsiyonu ve diğer yan etkiler" },
+        { "id": "ortodonti/hareketli-fonksiyonel", "ad": "Hareketli ve fonksiyonel apareyler", "kapsam": "Hareketli apareyler, aktivatör, bionatör, Frankel, Twin-block, Herbst ve diğer fonksiyonel apareyler" },
+        { "id": "ortodonti/sabit-ekstraoral", "ad": "Sabit tedavi ve ekstraoral apareyler", "kapsam": "Braket ve tel sistemleri, sabit mekanikler, headgear, yüz maskesi, lip bumper, ankraj destekleri ve mini vidalar" },
+        { "id": "ortodonti/koruyucu-durdurucu", "ad": "Koruyucu ve durdurucu ortodonti", "kapsam": "Yer tutucular, yer kazanma ve yer analizi, seri çekim, erken dönem çapraz kapanış ve alışkanlık tedavisi" },
+        { "id": "ortodonti/malokluzyon-tedavisi", "ad": "Maloklüzyonların tedavisi", "kapsam": "Sınıf II ve III, açık ve derin kapanış tedavileri, maksiller genişletme, ortognatik cerrahi ile birlikte tedavi" },
+        { "id": "ortodonti/pekistirme-nuks", "ad": "Pekiştirme ve nüks", "kapsam": "Retansiyon apareyleri ve süresi, nüks nedenleri ve önlenmesi" },
+        { "id": "ortodonti/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "endodonti",
+      "ad": "Endodonti",
+      "test": "kbt",
+      "ilk": 61,
+      "son": 70,
+      "konular": [
+        { "id": "endodonti/pulpa-biyolojisi", "ad": "Pulpa-dentin kompleksinin biyolojisi", "kapsam": "Pulpa hücreleri ve odontoblastlar, pulpa sinirleri ve damarları, dentin oluşumu, yaşla değişimler" },
+        { "id": "endodonti/pulpa-periapikal-hastaliklar", "ad": "Pulpa ve periapikal hastalıklar, tanı", "kapsam": "Pulpitis ve periapikal lezyon sınıflaması, klinik ve radyografik bulgular, vitalite ve tanı testleri, endodontik ağrı" },
+        { "id": "endodonti/mikrobiyoloji-enfeksiyon", "ad": "Endodontik mikrobiyoloji ve enfeksiyonlar", "kapsam": "Kök kanal florası, persistan enfeksiyon, flare-up, endodontik enfeksiyonlarda antibiyotik kullanımı" },
+        { "id": "endodonti/kanal-anatomisi-giris", "ad": "Kök kanal morfolojisi ve giriş kavitesi", "kapsam": "Kanal sayısı ve konfigürasyonları, giriş kavitesi, çalışma boyu, apeks bulucular" },
+        { "id": "endodonti/aletler-sekillendirme", "ad": "Kanal aletleri ve şekillendirme", "kapsam": "El ve döner aletler, ISO standartları, NiTi sistemleri, şekillendirme teknikleri, alet kırılması" },
+        { "id": "endodonti/irrigasyon-medikasyon", "ad": "İrrigasyon ve kanal içi medikasyon", "kapsam": "İrrigasyon solüsyonları ve aktivasyonu, smear tabakası, kalsiyum hidroksit ve diğer kanal içi ilaçlar" },
+        { "id": "endodonti/kanal-dolumu", "ad": "Kök kanal dolumu", "kapsam": "Kanal dolgu materyalleri ve patları, soğuk ve sıcak dolum teknikleri, taşıyıcılı sistemler, koronal örtüleme" },
+        { "id": "endodonti/vital-pulpa-rejeneratif", "ad": "Vital pulpa tedavileri ve rejeneratif endodonti", "kapsam": "Kuafaj ve pulpotomi, MTA ve kalsiyum silikat simanlar, apeksogenez, apeksifikasyon, revaskülarizasyon" },
+        { "id": "endodonti/travma", "ad": "Dental travma", "kapsam": "Kuron ve kök kırıkları, lüksasyon yaralanmaları, avülsiyon, splintleme ve takip" },
+        { "id": "endodonti/rezorpsiyon-renklenme", "ad": "Kök rezorpsiyonları ve renklenmeler", "kapsam": "İnternal ve eksternal rezorpsiyon tipleri, içsel renklenme nedenleri, devital diş beyazlatma ve komplikasyonları" },
+        { "id": "endodonti/cerrahi-retreatment", "ad": "Endodontik cerrahi ve yeniden tedavi", "kapsam": "Apikal rezeksiyon ve retrograd dolgu, iyileşme, kanal tedavisinin yenilenmesi, perforasyon ve diğer işlem hataları" },
+        { "id": "endodonti/restorasyon-post", "ad": "Kanal tedavili dişin restorasyonu", "kapsam": "Post ve kor sistemleri, kanal tedavili dişin kırılma direnci, koronal restorasyon seçimi" },
+        { "id": "endodonti/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    },
+    {
+      "id": "pedodonti",
+      "ad": "Pedodonti",
+      "test": "kbt",
+      "ilk": 71,
+      "son": 80,
+      "konular": [
+        { "id": "pedodonti/buyume-dentisyon", "ad": "Süt ve karma dentisyon gelişimi", "kapsam": "Süt ve daimi dişlerin gelişimi ve sürme sıraları, süt dişi morfolojisi, çocukta normal oklüzyon gelişimi" },
+        { "id": "pedodonti/davranis-sedasyon", "ad": "Davranış yönlendirme ve sedasyon", "kapsam": "Çocuk gelişim psikolojisi, davranış yönlendirme teknikleri, nitröz oksit ve diğer sedasyon yöntemleri, genel anestezi" },
+        { "id": "pedodonti/anestezi-muayene-radyografi", "ad": "Muayene, lokal anestezi ve radyografi", "kapsam": "Çocuk hastanın muayenesi, çocuklarda lokal anestezi teknikleri ve dozları, pedodontide radyografi" },
+        { "id": "pedodonti/curuk-risk-onleme", "ad": "Çürük riski ve koruyucu uygulamalar", "kapsam": "Erken çocukluk çağı çürükleri, çürük risk değerlendirmesi, florür uygulamaları, fissür örtücüler, beslenme ve ağız hijyeni" },
+        { "id": "pedodonti/restoratif-tedavi", "ad": "Süt dişlerinde restoratif tedavi", "kapsam": "Süt dişi kavite preparasyonu, cam iyonomer, kompomer, amalgam ve kompozit, paslanmaz çelik kuron, beyaz nokta lezyonları" },
+        { "id": "pedodonti/pulpa-tedavileri", "ad": "Süt ve genç daimi dişlerde pulpa tedavileri", "kapsam": "İndirekt/direkt kuafaj, pulpotomi ajanları, pulpektomi, apeksogenez ve apeksifikasyon, süt dişinde rezorpsiyon" },
+        { "id": "pedodonti/travma", "ad": "Çocuklarda dental travma", "kapsam": "Süt ve genç daimi dişlerde travma tipleri, tedavisi, kök kırıklarında iyileşme şekilleri ve sekeller" },
+        { "id": "pedodonti/dis-anomalileri", "ad": "Gelişimsel diş anomalileri ve renklenmeler", "kapsam": "Mine ve dentin gelişim bozuklukları, hipoplazi ve MIH, sayı-şekil anomalileri, içsel renklenmeler (tetrasiklin, florozis)" },
+        { "id": "pedodonti/yer-tutucu-ortodonti", "ad": "Yer tutucular ve erken ortodontik müdahale", "kapsam": "Erken diş kaybı ve yer tutucular, kötü alışkanlıklar, karma dentisyonda erken ortodontik tedavi" },
+        { "id": "pedodonti/sistemik-ozel", "ad": "Sistemik hastalıklı ve özel gereksinimli çocuk", "kapsam": "Sistemik hastalıklar ve sendromlar, endokardit profilaksisi, çocuklarda periodontal hastalık ve erken ataşman kaybı" },
+        { "id": "pedodonti/oral-lezyonlar", "ad": "Çocukluk çağı ağız lezyonları", "kapsam": "Yenidoğan ağız bulguları, çocukluk çağı viral ve fungal enfeksiyonları, yumuşak doku lezyonları" },
+        { "id": "pedodonti/diger", "ad": "Diğer", "kapsam": "Yukarıdakilerin hiçbirine sığmayan soru" }
+      ]
+    }
+  ]
+}

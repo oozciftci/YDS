@@ -107,14 +107,15 @@ export function loadDusExam(id: string): Promise<DusExam> {
 
 // Hazır çözümler ve terimler (yerel; local-data/dus/cozumler/<sınav>.json, anahtar "<test>/<no>"). Yapay zekâ ile
 // önceden yazılır ve kontrol edilmemiştir; yoksa boş nesne.
-export interface DusTerm {
+/** Hazır çözümdeki terim: t = terim, a = açıklama. */
+export interface DusSolutionTerm {
   t: string
   a: string
 }
 export interface DusSolution {
   /** Sade Markdown (AiText) */
   cozum: string
-  terimler?: DusTerm[]
+  terimler?: DusSolutionTerm[]
 }
 export type DusSolutions = Record<string, DusSolution>
 
@@ -153,7 +154,7 @@ export function loadDusTexts(id: string): Promise<Record<string, DusText>> {
 }
 
 /** Terim sözlüğü (docs/antigravity/DUS_SOZLUK_GOREVI.md): soru ve şıklardaki terimlere dokununca açılan balon. */
-export interface DusTerm {
+export interface DusGlossTerm {
   /** Soru/şık metninde birebir geçen hâli (altı çizilir) */
   metin: string
   terim: string
@@ -161,9 +162,11 @@ export interface DusTerm {
   aciklama: string
   koken?: string
 }
+/** Eski ad (DusTerms.tsx ve öteki sayfalar kullanıyor): sözlük terimi. Çözüm terimi için DusSolutionTerm. */
+export type DusTerm = DusGlossTerm
 export interface DusGloss {
   neSoruyor: string
-  terimler: DusTerm[]
+  terimler: DusGlossTerm[]
 }
 
 const glossCache = new Map<string, Promise<Record<string, DusGloss>>>()
@@ -191,7 +194,14 @@ export interface DusAnswer {
   ok: boolean
   /** Toplam yanlış sayısı */
   w: number
+  /** Son cevap zamanı (eşitlemede daha yeni t kazanır) */
   t: string
+  /** Toplam deneme sayısı (eski kayıtlarda yok: w + (ok ? 1 : 0) sayılır) */
+  n?: number
+  /** İlk cevap zamanı (eski kayıtlarda yok: t sayılır) */
+  f?: string
+  /** Kullanıcı ⭐ ile işaretledi */
+  flag?: boolean
 }
 export type DusAnswers = Record<string, DusAnswer>
 
@@ -214,10 +224,39 @@ function write(userId: string, all: DusAnswers) {
   }
 }
 
+/** Deneme sayısı: eski kayıtta n yoksa en az w + (son cevap doğruysa 1). */
+export const dusAttempts = (a: DusAnswer) => a.n ?? Math.max(1, a.w + (a.ok ? 1 : 0))
+
+/** Yeni cevabı önceki kayda işler (saf): n, f ve ⭐ korunur; eski biçimli kayıt da sorunsuz. */
+export function nextDusAnswer(prev: DusAnswer | undefined, choice: string, ok: boolean, now: string): DusAnswer {
+  const next: DusAnswer = {
+    c: choice,
+    ok,
+    w: (prev?.w ?? 0) + (ok ? 0 : 1),
+    t: now,
+    n: (prev ? dusAttempts(prev) : 0) + 1,
+    f: prev ? (prev.f ?? prev.t) : now,
+  }
+  if (prev?.flag) next.flag = true
+  return next
+}
+
 export function saveDusAnswer(userId: string, key: string, choice: string, ok: boolean): DusAnswers {
   const all = readDusAnswers(userId)
-  const prev = all[key]
-  all[key] = { c: choice, ok, w: (prev?.w ?? 0) + (ok ? 0 : 1), t: new Date().toISOString() }
+  all[key] = nextDusAnswer(all[key], choice, ok, new Date().toISOString())
+  write(userId, all)
+  return all
+}
+
+/** ⭐ işaretini açar/kapar (yalnızca cevaplanmış soruda; t değişmez ki "bugün çözülen" sayılmasın). */
+export function setDusFlag(userId: string, key: string, flag: boolean): DusAnswers {
+  const all = readDusAnswers(userId)
+  const a = all[key]
+  if (!a) return all
+  const next = { ...a }
+  if (flag) next.flag = true
+  else delete next.flag
+  all[key] = next
   write(userId, all)
   return all
 }
@@ -267,4 +306,28 @@ export function subjectSummary(all: DusAnswers, subject: DusSubject) {
     if (a.ok) correct++
   }
   return { answered, correct }
+}
+
+// --- Sınavlar arası soru listesi --------------------------------------------
+
+export interface DusQueueItem {
+  exam: DusExam
+  test: DusTestKey
+  q: DusQuestion
+  key: string
+}
+
+/** Anahtarlardan (sınav/test/no) soru listesi kurar; sınavlar gerektiği kadar yüklenir, iptal edilenler atlanır. */
+export async function dusItemsOf(keys: string[]): Promise<DusQueueItem[]> {
+  const ids = [...new Set(keys.map((k) => k.split('/')[0]))]
+  const list = await Promise.all(ids.map((id) => loadDusExam(id).catch(() => null)))
+  const byId = new Map(list.filter((e): e is DusExam => !!e).map((e) => [e.id, e]))
+  const out: DusQueueItem[] = []
+  for (const k of keys) {
+    const [id, test, n] = k.split('/')
+    const exam = byId.get(id)
+    const q = exam?.tests.find((t) => t.key === test)?.questions.find((x) => x.n === Number(n))
+    if (exam && q && q.answer !== 'X') out.push({ exam, test: test as DusTestKey, q, key: k })
+  }
+  return out
 }

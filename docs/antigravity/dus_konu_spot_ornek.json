@@ -1,0 +1,51 @@
+{
+  "sinav": "2012-ilkbahar",
+  "surum": 1,
+  "sorular": {
+    "tbt/1": {
+      "konu": "anatomi/kranial-sinirler",
+      "altBaslik": "Gözyaşı bezinin parasempatik innervasyonu",
+      "zorluk": 1,
+      "spotlar": [
+        {
+          "on": "Gözyaşı bezinin salgısını hangi kranial sinirin parasempatik lifleri yönetir?",
+          "arka": "Nervus facialis (VII); preganglioner lifler n. petrosus major ile ganglion pterygopalatinum'a ulaşır."
+        },
+        {
+          "on": "Gözyaşı bezine giden parasempatik lifler hangi gangliyonda sinaps yapar?",
+          "arka": "Ganglion pterygopalatinum'da; postganglioner lifler n. zygomaticus ve n. lacrimalis yoluyla beze ulaşır."
+        }
+      ]
+    },
+    "tbt/15": {
+      "konu": "fizyoloji/solunum",
+      "altBaslik": "Karbonik anhidraz ve CO₂ taşınması",
+      "zorluk": 1,
+      "spotlar": [
+        {
+          "on": "Karbonik anhidraz hangi tepkimeyi hızlandırır?",
+          "arka": "CO₂ ile suyun birleşerek karbonik asit (H₂CO₃) oluşturmasını ve bu tepkimenin tersini hızlandırır."
+        },
+        {
+          "on": "Kanda karbondioksit en çok hangi biçimde taşınır?",
+          "arka": "Bikarbonat (HCO₃⁻) olarak; bu dönüşüm alyuvar içindeki çinkolu karbonik anhidraz enzimiyle gerçekleşir."
+        }
+      ]
+    },
+    "kbt/1": {
+      "konu": "restoratif/amalgam",
+      "altBaslik": "Amalgam kondansasyonu ve postoperatif hassasiyet",
+      "zorluk": 2,
+      "spotlar": [
+        {
+          "on": "Amalgam restorasyon sonrası hassasiyetin başlıca nedeni nedir?",
+          "arka": "Yetersiz kondansasyon; kalan boşluklar ve kenar uyumsuzluğu mikrosızıntıya ve hassasiyete yol açar."
+        },
+        {
+          "on": "Sınıf II amalgam kavitesinde aksiyopulpal köşe neden yuvarlatılır?",
+          "arka": "Bu köşede amalgamda biriken gerilmeyi azaltmak ve istmus bölgesinde materyal kalınlığını artırarak kırılmayı önlemek için."
+        }
+      ]
+    }
+  }
+}

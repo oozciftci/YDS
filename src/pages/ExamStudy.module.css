@@ -1604,3 +1604,111 @@ h2 .listen .rateSelect {
 .dusAskText {
   color: var(--text-muted);
 }
+
+/* DUS: bugünün seti kartı, araç bağlantıları, ⭐ işareti, tekrar derecelendirmesi */
+.dusToday {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.dusTodayHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.dusStreak {
+  padding: 0.1rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: var(--primary-subtle);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.dusTodayStats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.92rem;
+}
+
+.dusGoal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dusGoal .pdfBtn {
+  margin: 0;
+  min-width: 2rem;
+  min-height: 2rem;
+  font-size: 1rem;
+}
+
+.dusGoal .pdfBtn[aria-disabled='true'],
+.dusToday :global(.btn)[aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.dusTodayBar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dusLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.dusLinks :global(.btn) {
+  flex: 1 1 8rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.dusFlagOn {
+  border-color: var(--warning);
+  color: var(--text);
+  background: var(--surface);
+}
+
+.dusGrades {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.dusGradeRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.dusGradeRow :global(.btn) {
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.dusGradeRow small {
+  font-size: 0.72rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.dusSummary {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+}
+
+.dusSummary p {
+  margin: 0;
+}
