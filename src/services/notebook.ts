@@ -110,34 +110,26 @@ export function stamp(iso: string): string {
   return new Date(iso).toLocaleString('tr-TR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
-export const pageNoteId = (userId: string, pageKey: string) => `page:${userId}:${pageKey}`
+/** Yeni girdi: ses/görsel Blob olarak verilir, bayt dizisine çevrilip saklanır. */
+export type NewEntry = Pick<NoteEntry, 'kind'> & Partial<Pick<NoteEntry, 'text' | 'mime' | 'durationSec'>> & { blob?: Blob }
 
-export async function savePageNote(userId: string, pageKey: string, text: string): Promise<void> {
-  const id = pageNoteId(userId, pageKey)
-  const now = new Date().toISOString()
-  if (!text.trim()) {
-    await db.notebook.delete(id)
-    return
-  }
-  const prev = await db.notebook.get(id)
-  await db.notebook.put({
-    id,
-    userId,
-    scope: 'page',
-    pageKey,
-    pageLabel: pageLabel(pageKey),
-    kind: 'text',
-    text,
-    createdAt: prev?.createdAt ?? now,
-    updatedAt: now,
-  })
+async function stored(entry: NewEntry): Promise<Pick<NoteEntry, 'kind'> & Partial<Pick<NoteEntry, 'text' | 'mime' | 'durationSec' | 'bytes'>>> {
+  const { blob, ...rest } = entry
+  if (!blob) return rest
+  return { ...rest, bytes: await blob.arrayBuffer(), mime: rest.mime || blob.type }
 }
 
-export async function addGeneralEntry(
-  userId: string,
-  pageKey: string,
-  entry: Pick<NoteEntry, 'kind'> & Partial<Pick<NoteEntry, 'text' | 'blob' | 'mime' | 'durationSec'>>,
-): Promise<NoteEntry> {
+/**
+ * Girdinin sesi/görseli, türü (mime) belli bir Blob olarak. Her çağrıda yeni Blob üretir: bileşende `useMemo` ile kullan.
+ * Eski kayıtlardaki Blob da kayıtlı türle yeniden sarılır (iPhone'da veritabanından dönen Blob türünü yitirebiliyor).
+ */
+export function entryBlob(e: Pick<NoteEntry, 'bytes' | 'blob' | 'mime'>): Blob | undefined {
+  if (e.bytes) return new Blob([e.bytes], { type: e.mime || 'application/octet-stream' })
+  if (e.blob) return e.mime && e.blob.type !== e.mime ? new Blob([e.blob], { type: e.mime }) : e.blob
+  return undefined
+}
+
+export async function addGeneralEntry(userId: string, pageKey: string, entry: NewEntry): Promise<NoteEntry> {
   const now = new Date().toISOString()
   const label = pageLabel(pageKey)
   const row: NoteEntry = {
@@ -149,36 +141,82 @@ export async function addGeneralEntry(
     title: `${label} · ${stamp(now)}`,
     createdAt: now,
     updatedAt: now,
-    ...entry,
+    ...(await stored(entry)),
   }
   await db.notebook.add(row)
   return row
 }
 
-/** Sayfaya renkli yapışkan not ekler (ekranın ortasına yakın; üst üste binmesin diye biraz kaydırılır). */
-export async function addSticky(userId: string, pageKey: string, text: string, color: string): Promise<NoteEntry> {
+// ---- Yapışkan notlar: kutu (scope 'sticky') + içindeki mesajlar (scope 'stickyItem') ----
+
+const DEFAULT_PLACE = { w: 150, h: 130 }
+
+/**
+ * Yeni yapışkan not satırı kurar (veritabanına YAZMAZ; `createSticky` yazar). Eşzamanlı olması bilerek: "Bu sayfa"ya
+ * dokunulduğu anda not açılabilsin (iPhone klavyeyi yalnızca dokunma anındaki odaklanmada açar).
+ * `index`: sayfadaki kaçıncı not (üst üste binmesin diye biraz kaydırılır).
+ */
+export function newSticky(userId: string, pageKey: string, color: string, index: number): NoteEntry {
   const now = new Date().toISOString()
-  const others = await db.notebook.where('[userId+pageKey]').equals([userId, pageKey]).filter((n) => n.scope === 'sticky').count()
-  const row: NoteEntry = {
+  return {
     id: crypto.randomUUID(),
     userId,
     scope: 'sticky',
     pageKey,
     pageLabel: pageLabel(pageKey),
     kind: 'text',
-    text,
-    sticky: { color, x: Math.min(0.6, 0.12 + others * 0.06), y: Math.min(0.6, 0.18 + others * 0.06), w: 150, h: 130 },
+    sticky: { color, x: Math.min(0.6, 0.12 + index * 0.06), y: Math.min(0.6, 0.18 + index * 0.06), ...DEFAULT_PLACE },
     createdAt: now,
     updatedAt: now,
+  }
+}
+
+export async function createSticky(row: NoteEntry): Promise<void> {
+  await db.notebook.put(row)
+}
+
+const itemsOf = (sticky: Pick<NoteEntry, 'id' | 'userId' | 'pageKey'>) =>
+  db.notebook
+    .where('[userId+pageKey]')
+    .equals([sticky.userId, sticky.pageKey])
+    .filter((n) => n.scope === 'stickyItem' && n.parentId === sticky.id)
+
+/** Yapışkan nota mesaj (metin / sesli not / görsel) ekler. */
+export async function addStickyItem(sticky: NoteEntry, entry: NewEntry): Promise<NoteEntry> {
+  const now = new Date().toISOString()
+  // Kutu henüz yazılmadıysa (yeni açılmış not) ya da bu arada silindiyse önce o yazılır: mesaj sahipsiz kalmasın
+  if (!(await db.notebook.get(sticky.id))) await db.notebook.put(sticky)
+  const row: NoteEntry = {
+    id: crypto.randomUUID(),
+    userId: sticky.userId,
+    scope: 'stickyItem',
+    parentId: sticky.id,
+    pageKey: sticky.pageKey,
+    pageLabel: sticky.pageLabel,
+    createdAt: now,
+    updatedAt: now,
+    ...(await stored(entry)),
   }
   await db.notebook.add(row)
   return row
 }
 
-export async function updateEntry(
-  id: string,
-  patch: Partial<Pick<NoteEntry, 'text' | 'title' | 'sticky' | 'blob' | 'mime' | 'durationSec'>>,
-): Promise<void> {
+/** Yapışkan notu içindeki mesajlarla birlikte siler. */
+export async function deleteSticky(sticky: Pick<NoteEntry, 'id' | 'userId' | 'pageKey'>): Promise<void> {
+  await db.transaction('rw', db.notebook, async () => {
+    await itemsOf(sticky).delete()
+    await db.notebook.delete(sticky.id)
+  })
+}
+
+/** İçine hiçbir şey yazılmamış not sayfada boş kâğıt olarak kalmasın. */
+export async function deleteStickyIfEmpty(sticky: Pick<NoteEntry, 'id' | 'userId' | 'pageKey'>): Promise<void> {
+  await db.transaction('rw', db.notebook, async () => {
+    if ((await itemsOf(sticky).count()) === 0) await db.notebook.delete(sticky.id)
+  })
+}
+
+export async function updateEntry(id: string, patch: Partial<Pick<NoteEntry, 'text' | 'title' | 'sticky'>>): Promise<void> {
   await db.notebook.update(id, { ...patch, updatedAt: new Date().toISOString() })
 }
 
@@ -186,7 +224,97 @@ export async function deleteEntry(id: string): Promise<void> {
   await db.notebook.delete(id)
 }
 
-// ---- Yedek: Blob'lar JSON'a data URL olarak yazılır ----
+// ---- Eski biçimden yeni biçime ----
+
+/**
+ * Satırları yeni biçime getirir (saf: veritabanına dokunmaz). Dönen `puts` yazılır, `deletes` silinir, `boxes` (eski
+ * sayfa notundan türeyen kutular) yalnızca veritabanında yoksa eklenir (varsa konumu/rengi ezilmesin).
+ * - Blob → bytes (okunabiliyorsa)
+ * - scope 'page' (tek metin) → sarı yapışkan not + içinde bir mesaj. Satırın kimliği korunur: karşı cihazdan eski hâli
+ *   gelirse daha yeni olan bu satır kazanır, not ikiye katlanmaz.
+ * - scope 'sticky' içinde metin/ses (ilk sürüm) → mesaj satırlarına taşınır.
+ */
+async function upgrade(rows: NoteEntry[]): Promise<{ puts: NoteEntry[]; deletes: string[]; boxes: NoteEntry[] }> {
+  const puts: NoteEntry[] = []
+  const deletes: string[] = []
+  const boxes: NoteEntry[] = []
+  const now = new Date().toISOString()
+  for (const row of rows) {
+    let r = row
+    let changed = false
+    if (r.blob && !r.bytes) {
+      try {
+        const bytes = await r.blob.arrayBuffer()
+        const { blob, ...rest } = r
+        r = { ...rest, bytes, mime: r.mime || blob.type }
+        changed = true
+      } catch {
+        // Okunamıyor (iPhone'da bozulmuş eski kayıt): olduğu gibi kalır
+      }
+    }
+    if (r.scope === 'page') {
+      if (!r.text?.trim()) {
+        deletes.push(r.id)
+        continue
+      }
+      const boxId = `sticky:${r.id}`
+      boxes.push({
+        id: boxId,
+        userId: r.userId,
+        scope: 'sticky',
+        pageKey: r.pageKey,
+        pageLabel: r.pageLabel,
+        kind: 'text',
+        sticky: { color: 'sari', x: 0.12, y: 0.18, ...DEFAULT_PLACE },
+        createdAt: r.createdAt,
+        updatedAt: now,
+      })
+      puts.push({ ...r, scope: 'stickyItem', parentId: boxId, updatedAt: now })
+      continue
+    }
+    if (r.scope === 'sticky' && (r.text?.trim() || r.bytes || r.blob)) {
+      const { text, bytes, blob, mime, durationSec, ...box } = r
+      const item = { userId: r.userId, scope: 'stickyItem' as const, parentId: r.id, pageKey: r.pageKey, pageLabel: r.pageLabel, updatedAt: now }
+      if (text?.trim()) puts.push({ ...item, id: `${r.id}:t`, kind: 'text', text, createdAt: r.createdAt })
+      if (bytes || blob) puts.push({ ...item, id: `${r.id}:a`, kind: 'audio', bytes, blob, mime, durationSec, createdAt: r.updatedAt })
+      puts.push({ ...box, kind: 'text', updatedAt: now })
+      continue
+    }
+    if (changed) puts.push(r)
+  }
+  return { puts, deletes, boxes }
+}
+
+async function apply(res: Awaited<ReturnType<typeof upgrade>>): Promise<void> {
+  await db.transaction('rw', db.notebook, async () => {
+    if (res.deletes.length) await db.notebook.bulkDelete(res.deletes)
+    if (res.puts.length) await db.notebook.bulkPut(res.puts)
+    if (res.boxes.length) {
+      const have = await db.notebook.bulkGet(res.boxes.map((b) => b.id))
+      const fresh = res.boxes.filter((_, i) => !have[i])
+      if (fresh.length) await db.notebook.bulkAdd(fresh)
+    }
+  })
+}
+
+const MIGRATED_KEY = 'yds-notebook-v2'
+
+/** Açılışta bir kez: eski notları yeni biçime getirir (bkz. `upgrade`). */
+export async function migrateNotebook(): Promise<void> {
+  try {
+    if (localStorage.getItem(MIGRATED_KEY)) return
+  } catch {
+    // depolama kapalıysa her açılışta dener (zararsız: ikinci kez yapılacak iş kalmaz)
+  }
+  await apply(await upgrade(await db.notebook.toArray()))
+  try {
+    localStorage.setItem(MIGRATED_KEY, '1')
+  } catch {
+    // yoksay
+  }
+}
+
+// ---- Yedek: ses/görsel JSON'a data URL olarak yazılır ----
 
 function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -199,9 +327,21 @@ function blobToDataUrl(blob: Blob): Promise<string> {
 
 export async function exportNotebook(): Promise<unknown[]> {
   const rows = await db.notebook.toArray()
-  return Promise.all(rows.map(async ({ blob, ...rest }) => (blob ? { ...rest, blobData: await blobToDataUrl(blob) } : rest)))
+  return Promise.all(
+    rows.map(async ({ blob, bytes, ...rest }) => {
+      const b = entryBlob({ blob, bytes, mime: rest.mime })
+      if (!b) return rest
+      try {
+        return { ...rest, blobData: await blobToDataUrl(b) }
+      } catch {
+        // Okunamayan eski kayıt yedeği durdurmasın
+        return rest
+      }
+    }),
+  )
 }
 
+/** Yedekten / karşı cihazdan gelen satırlar: eski biçimdekiler de yeni biçime getirilerek yazılır. */
 export async function importNotebook(rows: unknown[]): Promise<number> {
   const out: NoteEntry[] = []
   for (const r of rows as (NoteEntry & { blobData?: string })[]) {
@@ -209,9 +349,15 @@ export async function importNotebook(rows: unknown[]): Promise<number> {
     const { blobData, ...rest } = r
     if (blobData) {
       const res = await fetch(blobData)
-      out.push({ ...rest, blob: await res.blob() })
+      const blob = await res.blob()
+      out.push({ ...rest, bytes: await blob.arrayBuffer(), mime: rest.mime || blob.type })
     } else out.push(rest)
   }
-  if (out.length) await db.notebook.bulkPut(out)
+  if (!out.length) return 0
+  const res = await upgrade(out)
+  const touched = new Set([...res.puts.map((p) => p.id), ...res.deletes])
+  // upgrade yalnızca değişenleri döndürür; değişmeyenler olduğu gibi yazılır
+  res.puts.push(...out.filter((r) => !touched.has(r.id)))
+  await apply(res)
   return out.length
 }

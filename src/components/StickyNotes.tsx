@@ -1,16 +1,17 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useEffect, useRef, useState, type PointerEvent as RPointerEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type PointerEvent as RPointerEvent } from 'react'
 import { useNotePageKey } from '../services/noteScope'
-import { useRecorder } from '../hooks/useRecorder'
 import { db } from '../db'
-import { deleteEntry, updateEntry } from '../services/notebook'
+import { addStickyItem, createSticky, deleteSticky, deleteStickyIfEmpty, newSticky, pageLabel, updateEntry } from '../services/notebook'
 import { useUserStore } from '../stores/user'
 import type { NoteEntry, StickyPlace } from '../types/database'
+import { NoteFeed } from './NoteFeed'
 import styles from './StickyNotes.module.css'
 
-// Sayfaya yapıştırılmış renkli notlar (post-it): "📄 Bu sayfa" penceresinden renk seçilerek yapıştırılır.
-// Sürükleyerek taşınır, sağ alt köşeden boyutlanır, dokununca büyüyüp açılır (yazı, sesli not, renk, sil). Odak modunda da
-// görünür. Not, açıldığı sayfaya ya da soruya aittir (src/services/noteScope.ts); başka soruya geçince görünmez.
+// Sayfaya yapıştırılmış renkli notlar (post-it). "📄 Bu sayfa" düğmesi o sayfanın notunu açar (yoksa sarı bir not
+// oluşturur); not açıkken Defterim'deki gibi bir akıştır: metin, sesli not, görsel art arda eklenir (NoteFeed).
+// Küçük hâli sürükleyerek taşınır, sağ alt köşeden boyutlanır, dokununca büyüyüp açılır. Odak modunda da görünür.
+// Not, açıldığı sayfaya ya da soruya aittir (src/services/noteScope.ts); başka soruya geçince görünmez.
 // Konum ekranın oranı olarak saklanır (telefon yan çevrilince de ekranda kalır). Hareket yalnızca stil değiştirir;
 // parmağın altındaki öğe hareket sırasında DOM'dan kalkmaz (iOS dokunma hedefi sorunu).
 
@@ -24,8 +25,10 @@ export const STICKY_COLORS: { key: string; label: string; bg: string }[] = [
 ]
 const bgOf = (key: string) => STICKY_COLORS.find((c) => c.key === key)?.bg ?? STICKY_COLORS[0].bg
 
-/** Yeni yapıştırılan notu hemen açmak için: window.dispatchEvent(new CustomEvent(STICKY_OPEN, { detail: id })) */
+/** Belli bir notu aç: window.dispatchEvent(new CustomEvent(STICKY_OPEN, { detail: id })) */
 export const STICKY_OPEN = 'yds-sticky-open'
+/** Bu sayfanın notunu aç (yoksa oluştur): "📄 Bu sayfa" düğmesi gönderir */
+export const STICKY_OPEN_PAGE = 'yds-sticky-open-page'
 
 const MIN_W = 72
 const MIN_H = 56
@@ -51,32 +54,124 @@ function tilt(id: string) {
 export function StickyLayer() {
   const userId = useUserStore((s) => s.activeUserId)
   const pageKey = useNotePageKey()
-  const notes = useLiveQuery(
+  // Sayfa/soru değişince baştan kurulur: açık not kapanır, durum sıfırlanır
+  return <Layer key={`${userId}:${pageKey}`} userId={userId} pageKey={pageKey} />
+}
+
+function Layer({ userId, pageKey }: { userId: string; pageKey: string }) {
+  const rows = useLiveQuery(
     () =>
       db.notebook
         .where('[userId+pageKey]')
         .equals([userId, pageKey])
-        .filter((n) => n.scope === 'sticky')
+        .filter((n) => n.scope === 'sticky' || n.scope === 'stickyItem')
         .sortBy('createdAt'),
     [userId, pageKey],
   )
+  const notes = useMemo(() => rows?.filter((n) => n.scope === 'sticky'), [rows])
+  const itemsBy = useMemo(() => {
+    const m = new Map<string, NoteEntry[]>()
+    for (const r of rows ?? []) if (r.scope === 'stickyItem' && r.parentId) m.set(r.parentId, [...(m.get(r.parentId) ?? []), r])
+    return m
+  }, [rows])
+
   const [openId, setOpenId] = useState<string | null>(null)
+  // Yeni oluşturulan not: veritabanına yazılırken (sorguya düşmeden) de açık dursun
+  const [draft, setDraft] = useState<NoteEntry | null>(null)
+  // "Bu sayfa" ile açıldıysa yazma alanına odaklan; nota dokunup açınca (okumak/dinlemek için) klavye açılmasın
+  const [focus, setFocus] = useState(false)
   const vp = useViewport()
 
+  const open = notes?.find((n) => n.id === openId) ?? (draft && draft.id === openId ? draft : undefined)
+  // Olay dinleyicileri ve kapanış temizliği hep güncel durumu görsün
+  const live = useRef({ notes, open })
   useEffect(() => {
-    const on = (e: Event) => setOpenId(String((e as CustomEvent).detail))
-    window.addEventListener(STICKY_OPEN, on)
-    return () => window.removeEventListener(STICKY_OPEN, on)
-  }, [])
+    live.current = { notes, open }
+  })
 
-  if (!notes?.length) return null
-  const open = notes.find((n) => n.id === openId)
+  function create(count: number) {
+    const row = newSticky(userId, pageKey, STICKY_COLORS[count % STICKY_COLORS.length].key, count)
+    setDraft(row)
+    setOpenId(row.id)
+    setFocus(true)
+    void createSticky(row)
+  }
+
+  function close() {
+    const o = live.current.open
+    setOpenId(null)
+    setDraft(null)
+    if (o) void deleteStickyIfEmpty(o)
+  }
+
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      setFocus(false)
+      setOpenId(String((e as CustomEvent).detail))
+    }
+    const onPage = () => {
+      const list = live.current.notes
+      if (list?.length) {
+        setFocus(true)
+        setOpenId(list[0].id)
+      } else if (list) create(0)
+      else
+        // Sorgu henüz dönmedi (çok ender): sonucu bekle
+        void db.notebook
+          .where('[userId+pageKey]')
+          .equals([userId, pageKey])
+          .filter((n) => n.scope === 'sticky')
+          .sortBy('createdAt')
+          .then((l) => {
+            if (l.length) {
+              setFocus(true)
+              setOpenId(l[0].id)
+            } else create(0)
+          })
+    }
+    window.addEventListener(STICKY_OPEN, onOpen)
+    window.addEventListener(STICKY_OPEN_PAGE, onPage)
+    return () => {
+      window.removeEventListener(STICKY_OPEN, onOpen)
+      window.removeEventListener(STICKY_OPEN_PAGE, onPage)
+      // Sayfa/soru değişti: açık kalan boş not sayfada kalmasın
+      const o = live.current.open
+      if (o) void deleteStickyIfEmpty(o)
+    }
+    // create/close yalnızca userId + pageKey'e bağlı; bileşen bunlar değişince zaten baştan kurulur
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, pageKey])
+
+  const shown = [...(notes ?? []), ...(draft && !notes?.some((n) => n.id === draft.id) ? [draft] : [])]
+  if (!shown.length) return null
   return (
     <div className={`${styles.layer} ${open ? styles.layerOpen : ''}`}>
-      {notes.map((n) => (
-        <Sticky key={n.id} note={n} vp={vp} onOpen={() => setOpenId(n.id)} hidden={n.id === openId} />
+      {shown.map((n) => (
+        <Sticky
+          key={n.id}
+          note={n}
+          items={itemsBy.get(n.id) ?? []}
+          vp={vp}
+          onOpen={() => {
+            setFocus(false)
+            setOpenId(n.id)
+          }}
+          hidden={n.id === openId}
+        />
       ))}
-      {open && <StickyEditor key={open.id} note={open} onClose={() => setOpenId(null)} />}
+      {open && (
+        <StickyEditor
+          key={open.id}
+          note={open}
+          items={rows ? (itemsBy.get(open.id) ?? []) : undefined}
+          autoFocus={focus}
+          onClose={close}
+          onNew={() => {
+            close()
+            create(shown.length)
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -92,9 +187,23 @@ function place(p: StickyPlace, vp: { w: number; h: number }) {
   }
 }
 
+const DEFAULT_PLACE: StickyPlace = { color: 'sari', x: 0.2, y: 0.2, w: 150, h: 130 }
+
 /** Küçük hâl: sürükle-taşı, köşeden boyutla, dokununca aç */
-function Sticky({ note, vp, onOpen, hidden }: { note: NoteEntry; vp: { w: number; h: number }; onOpen: () => void; hidden: boolean }) {
-  const p = note.sticky ?? { color: 'sari', x: 0.2, y: 0.2, w: 150, h: 130 }
+function Sticky({
+  note,
+  items,
+  vp,
+  onOpen,
+  hidden,
+}: {
+  note: NoteEntry
+  items: NoteEntry[]
+  vp: { w: number; h: number }
+  onOpen: () => void
+  hidden: boolean
+}) {
+  const p = note.sticky ?? DEFAULT_PLACE
   const base = place(p, vp)
   // Hareket sırasında yerel konum/boyut; bırakınca kaydedilir
   const [live, setLive] = useState<{ left: number; top: number; w: number; h: number } | null>(null)
@@ -141,6 +250,10 @@ function Sticky({ note, vp, onOpen, hidden }: { note: NoteEntry; vp: { w: number
     }
   }
 
+  const texts = items.map((i) => i.text?.trim()).filter(Boolean)
+  const voices = items.filter((i) => i.kind === 'audio').length
+  const images = items.filter((i) => i.kind === 'image').length
+
   return (
     <div
       className={styles.sticky}
@@ -171,8 +284,13 @@ function Sticky({ note, vp, onOpen, hidden }: { note: NoteEntry; vp: { w: number
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onOpen()}
     >
       <span className={styles.tape} aria-hidden="true" />
-      {note.blob && <span className={styles.voiceChip}>🎤 {fmtDur(note.durationSec ?? 0)}</span>}
-      <p className={styles.text}>{note.text?.trim() || (note.blob ? '' : 'Boş not — dokun, yaz')}</p>
+      {(voices > 0 || images > 0) && (
+        <span className={styles.chips}>
+          {voices > 0 && <span className={styles.voiceChip}>🎤 {voices}</span>}
+          {images > 0 && <span className={styles.voiceChip}>🖼️ {images}</span>}
+        </span>
+      )}
+      <p className={styles.text}>{texts.join('\n') || (voices || images ? '' : 'Boş not — dokun, yaz')}</p>
       <span
         className={styles.resize}
         onPointerDown={(e) => down(e, 'size')}
@@ -185,126 +303,89 @@ function Sticky({ note, vp, onOpen, hidden }: { note: NoteEntry; vp: { w: number
   )
 }
 
-const fmtDur = (sec: number) => {
-  const s = Math.max(0, Math.round(sec))
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
-}
+/** Büyük hâl: Defterim'deki gibi not akışı (metin, sesli not, görsel) + renk, yeni not, sil, küçült */
+function StickyEditor({
+  note,
+  items,
+  autoFocus,
+  onClose,
+  onNew,
+}: {
+  note: NoteEntry
+  /** undefined: yükleniyor */
+  items: NoteEntry[] | undefined
+  autoFocus: boolean
+  onClose: () => void
+  onNew: () => void
+}) {
+  const p = note.sticky ?? DEFAULT_PLACE
+  const [openedAt] = useState(() => Date.now())
+  const backdrop = useRef<HTMLDivElement>(null)
 
-/** Sesli not: kaydet / dinle / sil (ses yapışkan notun kendisinde saklanır) */
-function StickyVoice({ note }: { note: NoteEntry }) {
-  const rec = useRecorder()
-  const [error, setError] = useState('')
-  const [playing, setPlaying] = useState(false)
-  const audio = useRef<HTMLAudioElement | null>(null)
-  useEffect(
-    () => () => {
-      audio.current?.pause()
-      if (audio.current?.src) URL.revokeObjectURL(audio.current.src)
-    },
-    [],
-  )
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
 
-  async function toggleRecord() {
-    setError('')
-    if (rec.recording) {
-      const r = await rec.stop()
-      if (r) await updateEntry(note.id, { blob: r.blob, mime: r.blob.type, durationSec: r.seconds })
-      return
+  // Telefonda klavye açılınca görünen alan küçülür ama "fixed" öğeler eski boyutta kalır: pencereyi görünen alana
+  // oturt ki yazma alanı klavyenin altında kalmasın
+  useEffect(() => {
+    const vv = window.visualViewport
+    const el = backdrop.current
+    if (!vv || !el) return
+    const fit = () => {
+      el.style.top = `${vv.offsetTop}px`
+      el.style.left = `${vv.offsetLeft}px`
+      el.style.width = `${vv.width}px`
+      el.style.height = `${vv.height}px`
     }
-    audio.current?.pause()
-    try {
-      await rec.start()
-    } catch {
-      setError('Mikrofona erişilemedi. Tarayıcı izinlerini kontrol et.')
+    fit()
+    vv.addEventListener('resize', fit)
+    vv.addEventListener('scroll', fit)
+    return () => {
+      vv.removeEventListener('resize', fit)
+      vv.removeEventListener('scroll', fit)
     }
-  }
-
-  function togglePlay() {
-    if (!note.blob) return
-    if (playing && audio.current) {
-      audio.current.pause()
-      setPlaying(false)
-      return
-    }
-    if (audio.current?.src) URL.revokeObjectURL(audio.current.src)
-    const a = new Audio(URL.createObjectURL(note.blob))
-    audio.current = a
-    a.onended = () => setPlaying(false)
-    a.play().then(
-      () => setPlaying(true),
-      () => setError('Ses çalınamadı.'),
-    )
-  }
+  }, [])
 
   return (
-    <div className={styles.voice}>
-      <button type="button" className={`${styles.barBtn} ${rec.recording ? styles.recOn : ''}`} onClick={() => void toggleRecord()}>
-        {rec.recording ? `⏹ Bitir · ${fmtDur(rec.seconds)}` : note.blob ? '🎤 Yeniden kaydet' : '🎤 Sesli not'}
-      </button>
-      {note.blob && !rec.recording && (
-        <>
-          <button type="button" className={styles.barBtn} onClick={togglePlay} aria-label={playing ? 'Durdur' : 'Sesli notu dinle'}>
-            {playing ? '⏸' : '▶'} {fmtDur(note.durationSec ?? 0)}
+    <div ref={backdrop} className={styles.backdrop} onClick={() => Date.now() - openedAt > 350 && onClose()} role="dialog" aria-label="Yapışkan not">
+      <div className={styles.editor} style={{ background: bgOf(p.color) }} onClick={(e) => e.stopPropagation()}>
+        <span className={styles.tape} aria-hidden="true" />
+        <header className={styles.head}>
+          <div className={styles.title}>
+            <strong>📌 Bu sayfa</strong>
+            <small>{pageLabel(note.pageKey)}</small>
+          </div>
+          <button type="button" className={styles.barBtn} onClick={onNew} title="Bu sayfaya bir yapışkan not daha" aria-label="Yeni yapışkan not">
+            ＋
           </button>
           <button
             type="button"
             className={styles.barBtn}
             onClick={() => {
-              if (!confirm('Sesli not silinsin mi?')) return
-              audio.current?.pause()
-              setPlaying(false)
-              void updateEntry(note.id, { blob: undefined, mime: undefined, durationSec: undefined })
+              if (!items?.length || confirm('Bu yapışkan not içindekilerle birlikte silinsin mi?')) {
+                void deleteSticky(note)
+                onClose()
+              }
             }}
-            aria-label="Sesli notu sil"
-            title="Sesli notu sil"
+            title="Notu sil"
+            aria-label="Notu sil"
           >
-            ✕
+            🗑
           </button>
-        </>
-      )}
-      {error && <span className={styles.voiceErr}>{error}</span>}
-    </div>
-  )
-}
-
-/** Büyük hâl: yaz, sesli not, rengi değiştir, sil, küçült */
-function StickyEditor({ note, onClose }: { note: NoteEntry; onClose: () => void }) {
-  const [text, setText] = useState(note.text ?? '')
-  const [saved, setSaved] = useState(true)
-  const p = note.sticky ?? { color: 'sari', x: 0.2, y: 0.2, w: 150, h: 130 }
-  const [openedAt] = useState(() => Date.now())
-
-  useEffect(() => {
-    if (saved) return
-    const t = setTimeout(() => void updateEntry(note.id, { text }).then(() => setSaved(true)), 400)
-    return () => clearTimeout(t)
-  }, [text, saved, note.id])
-
-  function close() {
-    if (!saved) void updateEntry(note.id, { text })
-    onClose()
-  }
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  })
-
-  return (
-    <div className={styles.backdrop} onClick={() => Date.now() - openedAt > 350 && close()} role="dialog" aria-label="Yapışkan not">
-      <div className={styles.editor} style={{ background: bgOf(p.color) }} onClick={(e) => e.stopPropagation()}>
-        <span className={styles.tape} aria-hidden="true" />
-        <textarea
-          className={styles.editText}
-          value={text}
-          placeholder="Notunu yaz…"
-          onChange={(e) => {
-            setText(e.target.value)
-            setSaved(false)
-          }}
+          <button type="button" className={styles.barBtn} onClick={onClose} title="Küçült (Esc)">
+            Küçült ▾
+          </button>
+        </header>
+        <NoteFeed
+          entries={items}
+          onAdd={(e) => addStickyItem(note, e)}
+          placeholder="Not yaz, Enter ile ekle…"
+          empty="Bu sayfaya özel notun. Aşağıya yaz, 🎤 ile sesli not bırak ya da 🖼️ ile görsel ekle. Not sayfada küçük bir kâğıt olarak durur; sürükleyip istediğin yere koyabilirsin."
+          autoFocus={autoFocus}
         />
-        <StickyVoice note={note} />
         <div className={styles.editBar}>
           <span className={styles.swatches} role="group" aria-label="Renk">
             {STICKY_COLORS.map((c) => (
@@ -319,23 +400,6 @@ function StickyEditor({ note, onClose }: { note: NoteEntry; onClose: () => void 
               />
             ))}
           </span>
-          <span className={styles.spacer} />
-          <button
-            type="button"
-            className={styles.barBtn}
-            onClick={() => {
-              if (confirm('Bu yapışkan not silinsin mi?')) {
-                void deleteEntry(note.id)
-                onClose()
-              }
-            }}
-            title="Sil"
-          >
-            🗑
-          </button>
-          <button type="button" className={styles.barBtn} onClick={close} title="Küçült (Esc)">
-            Küçült ▾
-          </button>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { initServiceWorker } from './pwa/registerSW'
 import { logger } from './services/logger'
 import { migrateWordLevels } from './services/levelMigration'
+import { migrateNotebook } from './services/notebook'
 import { startReminderLoop } from './services/reminder'
 import { initAutoSync } from './services/sync'
 import { initTheme } from './stores/theme'
@@ -23,6 +24,9 @@ void useUserStore
   .loadUsers()
   .then(() => migrateWordLevels())
   .catch((err) => logger.warn('system', 'Seviye düzeltmesi yapılamadı, sonraki açılışta denenecek', String(err)))
+
+// Eski notlar (tek metinli sayfa notu, Blob olarak saklanan ses/görsel) yeni biçime; başarısızsa sonraki açılışta dener
+void migrateNotebook().catch((err) => logger.warn('system', 'Notlar yeni biçime getirilemedi', String(err)))
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

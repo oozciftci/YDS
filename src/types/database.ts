@@ -402,9 +402,14 @@ export interface KnownWord {
 
 /**
  * Notlarım: sağ alttaki not pencereleri. Yalnızca cihazda (JSON yedeğine girer; ses/görsel yedekte data URL olur).
- * - scope 'page': sayfaya özel not (sayfa başına tek metin; id = page:<kullanıcı>:<sayfa yolu>)
  * - scope 'general': genel çalışma defterinin bir girdisi (metin, sesli not ya da ekran görüntüsü)
- * - scope 'sticky': sayfaya yapıştırılmış renkli not (post-it); sayfa başına birden çok, `sticky` konum/boyut/renk
+ * - scope 'sticky': sayfaya (ya da soruya) yapıştırılmış renkli not (post-it) — bir KUTU: `sticky` konum/boyut/renk;
+ *   içeriği ayrı satırlardadır
+ * - scope 'stickyItem': bir yapışkan notun içindeki mesaj (metin, sesli not ya da görsel); `parentId` = notun kimliği
+ * - scope 'page': ESKİ biçim (sayfa başına tek metin); açılışta yapışkan nota çevrilir (notebook.ts › migrateNotebook)
+ *
+ * Ses ve görsel `bytes` (ArrayBuffer) + `mime` olarak saklanır. Eskiden Blob saklanıyordu: iPhone'da uygulama kapatılıp
+ * açılınca veritabanından dönen Blob oynatılamıyordu. `blob` yalnızca eski kayıtlarda bulunur; okurken `entryBlob` kullan.
  */
 export interface StickyPlace {
   /** Renk anahtarı (NotesDock STICKY_COLORS) */
@@ -420,8 +425,10 @@ export interface StickyPlace {
 export interface NoteEntry {
   id: string
   userId: string
-  scope: 'page' | 'general' | 'sticky'
+  scope: 'page' | 'general' | 'sticky' | 'stickyItem'
   sticky?: StickyPlace
+  /** scope 'stickyItem': ait olduğu yapışkan notun kimliği */
+  parentId?: string
   /** Notun yazıldığı sayfanın yolu (ör. /yds-sorular/sinav/yds-2018-aralik) */
   pageKey: string
   /** Notun yazıldığı özelliğin adı (ör. "Soru Merkezi · 2018 Aralık YDS") */
@@ -430,6 +437,9 @@ export interface NoteEntry {
   /** Başlık (genel defterde varsayılan: özellik adı + tarih/saat; kullanıcı değiştirebilir) */
   title?: string
   text?: string
+  /** Ses/görsel içeriği */
+  bytes?: ArrayBuffer
+  /** @deprecated Eski kayıtlar; yeni kayıt `bytes` yazar */
   blob?: Blob
   mime?: string
   durationSec?: number

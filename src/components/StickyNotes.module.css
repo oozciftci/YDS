@@ -90,14 +90,21 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  width: min(420px, 100%);
-  height: min(420px, 70dvh);
-  padding: 1.2rem 0.9rem 0.7rem;
+  width: min(440px, 100%);
+  height: min(560px, 100%);
+  padding: 1rem 0.2rem 0.5rem;
   color: #2b2b2b;
   border-radius: 3px 3px 18px 3px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
   animation: pop 0.16s ease-out;
+  /* İçindeki not akışı (NoteFeed, NotesDock.module.css) tema renklerini kullanır; kâğıt hep açık renk olduğundan
+     koyu temada da koyu yazı / yarı saydam beyaz kutular kullanılsın */
+  --text: #2b2b2b;
+  --text-muted: #5a5a5a;
+  --border: rgba(0, 0, 0, 0.22);
+  --surface: rgba(255, 255, 255, 0.6);
+  --surface-strong: rgba(255, 255, 255, 0.42);
+  --surface-hover: rgba(255, 255, 255, 0.7);
 }
 
 @keyframes pop {
@@ -107,21 +114,27 @@
   }
 }
 
-.editText {
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0 0.6rem 0.45rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.title {
+  display: grid;
   flex: 1;
-  min-height: 0;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.3rem;
-  border: 0;
-  background: transparent;
-  color: #2b2b2b;
-  font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
-  /* 16px altı iOS'ta yakınlaştırma yapar */
-  font-size: 16px;
-  line-height: 1.45;
-  resize: none;
-  outline: none;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.title small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  color: #5a5a5a;
 }
 
 .editBar {
@@ -129,6 +142,7 @@
   align-items: center;
   gap: 0.4rem;
   flex-wrap: wrap;
+  padding: 0.1rem 0.6rem 0;
 }
 
 .swatches {
@@ -165,27 +179,16 @@
   cursor: pointer;
 }
 
-/* Sesli not */
-.voice {
+/* Küçük notta ses / görsel sayısı */
+
+.chips {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.recOn {
-  background: #e53935 !important;
-  color: #fff !important;
-}
-
-.voiceErr {
-  font-size: 0.8rem;
-  color: #b71c1c;
+  gap: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .voiceChip {
   display: inline-block;
-  margin-bottom: 0.2rem;
   padding: 0 0.35rem;
   border-radius: 999px;
   background: rgb(0 0 0 / 0.1);

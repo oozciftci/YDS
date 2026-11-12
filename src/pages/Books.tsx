@@ -412,7 +412,8 @@ function BookNotes() {
       db.notebook
         .where('userId')
         .equals(userId)
-        .filter((n) => n.pageKey.startsWith(prefix))
+        // Yapışkan notun kutusu (scope 'sticky') içerik taşımaz; mesajları 'stickyItem' satırlarındadır
+        .filter((n) => n.pageKey.startsWith(prefix) && n.scope !== 'sticky')
         .toArray(),
     [userId, prefix],
   )
@@ -451,7 +452,7 @@ function BookNotes() {
                     {u ? ` · Ünite ${u.no}` : ''}
                   </Link>
                   <span className="muted">
-                    {n.scope === 'page' ? '📄 Sayfa notu' : n.scope === 'sticky' ? '📌 Yapışkan not' : '📓 Defter'} · {stamp(n.updatedAt)}
+                    {n.scope === 'general' ? '📓 Defter' : '📌 Sayfa notu'} · {stamp(n.updatedAt)}
                   </span>
                 </div>
                 {n.kind === 'text' && <p className={styles.noteText}>{n.text}</p>}
