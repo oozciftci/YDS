@@ -801,7 +801,8 @@ export default function DusPage() {
       <Route path="deneme/*" element={lazyEl(<DusMock />)} />
       <Route path="istatistik" element={lazyEl(<DusStats />)} />
       <Route path="kavramlar" element={lazyEl(<DusConcepts />)} />
-      <Route path="kavramlar/kartlar" element={lazyEl(<DusConcepts cards />)} />
+      <Route path="kavramlar/terimler" element={lazyEl(<DusConcepts tab="terim" />)} />
+      <Route path="kavramlar/kartlar" element={lazyEl(<DusConcepts tab="kart" />)} />
       <Route path="yanlislar" element={<DusQueue />} />
       <Route path="ders/:subjectId" element={<SubjectRoute />} />
       <Route path=":examId/:test" element={<RunnerRoute />} />

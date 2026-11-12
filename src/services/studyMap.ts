@@ -153,6 +153,7 @@ const ALL: StudyCategory[] = [
     desc: 'Terimler sade Türkçeyle, konu konu kısa bilgi kartları.',
     links: [
       { to: '/dus/kavramlar', label: 'Kavram sözlüğü', hint: 'Terimi ara, sade açıklamasını oku', dev: true },
+      { to: '/dus/kavramlar/terimler', label: 'Terim kartları', hint: 'Ders ders, 20’lik seviyeler; çevir ve puanla', dev: true },
       { to: '/dus/kavramlar/kartlar', label: 'Bilgi kartları', hint: 'Soru–cevap kartları, ders ve konuya göre', dev: true },
     ],
   },

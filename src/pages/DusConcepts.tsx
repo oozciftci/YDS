@@ -3,31 +3,22 @@ import { Link } from 'react-router-dom'
 import {
   DUS_SUBJECTS,
   listDusExams,
-  loadDusGlossary,
   loadDusSpots,
   loadDusTopics,
   subjectOf,
   type DusTestKey,
   type DusTopicSubject,
 } from '../services/dus'
+import { loadConcepts, trLower as tr, type Concept } from '../services/dusConcepts'
 import { useUserStore } from '../stores/user'
+import { DusTermCards } from './DusTermCards'
 import styles from './DusConcepts.module.css'
 
-// DUS Kavramlar (/dus/kavramlar): çıkmış sorulardan derlenen iki şey tek sayfada.
+// DUS Kavramlar (/dus/kavramlar): çıkmış sorulardan derlenen üç şey tek sayfada.
 //  - Kavram sözlüğü: soru terim sözlüklerindeki (local-data/dus/sozluk) terimler tekilleştirilir; ara, derse göre süz.
+//  - Terim kartları (/dus/kavramlar/terimler): aynı terimler YDS kelime kartı düzeninde, ders → seviye (DusTermCards.tsx).
 //  - Bilgi kartları (/dus/kavramlar/kartlar): konu/spot verisindeki (local-data/dus/konu) soru–cevap kartları; ders ve
 //    konuya göre liste ya da tek tek çalışma. "Bildim" işaretleri bu cihazda kalır (yds-dus-spot:<kullanıcı>).
-
-interface Concept {
-  terim: string
-  kisa: string
-  aciklama: string
-  koken?: string
-  /** Geçtiği dersler (kimlik) */
-  subjects: Set<string>
-  /** Kaç soruda geçti */
-  count: number
-}
 
 interface SpotCard {
   id: string
@@ -39,39 +30,9 @@ interface SpotCard {
   exam: string
 }
 
-const tr = (s: string) => s.toLocaleLowerCase('tr')
-
 function splitKey(key: string): { test: DusTestKey; n: number } {
   const [test, n] = key.split('/')
   return { test: test as DusTestKey, n: Number(n) }
-}
-
-async function loadConcepts(): Promise<Concept[]> {
-  const exams = await listDusExams()
-  const all = await Promise.all(exams.map((e) => loadDusGlossary(e.id)))
-  const map = new Map<string, Concept>()
-  for (const gloss of all) {
-    for (const [key, g] of Object.entries(gloss)) {
-      const { test, n } = splitKey(key)
-      const subject = subjectOf(test, n)?.id
-      for (const t of g.terimler ?? []) {
-        const name = (t.terim || t.metin).trim()
-        if (!name) continue
-        const k = tr(name)
-        let c = map.get(k)
-        if (!c) {
-          c = { terim: name, kisa: t.kisa, aciklama: t.aciklama, koken: t.koken, subjects: new Set(), count: 0 }
-          map.set(k, c)
-        }
-        // En dolu açıklama kalsın (aynı terim farklı sorularda farklı uzunlukta açıklanmış olabilir)
-        if ((t.aciklama?.length ?? 0) > (c.aciklama?.length ?? 0)) c.aciklama = t.aciklama
-        if (!c.koken && t.koken) c.koken = t.koken
-        if (subject) c.subjects.add(subject)
-        c.count++
-      }
-    }
-  }
-  return [...map.values()].sort((a, b) => a.terim.localeCompare(b.terim, 'tr'))
 }
 
 async function loadCards(): Promise<SpotCard[]> {
@@ -424,7 +385,7 @@ function Deck({ deck, known, onMark, onClose }: { deck: SpotCard[]; known: Set<s
   )
 }
 
-export default function DusConcepts({ cards = false }: { cards?: boolean }) {
+export default function DusConcepts({ tab = 'sozluk' }: { tab?: 'sozluk' | 'terim' | 'kart' }) {
   return (
     <section className={styles.page}>
       <header>
@@ -437,14 +398,17 @@ export default function DusConcepts({ cards = false }: { cards?: boolean }) {
         </p>
       </header>
       <nav className={styles.tabs} aria-label="Kavramlar bölümü">
-        <Link to="/dus/kavramlar" replace className={`${styles.tab} ${cards ? '' : styles.tabOn}`}>
-          Kavram sözlüğü
+        <Link to="/dus/kavramlar" replace className={`${styles.tab} ${tab === 'sozluk' ? styles.tabOn : ''}`}>
+          Sözlük
         </Link>
-        <Link to="/dus/kavramlar/kartlar" replace className={`${styles.tab} ${cards ? styles.tabOn : ''}`}>
+        <Link to="/dus/kavramlar/terimler" replace className={`${styles.tab} ${tab === 'terim' ? styles.tabOn : ''}`}>
+          Terim kartları
+        </Link>
+        <Link to="/dus/kavramlar/kartlar" replace className={`${styles.tab} ${tab === 'kart' ? styles.tabOn : ''}`}>
           Bilgi kartları
         </Link>
       </nav>
-      {cards ? <Cards /> : <Glossary />}
+      {tab === 'kart' ? <Cards /> : tab === 'terim' ? <DusTermCards /> : <Glossary />}
     </section>
   )
 }

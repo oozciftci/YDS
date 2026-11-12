@@ -11,12 +11,13 @@
 
 .tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.4rem;
 }
 
 .tab {
-  padding: 0.55rem 0.4rem;
+  padding: 0.55rem 0.25rem;
+  font-size: 0.92rem;
   border: 2px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -141,5 +142,105 @@
 .flashBtns {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+/* Terim kartları: Temel / Klinik başlığı altında ders kutuları */
+.group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.groupTitle {
+  margin: 0.3rem 0 0;
+  font-size: 1.1rem;
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+
+.subject {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: start;
+  align-content: start;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.subject:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.subject small {
+  opacity: 0.7;
+  font-size: 0.78rem;
+}
+
+.subjectIcon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.meter {
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.meter span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+}
+
+.deck {
+  /* yapışkan üst çubuğun altında dursun */
+  scroll-margin-top: 5.5rem;
+  display: grid;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+/* YDS kartındaki sabit 115 px'lik alan uzun terim ve tanımlara dar gelir */
+.stage .prompt {
+  height: auto;
+  min-height: 115px;
+}
+
+.promptTerm {
+  font-size: clamp(1.5rem, 6vw, 2.4rem);
+  overflow-wrap: anywhere;
+}
+
+.promptKisa {
+  font-size: clamp(1.1rem, 4.2vw, 1.5rem);
+  letter-spacing: 0;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.explain p {
+  margin: 0 0 0.5rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.endBtns {
+  display: grid;
   gap: 0.5rem;
 }

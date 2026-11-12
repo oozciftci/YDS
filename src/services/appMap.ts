@@ -45,6 +45,7 @@ export function appLinks(): AppLink[] {
       { href: '/dus/deneme', label: 'DUS süreli deneme', desc: '120 soru / 150 dk DUS denemesi (çıkmış sınav ya da karma), Temel/Klinik net' },
       { href: '/dus/istatistik', label: 'DUS istatistik', desc: 'DUS ders ders başarı, en zayıf dersler, deneme netlerinin gelişimi' },
       { href: '/dus/kavramlar', label: 'DUS kavram sözlüğü', desc: 'DUS terimlerinin sade Türkçe açıklamaları; ara, derse göre süz' },
+      { href: '/dus/kavramlar/terimler', label: 'DUS terim kartları', desc: 'DUS terimleri kelime kartı gibi: Temel/Klinik, ders ders, 20’lik seviyeler; çevir ve 1–5 puanla' },
       { href: '/dus/kavramlar/kartlar', label: 'DUS bilgi kartları', desc: 'çıkmış sorulardan soru–cevap bilgi kartları, ders ve konuya göre' },
       { href: '/dus/tekrar', label: 'DUS tekrar', desc: 'zamanı gelen DUS sorularının aralıklı tekrarı' },
     )
