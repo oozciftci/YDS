@@ -44,6 +44,8 @@ export function appLinks(): AppLink[] {
       { href: '/dus', label: 'DUS', desc: 'diş hekimliği uzmanlık sınavı (DUS) çıkmış soruları; sınav sınav ya da derse göre çöz' },
       { href: '/dus/deneme', label: 'DUS süreli deneme', desc: '120 soru / 150 dk DUS denemesi (çıkmış sınav ya da karma), Temel/Klinik net' },
       { href: '/dus/istatistik', label: 'DUS istatistik', desc: 'DUS ders ders başarı, en zayıf dersler, deneme netlerinin gelişimi' },
+      { href: '/dus/kavramlar', label: 'DUS kavram sözlüğü', desc: 'DUS terimlerinin sade Türkçe açıklamaları; ara, derse göre süz' },
+      { href: '/dus/kavramlar/kartlar', label: 'DUS bilgi kartları', desc: 'çıkmış sorulardan soru–cevap bilgi kartları, ders ve konuya göre' },
       { href: '/dus/tekrar', label: 'DUS tekrar', desc: 'zamanı gelen DUS sorularının aralıklı tekrarı' },
     )
   }

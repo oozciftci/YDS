@@ -106,3 +106,45 @@
   color: var(--text-muted);
   font-size: 0.78rem;
 }
+
+/* Sınav seçimi: üç eşit kutu; seçili olan çerçeveli */
+.exams {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.exam {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  padding: 0.7rem 0.4rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.exam small {
+  opacity: 0.7;
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.examIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.examOn {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary) inset;
+}
+
+.emptyExam {
+  margin: 0;
+  line-height: 1.5;
+}

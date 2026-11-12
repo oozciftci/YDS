@@ -56,6 +56,7 @@ import { QuestionNav } from './exam/QuestionNav'
 const DusReview = lazy(() => import('./DusReview'))
 const DusMock = lazy(() => import('./DusMock'))
 const DusStats = lazy(() => import('./DusStats'))
+const DusConcepts = lazy(() => import('./DusConcepts'))
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E']
 
@@ -197,6 +198,9 @@ function DusHome() {
         </Link>
         <Link to="tekrar" className="btn btn-secondary">
           🔁 Tekrar
+        </Link>
+        <Link to="kavramlar" className="btn btn-secondary">
+          📖 Kavramlar
         </Link>
       </nav>
       {wrong > 0 && (
@@ -796,6 +800,8 @@ export default function DusPage() {
       <Route path="bugun" element={lazyEl(<DusReview daily />)} />
       <Route path="deneme/*" element={lazyEl(<DusMock />)} />
       <Route path="istatistik" element={lazyEl(<DusStats />)} />
+      <Route path="kavramlar" element={lazyEl(<DusConcepts />)} />
+      <Route path="kavramlar/kartlar" element={lazyEl(<DusConcepts cards />)} />
       <Route path="yanlislar" element={<DusQueue />} />
       <Route path="ders/:subjectId" element={<SubjectRoute />} />
       <Route path=":examId/:test" element={<RunnerRoute />} />

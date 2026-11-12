@@ -24,17 +24,13 @@ const PAGES: Item[] = [
   { group: 'Sayfa', label: 'İstatistik', to: '/stats' },
   { group: 'Sayfa', label: 'Ayarlar', to: '/settings' },
   { group: 'Sayfa', label: 'Yedekleme ve geri yükleme', hint: 'Ayarlar', to: '/settings' },
-  ...STUDY_CATEGORIES.flatMap((c) => c.links.map((l) => ({ group: 'Sayfa', label: l.label, hint: `${c.title} · ${l.hint}`, to: l.to }))),
+  ...STUDY_CATEGORIES.flatMap((c) => c.links.map((l) => ({ group: 'Sayfa', label: l.label, hint: `${c.exam === 'dus' ? 'DUS · ' : ''}${c.title} · ${l.hint}`, to: l.to }))),
   ...(hasLocalContent()
     ? [
         { group: 'Sayfa', label: 'Soru Merkezi', hint: 'Çıkmış sınavlar', to: '/yds-sorular' },
         { group: 'Sayfa', label: 'Özel Deneme', to: '/yds-sorular/ozel' },
         { group: 'Sayfa', label: 'Soru bankaları', to: '/yds-sorular/bankalar' },
         { group: 'Sayfa', label: 'Sınav Stratejileri 3', hint: 'Konulara göre testler', to: '/yds-sorular/bankalar/strateji-3' },
-        { group: 'Sayfa', label: 'DUS', hint: 'Diş hekimliği uzmanlık sınavı çıkmış soruları', to: '/dus' },
-        { group: 'Sayfa', label: 'DUS süreli deneme', hint: '120 soru, 150 dk; sınav ya da karma', to: '/dus/deneme' },
-        { group: 'Sayfa', label: 'DUS istatistik', hint: 'Ders ders başarı, deneme netleri', to: '/dus/istatistik' },
-        { group: 'Sayfa', label: 'DUS tekrar', hint: 'Zamanı gelen DUS soruları', to: '/dus/tekrar' },
       ]
     : []),
 ]

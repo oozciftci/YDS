@@ -13,7 +13,7 @@ import { dayKey, daysUntil, streakFromDays } from '../services/dates'
 import { summarizeBySection } from '../services/examProgress'
 import { getSection, isYokdil } from '../services/ydsSections'
 import { buildTargetPlan } from '../services/targetPlan'
-import { STUDY_CATEGORIES } from '../services/studyMap'
+import { activeExam, categoriesOf } from '../services/studyMap'
 import { QuickLinks } from '../components/QuickLinks'
 import { DailyStory } from '../components/DailyStory'
 import { getDoneUnits, unitsDoneToday } from '../services/bookProgress'
@@ -347,7 +347,7 @@ export function HomePage() {
           </Link>
         </div>
         <div className={styles.catGrid}>
-          {STUDY_CATEGORIES.map((c) => (
+          {categoriesOf(activeExam()).map((c) => (
             <Link key={c.id} to={`/calis#${c.id}`} className={styles.catTile}>
               <span className={styles.catIcon}>{c.icon}</span>
               <strong>{c.title}</strong>

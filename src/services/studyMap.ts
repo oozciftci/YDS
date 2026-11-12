@@ -9,8 +9,46 @@ export interface StudyLink {
   dev?: boolean
 }
 
+/** Hazırlanılan sınav: Çalış sayfası önce bunu sorar, kategoriler ona göre gelir. */
+export type ExamId = 'yds' | 'dus' | 'kpss'
+
+export interface ExamInfo {
+  id: ExamId
+  icon: string
+  title: string
+  desc: string
+}
+
+export const EXAMS: ExamInfo[] = [
+  { id: 'yds', icon: '🔤', title: 'YDS', desc: 'Yabancı dil' },
+  { id: 'dus', icon: '🦷', title: 'DUS', desc: 'Diş hekimliği' },
+  { id: 'kpss', icon: '🏛️', title: 'KPSS', desc: 'Hazırlanıyor' },
+]
+
+const EXAM_KEY = 'yds-exam'
+
+/** Son seçilen sınav (cihazda hatırlanır); yoksa YDS. */
+export function activeExam(): ExamId {
+  try {
+    const v = localStorage.getItem(EXAM_KEY)
+    if (v === 'dus' || v === 'kpss') return v
+  } catch {
+    // yoksay
+  }
+  return 'yds'
+}
+
+export function setActiveExam(id: ExamId) {
+  try {
+    localStorage.setItem(EXAM_KEY, id)
+  } catch {
+    // yoksay
+  }
+}
+
 export interface StudyCategory {
   id: string
+  exam: ExamId
   icon: string
   title: string
   desc: string
@@ -20,6 +58,7 @@ export interface StudyCategory {
 const ALL: StudyCategory[] = [
   {
     id: 'kelime',
+    exam: 'yds',
     icon: '📚',
     title: 'Kelime',
     desc: 'YDS puanının temeli. Her gün tekrar + yeni kelime.',
@@ -35,6 +74,7 @@ const ALL: StudyCategory[] = [
   },
   {
     id: 'soru',
+    exam: 'yds',
     icon: '📝',
     title: 'Soru çöz',
     desc: 'Soru tiplerini tanı, sonra deneme çöz.',
@@ -47,6 +87,7 @@ const ALL: StudyCategory[] = [
   },
   {
     id: 'dilbilgisi',
+    exam: 'yds',
     icon: '📘',
     title: 'Dilbilgisi',
     desc: 'Sınavda sorulan konular, kısa anlatım ve alıştırma.',
@@ -59,6 +100,7 @@ const ALL: StudyCategory[] = [
   },
   {
     id: 'dinle',
+    exam: 'yds',
     icon: '🎧',
     title: 'Dinle & Oku',
     desc: 'Seviyene göre oku, kulaktan öğren: metin, kelime, gece modu.',
@@ -71,6 +113,7 @@ const ALL: StudyCategory[] = [
   },
   {
     id: 'koc',
+    exam: 'yds',
     icon: '🤖',
     title: 'YZ Koç',
     desc: 'Sohbet pratiği, hata analizi ve öneriler.',
@@ -80,14 +123,46 @@ const ALL: StudyCategory[] = [
     ],
   },
   {
-    id: 'dus',
-    icon: '🦷',
-    title: 'DUS',
-    desc: 'Diş Hekimliği Uzmanlık Sınavı: ÖSYM’nin çıkmış soruları.',
+    id: 'dus-bugun',
+    exam: 'dus',
+    icon: '📅',
+    title: 'Bugün',
+    desc: 'Günlük set ve zamanı gelen tekrarlar.',
     links: [
-      { to: '/dus', label: 'Çıkmış DUS soruları', hint: 'Sınav sınav, Temel ve Klinik test', dev: true },
+      { to: '/dus/bugun', label: 'Bugünün seti', hint: 'Tekrarlar + en zayıf dersten yeni sorular', dev: true },
+      { to: '/dus/tekrar', label: 'Tekrar destesi', hint: 'Yanlış ve işaretli sorular, aralıklı tekrar', dev: true },
+    ],
+  },
+  {
+    id: 'dus',
+    exam: 'dus',
+    icon: '📝',
+    title: 'Soru çöz',
+    desc: 'ÖSYM’nin çıkmış soruları: sınav sınav ya da derse göre.',
+    links: [
+      { to: '/dus', label: 'Çıkmış DUS soruları', hint: 'Sınav sınav, derse göre; Temel ve Klinik', dev: true },
+      { to: '/dus/deneme', label: 'Süreli deneme', hint: '120 soru / 150 dk, net ve ders dökümü', dev: true },
       { to: '/dus/yanlislar', label: 'DUS yanlışlarım', hint: 'Yanlış yaptığın soruları tekrar çöz', dev: true },
     ],
+  },
+  {
+    id: 'dus-kavram',
+    exam: 'dus',
+    icon: '📖',
+    title: 'Kavramlar',
+    desc: 'Terimler sade Türkçeyle, konu konu kısa bilgi kartları.',
+    links: [
+      { to: '/dus/kavramlar', label: 'Kavram sözlüğü', hint: 'Terimi ara, sade açıklamasını oku', dev: true },
+      { to: '/dus/kavramlar/kartlar', label: 'Bilgi kartları', hint: 'Soru–cevap kartları, ders ve konuya göre', dev: true },
+    ],
+  },
+  {
+    id: 'dus-takip',
+    exam: 'dus',
+    icon: '📊',
+    title: 'Takip',
+    desc: 'Ders ders başarı ve deneme netleri.',
+    links: [{ to: '/dus/istatistik', label: 'DUS istatistik', hint: 'En zayıf dersler, ısı haritası', dev: true }],
   },
 ]
 
@@ -95,6 +170,8 @@ export const STUDY_CATEGORIES: StudyCategory[] = ALL.map((c) => ({
   ...c,
   links: c.links.filter((l) => !l.dev || hasLocalContent()),
 })).filter((c) => c.links.length > 0)
+
+export const categoriesOf = (exam: ExamId) => STUDY_CATEGORIES.filter((c) => c.exam === exam)
 
 /** Bu yollar "Çalış" menüsünün altında sayılır (menüde Çalış seçili görünür). */
 export function isStudyPath(pathname: string): boolean {

@@ -181,6 +181,45 @@ export function loadDusGlossary(id: string): Promise<Record<string, DusGloss>> {
   return p
 }
 
+// Alt konu + spot bilgi kartları (docs/antigravity/DUS_KONU_SPOT_GOREVI.md; local-data/dus/konu/<sınav>.json).
+export interface DusSpot {
+  on: string
+  arka: string
+}
+export interface DusTopicRecord {
+  /** "<ders>/<konu>" (scripts/dus/konular.json) */
+  konu: string
+  altBaslik: string
+  zorluk: 1 | 2 | 3
+  spotlar: DusSpot[]
+}
+const spotCache = new Map<string, Promise<Record<string, DusTopicRecord>>>()
+export function loadDusSpots(id: string): Promise<Record<string, DusTopicRecord>> {
+  let p = spotCache.get(id)
+  if (!p) {
+    p = localFetch(`/local-api/dus/${id}/konu`)
+      .then((r) => (r.ok ? (r.json() as Promise<Record<string, DusTopicRecord>>) : {}))
+      .catch(() => ({}))
+    spotCache.set(id, p)
+  }
+  return p
+}
+
+/** Ders başına alt konu listesi (scripts/dus/konular.json). */
+export interface DusTopicSubject {
+  id: string
+  ad: string
+  konular: { id: string; ad: string; kapsam?: string }[]
+}
+let topicsCache: Promise<DusTopicSubject[]> | null = null
+export function loadDusTopics(): Promise<DusTopicSubject[]> {
+  topicsCache ??= localFetch('/local-api/dus/konular')
+    .then((r) => (r.ok ? (r.json() as Promise<{ dersler?: DusTopicSubject[] }>) : {}))
+    .then((d: { dersler?: DusTopicSubject[] }) => d.dersler ?? [])
+    .catch(() => [])
+  return topicsCache
+}
+
 export const dusImageUrl =(examId: string, page: number) => `/local-api/dus/${examId}/p${String(page).padStart(3, '0')}.webp`
 
 /** İptal edilen sorular çözülmez. */
