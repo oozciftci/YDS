@@ -1,0 +1,154 @@
+/* Kart düğmeleri: ekranın altına sabit çubuk (CardActions.tsx) */
+.wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
+  z-index: 9;
+  padding: 0 10px 8px;
+  pointer-events: none;
+}
+
+.bar {
+  pointer-events: auto;
+  max-width: 640px;
+  margin: 0 auto;
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 -4px 18px rgb(0 0 0 / 0.18);
+}
+
+.spacer {
+  height: calc(var(--card-actions-h, 4rem) + 1rem);
+}
+
+/* Geniş ekranda alt menü yok */
+@media (min-width: 820px) {
+  .wrap {
+    bottom: 0;
+    padding-bottom: 14px;
+  }
+}
+
+.row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+}
+
+.btn {
+  min-height: 3rem;
+  padding: 0.5rem 0.4rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+}
+
+.no {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.ok {
+  border-color: var(--success);
+  background: var(--success);
+  color: var(--on-primary);
+}
+
+.main {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.nums {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.num {
+  min-height: 2.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* Geçiş: yalnızca opacity/transform/arka plan; düzen değişmez */
+.fxIn {
+  animation: cardIn 0.18s ease-out;
+}
+
+.fxOk {
+  animation: cardOutOk 0.28s ease-in forwards;
+}
+
+.fxNo {
+  animation: cardOutNo 0.28s ease-in forwards;
+}
+
+.fxSkip {
+  animation: cardOutSkip 0.28s ease-in forwards;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes cardOutOk {
+  40% {
+    opacity: 1;
+    background: color-mix(in srgb, var(--success) 30%, var(--surface));
+    border-color: var(--success);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(28px) scale(0.98);
+    background: color-mix(in srgb, var(--success) 30%, var(--surface));
+    border-color: var(--success);
+  }
+}
+
+@keyframes cardOutNo {
+  40% {
+    opacity: 1;
+    background: color-mix(in srgb, var(--danger) 24%, var(--surface));
+    border-color: var(--danger);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-28px) scale(0.98);
+    background: color-mix(in srgb, var(--danger) 24%, var(--surface));
+    border-color: var(--danger);
+  }
+}
+
+@keyframes cardOutSkip {
+  to {
+    opacity: 0;
+  }
+}

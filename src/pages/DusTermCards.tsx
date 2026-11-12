@@ -12,6 +12,7 @@ import {
   type TermScores,
 } from '../services/dusConcepts'
 import { useUserStore } from '../stores/user'
+import { CardActions, cardActionStyles as act, useCardFx } from '../components/CardActions'
 import study from './Study.module.css'
 import styles from './DusConcepts.module.css'
 
@@ -205,6 +206,7 @@ function Deck({
   const [finished, setFinished] = useState(false)
   const card = items[index]
   const rootRef = useRef<HTMLDivElement>(null)
+  const { run, busy, fxClass } = useCardFx()
 
   // Telefonda kart, sayfa başlığı ve sekmelerin altında kalmasın
   useEffect(() => {
@@ -223,11 +225,15 @@ function Deck({
 
   const grade = useCallback(
     (score: number) => {
-      onScore(card.key, score)
-      setResults((r) => ({ ...r, [card.key]: score }))
-      go(index + 1)
+      run(score >= 4 ? 'ok' : score <= 2 ? 'no' : 'skip', () => {
+        onScore(card.key, score)
+        setResults((r) => ({ ...r, [card.key]: score }))
+        go(index + 1)
+      })
     },
-    [card, go, index, onScore],
+    // run her çizimde yenilenir; kısayol dinleyicisi zaten her kartta yeniden bağlanıyor
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [card, go, index, onScore, busy],
   )
 
   // YDS kartlarındaki kısayollar: Boşluk çevirir, 1–5 puanlar, oklar gezdirir
@@ -290,40 +296,11 @@ function Deck({
   const subject = DUS_SUBJECTS.find((s) => s.id === card.main)
   const prev = scores[card.key]
 
-  const grading = (
-    <div className={study.gradingContainer}>
-      <div className={study.dualActionRow}>
-        <button type="button" className={study.actionBtnFail} onClick={() => grade(1)} title="Öğrenmedim (Kısayol: 1)">
-          <span>❌</span>
-          <span>Öğrenmedim (1)</span>
-        </button>
-        <button type="button" className={study.actionBtnSuccess} onClick={() => grade(4)} title="Öğrendim (Kısayol: 4)">
-          <span>✅</span>
-          <span>Öğrendim (4)</span>
-        </button>
-      </div>
-      <div className={study.numericGradeRow}>
-        <span className={study.numericGradeLabel}>Öğrenme Düzeyi (1 - 5):</span>
-        {[1, 2, 3, 4, 5].map((score) => (
-          <button
-            key={score}
-            type="button"
-            className={`${study.numericBtn} ${study[`numericBtn_${score}` as keyof typeof study]}`}
-            onClick={() => grade(score)}
-            title={`${score}: ${GRADE_LABELS[score]}`}
-          >
-            {score}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-
   return (
     <div className={styles.deck} ref={rootRef}>
       <div className={styles.bar}>
         <strong style={{ fontSize: '0.9rem' }}>{session.title}</strong>
-        <button type="button" className="btn btn-ghost" style={{ color: 'var(--error)' }} onClick={() => setFinished(true)}>
+        <button type="button" className="btn btn-ghost" style={{ color: 'var(--danger)' }} onClick={() => setFinished(true)}>
           ✕ Oturumu Bitir
         </button>
       </div>
@@ -333,7 +310,7 @@ function Deck({
       </div>
 
       <div className={`${study.cardStage} ${styles.stage}`}>
-        <div className={study.cardFlip}>
+        <div key={card.key} className={`${study.cardFlip} ${styles.flipCard} ${fxClass}`}>
           <div className={study.cardHeadRow}>
             <span className={study.cardSubPrompt}>
               {subject ? `${subject.icon} ${subject.title}` : 'DUS'} • {card.count} soruda geçti
@@ -355,19 +332,9 @@ function Deck({
                   </>
                 )}
               </div>
-              <div className={study.centerFlipWrap}>
-                <button
-                  type="button"
-                  className={`${study.centerFlipBtn} ${flipped ? study.centerFlipBtnBack : ''}`}
-                  onClick={() => setFlipped(!flipped)}
-                >
-                  {flipped ? '🔄 Ön Yüze Dön' : '🔄 Kartı Çevir'}
-                </button>
-              </div>
             </div>
 
-            {flipped ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            {flipped && (
                 <div className={`${study.subtleDetailsArea} ${styles.explain}`}>
                   <span className={study.subtleLabel}>Açıklama:</span>
                   <p>{card.aciklama}</p>
@@ -378,26 +345,51 @@ function Deck({
                     </>
                   )}
                 </div>
-                {grading}
-              </div>
-            ) : (
-              <div className={study.frontBottomBlock}>{grading}</div>
             )}
           </div>
         </div>
 
-        <div className={study.navRow}>
-          <button type="button" className={study.navBtn} disabled={index === 0} onClick={() => go(index - 1)}>
-            ← Önceki
+      </div>
+
+      {/* Düğmeler altta sabit: terim ya da açıklama ne kadar uzun olursa olsun yerleri değişmez */}
+      <CardActions>
+        <div className={act.nums} aria-label="Öğrenme düzeyi (1–5)">
+          {[1, 2, 3, 4, 5].map((score) => (
+            <button
+              key={score}
+              type="button"
+              className={`${act.num} ${study[`numericBtn_${score}` as keyof typeof study]}`}
+              disabled={busy}
+              onClick={() => grade(score)}
+              title={`${score}: ${GRADE_LABELS[score]}`}
+            >
+              {score}
+            </button>
+          ))}
+        </div>
+        <div className={act.row}>
+          <button type="button" className={`${act.btn} ${act.no}`} disabled={busy} onClick={() => grade(1)} title="Bilemedim (Kısayol: 1)">
+            ✕ Bilemedim
           </button>
-          <span className="muted" style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-            {index + 1} / {items.length}
-          </span>
-          <button type="button" className={study.navBtn} onClick={() => go(index + 1)}>
-            {index + 1 < items.length ? 'Sonraki →' : 'Sonuçları Gör 🏁'}
+          <button type="button" className={`${act.btn} ${act.main}`} disabled={busy} onClick={() => setFlipped(!flipped)} title="Kartı çevir (Boşluk)">
+            🔄 Çevir
+          </button>
+          <button type="button" className={`${act.btn} ${act.ok}`} disabled={busy} onClick={() => grade(4)} title="Bildim (Kısayol: 4)">
+            ✓ Bildim
           </button>
         </div>
-      </div>
+        <div className={styles.miniNav}>
+          <button type="button" disabled={index === 0 || busy} onClick={() => go(index - 1)}>
+            ← Önceki
+          </button>
+          <span className="muted">
+            {index + 1} / {items.length}
+          </span>
+          <button type="button" disabled={busy} onClick={() => go(index + 1)}>
+            {index + 1 < items.length ? 'Sonraki →' : 'Bitir 🏁'}
+          </button>
+        </div>
+      </CardActions>
     </div>
   )
 }

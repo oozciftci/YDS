@@ -139,11 +139,6 @@
   line-height: 1.55;
 }
 
-.flashBtns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
 
 /* Terim kartları: Temel / Klinik başlığı altında ders kutuları */
 .group {
@@ -243,4 +238,35 @@
 .endBtns {
   display: grid;
   gap: 0.5rem;
+}
+
+/* Düğmeler alttaki sabit çubukta: kartın kendisi içeriği kadar yer tutsun */
+.stage,
+.stage .flipCard {
+  min-height: 0;
+}
+
+.stage .flipCard {
+  justify-content: flex-start;
+}
+
+.miniNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.miniNav button {
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  background: none;
+  color: var(--text-muted, inherit);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.miniNav button:disabled {
+  opacity: 0.4;
 }

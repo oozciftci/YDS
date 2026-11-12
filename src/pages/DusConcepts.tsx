@@ -11,6 +11,7 @@ import {
 } from '../services/dus'
 import { loadConcepts, trLower as tr, type Concept } from '../services/dusConcepts'
 import { useUserStore } from '../stores/user'
+import { CardActions, cardActionStyles as act, useCardFx } from '../components/CardActions'
 import { DusTermCards } from './DusTermCards'
 import styles from './DusConcepts.module.css'
 
@@ -324,11 +325,12 @@ function Cards() {
   )
 }
 
-/** Tek tek çalışma: soruyu gör, dokun, cevabı gör; Bildim / Tekrar. */
+/** Tek tek çalışma: soruyu gör, cevabı aç; Bilemedim / Bildim. Düğmeler altta sabit durur (CardActions). */
 function Deck({ deck, known, onMark, onClose }: { deck: SpotCard[]; known: Set<string>; onMark: (id: string, on: boolean) => void; onClose: () => void }) {
   const [i, setI] = useState(0)
   const [shown, setShown] = useState(false)
   const [ok, setOk] = useState(0)
+  const { run, busy, fxClass } = useCardFx()
   const card = deck[i]
 
   if (!card) {
@@ -346,14 +348,17 @@ function Deck({ deck, known, onMark, onClose }: { deck: SpotCard[]; known: Set<s
   }
 
   function answer(good: boolean) {
-    onMark(card.id, good)
-    if (good) setOk(ok + 1)
-    setShown(false)
-    setI(i + 1)
+    run(good ? 'ok' : 'no', () => {
+      onMark(card.id, good)
+      if (good) setOk((n) => n + 1)
+      setShown(false)
+      setI((n) => n + 1)
+    })
   }
 
   return (
-    <article className={`card ${styles.flash}`}>
+    <>
+    <article key={card.id} className={`card ${styles.flash} ${fxClass}`}>
       <div className={styles.bar}>
         <span className="muted">
           {i + 1} / {deck.length} · {card.altBaslik}
@@ -364,24 +369,27 @@ function Deck({ deck, known, onMark, onClose }: { deck: SpotCard[]; known: Set<s
         </button>
       </div>
       <p className={styles.front}>{card.on}</p>
-      {shown ? (
-        <>
-          <p className={styles.back}>{card.arka}</p>
-          <div className={styles.flashBtns}>
-            <button type="button" className="btn btn-secondary" onClick={() => answer(false)}>
-              🔁 Tekrar
-            </button>
-            <button type="button" className="btn btn-primary" onClick={() => answer(true)}>
-              ✓ Bildim
-            </button>
-          </div>
-        </>
-      ) : (
-        <button type="button" className="btn btn-primary" onClick={() => setShown(true)}>
-          Cevabı göster
-        </button>
-      )}
+      {shown && <p className={styles.back}>{card.arka}</p>}
     </article>
+    <CardActions>
+      {shown ? (
+        <div className={act.row}>
+          <button type="button" className={`${act.btn} ${act.no}`} disabled={busy} onClick={() => answer(false)}>
+            ✕ Bilemedim
+          </button>
+          <button type="button" className={`${act.btn} ${act.ok}`} disabled={busy} onClick={() => answer(true)}>
+            ✓ Bildim
+          </button>
+        </div>
+      ) : (
+        <div className={act.row}>
+          <button type="button" className={`${act.btn} ${act.main}`} disabled={busy} onClick={() => setShown(true)}>
+            Cevabı göster
+          </button>
+        </div>
+      )}
+    </CardActions>
+    </>
   )
 }
 
