@@ -384,12 +384,13 @@ html.app-focus.focus-has-stage main {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: calc(env(safe-area-inset-top) + 3rem) 12px calc(env(safe-area-inset-bottom) + 12px) !important;
+  /* --card-actions-h: alttaki sabit kart düğme çubuğu (CardActions) varsa onun yüksekliği */
+  padding: calc(env(safe-area-inset-top) + 3rem) 12px calc(env(safe-area-inset-bottom) + 12px + var(--card-actions-h, 0px)) !important;
 }
 
 html.app-focus [data-focus-stage] {
   /* --focus-reserve: alanın dışında görünür kalanlar (deneme/okuma süresi, Bitir), focusStage.ts ölçer */
-  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem - var(--focus-reserve, 0px));
+  max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 4.5rem - var(--focus-reserve, 0px) - var(--card-actions-h, 0px));
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;

@@ -152,3 +152,28 @@
     opacity: 0;
   }
 }
+
+/* İki satırlı düğme: üstte ad, altta küçük not (ör. "3 gün sonra") */
+.stack {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.05rem;
+  line-height: 1.15;
+}
+
+.stack span {
+  font-size: 0.82rem;
+}
+
+.stack small {
+  font-size: 0.68rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Odak modunda alt menü gizli: çubuk ekranın en altına iner */
+:global(html.app-focus) .wrap {
+  bottom: 0;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 8px);
+}

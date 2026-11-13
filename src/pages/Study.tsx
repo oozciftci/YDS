@@ -39,6 +39,7 @@ import { WordFamilyBlock } from '../components/WordFamilyBlock'
 import styles from './Study.module.css'
 import { hasLocalContent } from '../services/localContent'
 import { useSwipeNav } from '../hooks/useSwipeNav'
+import { CardActions, cardActionStyles as act } from '../components/CardActions'
 
 // Çıkmış soru bağlamı yalnızca yerelde (npm run dev) vardır; yayın derlemesine girmez (bkz. App.tsx).
 const ExamContext = hasLocalContent() ? lazy(() => import('./exam/ExamContext')) : null
@@ -662,57 +663,58 @@ export function StudyPage() {
     }
   }
 
-  // Puanlama düğmeleri: kartın iki yüzünde de görünür (çevirmeden de puanlanabilir)
-  const grading = currentQ ? (
-    <>
-        {/* YENİLENMİŞ PUANLAMA BÖLÜMÜ (ÖĞRENDİM / ÖĞRENMEDİM + SADE 1-5 BARI) */}
-        <div className={styles.gradingContainer}>
-          {/* Hızlı İkili Butonlar */}
-          <div className={styles.dualActionRow}>
+  // Puanlama ve çevirme düğmeleri: ekranın altındaki sabit çubukta (CardActions). Kelime, anlam ya da örnek cümle ne
+  // kadar uzun olursa olsun yerleri değişmez; kart çevrilmeden de puanlanabilir.
+  const actionBar =
+    currentQ && currentQ.type === 'flashcard' ? (
+      <CardActions>
+        <div className={act.nums} aria-label="Öğrenme düzeyi (1–5)">
+          {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => (
             <button
+              key={score}
               type="button"
-              className={styles.actionBtnFail}
-              onClick={() => void handleScoreCard(1)}
-              id="btn-not-learned"
-              title="Öğrenmedim (Tekrar karşıma çıksın - Kısayol: 1)"
+              className={`${act.num} ${styles[`numericBtn_${score}` as keyof typeof styles]}`}
+              onClick={() => void handleScoreCard(score)}
+              id={`grade-btn-${score}`}
+              title={`${score}: ${MASTERY_CONFIG[score].label}${intervals ? ` — sonraki tekrar ${intervals[score]} sonra` : ''}`}
             >
-              <span>❌</span>
-              <span>Öğrenmedim (1)</span>
-              {intervals && <small className={styles.nextHint}>{intervals[1]} sonra</small>}
+              {score}
             </button>
-    
-            <button
-              type="button"
-              className={styles.actionBtnSuccess}
-              onClick={() => void handleScoreCard(4)}
-              id="btn-learned"
-              title="Öğrendim (Biliyorum, pekiştirildi - Kısayol: 4)"
-            >
-              <span>✅</span>
-              <span>Öğrendim (4)</span>
-              {intervals && <small className={styles.nextHint}>{intervals[4]} sonra</small>}
-            </button>
-          </div>
-    
-          {/* Sade 1-5 Puan Barı */}
-          <div className={styles.numericGradeRow}>
-            <span className={styles.numericGradeLabel}>Öğrenme Düzeyi (1 - 5):</span>
-            {([1, 2, 3, 4, 5] as MasteryLevel[]).map((score) => (
-              <button
-                key={score}
-                type="button"
-                className={`${styles.numericBtn} ${styles[`numericBtn_${score}` as keyof typeof styles]}`}
-                onClick={() => void handleScoreCard(score)}
-                id={`grade-btn-${score}`}
-                title={`${score}: ${MASTERY_CONFIG[score].label}${intervals ? ` — sonraki tekrar ${intervals[score]} sonra` : ""}`}
-              >
-                {score}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
-    </>
-  ) : null
+        <div className={act.row}>
+          <button
+            type="button"
+            className={`${act.btn} ${act.no} ${act.stack}`}
+            onClick={() => void handleScoreCard(1)}
+            id="btn-not-learned"
+            title="Öğrenmedim (Tekrar karşıma çıksın - Kısayol: 1)"
+          >
+            <span>✕ Öğrenmedim</span>
+            {intervals && <small>{intervals[1]} sonra</small>}
+          </button>
+          <button
+            type="button"
+            className={`${act.btn} ${act.main}`}
+            onClick={() => setIsFlipped((f) => !f)}
+            id="btn-flip-card"
+            title="Kartı çevir (Boşluk Tuşu)"
+          >
+            🔄 Çevir
+          </button>
+          <button
+            type="button"
+            className={`${act.btn} ${act.ok} ${act.stack}`}
+            onClick={() => void handleScoreCard(4)}
+            id="btn-learned"
+            title="Öğrendim (Biliyorum, pekiştirildi - Kısayol: 4)"
+          >
+            <span>✓ Öğrendim</span>
+            {intervals && <small>{intervals[4]} sonra</small>}
+          </button>
+        </div>
+      </CardActions>
+    ) : null
 
   return (
     <section className={styles.container}>
@@ -1359,30 +1361,6 @@ export function StudyPage() {
                       )}
                     </div>
 
-                    {/* SİMETRİK ÇEVİRME BUTONU (ÖN VE ARKA YÜZDE BİREBİR AYNI SABİT KOORDİNATTA) */}
-                    <div className={styles.centerFlipWrap}>
-                      {!isFlipped ? (
-                        <button
-                          type="button"
-                          className={styles.centerFlipBtn}
-                          onClick={() => setIsFlipped(true)}
-                          id="btn-flip-card"
-                          title="Kartı Çevir (Boşluk Tuşu)"
-                        >
-                          🔄 Kartı Çevir (Boşluk Tuşu)
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className={`${styles.centerFlipBtn} ${styles.centerFlipBtnBack}`}
-                          onClick={() => setIsFlipped(false)}
-                          id="btn-flip-back"
-                          title="Ön Yüze Dön (Boşluk Tuşu)"
-                        >
-                          🔄 Ön Yüze Dön (Boşluk Tuşu)
-                        </button>
-                      )}
-                    </div>
                   </div>
 
                   {/* ALT ALAN:
@@ -1436,8 +1414,6 @@ export function StudyPage() {
                         })}
                       </div>
 
-                      {grading}
-
                       <span className={styles.flipHint} data-focus-hide>
                         İpucu: Klavyeden <strong>Boşluk</strong> ile kartı çevirebilir, doğrudan <strong>1-5</strong> tuşlarıyla puanlayabilirsiniz.
                       </span>
@@ -1474,8 +1450,6 @@ export function StudyPage() {
                           </Suspense>
                         )}
                       </div>
-
-                      {grading}
                     </div>
                   )}
                 </div>
@@ -1576,6 +1550,7 @@ export function StudyPage() {
               </button>
             </div>
           </div>
+          {actionBar}
         </div>
       )}
 
